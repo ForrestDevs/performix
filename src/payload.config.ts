@@ -1,39 +1,20 @@
-// storage-adapter-import-placeholder
 import { postgresAdapter } from '@payloadcms/db-postgres'
-
 import sharp from 'sharp' // sharp-import
 import path from 'path'
 import { buildConfig, PayloadRequest } from 'payload'
 import { fileURLToPath } from 'url'
-
-import { Categories } from './collections/Categories'
-import { Media } from './collections/Media'
-import { Pages } from './collections/Pages'
-import { Posts } from './collections/Posts'
-import { Users } from './collections/Users'
-import { Footer } from './Footer/config'
-import { Header } from './Header/config'
-import { plugins } from './plugins'
-import { defaultLexical } from '@/fields/defaultLexical'
-import { getServerSideURL } from './utilities/getURL'
+import { plugins } from './payload/plugins'
+import { defaultLexical } from '@/payload/fields/defaultLexical'
+import { USER_SLUG } from './payload/collections/constants'
+import { collections } from './payload/collections'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 export default buildConfig({
+  serverURL: process.env.PAYLOAD_PUBLIC_SERVER_URL,
   admin: {
-    components: {
-      // The `BeforeLogin` component renders a message that you see while logging into your admin panel.
-      // Feel free to delete this at any time. Simply remove the line below and the import `BeforeLogin` statement on line 15.
-      beforeLogin: ['@/components/BeforeLogin'],
-      // The `BeforeDashboard` component renders the 'welcome' block that you see after logging into your admin panel.
-      // Feel free to delete this at any time. Simply remove the line below and the import `BeforeDashboard` statement on line 15.
-      beforeDashboard: ['@/components/BeforeDashboard'],
-    },
-    importMap: {
-      baseDir: path.resolve(dirname),
-    },
-    user: Users.slug,
+    user: USER_SLUG,
     livePreview: {
       breakpoints: [
         {
@@ -57,20 +38,17 @@ export default buildConfig({
       ],
     },
   },
-  // This config helps us configure global or default features that the other editors can inherit
   editor: defaultLexical,
   db: postgresAdapter({
     pool: {
       connectionString: process.env.DATABASE_URI || '',
     },
+    migrationDir: path.resolve(dirname, 'lib/migrations'),
   }),
-  collections: [Pages, Posts, Media, Categories, Users],
-  cors: [getServerSideURL()].filter(Boolean),
-  globals: [Header, Footer],
-  plugins: [
-    ...plugins,
-    // storage-adapter-placeholder
-  ],
+  collections,
+  cors: [process.env.PAYLOAD_PUBLIC_SITE_URL || ''],
+  csrf: [process.env.PAYLOAD_PUBLIC_SITE_URL || ''],
+  plugins: [...plugins],
   secret: process.env.PAYLOAD_SECRET,
   sharp,
   typescript: {
@@ -90,5 +68,34 @@ export default buildConfig({
       },
     },
     tasks: [],
+  },
+  onInit: async (cms) => {
+    // Check for existing admin users
+    const existingAdmins = await cms.find({
+      collection: 'users',
+      where: {
+        roles: {
+          contains: 'admin',
+        },
+      },
+    })
+
+    // If no admin users exist, create one using environment variables
+    if (!existingAdmins.docs || existingAdmins.docs.length === 0) {
+      try {
+        await cms.create({
+          collection: 'users',
+          data: {
+            email: 'dev@perfomix.com',
+            password: 'devs',
+            roles: ['admin'],
+            name: 'Dev Admin',
+          },
+        })
+        console.log('Admin user created successfully')
+      } catch (err) {
+        console.error('Error creating admin user:', err)
+      }
+    }
   },
 })
