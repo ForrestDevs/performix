@@ -6,6 +6,7 @@ import RichText from '@/components/RichText'
 import { CourseContent } from './components/CourseContent'
 import { getCurrentUser } from '@/lib/data/auth'
 import getPayload from '@/lib/utilities/getPayload'
+import { Media as MediaComponent } from '@/components/Media'
 async function getCourse(slug: string) {
   const payload = await getPayload()
   try {
@@ -109,12 +110,9 @@ export default async function CoursePage({ params }: CoursePageProps) {
           <div className="mt-10 lg:mt-0 lg:col-start-2 lg:row-span-2">
             <div className="aspect-w-16 aspect-h-9 rounded-lg overflow-hidden">
               {course.thumbnail ? (
-                <Image
-                  src={`${process.env.NEXT_PUBLIC_SERVER_URL}/media/${thumbnail.filename}`}
-                  alt={course.title}
-                  width={640}
-                  height={360}
-                  className="h-full w-full object-cover"
+                <MediaComponent
+                  resource={course.thumbnail}
+                  imgClassName="h-full w-full object-cover"
                 />
               ) : (
                 <div className="w-full h-full bg-gray-200 flex items-center justify-center">

@@ -1,10 +1,11 @@
 'use client'
 
 import { useState } from 'react'
-import Image from 'next/image'
 import { useDropzone } from 'react-dropzone'
 import { createMedia } from '@/lib/data/course'
 import type { Media } from '@/payload-types'
+import { Media as MediaComponent } from '@/components/Media'
+
 interface ImageUploadProps {
   value: Media | null
   onChange: (value: Media | null) => void
@@ -50,13 +51,7 @@ export function ImageUpload({ value, onChange }: ImageUploadProps) {
     <div>
       {value ? (
         <div className="relative">
-          <Image
-            src={`${process.env.NEXT_PUBLIC_SERVER_URL}/media/${value.filename}`}
-            alt="Thumbnail"
-            width={300}
-            height={169}
-            className="rounded-lg object-cover"
-          />
+          <MediaComponent resource={value} imgClassName="rounded-lg object-cover" />
           <button
             type="button"
             onClick={() => onChange(null)}

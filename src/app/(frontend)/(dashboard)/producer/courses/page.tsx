@@ -6,7 +6,7 @@ import getPayload from '@/lib/utilities/getPayload'
 import { getCurrentUser } from '@/lib/data/auth'
 import { PayloadRedirects } from '@/components/PayloadRedirects'
 import RichText from '@/components/RichText'
-
+import { Media as MediaComponent } from '@/components/Media'
 async function getProducerCourses(producerId: number) {
   const payload = await getPayload()
 
@@ -98,20 +98,15 @@ export default async function ProducerCoursesPage() {
                 </thead>
                 <tbody className="divide-y divide-gray-200 bg-white">
                   {courses.map((course) => {
-                    const thumbnail = course.thumbnail as Media
-
                     return (
                       <tr key={course.id}>
                         <td className="whitespace-nowrap py-4 pl-4 pr-3 sm:pl-6">
                           <div className="flex items-center">
                             <div className="h-10 w-10 flex-shrink-0">
                               {course.thumbnail ? (
-                                <Image
-                                  src={`${process.env.NEXT_PUBLIC_SERVER_URL}/media/${thumbnail.filename}`}
-                                  alt={course.title}
-                                  width={40}
-                                  height={40}
-                                  className="h-10 w-10 rounded-full object-cover"
+                                <MediaComponent
+                                  resource={course.thumbnail}
+                                  imgClassName="h-10 w-10 rounded-full object-cover"
                                 />
                               ) : (
                                 <div className="h-10 w-10 rounded-full bg-gray-200" />
