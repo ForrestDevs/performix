@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation'
 import { getCurrentUser } from '@/lib/data/auth'
-import getPayload from '@/lib/utilities/getPayload'
+import { getPayload } from '@/lib/utilities/getPayload'
 import { Course, User } from '@/payload-types'
 import { CourseForm } from '../../components/CourseForm'
 import { ContentEditor } from '../components/ContentEditor'

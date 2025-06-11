@@ -1,5 +1,5 @@
 import { Course, Chapter, Lesson } from '@/payload-types'
-import getPayload from '@/lib/utilities/getPayload'
+import { getPayload } from '@/lib/utilities/getPayload'
 
 interface CourseContentProps {
   course: Course

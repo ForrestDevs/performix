@@ -1,7 +1,7 @@
 'use server'
 
 import { Course, Lesson } from '@/payload-types'
-import getPayload from '@/lib/utilities/getPayload'
+import { getPayload } from '@/lib/utilities/getPayload'
 
 export async function enrollInCourse(courseId: number, userId: number) {
   const payload = await getPayload()

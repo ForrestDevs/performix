@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { getCurrentUser } from '@/lib/data/auth'
-import getPayload from '@/lib/utilities/getPayload'
+import { getPayload } from '@/lib/utilities/getPayload'
 import { Course, Lesson } from '@/payload-types'
 import RichText from '@/components/RichText'
 import { LessonContent } from './components/LessonContent'

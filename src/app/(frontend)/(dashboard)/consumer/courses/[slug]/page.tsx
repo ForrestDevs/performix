@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
 import { getCurrentUser } from '@/lib/data/auth'
-import getPayload from '@/lib/utilities/getPayload'
+import { getPayload } from '@/lib/utilities/getPayload'
 import { Chapter, Course, Lesson, Media } from '@/payload-types'
 import RichText from '@/components/RichText'
 

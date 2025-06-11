@@ -43,8 +43,10 @@ export default buildConfig({
     pool: {
       connectionString: process.env.DATABASE_URI || '',
     },
+    push: false,
     migrationDir: path.resolve(dirname, 'lib/migrations'),
   }),
+  
   collections,
   cors: [process.env.PAYLOAD_PUBLIC_SITE_URL || ''],
   csrf: [process.env.PAYLOAD_PUBLIC_SITE_URL || ''],
@@ -69,33 +71,33 @@ export default buildConfig({
     },
     tasks: [],
   },
-  onInit: async (cms) => {
-    // Check for existing admin users
-    const existingAdmins = await cms.find({
-      collection: 'users',
-      where: {
-        roles: {
-          contains: 'admin',
-        },
-      },
-    })
+  // onInit: async (cms) => {
+  //   // Check for existing admin users
+  //   const existingAdmins = await cms.find({
+  //     collection: 'users',
+  //     where: {
+  //       roles: {
+  //         contains: 'admin',
+  //       },
+  //     },
+  //   })
 
-    // If no admin users exist, create one using environment variables
-    if (!existingAdmins.docs || existingAdmins.docs.length === 0) {
-      try {
-        await cms.create({
-          collection: 'users',
-          data: {
-            email: 'dev@perfomix.com',
-            password: 'devs',
-            roles: ['admin'],
-            name: 'Dev Admin',
-          },
-        })
-        console.log('Admin user created successfully')
-      } catch (err) {
-        console.error('Error creating admin user:', err)
-      }
-    }
-  },
+  //   // If no admin users exist, create one using environment variables
+  //   if (!existingAdmins.docs || existingAdmins.docs.length === 0) {
+  //     try {
+  //       await cms.create({
+  //         collection: 'users',
+  //         data: {
+  //           email: 'dev@perfomix.com',
+  //           password: 'devs',
+  //           roles: ['admin'],
+  //           name: 'Dev Admin',
+  //         },
+  //       })
+  //       console.log('Admin user created successfully')
+  //     } catch (err) {
+  //       console.error('Error creating admin user:', err)
+  //     }
+  //   }
+  // },
 })

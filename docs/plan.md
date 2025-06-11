@@ -13,9 +13,7 @@ Perfomix is a course marketplace platform built with Next.js, Payload CMS v3, an
   - password: Hashed String
   - name: String
   - role: Enum ['consumer', 'producer', 'admin']
-  - avatar: Media
-  - bio: Text
-  - social_links: JSON
+  - avatar: Link
   - created_at: DateTime
   - updated_at: DateTime
 

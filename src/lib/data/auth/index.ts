@@ -1,6 +1,6 @@
 'use server'
 
-import getPayload from '@/lib/utilities/getPayload'
+import { getPayload } from '@/lib/utilities/getPayload'
 import { LoginSchema, RegisterSchema } from '@/lib/validations/auth'
 import { User } from '@/payload-types'
 import { CUSTOMER_SLUG, USER_SLUG } from '@/payload/collections/constants'
@@ -74,8 +74,7 @@ export async function register(data: RegisterSchema) {
       data: {
         name,
         email,
-        password,
-        roles: [type],
+        emailVerified: true,
       },
     })
   } catch (error) {

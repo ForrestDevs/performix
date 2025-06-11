@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { Course, Media } from '@/payload-types'
-import getPayload from '@/lib/utilities/getPayload'
+import { getPayload } from '@/lib/utilities/getPayload'
 import RichText from '@/components/RichText'
 async function getCourses() {
   const payload = await getPayload()

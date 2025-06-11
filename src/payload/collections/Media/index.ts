@@ -9,17 +9,21 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 import { anyone } from '@/payload/access'
 import { authenticated } from '@/payload/access'
+import { MEDIA_SLUG } from '../constants'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 export const Media: CollectionConfig = {
-  slug: 'media',
+  slug: MEDIA_SLUG,
+  folders: {
+    browseByFolder: true,
+  },
   access: {
-    create: authenticated,
-    delete: authenticated,
-    read: anyone,
-    update: authenticated,
+    create: () => true,
+    delete: () => true,
+    read: () => true,
+    update: () => true,
   },
   fields: [
     {

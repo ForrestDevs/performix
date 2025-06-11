@@ -1,98 +1,100 @@
 import Link from 'next/link'
+import { PerformixLogo } from '@/components/logo'
 
 export function Footer() {
   return (
-    <footer className="bg-white border-t">
-      <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-          <div>
-            <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">
-              Platform
-            </h3>
-            <ul className="mt-4 space-y-4">
-              <li>
-                <Link href="/courses" className="text-base text-gray-500 hover:text-gray-900">
-                  Browse Courses
-                </Link>
-              </li>
-              <li>
-                <Link href="/pricing" className="text-base text-gray-500 hover:text-gray-900">
-                  Pricing
-                </Link>
-              </li>
-              <li>
-                <Link href="/teach" className="text-base text-gray-500 hover:text-gray-900">
-                  Become a Teacher
-                </Link>
-              </li>
-            </ul>
+    <footer className="bg-gray-900 text-white py-12">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid md:grid-cols-4 gap-8">
+            <div>
+              <div className="mb-4">
+                <PerformixLogo />
+              </div>
+              <p className="text-gray-400 leading-relaxed">
+                Connecting elite hockey talent with proven D1+ mentors to accelerate your path to
+                success.
+              </p>
+            </div>
+            <div>
+              <h4 className="font-semibold mb-4">Platform</h4>
+              <ul className="space-y-2 text-gray-400">
+                <li>
+                  <Link href="#" className="hover:text-white transition-colors">
+                    Find Mentors
+                  </Link>
+                </li>
+                <li>
+                  <Link href="#" className="hover:text-white transition-colors">
+                    How It Works
+                  </Link>
+                </li>
+                <li>
+                  <Link href="#" className="hover:text-white transition-colors">
+                    Success Stories
+                  </Link>
+                </li>
+                <li>
+                  <Link href="#" className="hover:text-white transition-colors">
+                    Pricing
+                  </Link>
+                </li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-semibold mb-4">Support</h4>
+              <ul className="space-y-2 text-gray-400">
+                <li>
+                  <Link href="#" className="hover:text-white transition-colors">
+                    Help Center
+                  </Link>
+                </li>
+                <li>
+                  <Link href="#" className="hover:text-white transition-colors">
+                    Contact Us
+                  </Link>
+                </li>
+                <li>
+                  <Link href="#" className="hover:text-white transition-colors">
+                    Safety
+                  </Link>
+                </li>
+                <li>
+                  <Link href="#" className="hover:text-white transition-colors">
+                    Parent Resources
+                  </Link>
+                </li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-semibold mb-4">Company</h4>
+              <ul className="space-y-2 text-gray-400">
+                <li>
+                  <Link href="#" className="hover:text-white transition-colors">
+                    About
+                  </Link>
+                </li>
+                <li>
+                  <Link href="#" className="hover:text-white transition-colors">
+                    Careers
+                  </Link>
+                </li>
+                <li>
+                  <Link href="#" className="hover:text-white transition-colors">
+                    Privacy
+                  </Link>
+                </li>
+                <li>
+                  <Link href="#" className="hover:text-white transition-colors">
+                    Terms
+                  </Link>
+                </li>
+              </ul>
+            </div>
           </div>
-          <div>
-            <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">
-              Company
-            </h3>
-            <ul className="mt-4 space-y-4">
-              <li>
-                <Link href="/about" className="text-base text-gray-500 hover:text-gray-900">
-                  About
-                </Link>
-              </li>
-              <li>
-                <Link href="/contact" className="text-base text-gray-500 hover:text-gray-900">
-                  Contact
-                </Link>
-              </li>
-              <li>
-                <Link href="/careers" className="text-base text-gray-500 hover:text-gray-900">
-                  Careers
-                </Link>
-              </li>
-            </ul>
-          </div>
-          <div>
-            <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">
-              Resources
-            </h3>
-            <ul className="mt-4 space-y-4">
-              <li>
-                <Link href="/blog" className="text-base text-gray-500 hover:text-gray-900">
-                  Blog
-                </Link>
-              </li>
-              <li>
-                <Link href="/help" className="text-base text-gray-500 hover:text-gray-900">
-                  Help Center
-                </Link>
-              </li>
-              <li>
-                <Link href="/guides" className="text-base text-gray-500 hover:text-gray-900">
-                  Guides
-                </Link>
-              </li>
-            </ul>
-          </div>
-          <div>
-            <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">Legal</h3>
-            <ul className="mt-4 space-y-4">
-              <li>
-                <Link href="/privacy" className="text-base text-gray-500 hover:text-gray-900">
-                  Privacy
-                </Link>
-              </li>
-              <li>
-                <Link href="/terms" className="text-base text-gray-500 hover:text-gray-900">
-                  Terms
-                </Link>
-              </li>
-            </ul>
+          <div className="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400">
+            <p>&copy; {new Date().getFullYear()} Performix. All rights reserved.</p>
           </div>
         </div>
-        <div className="mt-8 border-t border-gray-200 pt-8">
-          <p className="text-base text-gray-400 text-center">
-            &copy; {new Date().getFullYear()} Perfomix. All rights reserved.
-          </p>
-        </div>
-      </div>
-    </footer>
+      </footer>
   )
 }

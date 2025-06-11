@@ -1,4 +1,3 @@
-import { Users } from './Users'
 import { Courses } from './Courses'
 import { Chapters } from './Chapters'
 import { Lessons } from './Lessons'
@@ -8,9 +7,10 @@ import { Reviews } from './Reviews'
 import { Categories } from './Categories'
 import { Media } from './Media'
 import { Pages } from './Pages'
+import { Mentors } from './Mentors'
+import Students from './Students'
 
 export const collections = [
-  Users,
   Courses,
   Chapters,
   Lessons,
@@ -20,4 +20,6 @@ export const collections = [
   Categories,
   Media,
   Pages,
+  Mentors,
+  Students,
 ]

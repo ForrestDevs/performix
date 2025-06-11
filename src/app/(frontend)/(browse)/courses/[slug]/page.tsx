@@ -5,7 +5,7 @@ import { EnrollButton } from './components/EnrollButton'
 import RichText from '@/components/RichText'
 import { CourseContent } from './components/CourseContent'
 import { getCurrentUser } from '@/lib/data/auth'
-import getPayload from '@/lib/utilities/getPayload'
+import { getPayload } from '@/lib/utilities/getPayload'
 import { Media as MediaComponent } from '@/components/Media'
 async function getCourse(slug: string) {
   const payload = await getPayload()

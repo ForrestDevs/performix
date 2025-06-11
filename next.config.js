@@ -20,6 +20,9 @@ const nextConfig = {
       }),
     ],
   },
+  devIndicators: {
+    position: 'bottom-right',
+  },
   reactStrictMode: true,
   redirects,
 }

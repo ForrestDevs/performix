@@ -22,7 +22,7 @@ export async function Navbar() {
               >
                 Browse Courses
               </Link>
-              {user?.roles.includes('producer') && (
+              {/* {user?.roles.includes('producer') && (
                 <Link
                   href="/producer/courses"
                   className="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900"
@@ -37,7 +37,7 @@ export async function Navbar() {
                 >
                   My Learning
                 </Link>
-              )}
+              )} */}
             </div>
           </div>
           <div className="flex items-center">

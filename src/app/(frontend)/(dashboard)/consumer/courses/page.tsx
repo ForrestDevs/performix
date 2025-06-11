@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { getCurrentUser } from '@/lib/data/auth'
-import getPayload from '@/lib/utilities/getPayload'
+import { getPayload } from '@/lib/utilities/getPayload'
 import { Course, Media } from '@/payload-types'
 
 async function getEnrolledCourses(userId: number) {

@@ -1,5 +1,5 @@
 import { getCurrentUser } from '@/lib/data/auth'
-import getPayload from '@/lib/utilities/getPayload'
+import { getPayload } from '@/lib/utilities/getPayload'
 import { Course } from '@/payload-types'
 import { getCourseAnalytics } from '@/lib/data/course'
 import { AnalyticsSummary } from './components/AnalyticsSummary'

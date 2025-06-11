@@ -30,7 +30,7 @@ export function UserMenu({ user }: { user: User }) {
           </div>
         </Menu.Button>
       </div>
-      <Transition
+      {/* <Transition
         as={Fragment}
         enter="transition ease-out duration-200"
         enterFrom="transform opacity-0 scale-95"
@@ -94,7 +94,7 @@ export function UserMenu({ user }: { user: User }) {
             )}
           </Menu.Item>
         </Menu.Items>
-      </Transition>
+      </Transition> */}
     </Menu>
   )
 }

@@ -5,10 +5,6 @@ import { getCurrentUser } from '@/lib/data/auth'
 export default async function ProducerLayout({ children }: { children: React.ReactNode }) {
   const user = await getCurrentUser()
 
-  if (!user || !user.roles.includes('producer')) {
-    redirect('/login?redirect=/producer/courses')
-  }
-
   return (
     <div className="min-h-screen bg-gray-50">
       <ProducerNav />

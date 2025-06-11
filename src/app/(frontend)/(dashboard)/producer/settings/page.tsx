@@ -1,6 +1,6 @@
 import { getCurrentUser } from '@/lib/data/auth'
 import { NotificationSettings } from './components/NotificationSettings'
-import { ProfileSettings } from './components/ProfileSettings'
+// import { ProfileSettings } from './components/ProfileSettings'
 import { PaymentSettings } from './components/PaymentSettings'
 
 export default async function SettingsPage() {
@@ -21,7 +21,7 @@ export default async function SettingsPage() {
       </div>
 
       <div className="mt-8 space-y-8">
-        <ProfileSettings user={user} />
+        {/* <ProfileSettings user={user} /> */}
         <NotificationSettings />
         <PaymentSettings />
       </div>
