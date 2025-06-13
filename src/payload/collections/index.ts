@@ -9,6 +9,7 @@ import { Media } from './Media'
 import { Pages } from './Pages'
 import { Mentors } from './Mentors'
 import Students from './Students'
+import Testimonials from './Testimonials'
 
 export const collections = [
   Courses,
@@ -22,4 +23,5 @@ export const collections = [
   Pages,
   Mentors,
   Students,
+  Testimonials,
 ]

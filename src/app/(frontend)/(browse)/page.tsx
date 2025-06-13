@@ -30,9 +30,6 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Header */}
-      
-
       {/* Hero Section - Enhanced with animations */}
       <section className="relative overflow-hidden bg-gradient-to-b from-gray-50 to-white py-20 sm:py-32">
         {/* Animated background elements */}
@@ -49,14 +46,14 @@ export default function HomePage() {
                   Elite Mentorship Platform
                 </Badge>
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight font-['Space_Grotesk']">
-                  From AAA to D1:{' '}
+                  The Fastest Way to{' '}
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0891B2] to-[#8B5CF6]">
-                    Your Path Starts Here
+                    Get Better
                   </span>
                 </h1>
                 <p className="text-xl text-gray-600 leading-relaxed max-w-2xl">
-                  Connect with elite D1+ mentors who&apos;ve walked your path. Personalized guidance
-                  to elevate your game and secure your dream commitment.
+                  Why waste time trying to figure it out alone? Get access to D1 mentors, elite
+                  systems, and a proven plan to develop faster.
                 </p>
               </div>
               <div className="flex flex-col sm:flex-row gap-4">
@@ -84,22 +81,22 @@ export default function HomePage() {
               <div className="flex items-center space-x-6 text-sm text-gray-500">
                 <div className="flex items-center space-x-2 hover:text-[#0891B2] transition-colors duration-200">
                   <CheckCircle className="h-4 w-4 text-[#0891B2]" />
-                  <span>500+ Active Players</span>
+                  <span>30+ D1 Mentors</span>
                 </div>
                 <div className="flex items-center space-x-2 hover:text-[#0891B2] transition-colors duration-200">
                   <CheckCircle className="h-4 w-4 text-[#0891B2]" />
-                  <span>94% Success Rate</span>
+                  <span>100% Athlete Improvement</span>
                 </div>
               </div>
             </div>
             <div className="relative animate-fade-in-right">
-              <div className="aspect-[4/3] rounded-2xl overflow-hidden bg-gradient-to-br from-[#0891B2]/20 to-[#8B5CF6]/20 hover:scale-105 transition-transform duration-500">
+              <div className="rounded-2xl overflow-hidden bg-gradient-to-br from-[#0891B2]/20 to-[#8B5CF6]/20 hover:scale-105 transition-transform duration-500">
                 <Image
-                  src="/mateo-hockey.png"
+                  src="/hero2.png"
                   alt="Hockey player in action"
                   width={800}
                   height={600}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-contain"
                 />
               </div>
               <div className="absolute -bottom-6 -left-6 bg-white rounded-xl p-4 shadow-lg border hover:shadow-xl transition-shadow duration-300 animate-float">
@@ -134,29 +131,32 @@ export default function HomePage() {
               Why Elite Players Choose Performix
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Join the platform that&apos;s helping hundreds of AAA players make the leap to
-              Division 1 hockey
+              Join the platform that&apos;s advancing the next generation of serious hockey players.
             </p>
           </div>
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-4 gap-8">
             {[
               {
                 icon: Users,
-                title: 'Exclusive Access',
+                title: '1 on 1 Mentorship',
                 description:
-                  'Connect directly with proven D1+ mentors who understand your journey and can guide you to success.',
+                  'Work directly with your own D1 mentor who knows exactly what it takes to succeed.',
               },
               {
                 icon: Target,
                 title: 'Proven Results',
-                description:
-                  '94% of our athletes receive D1 offers within 12 months of joining our mentorship program.',
+                description: '100% of Athletes Report Faster Progress in Their First Month. ',
               },
               {
                 icon: TrendingUp,
-                title: 'Personalized Path',
+                title: 'Custom Development Plans',
+                description: ' Tailored development for your position, goals, and playing style.',
+              },
+              {
+                icon: TrendingUp,
+                title: 'All-In-One Performance System',
                 description:
-                  'Tailored guidance for your unique journey, skills, and goals to maximize your potential.',
+                  'Alongside your mentor, get NHL-grade tools for training, nutrition, mindset, and recruiting.',
               },
             ].map((item, index) => (
               <Card
@@ -197,11 +197,9 @@ export default function HomePage() {
                 : 'opacity-0 translate-y-8'
             }`}
           >
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-              Your Journey to D1 in 3 Steps
-            </h2>
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">Win In 3 Steps</h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              A proven process that has helped hundreds of players achieve their Division 1 dreams
+              A proven shortcut used by driven players to develop faster.
             </p>
           </div>
           <div className="relative">
@@ -231,40 +229,29 @@ export default function HomePage() {
                   step: 1,
                   title: 'Match',
                   description:
-                    'Complete our comprehensive assessment and get matched with the perfect mentor based on your position, goals, playing style, and personality.',
+                    'Start with a free Zoom call where we learn about your goals, experience, and journey—to match you with the right mentor.',
                   icon: Users,
-                  details: [
-                    'Skill assessment',
-                    'Goal alignment',
-                    'Personality match',
-                    'Position-specific pairing',
-                  ],
+                  details: ['Goal-Based Matching', 'Personality Fit', 'Position-Specific Pairing'],
                 },
                 {
                   step: 2,
-                  title: 'Train',
+                  title: 'Improve',
                   description:
-                    'Work one-on-one with your mentor through personalized training plans, skill development sessions, and strategic guidance tailored to your needs.',
+                    'Benefit from the mentor, tools, and full system built to accelerate your development',
                   icon: Target,
                   details: [
-                    '1-on-1 sessions',
-                    'Custom training plans',
-                    'Video analysis',
-                    'Progress tracking',
+                    '1-on-1 Private Mentorship',
+                    'Performance-Driven Resources',
+                    'Consistent Progress Tracking',
                   ],
                 },
                 {
                   step: 3,
-                  title: 'Commit',
+                  title: 'Achieve',
                   description:
-                    'Secure your D1 future with expert guidance on recruitment strategy, showcase preparation, and making the right commitment decision.',
+                    "Open doors to new opportunities, climb levels faster, and do it with people who've already been there.",
                   icon: Award,
-                  details: [
-                    'Recruitment strategy',
-                    'Showcase prep',
-                    'College connections',
-                    'Commitment guidance',
-                  ],
+                  details: ['Apply D1 Strategy', 'Use What Works', 'Turn Knowledge Into Results'],
                 },
               ].map((item, index) => (
                 <div
@@ -331,13 +318,16 @@ export default function HomePage() {
                 isVisible('journey-cta') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
               }`}
             >
-              <Button
-                size="lg"
-                className="bg-gradient-to-r from-[#0891B2] to-[#8B5CF6] hover:from-[#0E7490] hover:to-[#7C3AED] text-white px-8 py-4 text-lg shadow-lg hover:shadow-xl transition-all duration-300"
+              <Link
+                href="/get-started"
+                className={cn(
+                  buttonVariants({ size: 'lg' }),
+                  'bg-gradient-to-r from-[#0891B2] to-[#8B5CF6] hover:from-[#0E7490] hover:to-[#7C3AED] text-white px-8 py-4 text-lg shadow-lg hover:shadow-xl transition-all duration-300',
+                )}
               >
                 Start Your Journey Today
                 <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
+              </Link>
             </div>
           </div>
         </div>
@@ -433,10 +423,16 @@ export default function HomePage() {
               isVisible('mentors-cta') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
             }`}
           >
-            <Button className="bg-[#0891B2] hover:bg-[#0E7490] text-white px-8">
+            <Link
+              href="/mentors"
+              className={cn(
+                buttonVariants({ size: 'lg' }),
+                'bg-[#0891B2] hover:bg-[#0E7490] text-white px-8',
+              )}
+            >
               Browse All Mentors
               <ChevronRight className="ml-2 h-4 w-4" />
-            </Button>
+            </Link>
           </div>
         </div>
       </section>
@@ -452,11 +448,10 @@ export default function HomePage() {
             }`}
           >
             <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-              Real Results, Real Stories
+              What Athletes & Parents Are Saying
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              See how our mentorship program has transformed careers and opened doors to elite
-              opportunities
+              Real results. Real impact. Hear from athletes and parents who have directly benefited.
             </p>
           </div>
           <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -573,10 +568,10 @@ export default function HomePage() {
             }`}
           >
             <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-              Built for Champions, Trusted by Families
+              Trusted by Families. Built for Serious Players.
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Your safety and success are our top priorities
+              Supporting both the athlete and the family.
             </p>
           </div>
           <div className="grid md:grid-cols-3 gap-8">
@@ -585,17 +580,17 @@ export default function HomePage() {
                 icon: Shield,
                 title: 'Verified Mentors',
                 description:
-                  'All mentors are background checked D1+ players with verified credentials and proven track records.',
+                  'Every mentor is a hand-selected D1 or Pro athlete with real credentials and proven experience.',
               },
               {
                 icon: Eye,
-                title: 'Parent Dashboard',
+                title: 'Parent Access',
                 description:
-                  'Full transparency with progress tracking, session summaries, and direct communication channels.',
+                  "Stay in the loop with access to your athlete's mentor, updates, and the full community. We support the whole family.",
               },
               {
                 icon: Award,
-                title: 'Results Guarantee',
+                title: 'Risk-Free Guarantee',
                 description:
                   "100% satisfaction guarantee or your money back. We're committed to your success.",
               },
@@ -645,32 +640,27 @@ export default function HomePage() {
                 {
                   question: 'What is Performix?',
                   answer:
-                    'Performix is a premium hockey mentorship platform designed to connect 13-18 year old AAA hockey players with elite D1+ mentors. We provide personalized guidance, training resources, skill development, and recruitment support to help young athletes achieve their Division 1 dreams.',
+                    'Performix is a high-performance development platform built by D1/pro athletes and top experts—performance coaches, specialists, and experienced team coaches. You get paired with your own personal D1 mentor and gain access to elite tools: custom training, nutrition, mindset strategies, video breakdowns, recruiting support, and a proven system designed to accelerate your development.',
                 },
                 {
                   question: 'Who is Performix for?',
                   answer:
-                    "Performix is specifically designed for AAA hockey players aged 13-18 who aspire to play Division 1 hockey. Whether you're just starting your recruitment journey or looking to refine your approach, our mentors provide the expertise and guidance you need to succeed.",
+                    'Performix is for driven hockey players (typically ages 13-18) looking to develop faster, train smarter, and reach the next level—whether that is prep, juniors, or Division 1.',
                 },
                 {
-                  question: 'What services does Performix offer?',
+                  question: 'What do I get with Performix?',
                   answer:
-                    'Performix offers comprehensive D1 mentorship including one-on-one coaching sessions, personalized training plans, recruitment guidance, video analysis, skill development programs, and ongoing support throughout your journey to Division 1 hockey.',
+                    'Depending on your package, you get matched with a personal mentor and unlock full access to the Performix system—including custom development plans, biweekly Zoom calls, goal-setting support, private video feedback, and unlimited mentor access. You will also get the full course, nutrition tools, mindset strategies, and recruiting guidance tailored to your game.',
                 },
                 {
                   question: 'How do I get started?',
                   answer:
-                    "Getting started is simple - create an account, complete our assessment to match with the perfect mentor based on your position and goals, then book your first session. You'll gain immediate access to personalized feedback and a clear roadmap to D1 success.",
+                    'Book a free Zoom call so we can learn about your goals and pair you with the right mentor. From there, you’ll unlock your tools, schedule your sessions, and start making real progress.',
                 },
                 {
-                  question: "What's the success rate?",
+                  question: "What's coming next on Performix?",
                   answer:
-                    '94% of our athletes receive D1 offers within 12 months of joining our mentorship program. Our mentors have a proven track record of helping players navigate the recruitment process and secure commitments at top Division 1 programs.',
-                },
-                {
-                  question: 'How are mentors selected?',
-                  answer:
-                    "All our mentors are verified D1+ players who have been thoroughly background checked. They're selected based on their playing experience, coaching ability, and commitment to helping young athletes succeed. Each mentor brings unique insights from their own journey to Division 1 hockey.",
+                    'We are bringing in new NHL-level experts, launching exclusive high-level content, and expanding our free Resource Hub—packed with free valuable tools, breakdowns, and insight players can use right away. We are also building new offerings across skill development, rehab and more.',
                 },
               ].map((faq, index) => (
                 <div
@@ -709,17 +699,16 @@ export default function HomePage() {
               Join hundreds of players already working with elite mentors to achieve their D1 dreams
             </p>
             <div className="max-w-md mx-auto">
-              <div className="flex gap-4 mb-4">
-                <Input
-                  type="email"
-                  placeholder="Enter your email"
-                  className="bg-white/10 border-white/20 text-white placeholder:text-white/70 focus:bg-white/20"
-                />
-                <Button className="bg-white text-[#0891B2] hover:bg-gray-100 px-8">
-                  Get Started
-                </Button>
-              </div>
-              <p className="text-sm opacity-75">Join 500+ aspiring D1 players</p>
+              <Link
+                href="https://calendly.com/mateodixon/d1-mentorship-call"
+                className={cn(
+                  buttonVariants({ size: 'lg' }),
+                  'bg-[#0891B2] hover:bg-[#0E7490] text-white px-8 py-4 text-lg hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl',
+                )}
+              >
+                Get Started
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Link>
             </div>
           </div>
         </div>

@@ -647,7 +647,7 @@ export default function BrowseMentorsPage() {
             Let us help you find the ideal mentor based on your specific goals and preferences
           </p>
           <Link
-            href="/contact"
+            href="https://calendly.com/mateodixon/d1-mentorship-call"
             className={cn("border-white text-white hover:bg-white hover:text-[#0891B2] px-8", buttonVariants({variant: "outline"}))}
           >
               Schedule a Consultation

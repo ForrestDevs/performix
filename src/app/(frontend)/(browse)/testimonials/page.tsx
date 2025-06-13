@@ -1,6 +1,6 @@
 'use client'
 
-import { Button } from '@/components/ui/button'
+import { Button, buttonVariants } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import {
@@ -21,6 +21,7 @@ import { useEffect, useState } from 'react'
 import { useScrollAnimation } from '@/lib/hooks/useScrollAnimation'
 import { PerformixLogo } from '@/components/logo'
 import Breadcrumb from '@/components/layout/header/breadcrumb'
+import { cn } from '@/lib/utilities/ui'
 
 // Animated Counter Component
 function AnimatedCounter({
@@ -645,7 +646,7 @@ export default function TestimonialsPage() {
       </section>
 
       {/* Journey Showcase */}
-      <section className="py-20 bg-gray-50">
+      {/* <section className="py-20 bg-gray-50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div
             id="journey-header"
@@ -673,7 +674,6 @@ export default function TestimonialsPage() {
                     <Card className="border-0 shadow-xl mx-4">
                       <CardContent className="p-8">
                         <div className="grid lg:grid-cols-3 gap-8 items-center">
-                          {/* Before */}
                           <div className="text-center">
                             <h3 className="text-lg font-semibold text-gray-900 mb-4">
                               Before Mentorship
@@ -695,7 +695,6 @@ export default function TestimonialsPage() {
                             </div>
                           </div>
 
-                          {/* Journey */}
                           <div className="text-center">
                             <div className="mb-6">
                               <div className="w-20 h-20 bg-gradient-to-r from-[#0891B2] to-[#8B5CF6] rounded-full flex items-center justify-center mx-auto mb-4">
@@ -712,7 +711,6 @@ export default function TestimonialsPage() {
                             </blockquote>
                           </div>
 
-                          {/* After */}
                           <div className="text-center">
                             <h3 className="text-lg font-semibold text-gray-900 mb-4">
                               After Mentorship
@@ -740,7 +738,6 @@ export default function TestimonialsPage() {
                           </div>
                         </div>
 
-                        {/* Player Info */}
                         <div className="text-center mt-8 pt-6 border-t border-gray-200">
                           <h2 className="text-2xl font-bold text-gray-900">{journey.name}</h2>
                           <p className="text-[#0891B2] font-medium">{journey.position}</p>
@@ -752,7 +749,6 @@ export default function TestimonialsPage() {
               </div>
             </div>
 
-            {/* Navigation */}
             <div className="flex justify-center mt-8 space-x-4">
               <Button
                 variant="outline"
@@ -790,7 +786,7 @@ export default function TestimonialsPage() {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Parent Testimonials */}
       <section className="py-20 bg-white">
@@ -893,7 +889,7 @@ export default function TestimonialsPage() {
       </section>
 
       {/* Mentor Testimonials */}
-      <section className="py-20 bg-gray-50">
+      {/* <section className="py-20 bg-gray-50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div
             id="mentor-testimonials-header"
@@ -977,10 +973,10 @@ export default function TestimonialsPage() {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Social Proof Stream */}
-      <section className="py-20 bg-white">
+      {/* <section className="py-20 bg-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div
             id="social-proof-header"
@@ -1081,7 +1077,7 @@ export default function TestimonialsPage() {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* CTA Section */}
       <section className="py-20 bg-gradient-to-r from-[#0891B2] to-[#0E7490]">
@@ -1094,16 +1090,15 @@ export default function TestimonialsPage() {
             mentorship
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="bg-white text-[#0891B2] hover:bg-gray-100 px-8">
-              Find Your Mentor
-            </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              className="border-white text-white hover:bg-white hover:text-[#0891B2] px-8"
+            <Link
+              href="/mentors"
+              className={cn(
+                buttonVariants({ size: 'lg', variant: 'outline' }),
+                'bg-white text-[#0891B2] hover:bg-gray-100 px-8',
+              )}
             >
-              Watch More Stories
-            </Button>
+              Find Your Mentor
+            </Link>
           </div>
         </div>
       </section>

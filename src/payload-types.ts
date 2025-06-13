@@ -84,6 +84,7 @@ export interface Config {
     pages: Page;
     mentors: Mentor;
     students: Student;
+    testimonials: Testimonial;
     'payload-folders': FolderInterface;
     'payload-jobs': PayloadJob;
     'payload-locked-documents': PayloadLockedDocument;
@@ -120,6 +121,7 @@ export interface Config {
     pages: PagesSelect<false> | PagesSelect<true>;
     mentors: MentorsSelect<false> | MentorsSelect<true>;
     students: StudentsSelect<false> | StudentsSelect<true>;
+    testimonials: TestimonialsSelect<false> | TestimonialsSelect<true>;
     'payload-folders': PayloadFoldersSelect<false> | PayloadFoldersSelect<true>;
     'payload-jobs': PayloadJobsSelect<false> | PayloadJobsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
@@ -881,6 +883,20 @@ export interface Student {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "testimonials".
+ */
+export interface Testimonial {
+  id: number;
+  name?: string | null;
+  message?: string | null;
+  image?: (number | null) | Media;
+  team?: string | null;
+  position?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-jobs".
  */
 export interface PayloadJob {
@@ -1045,6 +1061,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'students';
         value: number | Student;
+      } | null)
+    | ({
+        relationTo: 'testimonials';
+        value: number | Testimonial;
       } | null)
     | ({
         relationTo: 'payload-folders';
@@ -1532,6 +1552,19 @@ export interface MentorsSelect<T extends boolean = true> {
  */
 export interface StudentsSelect<T extends boolean = true> {
   name?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "testimonials_select".
+ */
+export interface TestimonialsSelect<T extends boolean = true> {
+  name?: T;
+  message?: T;
+  image?: T;
+  team?: T;
+  position?: T;
   updatedAt?: T;
   createdAt?: T;
 }

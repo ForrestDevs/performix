@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { PerformixLogo } from '@/components/logo'
+import { PerformixLogoDark } from '@/components/logo'
 
 export default function Footer() {
   return (
@@ -8,7 +8,7 @@ export default function Footer() {
         <div className="grid md:grid-cols-4 gap-8">
           <div>
             <div className="mb-4">
-              <PerformixLogo />
+              <PerformixLogoDark />
             </div>
             <p className="text-gray-400 leading-relaxed">
               Connecting elite hockey talent with proven D1+ mentors to accelerate your path to
@@ -79,12 +79,12 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="#" className="hover:text-white transition-colors">
+                <Link href="/privacy" className="hover:text-white transition-colors">
                   Privacy
                 </Link>
               </li>
               <li>
-                <Link href="#" className="hover:text-white transition-colors">
+                <Link href="/terms" className="hover:text-white transition-colors">
                   Terms
                 </Link>
               </li>
