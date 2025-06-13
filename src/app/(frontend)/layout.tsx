@@ -1,6 +1,6 @@
 import { Inter, Space_Grotesk } from 'next/font/google'
 import { Metadata } from 'next'
-import Footer from '@/components/layout/footer'
+import Footer from '../../components/layout/footer'
 import '@/lib/styles/globals.css'
 import '@/lib/styles/scroll-animations.css'
 
