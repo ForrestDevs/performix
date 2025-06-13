@@ -1,11 +1,8 @@
-import '@/lib/styles/globals.css'
-import '@/lib/styles/scroll-animations.css'
-
 import { Inter, Space_Grotesk } from 'next/font/google'
 import { Metadata } from 'next'
-import { Navbar } from '@/components/layout/Navbar'
-import { Footer } from '@/components/layout/footer'
-import Header from '@/components/layout/header'
+import Footer from '@/components/layout/footer'
+import '@/lib/styles/globals.css'
+import '@/lib/styles/scroll-animations.css'
 
 const inter = Inter({
   subsets: ['latin'],
