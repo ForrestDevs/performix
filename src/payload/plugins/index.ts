@@ -21,6 +21,7 @@ import {
 import { passkey } from 'better-auth/plugins/passkey'
 import { emailHarmony } from 'better-auth-harmony'
 import { nextCookies } from 'better-auth/next-js'
+import { allowedOrigins } from '@payload-config'
 
 const generateTitle: GenerateTitle<Page> = ({ doc }) => {
   return doc?.title ? `${doc.title} | Payload Website Template` : 'Payload Website Template'
@@ -51,7 +52,7 @@ export type BetterAuthPlugins = typeof betterAuthPlugins
 export const betterAuthOptions: BetterAuthOptions = {
   appName: 'payload-better-auth',
   baseURL: process.env.NEXT_PUBLIC_BETTER_AUTH_URL,
-  trustedOrigins: [process.env.NEXT_PUBLIC_BETTER_AUTH_URL],
+  trustedOrigins: allowedOrigins,
   emailAndPassword: {
     enabled: true,
     requireEmailVerification: true,

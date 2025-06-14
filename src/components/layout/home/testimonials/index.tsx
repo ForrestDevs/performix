@@ -10,6 +10,7 @@ export async function TestimonialsSection() {
     collection: TESTIMONIALS_SLUG,
     limit: 3,
     sort: 'createdAt',
+    depth: 1,
   })
 
   return (

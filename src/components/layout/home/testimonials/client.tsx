@@ -11,91 +11,91 @@ import { Media, Testimonial } from '@/payload-types'
 import TestimonialSliderCard from '@/components/testimonials'
 
 export function TestimonialsSectionClient({ testimonials }: { testimonials: Testimonial[] }) {
-  const [currentSlide, setCurrentSlide] = useState(0)
+  //   const [currentSlide, setCurrentSlide] = useState(0)
   const visibleElements = useScrollAnimation()
   const isVisible = (id: string) => visibleElements.has(id)
 
-  const samples = [
-    [
-      {
-        name: 'Alex Johnson',
-        message:
-          'The personalized training and recruitment guidance were exactly what I needed. I went from being overlooked to committing to Boston University.',
-        team: 'Boston University',
-        position: 'Forward',
-        icon: '/placeholder.svg?height=64&width=64',
-      },
-      {
-        name: 'Maya Patel',
-        message:
-          'My mentor helped me identify the gaps in my game and gave me a clear roadmap to success. Now I have multiple D1 offers to choose from.',
-        team: 'University of Minnesota',
-        position: 'Defenseman',
-        icon: '/placeholder.svg?height=64&width=64',
-      },
-      {
-        name: 'Ryan Chen',
-        message:
-          "The video analysis sessions were game-changing. I improved my skating technique and now I'm playing at a whole new level.",
-        team: 'Harvard University',
-        position: 'Center',
-        icon: '/placeholder.svg?height=64&width=64',
-      },
-    ],
-  ]
+  //   const samples = [
+  //     [
+  //       {
+  //         name: 'Alex Johnson',
+  //         message:
+  //           'The personalized training and recruitment guidance were exactly what I needed. I went from being overlooked to committing to Boston University.',
+  //         team: 'Boston University',
+  //         position: 'Forward',
+  //         icon: '/placeholder.svg?height=64&width=64',
+  //       },
+  //       {
+  //         name: 'Maya Patel',
+  //         message:
+  //           'My mentor helped me identify the gaps in my game and gave me a clear roadmap to success. Now I have multiple D1 offers to choose from.',
+  //         team: 'University of Minnesota',
+  //         position: 'Defenseman',
+  //         icon: '/placeholder.svg?height=64&width=64',
+  //       },
+  //       {
+  //         name: 'Ryan Chen',
+  //         message:
+  //           "The video analysis sessions were game-changing. I improved my skating technique and now I'm playing at a whole new level.",
+  //         team: 'Harvard University',
+  //         position: 'Center',
+  //         icon: '/placeholder.svg?height=64&width=64',
+  //       },
+  //     ],
+  //   ]
 
-  const tests: Testimonial[] = [
-    {
-      id: 1,
-      updatedAt: new Date().toISOString(),
-      createdAt: new Date().toISOString(),
-      name: 'Alex Johnson',
-      message:
-        'The personalized training and recruitment guidance were exactly what I needed. I went from being overlooked to committing to Boston University.',
-      team: 'Boston University',
-      position: 'Forward',
-    },
-    {
-      id: 2,
-      updatedAt: new Date().toISOString(),
-      createdAt: new Date().toISOString(),
-      name: 'Maya Patel',
-      message:
-        'My mentor helped me identify the gaps in my game and gave me a clear roadmap to success. Now I have multiple D1 offers to choose from.',
-      team: 'University of Minnesota',
-      position: 'Defenseman',
-    },
-    {
-      id: 3,
-      updatedAt: new Date().toISOString(),
-      createdAt: new Date().toISOString(),
-      name: 'Ryan Chen',
-      message:
-        "The video analysis sessions were game-changing. I improved my skating technique and now I'm playing at a whole new level.",
-      team: 'Harvard University',
-      position: 'Center',
-    },
-    {
-      id: 4,
-      updatedAt: new Date().toISOString(),
-      createdAt: new Date().toISOString(),
-      name: 'Emma Thompson',
-      message:
-        'The personalized training and recruitment guidance were exactly what I needed. I went from being overlooked to committing to Boston University.',
-      team: 'Boston University',
-      position: 'Forward',
-    },
-    {
-      id: 5,
-      updatedAt: new Date().toISOString(),
-      createdAt: new Date().toISOString(),
-      name: 'Emma Thompson',
-      message:
-        'The personalized training and recruitment guidance were exactly what I needed. I went from being overlooked to committing to Boston University.',
-      team: 'Boston University',
-      position: 'Forward',
-    },
-  ]
+  //   const tests: Testimonial[] = [
+  //     {
+  //       id: 1,
+  //       updatedAt: new Date().toISOString(),
+  //       createdAt: new Date().toISOString(),
+  //       name: 'Alex Johnson',
+  //       message:
+  //         'The personalized training and recruitment guidance were exactly what I needed. I went from being overlooked to committing to Boston University.',
+  //       team: 'Boston University',
+  //       position: 'Forward',
+  //     },
+  //     {
+  //       id: 2,
+  //       updatedAt: new Date().toISOString(),
+  //       createdAt: new Date().toISOString(),
+  //       name: 'Maya Patel',
+  //       message:
+  //         'My mentor helped me identify the gaps in my game and gave me a clear roadmap to success. Now I have multiple D1 offers to choose from.',
+  //       team: 'University of Minnesota',
+  //       position: 'Defenseman',
+  //     },
+  //     {
+  //       id: 3,
+  //       updatedAt: new Date().toISOString(),
+  //       createdAt: new Date().toISOString(),
+  //       name: 'Ryan Chen',
+  //       message:
+  //         "The video analysis sessions were game-changing. I improved my skating technique and now I'm playing at a whole new level.",
+  //       team: 'Harvard University',
+  //       position: 'Center',
+  //     },
+  //     {
+  //       id: 4,
+  //       updatedAt: new Date().toISOString(),
+  //       createdAt: new Date().toISOString(),
+  //       name: 'Emma Thompson',
+  //       message:
+  //         'The personalized training and recruitment guidance were exactly what I needed. I went from being overlooked to committing to Boston University.',
+  //       team: 'Boston University',
+  //       position: 'Forward',
+  //     },
+  //     {
+  //       id: 5,
+  //       updatedAt: new Date().toISOString(),
+  //       createdAt: new Date().toISOString(),
+  //       name: 'Emma Thompson',
+  //       message:
+  //         'The personalized training and recruitment guidance were exactly what I needed. I went from being overlooked to committing to Boston University.',
+  //       team: 'Boston University',
+  //       position: 'Forward',
+  //     },
+  //   ]
 
   return (
     <section id="testimonials" className="py-20 bg-gray-50">
@@ -116,7 +116,7 @@ export function TestimonialsSectionClient({ testimonials }: { testimonials: Test
             Real results. Real impact. Hear from athletes and parents who have directly benefited.
           </p>
         </div>
-        <TestimonialSliderCard testimonials={tests} />
+        <TestimonialSliderCard testimonials={testimonials} />
       </div>
     </section>
   )
