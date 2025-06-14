@@ -124,6 +124,7 @@ export default function GetStartedPage() {
 
   const handleSubmit = () => {
     console.log('Form submitted:', formData)
+    window.open('https://calendly.com/mateodixon/d1-mentorship-call', '_blank')
     // Handle form submission here
   }
 
@@ -547,7 +548,7 @@ export default function GetStartedPage() {
                           </div>
                         </div>
 
-                        <div
+                        {/* <div
                           onClick={() => handleInputChange('needsCall', false)}
                           className={`border-2 rounded-lg p-4 cursor-pointer transition-all duration-200 ${
                             !formData.needsCall
@@ -577,7 +578,7 @@ export default function GetStartedPage() {
                               </p>
                             </div>
                           </div>
-                        </div>
+                        </div> */}
                       </div>
                     </div>
 

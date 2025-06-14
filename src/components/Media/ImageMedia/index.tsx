@@ -49,7 +49,7 @@ export const Image: React.FC<MediaProps> = (props) => {
 
     const filename = fullFilename
 
-    src = `${url}`
+    src = `${url ?? '/placeholder.png'}`
   }
 
   // NOTE: this is used by the browser to determine which image to download at different screen sizes

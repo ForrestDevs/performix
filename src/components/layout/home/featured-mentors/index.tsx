@@ -12,8 +12,6 @@ export async function FeaturedMentorsSection() {
     depth: 3,
   })
 
-  console.log(mentors.docs[0]?.avatar)
-
   return (
     <Suspense
       fallback={
