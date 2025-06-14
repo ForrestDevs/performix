@@ -7,20 +7,10 @@ import { defaultLexical } from '@/payload/fields/defaultLexical'
 import { USER_SLUG } from './payload/collections/constants'
 import { collections } from './payload/collections'
 import { vercelPostgresAdapter } from '@payloadcms/db-vercel-postgres'
+import { allowedOrigins, serverURL } from './payload/allowed-origins'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
-
-const serverURL = process.env.NEXT_PUBLIC_SERVER_URL
-
-export const allowedOrigins = [
-  serverURL,
-  process.env.NEXT_PUBLIC_BETTER_AUTH_URL,
-  'https://performix.ca',
-  'https://www.performix.ca',
-  'https://app.performix.ca',
-  'https://performix.vercel.app',
-].filter(Boolean)
 
 export default buildConfig({
   serverURL: serverURL,

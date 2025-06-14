@@ -21,7 +21,7 @@ import {
 import { passkey } from 'better-auth/plugins/passkey'
 import { emailHarmony } from 'better-auth-harmony'
 import { nextCookies } from 'better-auth/next-js'
-import { allowedOrigins } from '@payload-config'
+import { allowedOrigins } from '@/payload/allowed-origins'
 
 const generateTitle: GenerateTitle<Page> = ({ doc }) => {
   return doc?.title ? `${doc.title} | Payload Website Template` : 'Payload Website Template'
