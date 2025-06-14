@@ -26,6 +26,11 @@ interface BrowseMentorsPageProps {
  * - Maintains SEO-friendly URLs with search/filter state
  */
 export default async function BrowseMentorsPage({ searchParams }: BrowseMentorsPageProps) {
+  // const {} = browseMentorsParamsCache.all()
+
+
+
+
   const params = await searchParams
 
   const mentors = await getMentors()

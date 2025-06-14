@@ -3,13 +3,14 @@
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button, buttonVariants } from '@/components/ui/button'
-import { Share2, Star } from 'lucide-react'
+import { Check, Share2, Star } from 'lucide-react'
 import { Media as MediaComponent } from '@/components/Media'
 import Image from 'next/image'
 import Link from 'next/link'
 import { cn } from '@/lib/utilities/ui'
 import { type MentorSample } from '@/lib/mentors-utils'
 import { Media, Mentor } from '@/payload-types'
+import { useState } from 'react'
 
 interface MentorCardProps {
   mentor: Mentor
@@ -18,6 +19,23 @@ interface MentorCardProps {
 }
 
 export function MentorCard({ mentor, isVisible, index }: MentorCardProps) {
+  const [copied, setCopied] = useState(false)
+
+  const handleShare = async (e: React.MouseEvent) => {
+    e.stopPropagation()
+    const profileUrl = `${window.location.origin}/mentors/${mentor.slug}`
+
+    try {
+      await navigator.clipboard.writeText(profileUrl)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+      // You could add a toast notification here to show success
+    } catch (err) {
+      console.error('Failed to copy link:', err)
+      // You could add a toast notification here to show error
+    }
+  }
+
   return (
     <Card
       key={mentor.id}
@@ -29,47 +47,46 @@ export function MentorCard({ mentor, isVisible, index }: MentorCardProps) {
       <CardContent className="p-6">
         <div className="flex items-start space-x-6">
           <div className="relative w-32 h-32 bg-gradient-to-br from-[#0891B2]/20 to-[#8B5CF6]/20 rounded-xl overflow-hidden flex-shrink-0">
-            <MediaComponent
-              resource={mentor as Media}
-              imgClassName="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-              priority
-              fill
-            />
-
-            {/* <Image
-              src="/mateo-hockey.png"
-              alt={mentor.name}
-              width={128}
-              height={128}
-              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-            /> */}
-            {/* <div className="absolute top-2 right-2">
-              <Badge
-                className={`text-xs ${
-                  mentor.availability === 'Available'
-                    ? 'bg-green-500'
-                    : mentor.availability === 'Limited'
-                      ? 'bg-yellow-500'
-                      : 'bg-red-500'
-                } text-white`}
-              >
-                {mentor.availability}
-              </Badge>
-            </div> */}
+            {typeof mentor.avatar === 'object' && (
+              <MediaComponent
+                resource={mentor.avatar as Media}
+                imgClassName="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                priority
+                fill
+              />
+            )}
           </div>
           <div className="flex-1">
             <div className="flex items-start justify-between mb-3">
               <div>
                 <h3 className="text-xl font-bold text-gray-900 mb-1">{mentor.name}</h3>
                 <p className="text-[#0891B2] font-medium mb-2">{mentor.position}</p>
-                <div className="flex items-center space-x-2 mb-3">
-                  <div className="w-6 h-6 bg-gray-200 rounded-full"></div>
-                  {/* <span className="text-sm text-gray-600">{mentor.university}</span> */}
-                </div>
+                {typeof mentor.school === 'object' && (
+                  <div className="flex items-center space-x-2 mb-3">
+                    <div className="w-6 h-6 bg-gray-200 rounded-full">
+                      {typeof mentor.school?.logo === 'object' && (
+                        <MediaComponent
+                          resource={mentor.school?.logo}
+                          imgClassName="w-full h-full object-cover"
+                        />
+                      )}
+                    </div>
+                    <span className="text-sm text-gray-600">{mentor.school?.name}</span>
+                  </div>
+                )}
               </div>
               <div className="flex items-center space-x-2">
-                <Button variant="ghost" size="sm" className="p-2">
-                  <Share2 className="h-5 w-5 text-gray-400" />
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleShare}
+                  className="p-1.5 bg-white/90 hover:bg-white shadow-sm relative group"
+                >
+                  {copied ? (
+                    <Check className="h-4 w-4 text-green-600" />
+                  ) : (
+                    <Share2 className="h-4 w-4 text-gray-600" />
+                  )}
                 </Button>
               </div>
             </div>
@@ -82,23 +99,13 @@ export function MentorCard({ mentor, isVisible, index }: MentorCardProps) {
               ))}
             </div>
             <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-6">
-                {/* <div className="flex items-center space-x-1">
-                  <Star className="h-4 w-4 text-yellow-400 fill-current" />
-                  <span className="text-sm font-medium">{mentor.rating}</span>
-                  <span className="text-sm text-gray-500">({mentor.reviews} reviews)</span>
-                </div> */}
-                {/* <div className="text-sm text-gray-600">
-                  <span className="font-medium">{mentor.studentsHelped}</span> students helped
-                </div>
-                <div className="text-sm text-gray-600">
-                  <span className="font-medium">{mentor.successRate}%</span> success rate
-                </div> */}
-              </div>
               <div className="flex items-center space-x-4">
                 <Link
                   href={`/mentors/${mentor.slug}`}
-                  className={cn(buttonVariants(), 'bg-[#0891B2] hover:bg-[#0E7490] text-white')}
+                  className={cn(
+                    buttonVariants({ variant: 'outline', size: 'sm' }),
+                    'w-full border-[#0891B2] text-[#0891B2] hover:bg-[#0891B2] hover:text-white',
+                  )}
                 >
                   View Profile
                 </Link>

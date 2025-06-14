@@ -5,7 +5,7 @@ export async function getMentors() {
   const payload = await getPayload()
   const mentors = await payload.find({
     collection: MENTOR_SLUG,
-    depth: 1,
+    depth: 3,
   })
 
   return mentors.docs
