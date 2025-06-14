@@ -4,6 +4,16 @@
 @plugin "@tailwindcss/typography";
 @plugin "tailwind-scrollbar";
 
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
+  }
+}
+
 :root {
   --removed-body-scroll-bar-size: 0px;
   --shop-header-height: 84.5px;
@@ -71,21 +81,347 @@
   --chart-5: 340 75% 55%;
 }
 
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+  --animate-nav-enter: nav-enter 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  --animate-nav-exit: nav-exit 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+
+  --background-image-header-gradient: linear-gradient(
+    to bottom,
+    rgba(27, 58, 87, 0.8) 0%,
+    rgba(27, 58, 87, 0.4) 100%
+  );
+
+  @keyframes accordion-down {
+    from {
+      height: 0;
+    }
+    to {
+      height: var(--radix-accordion-content-height);
+    }
+  }
+
+  @keyframes accordion-up {
+    from {
+      height: var(--radix-accordion-content-height);
+    }
+    to {
+      height: 0;
+    }
+  }
+
+  @keyframes nav-enter {
+    from {
+      opacity: 0;
+      transform: translateY(-8px);
+      clip-path: inset(0% 0% 100% 0%);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+      clip-path: inset(0% 0% 0% 0%);
+    }
+  }
+
+  @keyframes nav-exit {
+    from {
+      opacity: 1;
+      transform: translateY(0);
+      clip-path: inset(0% 0% 0% 0%);
+    }
+    to {
+      opacity: 0;
+      transform: translateY(-8px);
+      clip-path: inset(0% 0% 100% 0%);
+    }
+  }
+}
+
+@utility container {
+  max-width: 100%;
+  margin-inline: auto;
+
+  padding-inline: 1rem;
+
+  @variant sm {
+    padding-inline: 1rem;
+    max-width: 40rem;
+  }
+  @variant md {
+    padding-inline: 2rem;
+    max-width: 48rem;
+  }
+  @variant lg {
+    padding-inline: 2rem;
+    max-width: 64rem;
+  }
+  @variant xl {
+    padding-inline: 2rem;
+    max-width: 80rem;
+  }
+  @variant 2xl {
+    padding-inline: 2rem;
+    max-width: 86rem;
+  }
+}
+
+@utility prose {
+  --tw-prose-body: hsl(var(--foreground));
+  --tw-prose-headings: hsl(var(--foreground));
+  --tw-prose-links: hsl(var(--primary));
+  --tw-prose-bold: hsl(var(--foreground));
+  --tw-prose-counters: hsl(var(--muted-foreground));
+  --tw-prose-bullets: hsl(var(--muted-foreground));
+  --tw-prose-hr: hsl(var(--border));
+  --tw-prose-quotes: hsl(var(--foreground));
+  --tw-prose-quote-borders: hsl(var(--border));
+  --tw-prose-captions: hsl(var(--muted-foreground));
+  --tw-prose-code: hsl(var(--foreground));
+  --tw-prose-pre-code: hsl(var(--muted-foreground));
+  --tw-prose-pre-bg: hsl(var(--muted));
+  --tw-prose-th-borders: hsl(var(--border));
+  --tw-prose-td-borders: hsl(var(--border));
+
+  color: var(--tw-prose-body);
+  max-width: 100%;
+
+  /* Force normal document flow */
+  display: block;
+  width: 100%;
+
+  /* Ensure all child elements flow normally */
+  & > * {
+    display: block;
+    width: 100%;
+    grid-column: unset;
+    grid-row: unset;
+    flex: none;
+  }
+
+  p {
+    margin-top: 1.25em;
+    margin-bottom: 1.25em;
+    color: var(--tw-prose-body);
+    line-height: 1.75;
+  }
+
+  h1 {
+    font-weight: normal;
+    margin-bottom: 0.25em;
+    font-size: 2.25rem;
+    color: var(--tw-prose-headings);
+    line-height: 1.1111111;
+    margin-top: 0;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--tw-prose-headings);
+    margin-top: 2em;
+    margin-bottom: 1em;
+    line-height: 1.3333333;
+  }
+
+  h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--tw-prose-headings);
+    margin-top: 1.6em;
+    margin-bottom: 0.6em;
+    line-height: 1.6;
+  }
+
+  h4 {
+    font-weight: 600;
+    color: var(--tw-prose-headings);
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+    line-height: 1.5;
+  }
+
+  strong {
+    color: var(--tw-prose-bold);
+    font-weight: 600;
+  }
+
+  a {
+    color: var(--tw-prose-links);
+    text-decoration: underline;
+    font-weight: 500;
+  }
+
+  ul,
+  ol {
+    margin-top: 1.25em;
+    margin-bottom: 1.25em;
+    padding-left: 1.625em;
+  }
+
+  li {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+  }
+
+  li p {
+    margin-top: 0.75em;
+    margin-bottom: 0.75em;
+  }
+
+  blockquote {
+    font-weight: 500;
+    font-style: italic;
+    color: var(--tw-prose-quotes);
+    border-left-width: 0.25rem;
+    border-left-color: var(--tw-prose-quote-borders);
+    quotes: '\201C' '\201D' '\2018' '\2019';
+    margin-top: 1.6em;
+    margin-bottom: 1.6em;
+    padding-left: 1em;
+  }
+
+  code {
+    color: var(--tw-prose-code);
+    font-weight: 600;
+    font-size: 0.875em;
+  }
+
+  pre {
+    color: var(--tw-prose-pre-code);
+    background-color: var(--tw-prose-pre-bg);
+    overflow-x: auto;
+    font-weight: 400;
+    font-size: 0.875em;
+    line-height: 1.7142857;
+    margin-top: 1.7142857em;
+    margin-bottom: 1.7142857em;
+    border-radius: 0.375rem;
+    padding: 0.8571429em 1.1428571em;
+  }
+
+  @variant md {
+    h1 {
+      font-size: 2.5rem;
+      line-height: 1;
+    }
+    h2 {
+      font-size: 1.875rem;
+      line-height: 1.2;
+    }
+    h3 {
+      font-size: 1.5rem;
+      line-height: 1.375;
+    }
+  }
+
+  @variant lg {
+    max-width: 75ch;
+
+    h1 {
+      font-size: 3rem;
+      line-height: 0.95;
+    }
+    h2 {
+      font-size: 2.25rem;
+      line-height: 1.1;
+    }
+    h3 {
+      font-size: 1.875rem;
+      line-height: 1.25;
+    }
+  }
+}
+
+@utility prose-sm {
+  max-width: 65ch;
+}
+
+@utility prose-base {
+  max-width: 70ch;
+}
+
+@utility prose-lg {
+  max-width: 75ch;
+}
+
+@utility prose-xl {
+  max-width: 80ch;
+}
+
+/* When prose is used with container, let container handle the width */
+.container.prose {
+  max-width: 100%;
+}
+
+.container.prose {
+  @variant sm {
+    max-width: 40rem;
+  }
+  @variant md {
+    max-width: 48rem;
+  }
+  @variant lg {
+    max-width: 64rem;
+  }
+  @variant xl {
+    max-width: 80rem;
+  }
+  @variant 2xl {
+    max-width: 86rem;
+  }
+}
+
 @layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
   body {
-    overflow-y: scroll;
-    width: 100vw;
-    /* Prevent content shift by always showing scrollbar */
-    overflow-x: hidden;
-    -ms-overflow-style: scrollbar;
-    /* @apply bg-background text-foreground; */
+    @apply bg-background text-foreground;
     font-feature-settings:
       'rlig' 1,
       'calt' 1;
-  }
-
-  * {
-    /* @apply border-border; */
+    overflow-y: scroll;
+    width: 100vw;
+    overflow-x: hidden;
+    -ms-overflow-style: scrollbar;
   }
 }
 

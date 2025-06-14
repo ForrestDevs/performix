@@ -23,8 +23,6 @@ export function LessonContent({ lesson }: LessonContentProps) {
     )
   }
 
-  
-
   if (content.primaryContent.type === 'rich_text') {
     return (
       <div className="prose prose-blue max-w-none">

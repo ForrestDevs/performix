@@ -14,11 +14,9 @@ import {
 import { CodeBlock, CodeBlockProps } from '@/payload/blocks/Code/Component'
 
 import type {
-  // BannerBlock as BannerBlockProps,
   CallToActionBlock as CTABlockProps,
   MediaBlock as MediaBlockProps,
 } from '@/payload-types'
-// import { BannerBlock } from '@/payload/blocks/Banner/Component'
 import { CallToActionBlock } from '@/payload/blocks/CallToAction/Component'
 import { cn } from '@/lib/utilities/ui'
 
@@ -39,7 +37,6 @@ const jsxConverters: JSXConvertersFunction<NodeTypes> = ({ defaultConverters }) 
   ...defaultConverters,
   ...LinkJSXConverter({ internalDocToHref }),
   blocks: {
-    // banner: ({ node }) => <BannerBlock className="col-start-2 mb-4" {...node.fields} />,
     mediaBlock: ({ node }) => (
       <MediaBlock
         className="col-start-1 col-span-3"
@@ -61,20 +58,31 @@ type Props = {
   enableProse?: boolean
 } & React.HTMLAttributes<HTMLDivElement>
 
-export default function RichText(props: Props) {
-  const { className, enableProse = true, enableGutter = true, ...rest } = props
-  return (
-    <RichTextWithoutBlocks
-      converters={jsxConverters}
-      className={cn(
-        {
-          'container ': enableGutter,
-          'max-w-none': !enableGutter,
-          'mx-auto prose md:prose-md dark:prose-invert ': enableProse,
-        },
-        className,
-      )}
-      {...rest}
-    />
+export default function RichText({
+  className,
+  enableProse = true,
+  enableGutter = true,
+  ...rest
+}: Props) {
+  // Remove grid/col-* classes from the wrapper to avoid layout issues with prose
+  // Filter out any grid/flex classes that might interfere with prose layout
+  const filteredClassName = className
+    ?.replace(/\b(grid|flex|col-\w+|row-\w+|grid-cols-\w+|grid-rows-\w+)\b/g, '')
+    .trim()
+
+  const wrapperClassName = cn(
+    // Force block display to prevent layout conflicts
+    'block w-full',
+    {
+      container: enableGutter,
+      'max-w-none': !enableGutter,
+      // Use responsive prose utility, but override max-width when gutter is enabled
+      prose: enableProse,
+      'prose-base lg:prose-lg xl:prose-xl': enableProse && !enableGutter,
+      'mx-auto': enableProse && enableGutter,
+    },
+    filteredClassName,
   )
+
+  return <RichTextWithoutBlocks converters={jsxConverters} className={wrapperClassName} {...rest} />
 }

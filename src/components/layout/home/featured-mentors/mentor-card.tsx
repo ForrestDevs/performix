@@ -14,7 +14,7 @@ export function MentorCard({
   index: number
   isVisible: (id: string) => boolean
 }) {
-  console.log(mentor)
+//   console.log(mentor)
   return (
     <Card
       key={index}

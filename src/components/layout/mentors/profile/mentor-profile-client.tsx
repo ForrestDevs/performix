@@ -69,7 +69,7 @@ export function MentorProfileClient({ mentor }: MentorProfileClientProps) {
                   </p>
                   <Button
                     className="w-full bg-[#0891B2] hover:bg-[#0E7490] text-white"
-                    onClick={() => window.open('https://calendly.com/your-calendly-link', '_blank')}
+                    onClick={() => window.open('https://calendly.com/mateodixon/d1-mentorship-call', '_blank')}
                   >
                     Book a Call
                   </Button>

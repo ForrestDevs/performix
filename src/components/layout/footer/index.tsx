@@ -32,7 +32,7 @@ export default function Footer() {
             </div>
             <div className="flex space-x-4">
               <Link
-                href="https://instagram.com"
+                href="https://www.instagram.com/performix.collective/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-400 hover:text-white transition-colors"
@@ -40,7 +40,7 @@ export default function Footer() {
                 <InstagramIcon />
               </Link>
               <Link
-                href="https://facebook.com"
+                href="https://www.facebook.com/performixcollective/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-400 hover:text-white transition-colors"
@@ -48,7 +48,7 @@ export default function Footer() {
                 <FacebookIcon />
               </Link>
               <Link
-                href="https://tiktok.com"
+                href="https://www.tiktok.com/@mateo.dixon"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-400 hover:text-white transition-colors"
