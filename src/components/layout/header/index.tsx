@@ -41,12 +41,12 @@ export default function Header() {
               >
                 Pricing
               </Link>
-              <Link
+              {/* <Link
                 href="/testimonials"
                 className="text-gray-600 hover:text-[#0891B2] transition-colors"
               >
                 Success Stories
-              </Link>
+              </Link> */}
               <Link
                 href="/sign-in"
                 className={cn(

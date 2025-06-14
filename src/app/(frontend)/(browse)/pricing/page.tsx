@@ -20,15 +20,15 @@ export default function PricingPage() {
   // Revised pricing plans data with optimized pricing
   const plans = [
     {
-      id: 'foundation',
-      name: 'FOUNDATION',
-      price: billingCycle === 'monthly' ? 99 : 89,
+      id: 'starter',
+      name: 'STARTER',
+      price: billingCycle === 'monthly' ? 129 : 116,
       description: 'Essential mentorship for emerging players',
       features: [
-        '24/7 Mentor Access (text/email only)',
-        'Elite Hockey Course (training, nutrition, mindset)',
-        'Private Community Access',
-        'Monthly Progress Review (group call)',
+        'Direct text/email access to Mateo (Founder & Lead Mentor)',
+        'Complete Elite Hockey Course (training, nutrition, mindset)',
+        'Access to members-only community',
+        'Bi-weekly development group calls',
       ],
       color: 'bg-gradient-to-br from-blue-50 to-blue-100',
       textColor: 'text-blue-600',
@@ -41,11 +41,9 @@ export default function PricingPage() {
       price: billingCycle === 'monthly' ? 179 : 161,
       description: 'Comprehensive development for competitive players',
       features: [
-        'Everything in FOUNDATION',
-        '24/7 Mentor Access (text/email/calls)',
-        'Bi-weekly Performance Check-Ins (30min calls)',
+        'Everything in STARTER',
+        'Personal mentor assigned based on your position and goals',
         'Monthly Goal Roadmap & Strategy Session',
-        'Priority mentor response (within 4 hours)',
       ],
       color: 'bg-white',
       textColor: 'text-indigo-600',
@@ -60,9 +58,8 @@ export default function PricingPage() {
       features: [
         'Everything in PERFORMER',
         '1 Professional Video Analysis per month',
-        'Personalized Improvement Action Plan',
-        'Weekly 45-minute Strategy Sessions',
-        'Direct mentor phone access',
+        '1 Personalized Improvement Action Plan per month',
+        'Exclusive access to Elite Hockey Experts (Coaches, Trainers, Nutritionists, etc.)',
       ],
       color: 'bg-gradient-to-br from-blue-50 to-blue-100',
       textColor: 'text-blue-600',
@@ -70,44 +67,20 @@ export default function PricingPage() {
       recommended: true,
     },
     {
-      id: 'championship',
-      name: 'CHAMPIONSHIP',
+      id: 'champion',
+      name: 'CHAMPION',
       price: billingCycle === 'monthly' ? 449 : 404,
       description: 'Premium mentorship for elite-level development',
       features: [
         'Everything in ELITE',
         '2 Professional Video Analysis per month',
-        '2 Elite Mindset Coaching Sessions (60min each)',
-        'Custom Training Program Development',
+        '2 Personalized Improvement Action Plan per month',
+        'Off/In Season Custom Training Programs',
         'Family consultation calls (monthly)',
+        'Personalized Training Drills & Exercise Routines',
       ],
       color: 'bg-gradient-to-br from-amber-50 to-amber-100',
       textColor: 'text-amber-600',
-      popular: false,
-      recommended: false,
-    },
-    {
-      id: 'd1-bound',
-      name: 'D1 BOUND',
-      price: billingCycle === 'monthly' ? 999 : 899,
-      description: 'Ultimate package for D1 commitment-ready players',
-      features: [
-        'Everything in CHAMPIONSHIP',
-        'Weekly 1-on-1 coaching sessions (60min)',
-        'Unlimited video analysis submissions',
-        'College recruitment strategy & support',
-        'Personal brand development',
-        'College coach introductions & networking',
-      ],
-      bonusFeatures: [
-        'BONUS: Off-Season Training Program (12 weeks)',
-        'BONUS: NHL Nutrition Blueprint with monthly check-ins',
-        'BONUS: College recruitment video creation',
-        'BONUS: Scholarship application strategy',
-        'BONUS: Tournament scouting coordination',
-      ],
-      color: 'bg-gradient-to-br from-purple-50 to-purple-100',
-      textColor: 'text-purple-600',
       popular: false,
       recommended: false,
     },
@@ -117,7 +90,7 @@ export default function PricingPage() {
     {
       question: 'How do I get matched with the right mentor?',
       answer:
-        "After signing up, you'll complete a comprehensive assessment of your playing style, goals, and personality. Our team will match you with a mentor who specializes in your position and aligns with your specific needs. You can also schedule a call with Mateo for personalized matching.",
+        "After signing up, you'll schedule a 30-minute call with Mateo to discuss your goals and needs. We'll then match you with a mentor who specializes in your position and aligns with your specific needs.",
     },
     {
       question: 'Can I change my plan later?',
@@ -132,7 +105,7 @@ export default function PricingPage() {
     {
       question: 'How do video analysis sessions work?',
       answer:
-        "You'll submit game or practice footage through our platform. Your mentor will analyze your performance and create a detailed improvement sheet with specific drills and focus areas. You'll then review this together in a one-on-one session to ensure you understand exactly what to work on.",
+        "Video analysis sessions are conducted through private one-on-one Zoom calls with your D1 mentor. During these sessions, your mentor will analyze your gameplay footage and provide high-level strategic insights to enhance your on-ice effectiveness. This includes detailed feedback on positioning, technique, mechanics, and decision-making. Following the session, you'll receive a summarized improvement sheet on areas to focus and develop on.",
     },
     {
       question: 'Is there a satisfaction guarantee?',
@@ -180,7 +153,7 @@ export default function PricingPage() {
               </span>
             </h1>
             <p className="text-xl mb-8 opacity-90 max-w-3xl mx-auto">
-              Choose the mentorship package that fits your goals and budget
+              Choose the mentorship package that fits your goals
             </p>
 
             {/* Billing Toggle */}
@@ -195,14 +168,17 @@ export default function PricingPage() {
               >
                 Monthly
               </button>
-              <div className="relative">
+              <button
+                onClick={() => setBillingCycle(billingCycle === 'monthly' ? 'annual' : 'monthly')}
+                className="relative"
+              >
                 <div className="w-12 h-6 bg-white/20 rounded-full"></div>
                 <div
                   className={`absolute top-1 w-4 h-4 rounded-full bg-white transition-all duration-300 ${
                     billingCycle === 'monthly' ? 'left-1' : 'left-7'
                   }`}
                 ></div>
-              </div>
+              </button>
               <button
                 onClick={() => setBillingCycle('annual')}
                 className={`px-4 py-2 rounded-lg transition-all duration-300 ${
@@ -218,7 +194,7 @@ export default function PricingPage() {
             {/* Stats */}
             <div className="grid grid-cols-3 max-w-2xl mx-auto">
               <div className="text-center">
-                <div className="text-2xl font-bold mb-1">94%</div>
+                <div className="text-2xl font-bold mb-1">100%</div>
                 <div className="text-sm opacity-75">Success Rate</div>
               </div>
               <div className="text-center">
@@ -237,7 +213,7 @@ export default function PricingPage() {
       {/* Pricing Cards Section */}
       <section className="py-16 -mt-8">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {plans.map((plan, index) => (
               <div
                 key={plan.id}
@@ -266,11 +242,10 @@ export default function PricingPage() {
                   )}
                   <CardHeader className="text-center pt-8 pb-4">
                     <h3 className={`text-xl font-bold ${plan.textColor}`}>{plan.name}</h3>
-                    <div className="mt-4 mb-2">
+                    <div className="mt-4">
                       <span className="text-4xl font-bold text-gray-900">${plan.price}</span>
-                      <span className="text-gray-600 ml-1">per month</span>
+                      <span className="text-gray-600 ml-1">USD/month</span>
                     </div>
-                    <p className="text-gray-600 text-sm">{plan.description}</p>
                   </CardHeader>
                   <CardContent className="flex-grow">
                     <ul className="space-y-3">
@@ -280,16 +255,6 @@ export default function PricingPage() {
                           <span className="text-gray-700">{feature}</span>
                         </li>
                       ))}
-                      {plan.bonusFeatures && (
-                        <div className="mt-4 pt-4 border-t border-gray-200">
-                          {plan.bonusFeatures.map((feature, i) => (
-                            <li key={`bonus-${i}`} className="flex items-start mb-3">
-                              <Sparkles className="h-5 w-5 text-amber-500 mr-2 flex-shrink-0 mt-0.5" />
-                              <span className="text-gray-700">{feature}</span>
-                            </li>
-                          ))}
-                        </div>
-                      )}
                     </ul>
                   </CardContent>
                   <CardFooter className="pt-4 pb-8">
@@ -317,9 +282,9 @@ export default function PricingPage() {
               isVisible('guarantee') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
             }`}
           >
-            <div className="inline-flex items-center bg-green-50 text-green-700 px-4 py-2 rounded-full">
-              <Shield className="h-5 w-5 mr-2" />
-              <span className="font-medium">30-Day Money-Back Guarantee</span>
+            <div className="inline-flex items-center bg-green-50 text-green-700 px-6 py-3 rounded-full text-lg">
+              <Shield className="h-6 w-6 mr-3" />
+              <span className="font-semibold">30-Day Money-Back Guarantee</span>
             </div>
             <p className="mt-2 text-gray-600 max-w-2xl mx-auto">
               Try any plan risk-free. If you&apos;re not completely satisfied within 30 days,
@@ -329,205 +294,7 @@ export default function PricingPage() {
         </div>
       </section>
 
-      {/* Feature Comparison */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div
-            id="comparison-header"
-            data-scroll-animate
-            className={`text-center mb-12 transition-all duration-1000 ${
-              isVisible('comparison-header')
-                ? 'opacity-100 translate-y-0'
-                : 'opacity-0 translate-y-8'
-            }`}
-          >
-            <h2 className="text-3xl font-bold text-gray-900 mb-4 font-['Space_Grotesk']">
-              Compare Mentorship Plans
-            </h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">
-              Find the perfect plan to accelerate your journey to Division 1 hockey
-            </p>
-          </div>
-
-          <div
-            id="comparison-table"
-            data-scroll-animate
-            className={`transition-all duration-1000 ${
-              isVisible('comparison-table')
-                ? 'opacity-100 translate-y-0'
-                : 'opacity-0 translate-y-8'
-            }`}
-          >
-            <div className="overflow-x-auto">
-              <table className="w-full border-collapse">
-                <thead>
-                  <tr className="border-b-2 border-gray-200">
-                    <th className="py-4 px-6 text-left text-gray-600">Features</th>
-                    {plans.map((plan) => (
-                      <th key={plan.id} className="py-4 px-6 text-center">
-                        <div className={`font-bold ${plan.textColor}`}>{plan.name}</div>
-                        <div className="text-xl font-bold text-gray-900 mt-1">${plan.price}</div>
-                        <div className="text-sm text-gray-600">per month</div>
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {/* 24/7 Mentor Access */}
-                  <tr className="border-b border-gray-200 hover:bg-gray-50">
-                    <td className="py-4 px-6 text-gray-800 font-medium">24/7 Mentor Access</td>
-                    {plans.map((plan) => (
-                      <td key={`${plan.id}-mentor`} className="py-4 px-6 text-center">
-                        {plan.features.includes('24/7 Mentor Access') ? (
-                          <CheckCircle className="h-5 w-5 text-green-500 mx-auto" />
-                        ) : (
-                          <div className="h-5 w-5 mx-auto"></div>
-                        )}
-                      </td>
-                    ))}
-                  </tr>
-
-                  {/* Weekly Performance Check-Ins */}
-                  <tr className="border-b border-gray-200 hover:bg-gray-50">
-                    <td className="py-4 px-6 text-gray-800 font-medium">
-                      Weekly Performance Check-Ins
-                    </td>
-                    {plans.map((plan) => (
-                      <td key={`${plan.id}-checkins`} className="py-4 px-6 text-center">
-                        {plan.features.includes('Weekly Performance Check-Ins') ? (
-                          <CheckCircle className="h-5 w-5 text-green-500 mx-auto" />
-                        ) : (
-                          <div className="h-5 w-5 mx-auto"></div>
-                        )}
-                      </td>
-                    ))}
-                  </tr>
-
-                  {/* Elite Hockey Course */}
-                  <tr className="border-b border-gray-200 hover:bg-gray-50">
-                    <td className="py-4 px-6 text-gray-800 font-medium">Elite Hockey Course</td>
-                    {plans.map((plan) => (
-                      <td key={`${plan.id}-course`} className="py-4 px-6 text-center">
-                        {plan.features.some((f) => f.includes('Elite Hockey Course')) ? (
-                          <CheckCircle className="h-5 w-5 text-green-500 mx-auto" />
-                        ) : (
-                          <div className="h-5 w-5 mx-auto"></div>
-                        )}
-                      </td>
-                    ))}
-                  </tr>
-
-                  {/* Monthly Goal Roadmap */}
-                  <tr className="border-b border-gray-200 hover:bg-gray-50">
-                    <td className="py-4 px-6 text-gray-800 font-medium">Monthly Goal Roadmap</td>
-                    {plans.map((plan) => (
-                      <td key={`${plan.id}-roadmap`} className="py-4 px-6 text-center">
-                        {plan.features.includes('Monthly Goal Roadmap') ? (
-                          <CheckCircle className="h-5 w-5 text-green-500 mx-auto" />
-                        ) : (
-                          <div className="h-5 w-5 mx-auto"></div>
-                        )}
-                      </td>
-                    ))}
-                  </tr>
-
-                  {/* Video Analysis */}
-                  <tr className="border-b border-gray-200 hover:bg-gray-50">
-                    <td className="py-4 px-6 text-gray-800 font-medium">Video Analysis</td>
-                    {plans.map((plan) => (
-                      <td key={`${plan.id}-video`} className="py-4 px-6 text-center">
-                        {plan.features.some((f) => f.includes('Video Analysis')) ? (
-                          <div className="text-sm font-medium">
-                            {plan.id === 'elite'
-                              ? '2 per month'
-                              : plan.features.some((f) => f.includes('1 Video Analysis'))
-                                ? '1 per month'
-                                : ''}
-                          </div>
-                        ) : (
-                          <div className="h-5 w-5 mx-auto"></div>
-                        )}
-                      </td>
-                    ))}
-                  </tr>
-
-                  {/* Private Community Access */}
-                  <tr className="border-b border-gray-200 hover:bg-gray-50">
-                    <td className="py-4 px-6 text-gray-800 font-medium">
-                      Private Community Access
-                    </td>
-                    {plans.map((plan) => (
-                      <td key={`${plan.id}-community`} className="py-4 px-6 text-center">
-                        {plan.features.includes('Private Community Access') ? (
-                          <CheckCircle className="h-5 w-5 text-green-500 mx-auto" />
-                        ) : (
-                          <div className="h-5 w-5 mx-auto"></div>
-                        )}
-                      </td>
-                    ))}
-                  </tr>
-
-                  {/* Off-Season Training Program */}
-                  <tr className="border-b border-gray-200 hover:bg-gray-50">
-                    <td className="py-4 px-6 text-gray-800 font-medium">
-                      Off-Season Training Program
-                    </td>
-                    {plans.map((plan) => (
-                      <td key={`${plan.id}-offseason`} className="py-4 px-6 text-center">
-                        {plan.bonusFeatures?.some((f) =>
-                          f.includes('Off-Season Training Program'),
-                        ) ? (
-                          <div className="flex items-center justify-center">
-                            <CheckCircle className="h-5 w-5 text-green-500 mr-1" />
-                            <span className="text-xs font-medium text-amber-600">BONUS</span>
-                          </div>
-                        ) : (
-                          <div className="h-5 w-5 mx-auto"></div>
-                        )}
-                      </td>
-                    ))}
-                  </tr>
-
-                  {/* NHL Nutrition Blueprint */}
-                  <tr className="border-b border-gray-200 hover:bg-gray-50">
-                    <td className="py-4 px-6 text-gray-800 font-medium">NHL Nutrition Blueprint</td>
-                    {plans.map((plan) => (
-                      <td key={`${plan.id}-nutrition`} className="py-4 px-6 text-center">
-                        {plan.bonusFeatures?.some((f) => f.includes('NHL Nutrition Blueprint')) ? (
-                          <div className="flex items-center justify-center">
-                            <CheckCircle className="h-5 w-5 text-green-500 mr-1" />
-                            <span className="text-xs font-medium text-amber-600">BONUS</span>
-                          </div>
-                        ) : (
-                          <div className="h-5 w-5 mx-auto"></div>
-                        )}
-                      </td>
-                    ))}
-                  </tr>
-
-                  {/* CTA Row */}
-                  <tr>
-                    <td className="py-6 px-6"></td>
-                    {plans.map((plan) => (
-                      <td key={`${plan.id}-cta`} className="py-6 px-6 text-center">
-                        <Button
-                          className={`w-full ${
-                            plan.recommended
-                              ? 'bg-[#0891B2] hover:bg-[#0E7490]'
-                              : 'bg-blue-500 hover:bg-blue-600'
-                          } text-white`}
-                        >
-                          Select
-                        </Button>
-                      </td>
-                    ))}
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </section>
+      
 
       {/* Testimonials */}
       <section className="py-16 bg-gray-50">
@@ -691,3 +458,202 @@ export default function PricingPage() {
     </div>
   )
 }
+
+
+// {/* Feature Comparison */}
+// <section className="py-16 bg-white">
+// <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+//   <div
+//     id="comparison-header"
+//     data-scroll-animate
+//     className={`text-center mb-12 transition-all duration-1000 ${
+//       isVisible('comparison-header')
+//         ? 'opacity-100 translate-y-0'
+//         : 'opacity-0 translate-y-8'
+//     }`}
+//   >
+//     <h2 className="text-3xl font-bold text-gray-900 mb-4 font-['Space_Grotesk']">
+//       Compare Mentorship Plans
+//     </h2>
+//     <p className="text-gray-600 max-w-2xl mx-auto">
+//       Find the perfect plan to accelerate your journey to Division 1 hockey
+//     </p>
+//   </div>
+
+//   <div
+//     id="comparison-table"
+//     data-scroll-animate
+//     className={`transition-all duration-1000 ${
+//       isVisible('comparison-table')
+//         ? 'opacity-100 translate-y-0'
+//         : 'opacity-0 translate-y-8'
+//     }`}
+//   >
+//     <div className="overflow-x-auto">
+//       <table className="w-full border-collapse">
+//         <thead>
+//           <tr className="border-b-2 border-gray-200">
+//             <th className="py-4 px-6 text-left text-gray-600">Features</th>
+//             {plans.map((plan) => (
+//               <th key={plan.id} className="py-4 px-6 text-center">
+//                 <div className={`font-bold ${plan.textColor}`}>{plan.name}</div>
+//                 <div className="text-xl font-bold text-gray-900 mt-1">${plan.price}</div>
+//                 <div className="text-sm text-gray-600">per month</div>
+//               </th>
+//             ))}
+//           </tr>
+//         </thead>
+//         <tbody>
+//           {/* 24/7 Mentor Access */}
+//           <tr className="border-b border-gray-200 hover:bg-gray-50">
+//             <td className="py-4 px-6 text-gray-800 font-medium">24/7 Mentor Access</td>
+//             {plans.map((plan) => (
+//               <td key={`${plan.id}-mentor`} className="py-4 px-6 text-center">
+//                 {plan.features.includes('24/7 Mentor Access') ? (
+//                   <CheckCircle className="h-5 w-5 text-green-500 mx-auto" />
+//                 ) : (
+//                   <div className="h-5 w-5 mx-auto"></div>
+//                 )}
+//               </td>
+//             ))}
+//           </tr>
+
+//           {/* Weekly Performance Check-Ins */}
+//           <tr className="border-b border-gray-200 hover:bg-gray-50">
+//             <td className="py-4 px-6 text-gray-800 font-medium">
+//               Weekly Performance Check-Ins
+//             </td>
+//             {plans.map((plan) => (
+//               <td key={`${plan.id}-checkins`} className="py-4 px-6 text-center">
+//                 {plan.features.includes('Weekly Performance Check-Ins') ? (
+//                   <CheckCircle className="h-5 w-5 text-green-500 mx-auto" />
+//                 ) : (
+//                   <div className="h-5 w-5 mx-auto"></div>
+//                 )}
+//               </td>
+//             ))}
+//           </tr>
+
+//           {/* Elite Hockey Course */}
+//           <tr className="border-b border-gray-200 hover:bg-gray-50">
+//             <td className="py-4 px-6 text-gray-800 font-medium">Elite Hockey Course</td>
+//             {plans.map((plan) => (
+//               <td key={`${plan.id}-course`} className="py-4 px-6 text-center">
+//                 {plan.features.some((f) => f.includes('Elite Hockey Course')) ? (
+//                   <CheckCircle className="h-5 w-5 text-green-500 mx-auto" />
+//                 ) : (
+//                   <div className="h-5 w-5 mx-auto"></div>
+//                 )}
+//               </td>
+//             ))}
+//           </tr>
+
+//           {/* Monthly Goal Roadmap */}
+//           <tr className="border-b border-gray-200 hover:bg-gray-50">
+//             <td className="py-4 px-6 text-gray-800 font-medium">Monthly Goal Roadmap</td>
+//             {plans.map((plan) => (
+//               <td key={`${plan.id}-roadmap`} className="py-4 px-6 text-center">
+//                 {plan.features.includes('Monthly Goal Roadmap') ? (
+//                   <CheckCircle className="h-5 w-5 text-green-500 mx-auto" />
+//                 ) : (
+//                   <div className="h-5 w-5 mx-auto"></div>
+//                 )}
+//               </td>
+//             ))}
+//           </tr>
+
+//           {/* Video Analysis */}
+//           <tr className="border-b border-gray-200 hover:bg-gray-50">
+//             <td className="py-4 px-6 text-gray-800 font-medium">Video Analysis</td>
+//             {plans.map((plan) => (
+//               <td key={`${plan.id}-video`} className="py-4 px-6 text-center">
+//                 {plan.features.some((f) => f.includes('Video Analysis')) ? (
+//                   <div className="text-sm font-medium">
+//                     {plan.id === 'elite'
+//                       ? '2 per month'
+//                       : plan.features.some((f) => f.includes('1 Video Analysis'))
+//                         ? '1 per month'
+//                         : ''}
+//                   </div>
+//                 ) : (
+//                   <div className="h-5 w-5 mx-auto"></div>
+//                 )}
+//               </td>
+//             ))}
+//           </tr>
+
+//           {/* Private Community Access */}
+//           <tr className="border-b border-gray-200 hover:bg-gray-50">
+//             <td className="py-4 px-6 text-gray-800 font-medium">
+//               Private Community Access
+//             </td>
+//             {plans.map((plan) => (
+//               <td key={`${plan.id}-community`} className="py-4 px-6 text-center">
+//                 {plan.features.includes('Private Community Access') ? (
+//                   <CheckCircle className="h-5 w-5 text-green-500 mx-auto" />
+//                 ) : (
+//                   <div className="h-5 w-5 mx-auto"></div>
+//                 )}
+//               </td>
+//             ))}
+//           </tr>
+
+//           {/* Off-Season Training Program */}
+//           <tr className="border-b border-gray-200 hover:bg-gray-50">
+//             <td className="py-4 px-6 text-gray-800 font-medium">
+//               Off-Season Training Program
+//             </td>
+//             {plans.map((plan) => (
+//               <td key={`${plan.id}-offseason`} className="py-4 px-6 text-center">
+//                 {plan.features.some((f) => f.includes('Off-Season Training Program')) ? (
+//                   <div className="flex items-center justify-center">
+//                     <CheckCircle className="h-5 w-5 text-green-500 mr-1" />
+//                     <span className="text-xs font-medium text-amber-600">BONUS</span>
+//                   </div>
+//                 ) : (
+//                   <div className="h-5 w-5 mx-auto"></div>
+//                 )}
+//               </td>
+//             ))}
+//           </tr>
+
+//           {/* NHL Nutrition Blueprint */}
+//           <tr className="border-b border-gray-200 hover:bg-gray-50">
+//             <td className="py-4 px-6 text-gray-800 font-medium">NHL Nutrition Blueprint</td>
+//             {plans.map((plan) => (
+//               <td key={`${plan.id}-nutrition`} className="py-4 px-6 text-center">
+//                 {plan.features.some((f) => f.includes('NHL Nutrition Blueprint')) ? (
+//                   <div className="flex items-center justify-center">
+//                     <CheckCircle className="h-5 w-5 text-green-500 mr-1" />
+//                     <span className="text-xs font-medium text-amber-600">BONUS</span>
+//                   </div>
+//                 ) : (
+//                   <div className="h-5 w-5 mx-auto"></div>
+//                 )}
+//               </td>
+//             ))}
+//           </tr>
+
+//           {/* CTA Row */}
+//           <tr>
+//             <td className="py-6 px-6"></td>
+//             {plans.map((plan) => (
+//               <td key={`${plan.id}-cta`} className="py-6 px-6 text-center">
+//                 <Button
+//                   className={`w-full ${
+//                     plan.recommended
+//                       ? 'bg-[#0891B2] hover:bg-[#0E7490]'
+//                       : 'bg-blue-500 hover:bg-blue-600'
+//                   } text-white`}
+//                 >
+//                   Select
+//                 </Button>
+//               </td>
+//             ))}
+//           </tr>
+//         </tbody>
+//       </table>
+//     </div>
+//   </div>
+// </div>
+// </section>

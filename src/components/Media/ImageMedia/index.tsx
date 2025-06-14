@@ -3,7 +3,7 @@
 import type { StaticImageData } from 'next/image'
 
 import { cn } from '@/lib/utilities/ui'
-import NextImage from 'next/image'
+import Image from 'next/image'
 import React from 'react'
 
 import type { Props as MediaProps } from '../types'
@@ -42,8 +42,9 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
     alt = altFromResource || ''
 
     const cacheTag = resource.updatedAt
+    src = '/placeholder.svg?height=200&width=200'
 
-    src = `${getClientSideURL()}${url}?${cacheTag}`
+    // src = `${getClientSideURL()}${url}?${cacheTag}`
   }
 
   const loading = loadingFromProps || (!priority ? 'lazy' : undefined)
@@ -57,18 +58,18 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
 
   return (
     <picture>
-      <NextImage
+      <Image
         alt={alt || ''}
         className={cn(imgClassName)}
         fill={fill}
         height={!fill ? height : undefined}
-        placeholder="blur"
-        blurDataURL={placeholderBlur}
+        // placeholder="blur"
+        // blurDataURL={placeholderBlur}
         priority={priority}
         quality={100}
         loading={loading}
         sizes={sizes}
-        src={src}
+        src={src ?? ''}
         width={!fill ? width : undefined}
       />
     </picture>

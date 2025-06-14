@@ -10,7 +10,7 @@ export const MobileMenu: React.FC = () => {
 
   return (
     <div className={`${isOpen ? 'block' : 'hidden'} lg:hidden`}>
-      <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+      <div className="container mx-auto px-2 pt-2 pb-3 space-y-1 sm:px-3">
         <Link
           onClick={() => {
             setIsOpen(false)
@@ -38,7 +38,7 @@ export const MobileMenu: React.FC = () => {
         >
           Pricing
         </Link>
-        <Link
+        {/* <Link
           onClick={() => {
             setIsOpen(false)
           }}
@@ -46,7 +46,7 @@ export const MobileMenu: React.FC = () => {
           className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50"
         >
           Success Stories
-        </Link>
+        </Link> */}
         <Link
           onClick={() => {
             setIsOpen(false)
