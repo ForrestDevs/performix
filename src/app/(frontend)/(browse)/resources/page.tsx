@@ -20,6 +20,7 @@ import {
   Star,
   Grid3X3,
   List,
+  SlidersHorizontal,
 } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -34,6 +35,8 @@ export default function ResourcesPage() {
   const [activeCategory, setActiveCategory] = useState('All Articles')
   const [viewMode, setViewMode] = useState('grid')
   const [favoriteIds, setFavoriteIds] = useState(new Set())
+
+  const [showFilters, setShowFilters] = useState(false)
 
   const isVisible = (id: string) => visibleElements.has(id)
 
@@ -207,13 +210,6 @@ export default function ResourcesPage() {
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
       <section className="relative bg-white py-16 overflow-hidden">
-        {/* Animated background pattern */}
-        <div className="absolute inset-0 opacity-5">
-          <div className="absolute top-10 left-10 w-32 h-32 border border-[#0891B2] rounded-full animate-pulse"></div>
-          <div className="absolute top-32 right-20 w-24 h-24 border border-[#8B5CF6] rounded-full animate-pulse delay-1000"></div>
-          <div className="absolute bottom-20 left-1/3 w-40 h-40 border border-[#0891B2] rounded-full animate-pulse delay-500"></div>
-        </div>
-
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center mb-12">
             <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4 font-['Space_Grotesk']">
@@ -238,132 +234,54 @@ export default function ResourcesPage() {
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="pl-12 pr-4 py-4 text-lg border-2 border-gray-200 focus:border-[#0891B2] rounded-xl transition-all duration-300"
                 />
+                <div className="absolute right-4 top-1/2 transform -translate-y-1/2">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setShowFilters(!showFilters)}
+                    className="text-gray-500 hover:text-[#0891B2]"
+                  >
+                    <SlidersHorizontal className="h-4 w-4" />
+                  </Button>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
-      </section>
 
-      {/* Category Navigation */}
-      <section className="py-8 bg-white border-b border-gray-200">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex overflow-x-auto space-x-2 pb-2">
-            {categories.map((category) => (
-              <Button
-                key={category}
-                variant={activeCategory === category ? 'default' : 'ghost'}
-                onClick={() => setActiveCategory(category)}
-                className={`whitespace-nowrap ${
-                  activeCategory === category
-                    ? 'bg-[#0891B2] text-white'
-                    : 'text-gray-600 hover:text-[#0891B2] hover:bg-[#0891B2]/10'
-                }`}
-              >
-                {category}
-              </Button>
-            ))}
-          </div>
-        </div>
-      </section>
+            {/* Quick Filter Pills */}
+            <div className="flex flex-wrap justify-center gap-3 mb-8">
+              {[
+                'All Resources',
+                'Training Guides',
+                'Recruiting Tips',
+                'Mental Game',
+                'Video Analysis',
+                'Latest Articles',
+              ].map((filter) => (
+                <Badge
+                  key={filter}
+                  variant="outline"
+                  className="px-4 py-2 cursor-pointer hover:bg-[#0891B2] hover:text-white hover:border-[#0891B2] transition-all duration-300 hover:scale-105"
+                >
+                  {filter}
+                </Badge>
+              ))}
+            </div>
 
-      {/* Featured Article */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div
-            id="featured-article"
-            data-scroll-animate
-            className={`transition-all duration-1000 ${
-              isVisible('featured-article')
-                ? 'opacity-100 translate-y-0'
-                : 'opacity-0 translate-y-12'
-            }`}
-          >
-            <Card className="border-0 shadow-2xl overflow-hidden hover:shadow-3xl transition-shadow duration-500">
-              <CardContent className="p-0">
-                <div className="grid lg:grid-cols-2 gap-0">
-                  <div className="relative h-96 lg:h-auto group overflow-hidden">
-                    <Image
-                      src={featuredArticle.image || '/placeholder.svg'}
-                      alt={featuredArticle.title}
-                      width={800}
-                      height={400}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                    <div className="absolute top-6 left-6">
-                      <Badge className="bg-gradient-to-r from-[#8B5CF6] to-[#0891B2] text-white animate-pulse">
-                        Featured Article
-                      </Badge>
-                    </div>
-                    <div className="absolute bottom-6 left-6 text-white">
-                      <Badge variant="outline" className="border-white text-white mb-3">
-                        {featuredArticle.category}
-                      </Badge>
-                      <h2 className="text-2xl lg:text-3xl font-bold mb-2 leading-tight">
-                        {featuredArticle.title}
-                      </h2>
-                      <p className="text-gray-200 text-lg">{featuredArticle.excerpt}</p>
-                    </div>
-                  </div>
-                  <div className="p-8 lg:p-12 flex flex-col justify-center">
-                    <div className="flex items-center space-x-4 mb-6">
-                      <div className="w-16 h-16 bg-gradient-to-br from-[#0891B2]/20 to-[#8B5CF6]/20 rounded-full overflow-hidden">
-                        <Image
-                          src={featuredArticle.author.avatar || '/placeholder.svg'}
-                          alt={featuredArticle.author.name}
-                          width={64}
-                          height={64}
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                      <div>
-                        <p className="font-semibold text-gray-900">{featuredArticle.author.name}</p>
-                        <p className="text-[#0891B2] text-sm">{featuredArticle.author.role}</p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center space-x-6 mb-6 text-sm text-gray-500">
-                      <div className="flex items-center space-x-2">
-                        <Clock className="h-4 w-4" />
-                        <span>{featuredArticle.readTime} min read</span>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <Eye className="h-4 w-4" />
-                        <span>{featuredArticle.views.toLocaleString()} views</span>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <Heart className="h-4 w-4" />
-                        <span>{featuredArticle.likes} likes</span>
-                      </div>
-                    </div>
-
-                    <div className="flex space-x-4">
-                      <Button className="bg-[#0891B2] hover:bg-[#0E7490] text-white flex-1">
-                        <BookOpen className="h-4 w-4 mr-2" />
-                        Read Article
-                      </Button>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => toggleFavorite(featuredArticle.id)}
-                        className="border-[#0891B2] text-[#0891B2] hover:bg-[#0891B2] hover:text-white"
-                      >
-                        <Heart
-                          className={`h-4 w-4 ${favoriteIds.has(featuredArticle.id) ? 'fill-current' : ''}`}
-                        />
-                      </Button>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="border-[#0891B2] text-[#0891B2] hover:bg-[#0891B2] hover:text-white"
-                      >
-                        <Share2 className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+            {/* Stats */}
+            <div className="flex justify-center items-center space-x-8 text-sm text-gray-500">
+              <div className="flex items-center space-x-2">
+                <BookOpen className="h-4 w-4 text-[#0891B2]" />
+                <span>{articles.length} Articles & Guides</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Star className="h-4 w-4 text-yellow-400 fill-current" />
+                <span>4.9 Average Rating</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Eye className="h-4 w-4 text-[#0891B2]" />
+                <span>50K+ Monthly Views</span>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -373,7 +291,7 @@ export default function ResourcesPage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-4 gap-8">
             {/* Main Articles */}
-            <div className="lg:col-span-3">
+            <div className="lg:col-span-4">
               {/* Controls */}
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
                 <div className="flex items-center space-x-4">
@@ -642,145 +560,6 @@ export default function ResourcesPage() {
                 </Button>
               </div>
             </div>
-
-            {/* Sidebar */}
-            <div className="lg:col-span-1 space-y-8">
-              {/* Trending Articles */}
-              <Card
-                id="trending-sidebar"
-                data-scroll-animate
-                className={`border-0 shadow-lg transition-all duration-1000 ${
-                  isVisible('trending-sidebar')
-                    ? 'opacity-100 translate-y-0'
-                    : 'opacity-0 translate-y-8'
-                }`}
-              >
-                <CardContent className="p-6">
-                  <div className="flex items-center space-x-2 mb-4">
-                    <TrendingUp className="h-5 w-5 text-[#0891B2]" />
-                    <h3 className="text-lg font-bold text-gray-900">Trending This Week</h3>
-                  </div>
-                  <div className="space-y-4">
-                    {trendingArticles.map((article, index) => (
-                      <div key={index} className="flex items-start space-x-3 group cursor-pointer">
-                        <div className="w-8 h-8 bg-gradient-to-r from-[#0891B2] to-[#8B5CF6] rounded-full flex items-center justify-center text-white text-sm font-bold">
-                          {index + 1}
-                        </div>
-                        <div className="flex-1">
-                          <h4 className="text-sm font-medium text-gray-900 group-hover:text-[#0891B2] transition-colors duration-200 line-clamp-2">
-                            {article.title}
-                          </h4>
-                          <div className="flex items-center space-x-1 mt-1">
-                            <Eye className="h-3 w-3 text-gray-400" />
-                            <span className="text-xs text-gray-500">
-                              {article.views.toLocaleString()} views
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Author Spotlight */}
-              <Card
-                id="author-spotlight"
-                data-scroll-animate
-                className={`border-0 shadow-lg transition-all duration-1000 ${
-                  isVisible('author-spotlight')
-                    ? 'opacity-100 translate-y-0'
-                    : 'opacity-0 translate-y-8'
-                }`}
-              >
-                <CardContent className="p-6">
-                  <h3 className="text-lg font-bold text-gray-900 mb-4">Featured Mentor Writer</h3>
-                  <div className="text-center">
-                    <div className="relative w-20 h-20 mx-auto mb-4">
-                      <Image
-                        src={authorSpotlight.avatar || '/placeholder.svg'}
-                        alt={authorSpotlight.name}
-                        width={80}
-                        height={80}
-                        className="w-full h-full object-cover rounded-full"
-                      />
-                      <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-gradient-to-r from-[#0891B2] to-[#8B5CF6] rounded-full flex items-center justify-center">
-                        <Star className="h-3 w-3 text-white" />
-                      </div>
-                    </div>
-                    <h4 className="font-bold text-gray-900">{authorSpotlight.name}</h4>
-                    <p className="text-[#0891B2] text-sm mb-3">{authorSpotlight.role}</p>
-                    <p className="text-gray-600 text-sm mb-4">{authorSpotlight.bio}</p>
-                    <div className="flex justify-center space-x-6 mb-4 text-sm">
-                      <div className="text-center">
-                        <p className="font-bold text-[#0891B2]">{authorSpotlight.articles}</p>
-                        <p className="text-gray-500 text-xs">Articles</p>
-                      </div>
-                      <div className="text-center">
-                        <p className="font-bold text-[#0891B2]">
-                          {authorSpotlight.followers.toLocaleString()}
-                        </p>
-                        <p className="text-gray-500 text-xs">Followers</p>
-                      </div>
-                    </div>
-                    <Button
-                      size="sm"
-                      className="bg-[#0891B2] hover:bg-[#0E7490] text-white w-full mb-4"
-                    >
-                      <Users className="h-4 w-4 mr-2" />
-                      Follow
-                    </Button>
-                    <div className="text-left">
-                      <h5 className="font-medium text-gray-900 mb-2 text-sm">Recent Articles:</h5>
-                      <ul className="space-y-1">
-                        {authorSpotlight.recentArticles.map((title, index) => (
-                          <li
-                            key={index}
-                            className="text-xs text-gray-600 hover:text-[#0891B2] cursor-pointer transition-colors duration-200"
-                          >
-                            • {title}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Newsletter Signup */}
-              <Card
-                id="newsletter-signup"
-                data-scroll-animate
-                className={`border-0 shadow-lg bg-gradient-to-br from-[#0891B2] to-[#8B5CF6] text-white transition-all duration-1000 ${
-                  isVisible('newsletter-signup')
-                    ? 'opacity-100 translate-y-0'
-                    : 'opacity-0 translate-y-8'
-                }`}
-              >
-                <CardContent className="p-6 text-center">
-                  <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <BookOpen className="h-6 w-6 text-white" />
-                  </div>
-                  <h3 className="text-lg font-bold mb-2">Stay Ahead of the Game</h3>
-                  <p className="text-white/90 text-sm mb-4">
-                    Get the latest hockey development insights delivered to your inbox weekly.
-                  </p>
-                  <div className="space-y-3">
-                    <Input
-                      type="email"
-                      placeholder="Enter your email"
-                      className="bg-white/10 border-white/20 text-white placeholder:text-white/70 focus:bg-white/20"
-                    />
-                    <Button className="bg-white text-[#0891B2] hover:bg-gray-100 w-full">
-                      Subscribe
-                    </Button>
-                  </div>
-                  <p className="text-white/70 text-xs mt-3">
-                    Join 2,500+ hockey players and parents
-                  </p>
-                </CardContent>
-              </Card>
-            </div>
           </div>
         </div>
       </section>
@@ -810,3 +589,142 @@ export default function ResourcesPage() {
     </div>
   )
 }
+
+// {/* Sidebar */}
+// <div className="lg:col-span-1 space-y-8">
+// {/* Trending Articles */}
+// <Card
+//   id="trending-sidebar"
+//   data-scroll-animate
+//   className={`border-0 shadow-lg transition-all duration-1000 ${
+//     isVisible('trending-sidebar')
+//       ? 'opacity-100 translate-y-0'
+//       : 'opacity-0 translate-y-8'
+//   }`}
+// >
+//   <CardContent className="p-6">
+//     <div className="flex items-center space-x-2 mb-4">
+//       <TrendingUp className="h-5 w-5 text-[#0891B2]" />
+//       <h3 className="text-lg font-bold text-gray-900">Trending This Week</h3>
+//     </div>
+//     <div className="space-y-4">
+//       {trendingArticles.map((article, index) => (
+//         <div key={index} className="flex items-start space-x-3 group cursor-pointer">
+//           <div className="w-8 h-8 bg-gradient-to-r from-[#0891B2] to-[#8B5CF6] rounded-full flex items-center justify-center text-white text-sm font-bold">
+//             {index + 1}
+//           </div>
+//           <div className="flex-1">
+//             <h4 className="text-sm font-medium text-gray-900 group-hover:text-[#0891B2] transition-colors duration-200 line-clamp-2">
+//               {article.title}
+//             </h4>
+//             <div className="flex items-center space-x-1 mt-1">
+//               <Eye className="h-3 w-3 text-gray-400" />
+//               <span className="text-xs text-gray-500">
+//                 {article.views.toLocaleString()} views
+//               </span>
+//             </div>
+//           </div>
+//         </div>
+//       ))}
+//     </div>
+//   </CardContent>
+// </Card>
+
+// {/* Author Spotlight */}
+// <Card
+//   id="author-spotlight"
+//   data-scroll-animate
+//   className={`border-0 shadow-lg transition-all duration-1000 ${
+//     isVisible('author-spotlight')
+//       ? 'opacity-100 translate-y-0'
+//       : 'opacity-0 translate-y-8'
+//   }`}
+// >
+//   <CardContent className="p-6">
+//     <h3 className="text-lg font-bold text-gray-900 mb-4">Featured Mentor Writer</h3>
+//     <div className="text-center">
+//       <div className="relative w-20 h-20 mx-auto mb-4">
+//         <Image
+//           src={authorSpotlight.avatar || '/placeholder.svg'}
+//           alt={authorSpotlight.name}
+//           width={80}
+//           height={80}
+//           className="w-full h-full object-cover rounded-full"
+//         />
+//         <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-gradient-to-r from-[#0891B2] to-[#8B5CF6] rounded-full flex items-center justify-center">
+//           <Star className="h-3 w-3 text-white" />
+//         </div>
+//       </div>
+//       <h4 className="font-bold text-gray-900">{authorSpotlight.name}</h4>
+//       <p className="text-[#0891B2] text-sm mb-3">{authorSpotlight.role}</p>
+//       <p className="text-gray-600 text-sm mb-4">{authorSpotlight.bio}</p>
+//       <div className="flex justify-center space-x-6 mb-4 text-sm">
+//         <div className="text-center">
+//           <p className="font-bold text-[#0891B2]">{authorSpotlight.articles}</p>
+//           <p className="text-gray-500 text-xs">Articles</p>
+//         </div>
+//         <div className="text-center">
+//           <p className="font-bold text-[#0891B2]">
+//             {authorSpotlight.followers.toLocaleString()}
+//           </p>
+//           <p className="text-gray-500 text-xs">Followers</p>
+//         </div>
+//       </div>
+//       <Button
+//         size="sm"
+//         className="bg-[#0891B2] hover:bg-[#0E7490] text-white w-full mb-4"
+//       >
+//         <Users className="h-4 w-4 mr-2" />
+//         Follow
+//       </Button>
+//       <div className="text-left">
+//         <h5 className="font-medium text-gray-900 mb-2 text-sm">Recent Articles:</h5>
+//         <ul className="space-y-1">
+//           {authorSpotlight.recentArticles.map((title, index) => (
+//             <li
+//               key={index}
+//               className="text-xs text-gray-600 hover:text-[#0891B2] cursor-pointer transition-colors duration-200"
+//             >
+//               • {title}
+//             </li>
+//           ))}
+//         </ul>
+//       </div>
+//     </div>
+//   </CardContent>
+// </Card>
+
+// {/* Newsletter Signup */}
+// <Card
+//   id="newsletter-signup"
+//   data-scroll-animate
+//   className={`border-0 shadow-lg bg-gradient-to-br from-[#0891B2] to-[#8B5CF6] text-white transition-all duration-1000 ${
+//     isVisible('newsletter-signup')
+//       ? 'opacity-100 translate-y-0'
+//       : 'opacity-0 translate-y-8'
+//   }`}
+// >
+//   <CardContent className="p-6 text-center">
+//     <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
+//       <BookOpen className="h-6 w-6 text-white" />
+//     </div>
+//     <h3 className="text-lg font-bold mb-2">Stay Ahead of the Game</h3>
+//     <p className="text-white/90 text-sm mb-4">
+//       Get the latest hockey development insights delivered to your inbox weekly.
+//     </p>
+//     <div className="space-y-3">
+//       <Input
+//         type="email"
+//         placeholder="Enter your email"
+//         className="bg-white/10 border-white/20 text-white placeholder:text-white/70 focus:bg-white/20"
+//       />
+//       <Button className="bg-white text-[#0891B2] hover:bg-gray-100 w-full">
+//         Subscribe
+//       </Button>
+//     </div>
+//     <p className="text-white/70 text-xs mt-3">
+//       Join 2,500+ hockey players and parents
+//     </p>
+//   </CardContent>
+// </Card>
+// </div>

@@ -175,13 +175,6 @@ export default function BrowseMentorsPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       <section className="relative bg-white py-16 overflow-hidden">
-        {/* Animated background pattern */}
-        <div className="absolute inset-0 opacity-5">
-          <div className="absolute top-10 left-10 w-32 h-32 border border-[#0891B2] rounded-full animate-pulse"></div>
-          <div className="absolute top-32 right-20 w-24 h-24 border border-[#8B5CF6] rounded-full animate-pulse delay-1000"></div>
-          <div className="absolute bottom-20 left-1/3 w-40 h-40 border border-[#0891B2] rounded-full animate-pulse delay-500"></div>
-        </div>
-
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center mb-12">
             <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4 font-['Space_Grotesk']">
@@ -191,7 +184,7 @@ export default function BrowseMentorsPage() {
               </span>
             </h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
-              Browse elite D1+ players ready to guide your journey to Division 1 hockey
+              Browse elite D1+ players ready to guide your journey to excellence
             </p>
 
             {/* Search Bar */}
@@ -250,117 +243,14 @@ export default function BrowseMentorsPage() {
               </div>
               <div className="flex items-center space-x-2">
                 <Award className="h-4 w-4 text-[#0891B2]" />
-                <span>94% Success Rate</span>
+                <span>100% Athlete Improvement</span>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="py-16 bg-gradient-to-r from-[#0891B2]/5 to-[#8B5CF6]/5">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div
-            id="featured-header"
-            data-scroll-animate
-            className={`text-center mb-12 transition-all duration-1000 ${
-              isVisible('featured-header') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-            }`}
-          >
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Top Rated Mentors This Month</h2>
-            <p className="text-gray-600">Our highest-rated mentors with proven track records</p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            {featuredMentors.map((mentor, index) => (
-              <Card
-                key={mentor.id}
-                id={`featured-${index}`}
-                data-scroll-animate
-                className={`border-0 shadow-xl hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 bg-white relative overflow-hidden group ${
-                  isVisible(`featured-${index}`)
-                    ? 'opacity-100 translate-y-0'
-                    : 'opacity-0 translate-y-12'
-                }`}
-                style={{ transitionDelay: `${index * 200}ms` }}
-              >
-                <div className="absolute top-4 right-4 z-10">
-                  <Badge className="bg-gradient-to-r from-[#8B5CF6] to-[#0891B2] text-white animate-pulse">
-                    Featured
-                  </Badge>
-                </div>
-                <CardContent className="p-0">
-                  <div className="relative h-48 bg-gradient-to-br from-[#0891B2]/20 to-[#8B5CF6]/20 overflow-hidden">
-                    <Image
-                      src="/mateo-hockey.png"
-                      alt={mentor.name}
-                      width={300}
-                      height={200}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                    />
-                    {mentor.videoIntro && (
-                      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/20">
-                        <Button
-                          size="lg"
-                          className="bg-white/90 text-[#0891B2] rounded-full w-16 h-16 p-0"
-                        >
-                          <Play className="h-6 w-6 ml-1" />
-                        </Button>
-                      </div>
-                    )}
-                  </div>
-                  <div className="p-6">
-                    <div className="flex items-center justify-between mb-3">
-                      <h3 className="text-xl font-bold text-gray-900">{mentor.name}</h3>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => toggleFavorite(mentor.id)}
-                        className="p-1 hover:bg-red-50"
-                      >
-                        <Heart
-                          className={`h-5 w-5 transition-colors duration-200 ${
-                            favoriteIds.has(mentor.id)
-                              ? 'text-red-500 fill-current'
-                              : 'text-gray-400'
-                          }`}
-                        />
-                      </Button>
-                    </div>
-                    <p className="text-[#0891B2] font-medium mb-2">{mentor.position}</p>
-                    <div className="flex items-center space-x-2 mb-3">
-                      <div className="w-6 h-6 bg-gray-200 rounded-full"></div>
-                      <span className="text-sm text-gray-600">{mentor.university}</span>
-                    </div>
-                    <div className="flex items-center space-x-4 mb-4">
-                      <div className="flex items-center space-x-1">
-                        <Star className="h-4 w-4 text-yellow-400 fill-current" />
-                        <span className="text-sm font-medium">{mentor.rating}</span>
-                        <span className="text-sm text-gray-500">({mentor.reviews})</span>
-                      </div>
-                      <div className="flex items-center space-x-1">
-                        <DollarSign className="h-4 w-4 text-gray-400" />
-                        <span className="text-sm font-medium">${mentor.price}/session</span>
-                      </div>
-                    </div>
-                    <div className="flex flex-wrap gap-2 mb-4">
-                      {mentor.specializations.slice(0, 2).map((spec) => (
-                        <Badge key={spec} variant="outline" className="text-xs">
-                          {spec}
-                        </Badge>
-                      ))}
-                    </div>
-                    <Button className="w-full bg-[#0891B2] hover:bg-[#0E7490] text-white">
-                      View Profile
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="py-16 bg-white">
+      <section className="py-8 bg-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           {/* Controls Bar */}
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
@@ -419,67 +309,38 @@ export default function BrowseMentorsPage() {
                     style={{ transitionDelay: `${index * 100}ms` }}
                   >
                     <CardContent className="p-0">
-                      <div className="relative h-48 bg-gradient-to-br from-[#0891B2]/20 to-[#8B5CF6]/20 overflow-hidden">
+                      <div className="relative h-56 bg-gradient-to-br from-[#0891B2]/10 to-[#8B5CF6]/10 overflow-hidden">
                         <Image
                           src="/mateo-hockey.png"
                           alt={mentor.name}
-                          width={300}
-                          height={200}
-                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                          width={400}
+                          height={300}
+                          className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                          priority={index < 4}
                         />
-                        <div className="absolute top-4 left-4">
-                          <Badge
-                            className={`${
-                              mentor.availability === 'Available'
-                                ? 'bg-green-500'
-                                : mentor.availability === 'Limited'
-                                  ? 'bg-yellow-500'
-                                  : 'bg-red-500'
-                            } text-white`}
-                          >
-                            {mentor.availability}
-                          </Badge>
-                        </div>
-                        <div className="absolute top-4 right-4 flex space-x-2">
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={(e) => {
-                              e.stopPropagation()
-                              toggleFavorite(mentor.id)
-                            }}
-                            className="p-1 bg-white/80 hover:bg-white"
-                          >
-                            <Heart
-                              className={`h-4 w-4 transition-colors duration-200 ${
-                                favoriteIds.has(mentor.id)
-                                  ? 'text-red-500 fill-current'
-                                  : 'text-gray-600'
-                              }`}
-                            />
-                          </Button>
+                        <div className="absolute top-3 right-3 flex space-x-2">
                           <Button
                             variant="ghost"
                             size="sm"
                             onClick={(e) => e.stopPropagation()}
-                            className="p-1 bg-white/80 hover:bg-white"
+                            className="p-1.5 bg-white/90 hover:bg-white shadow-sm"
                           >
                             <Share2 className="h-4 w-4 text-gray-600" />
                           </Button>
                         </div>
                         {mentor.videoIntro && (
-                          <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/20">
+                          <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/10">
                             <Button
                               size="lg"
-                              className="bg-white/90 text-[#0891B2] rounded-full w-12 h-12 p-0"
+                              className="bg-white/95 text-[#0891B2] rounded-full w-14 h-14 p-0 shadow-lg"
                             >
-                              <Play className="h-4 w-4 ml-0.5" />
+                              <Play className="h-5 w-5 ml-0.5" />
                             </Button>
                           </div>
                         )}
                       </div>
-                      <div className="p-6">
-                        <div className="flex items-center justify-between mb-2">
+                      <div className="p-5">
+                        <div className="flex items-center justify-between mb-2.5">
                           <h3 className="text-lg font-bold text-gray-900">{mentor.name}</h3>
                           <div className="flex items-center space-x-1">
                             <Star className="h-4 w-4 text-yellow-400 fill-current" />
@@ -491,19 +352,19 @@ export default function BrowseMentorsPage() {
                           <div className="w-5 h-5 bg-gray-200 rounded-full"></div>
                           <span className="text-sm text-gray-600">{mentor.university}</span>
                         </div>
-                        <p className="text-sm text-gray-600 mb-4 line-clamp-2">{mentor.bio}</p>
-                        <div className="flex flex-wrap gap-1 mb-4">
+                        <p className="text-sm text-gray-600 mb-3.5 line-clamp-2">{mentor.bio}</p>
+                        <div className="flex flex-wrap gap-1.5 mb-4">
                           {mentor.specializations.slice(0, 3).map((spec) => (
-                            <Badge key={spec} variant="outline" className="text-xs">
+                            <Badge key={spec} variant="outline" className="text-xs px-2 py-0.5">
                               {spec}
                             </Badge>
                           ))}
                         </div>
                         <div className="flex items-center justify-between">
-                          <span className="text-lg font-bold text-gray-900">
-                            ${mentor.price}/session
-                          </span>
-                          <Button size="sm" className="bg-[#0891B2] hover:bg-[#0E7490] text-white">
+                          <Button
+                            size="sm"
+                            className="bg-[#0891B2] hover:bg-[#0E7490] text-white px-4"
+                          >
                             View Profile
                           </Button>
                         </div>
@@ -648,10 +509,13 @@ export default function BrowseMentorsPage() {
           </p>
           <Link
             href="https://calendly.com/mateodixon/d1-mentorship-call"
-            className={cn("border-white text-white hover:bg-white hover:text-[#0891B2] px-8", buttonVariants({variant: "outline"}))}
+            className={cn(
+              'border-white text-white hover:bg-white hover:text-[#0891B2] px-8',
+              buttonVariants({ variant: 'outline' }),
+            )}
           >
-              Schedule a Consultation
-            </Link>
+            Schedule a Consultation
+          </Link>
         </div>
       </section>
     </div>

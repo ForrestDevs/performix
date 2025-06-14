@@ -16,17 +16,27 @@ import {
   Play,
   Star,
   ChevronRight,
+  Dumbbell,
+  ClipboardList,
+  Trophy,
+  GraduationCap,
+  Wrench,
+  ArrowUpRight,
+  ChevronLeft,
 } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useScrollAnimation } from '@/lib/hooks/useScrollAnimation'
 import { PerformixLogo } from '@/components/logo'
 import { cn } from '@/lib/utilities/ui'
+import { useState } from 'react'
 
 export default function HomePage() {
   const visibleElements = useScrollAnimation()
 
   const isVisible = (id: string) => visibleElements.has(id)
+
+  const [currentSlide, setCurrentSlide] = useState(0)
 
   return (
     <div className="min-h-screen bg-white">
@@ -52,8 +62,8 @@ export default function HomePage() {
                   </span>
                 </h1>
                 <p className="text-xl text-gray-600 leading-relaxed max-w-2xl">
-                  Why waste time trying to figure it out alone? Get access to D1 mentors, elite
-                  systems, and a proven plan to develop faster.
+                  Why waste time trying to figure it out alone? Get access to D1 hockey mentors,
+                  elite systems, and a proven plan to develop faster.
                 </p>
               </div>
               <div className="flex flex-col sm:flex-row gap-4">
@@ -64,28 +74,24 @@ export default function HomePage() {
                     'bg-[#0891B2] hover:bg-[#0E7490] text-white px-8 py-4 text-lg hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl',
                   )}
                 >
-                  Find Your Mentor
+                  Get Started
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
                 <Link
-                  href="/testimonials"
+                  href="/mentors"
                   className={cn(
                     buttonVariants({ size: 'lg', variant: 'outline' }),
                     'border-[#0891B2] text-[#0891B2] hover:bg-[#0891B2] hover:text-white px-8 py-4 text-lg hover:scale-105 transition-all duration-300',
                   )}
                 >
-                  <Play className="mr-2 h-5 w-5" />
-                  Watch Success Stories
+                  <Users className="mr-2 h-5 w-5" />
+                  Browse all mentors
                 </Link>
               </div>
               <div className="flex items-center space-x-6 text-sm text-gray-500">
                 <div className="flex items-center space-x-2 hover:text-[#0891B2] transition-colors duration-200">
-                  <CheckCircle className="h-4 w-4 text-[#0891B2]" />
-                  <span>30+ D1 Mentors</span>
-                </div>
-                <div className="flex items-center space-x-2 hover:text-[#0891B2] transition-colors duration-200">
-                  <CheckCircle className="h-4 w-4 text-[#0891B2]" />
-                  <span>100% Athlete Improvement</span>
+                  <CheckCircle className="h-5 w-5 text-[#0891B2]" />
+                  <span className="text-base">30+ D1 Mentors</span>
                 </div>
               </div>
             </div>
@@ -99,14 +105,17 @@ export default function HomePage() {
                   className="w-full h-full object-contain"
                 />
               </div>
-              <div className="absolute -bottom-6 -left-6 bg-white rounded-xl p-4 shadow-lg border hover:shadow-xl transition-shadow duration-300 animate-float">
-                <div className="flex items-center space-x-3">
-                  <div className="w-12 h-12 bg-gradient-to-br from-[#0891B2] to-[#8B5CF6] rounded-full flex items-center justify-center">
-                    <TrendingUp className="h-6 w-6 text-white" />
+              <div className="absolute -bottom-4 -left-4 bg-white/95 backdrop-blur-sm rounded-lg p-2.5 shadow-sm border border-gray-100 hover:shadow-md transition-all duration-300 animate-float">
+                <div className="flex items-center space-x-2">
+                  <div className="w-7 h-7 bg-gradient-to-br from-[#0891B2]/90 to-[#8B5CF6]/90 rounded-full flex items-center justify-center">
+                    <TrendingUp className="h-3.5 w-3.5 text-white" />
                   </div>
                   <div>
-                    <p className="font-semibold text-gray-900">94% Success Rate</p>
-                    <p className="text-sm text-gray-500">D1 Commitments</p>
+                    <p className="text-xs font-medium text-gray-900">
+                      <span className="text-[#0891B2] font-semibold">100%</span> of athletes
+                      <br />
+                      <span className="text-gray-500 text-[11px]">report accelerated progress</span>
+                    </p>
                   </div>
                 </div>
               </div>
@@ -137,24 +146,24 @@ export default function HomePage() {
           <div className="grid md:grid-cols-4 gap-8">
             {[
               {
-                icon: Users,
-                title: '1 on 1 Mentorship',
+                icon: GraduationCap,
+                title: 'D1 Mentors',
                 description:
                   'Work directly with your own D1 mentor who knows exactly what it takes to succeed.',
               },
               {
-                icon: Target,
+                icon: Trophy,
                 title: 'Proven Results',
                 description: '100% of Athletes Report Faster Progress in Their First Month. ',
               },
               {
-                icon: TrendingUp,
-                title: 'Custom Development Plans',
+                icon: ClipboardList,
+                title: 'Custom Plans',
                 description: ' Tailored development for your position, goals, and playing style.',
               },
               {
                 icon: TrendingUp,
-                title: 'All-In-One Performance System',
+                title: 'NHL-Grade Tools',
                 description:
                   'Alongside your mentor, get NHL-grade tools for training, nutrition, mindset, and recruiting.',
               },
@@ -163,7 +172,7 @@ export default function HomePage() {
                 key={index}
                 id={`value-card-${index}`}
                 data-scroll-animate
-                className={`border-0 shadow-lg hover:shadow-xl transition-all duration-700 hover:-translate-y-2 group ${
+                className={`border-0 shadow-lg hover:shadow-xl transition-all duration-700 hover:-translate-y-2 group bg-gradient-to-br from-white via-[#0891B2]/10 to-[#8B5CF6]/10 ${
                   isVisible(`value-card-${index}`)
                     ? 'opacity-100 translate-y-0'
                     : 'opacity-0 translate-y-12'
@@ -171,13 +180,13 @@ export default function HomePage() {
                 style={{ transitionDelay: `${index * 200}ms` }}
               >
                 <CardContent className="p-8 text-center">
-                  <div className="w-16 h-16 bg-[#0891B2]/10 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-[#0891B2]/20 group-hover:scale-110 transition-all duration-300">
+                  <div className="w-16 h-16 bg-[#0891B2]/5 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-[#0891B2]/10 group-hover:scale-110 transition-all duration-300">
                     <item.icon className="h-8 w-8 text-[#0891B2] group-hover:scale-110 transition-transform duration-300" />
                   </div>
                   <h3 className="text-xl font-bold text-gray-900 mb-4 group-hover:text-[#0891B2] transition-colors duration-300">
                     {item.title}
                   </h3>
-                  <p className="text-gray-600 leading-relaxed">{item.description}</p>
+                  <p className="text-gray-500 leading-relaxed text-sm">{item.description}</p>
                 </CardContent>
               </Card>
             ))}
@@ -197,7 +206,9 @@ export default function HomePage() {
                 : 'opacity-0 translate-y-8'
             }`}
           >
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">Win In 3 Steps</h2>
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+              Get Ahead in 3 Steps
+            </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               A proven shortcut used by driven players to develop faster.
             </p>
@@ -227,7 +238,7 @@ export default function HomePage() {
               {[
                 {
                   step: 1,
-                  title: 'Match',
+                  title: 'Mentor Match',
                   description:
                     'Start with a free Zoom call where we learn about your goals, experience, and journey—to match you with the right mentor.',
                   icon: Users,
@@ -266,32 +277,39 @@ export default function HomePage() {
                   style={{ transitionDelay: `${index * 300}ms` }}
                 >
                   {/* Step card */}
-                  <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-500 hover:-translate-y-2 border border-gray-100">
+                  <div className="bg-gradient-to-br from-[#E0F2FE] via-[#F0F9FF] to-[#E0F2FE] rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-500 hover:-translate-y-2 border border-gray-100 h-full flex flex-col items-center relative overflow-hidden">
+                    {/* Background gradient overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-[#0891B2]/10 via-[#0EA5E9]/5 to-[#0891B2]/10 opacity-70"></div>
+
                     {/* Step number with gradient background */}
                     <div className="relative mb-6">
-                      <div className="w-20 h-20 bg-gradient-to-br from-[#0891B2] to-[#8B5CF6] rounded-full flex items-center justify-center mx-auto relative z-10 group-hover:scale-110 transition-transform duration-300">
-                        <span className="text-2xl font-bold text-white">{item.step}</span>
+                      <div className="w-16 h-16 bg-gradient-to-br from-[#0891B2] to-[#0EA5E9] rounded-full flex items-center justify-center mx-auto relative z-10 group-hover:scale-110 transition-transform duration-300">
+                        <span className="text-2xl font-extrabold text-white">{item.step}</span>
                       </div>
                       {/* Glow effect */}
-                      <div className="absolute inset-0 w-20 h-20 bg-gradient-to-br from-[#0891B2] to-[#8B5CF6] rounded-full mx-auto opacity-20 blur-lg group-hover:opacity-40 transition-opacity duration-300"></div>
+                      <div className="absolute inset-0 w-16 h-16 bg-gradient-to-br from-[#0891B2] to-[#0EA5E9] rounded-full mx-auto opacity-20 blur-lg group-hover:opacity-40 transition-opacity duration-300"></div>
                     </div>
 
                     {/* Icon */}
-                    <div className="w-12 h-12 bg-[#0891B2]/10 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-[#0891B2]/20 transition-colors duration-300">
+                    <div className="w-12 h-12 bg-gradient-to-br from-[#0891B2]/20 to-[#0EA5E9]/20 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:from-[#0891B2]/30 group-hover:to-[#0EA5E9]/30 transition-colors duration-300">
                       <item.icon className="h-6 w-6 text-[#0891B2]" />
                     </div>
 
-                    <h3 className="text-2xl font-bold text-gray-900 mb-4">{item.title}</h3>
-                    <p className="text-gray-600 leading-relaxed mb-6">{item.description}</p>
+                    <h3 className="text-xl font-extrabold text-gray-950 mb-3 relative z-10">
+                      {item.title}
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed mb-6 text-center max-w-[280px] text-sm relative z-10 font-medium">
+                      {item.description}
+                    </p>
 
                     {/* Feature list */}
-                    <div className="space-y-2">
+                    <div className="space-y-2 w-full max-w-[240px] relative z-10">
                       {item.details.map((detail, detailIndex) => (
                         <div
                           key={detailIndex}
-                          className="flex items-center justify-center text-sm text-gray-500"
+                          className="flex items-center text-xs text-gray-600 font-medium"
                         >
-                          <CheckCircle className="h-4 w-4 text-[#0891B2] mr-2 flex-shrink-0" />
+                          <CheckCircle className="h-3.5 w-3.5 text-[#0891B2] mr-2 flex-shrink-0" />
                           <span>{detail}</span>
                         </div>
                       ))}
@@ -322,7 +340,7 @@ export default function HomePage() {
                 href="/get-started"
                 className={cn(
                   buttonVariants({ size: 'lg' }),
-                  'bg-gradient-to-r from-[#0891B2] to-[#8B5CF6] hover:from-[#0E7490] hover:to-[#7C3AED] text-white px-8 py-4 text-lg shadow-lg hover:shadow-xl transition-all duration-300',
+                  'bg-gradient-to-r from-[#0EA5E9] to-[#A78BFA] via-[#0891B2] hover:from-[#0E7490] hover:to-[#8B5CF6] text-white px-8 py-4 text-lg shadow-lg hover:shadow-xl transition-all duration-300',
                 )}
               >
                 Start Your Journey Today
@@ -332,6 +350,316 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* What You Get Every Month */}
+      <section className="py-20 bg-white">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div
+            id="monthly-features-header"
+            data-scroll-animate
+            className={`text-center mb-16 transition-all duration-1000 ${
+              isVisible('monthly-features-header')
+                ? 'opacity-100 translate-y-0'
+                : 'opacity-0 translate-y-8'
+            }`}
+          >
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+              What you get every month...
+            </h2>
+          </div>
+
+          <div className="grid lg:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
+            <div
+              id="monthly-features-list"
+              data-scroll-animate
+              className={`space-y-6 transition-all duration-1000 ${
+                isVisible('monthly-features-list')
+                  ? 'opacity-100 translate-x-0'
+                  : 'opacity-0 -translate-x-8'
+              }`}
+            >
+              {[
+                {
+                  title: 'Private Video Analysis Sessions',
+                  description:
+                    'Private 1-on-1 game analysis with a D1+ mentor to improve hockey IQ and decision-making on the ice.',
+                },
+                {
+                  title: 'The Performance Lab Course',
+                  description:
+                    'A structured course with the highest-level tools and strategies across training, nutrition, recovery, sleep, mental performance, and development strategy.',
+                },
+                {
+                  title: 'Daily D1 Mentor Access',
+                  description:
+                    'Direct messaging with your mentor for real-time guidance and support.',
+                },
+                {
+                  title: 'Monthly Goal Setting',
+                  description:
+                    'Work with your D1 mentor to set clear, achievable goals and track your progress with personalized milestones.',
+                },
+                {
+                  title: 'Biweekly D1 Zoom Sessions',
+                  description:
+                    'Live group sessions with D1 athletes and guest experts for hockey development.',
+                },
+                {
+                  title: 'Private Community',
+                  description:
+                    'An exclusive community of elite athletes and experts sharing game-changing insights and strategies.',
+                },
+              ].map((feature, index) => (
+                <div
+                  key={index}
+                  id={`feature-${index}`}
+                  data-scroll-animate
+                  className={`flex items-start space-x-4 transition-all duration-700 ${
+                    isVisible(`feature-${index}`)
+                      ? 'opacity-100 translate-x-0'
+                      : 'opacity-0 translate-x-4'
+                  }`}
+                  style={{ transitionDelay: `${index * 100}ms` }}
+                >
+                  <div className="flex-shrink-0 w-6 h-6 bg-[#0891B2] rounded-full flex items-center justify-center mt-1">
+                    <CheckCircle className="w-4 h-4 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-gray-900 mb-2">{feature.title}</h3>
+                    <p className="text-gray-600 leading-relaxed">{feature.description}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div
+              id="monthly-features-image"
+              data-scroll-animate
+              className={`relative transition-all duration-1000 ${
+                isVisible('monthly-features-image')
+                  ? 'opacity-100 translate-x-0 scale-100'
+                  : 'opacity-0 translate-x-8 scale-95'
+              }`}
+            >
+              <div className="aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl">
+                <Image
+                  src="/placeholder.svg?height=600&width=800"
+                  alt="Mentor and student training session"
+                  width={800}
+                  height={600}
+                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+                />
+              </div>
+              <div className="absolute -bottom-6 -right-6 bg-white rounded-xl p-6 shadow-lg border">
+                <div className="text-center">
+                  <p className="text-3xl font-bold text-[#0891B2] mb-1">500+</p>
+                  <p className="text-sm text-gray-600">Active Players</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div
+            id="monthly-cta"
+            data-scroll-animate
+            className={`text-center mt-12 transition-all duration-1000 ${
+              isVisible('monthly-cta') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+            }`}
+          >
+            <Link
+              href="/get-started"
+              className={cn(
+                buttonVariants({ size: 'lg' }),
+                'bg-gradient-to-r from-[#0EA5E9] to-[#A78BFA] via-[#0891B2] hover:from-[#0E7490] hover:to-[#8B5CF6] text-white px-8 py-4 text-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105',
+              )}
+            >
+              Get Started
+              <ArrowRight className="ml-2 h-5 w-5" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Program Benefits Icons Row */}
+      <section className="py-12 bg-gray-50/50">
+        <div className="container mx-auto px-4">
+          <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+            {[
+              {
+                icon: TrendingUp,
+                headline: 'IMPROVE FASTER',
+              },
+              {
+                icon: Target,
+                headline: 'EARN BIGGER OPPORTUNITIES',
+              },
+              {
+                icon: Award,
+                headline: 'OUTPERFORM EVERYBODY',
+              },
+            ].map((benefit, index) => (
+              <div
+                key={index}
+                id={`benefit-${index}`}
+                data-scroll-animate
+                className={`text-center transition-all duration-1000 ${
+                  isVisible(`benefit-${index}`)
+                    ? 'opacity-100 translate-y-0'
+                    : 'opacity-0 translate-y-8'
+                }`}
+                style={{ transitionDelay: `${index * 200}ms` }}
+              >
+                <div className="w-14 h-14 mx-auto mb-4 text-[#0891B2] hover:scale-110 transition-transform duration-300">
+                  <benefit.icon className="w-full h-full stroke-[1.5]" />
+                </div>
+                <h3 className="text-base font-bold text-gray-900 mb-2 tracking-wide">
+                  {benefit.headline}
+                </h3>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* How Your Mentor Helps You */}
+      {/* <section className="py-20 bg-gray-50">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div
+            id="mentor-help-header"
+            data-scroll-animate
+            className={`text-center mb-16 transition-all duration-1000 ${
+              isVisible('mentor-help-header')
+                ? 'opacity-100 translate-y-0'
+                : 'opacity-0 translate-y-8'
+            }`}
+          >
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4 font-['Space_Grotesk']">
+              Your mentor helps you with...
+            </h2>
+          </div>
+
+          <div className="grid lg:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
+            <div
+              id="mentor-help-images"
+              data-scroll-animate
+              className={`grid grid-cols-2 gap-4 transition-all duration-1000 ${
+                isVisible('mentor-help-images')
+                  ? 'opacity-100 translate-x-0'
+                  : 'opacity-0 -translate-x-8'
+              }`}
+            >
+              {[
+                { src: '/placeholder.svg?height=300&width=300', alt: 'Mentor coaching session' },
+                { src: '/placeholder.svg?height=300&width=300', alt: 'Video analysis session' },
+                { src: '/placeholder.svg?height=300&width=300', alt: 'Group training session' },
+                { src: '/placeholder.svg?height=300&width=300', alt: 'One-on-one mentoring' },
+              ].map((image, index) => (
+                <div
+                  key={index}
+                  id={`help-image-${index}`}
+                  data-scroll-animate
+                  className={`aspect-square rounded-xl overflow-hidden shadow-lg transition-all duration-700 hover:shadow-xl hover:scale-105 ${
+                    isVisible(`help-image-${index}`)
+                      ? 'opacity-100 scale-100'
+                      : 'opacity-0 scale-95'
+                  }`}
+                  style={{ transitionDelay: `${index * 150}ms` }}
+                >
+                  <Image
+                    src={image.src || '/placeholder.svg'}
+                    alt={image.alt}
+                    width={300}
+                    height={300}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              ))}
+            </div>
+
+            <div
+              id="mentor-help-list"
+              data-scroll-animate
+              className={`space-y-6 transition-all duration-1000 ${
+                isVisible('mentor-help-list')
+                  ? 'opacity-100 translate-x-0'
+                  : 'opacity-0 translate-x-8'
+              }`}
+            >
+              {[
+                {
+                  title: 'What Scouts Are Looking For',
+                  description:
+                    'Insider knowledge on what college recruiters prioritize in prospects',
+                },
+                {
+                  title: 'Training and Nutrition',
+                  description:
+                    'Elite-level training routines and nutrition plans for peak performance',
+                },
+                {
+                  title: 'Dealing with Teams & Coaches',
+                  description:
+                    'Navigate team dynamics and build strong relationships with coaching staff',
+                },
+                {
+                  title: 'Preparing For Camps & Tryouts',
+                  description:
+                    'Strategic preparation to maximize your performance when it matters most',
+                },
+                {
+                  title: 'Hockey IQ',
+                  description:
+                    'Develop game intelligence and decision-making skills that set you apart',
+                },
+                {
+                  title: 'Mindset',
+                  description: 'Build mental toughness and confidence to perform under pressure',
+                },
+                {
+                  title: 'Lessons We Wish We Knew Earlier',
+                  description: "Avoid common pitfalls with wisdom from players who've been there",
+                },
+              ].map((area, index) => (
+                <div
+                  key={index}
+                  id={`help-area-${index}`}
+                  data-scroll-animate
+                  className={`flex items-start space-x-4 transition-all duration-700 ${
+                    isVisible(`help-area-${index}`)
+                      ? 'opacity-100 translate-x-0'
+                      : 'opacity-0 translate-x-4'
+                  }`}
+                  style={{ transitionDelay: `${index * 100}ms` }}
+                >
+                  <div className="flex-shrink-0 w-6 h-6 bg-[#0891B2] rounded-full flex items-center justify-center mt-1">
+                    <CheckCircle className="w-4 h-4 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-gray-900 mb-2">{area.title}</h3>
+                    <p className="text-gray-600 leading-relaxed">{area.description}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div
+            id="mentor-help-cta"
+            data-scroll-animate
+            className={`text-center mt-12 transition-all duration-1000 ${
+              isVisible('mentor-help-cta') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+            }`}
+          >
+            <Button
+              size="lg"
+              className="bg-[#0891B2] hover:bg-[#0E7490] text-white px-8 py-4 text-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+            >
+              Get Matched Now
+              <ArrowRight className="ml-2 h-5 w-5" />
+            </Button>
+          </div>
+        </div>
+      </section> */}
 
       {/* Featured Mentors Preview */}
       <section id="mentors" className="py-20 bg-white">
@@ -438,13 +766,15 @@ export default function HomePage() {
       </section>
 
       {/* Success Story Highlight */}
-      <section id="success-stories" className="py-20 bg-gray-50">
+      <section id="testimonials" className="py-20 bg-gray-50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div
-            id="success-header"
+            id="testimonials-header"
             data-scroll-animate
             className={`text-center mb-16 transition-all duration-1000 ${
-              isVisible('success-header') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+              isVisible('testimonials-header')
+                ? 'opacity-100 translate-y-0'
+                : 'opacity-0 translate-y-8'
             }`}
           >
             <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
@@ -454,104 +784,106 @@ export default function HomePage() {
               Real results. Real impact. Hear from athletes and parents who have directly benefited.
             </p>
           </div>
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div
-              id="success-testimonials"
-              data-scroll-animate
-              className={`space-y-8 transition-all duration-1000 ${
-                isVisible('success-testimonials')
-                  ? 'opacity-100 translate-x-0'
-                  : 'opacity-0 -translate-x-8'
-              }`}
-            >
-              {[
-                {
-                  name: 'Alex Johnson',
-                  quote:
-                    'My mentor helped me identify the gaps in my game and gave me a clear roadmap to D1. Six months later, I committed to Boston University.',
-                  transformation: 'AAA to Boston University Commit',
-                  mentor: 'Mentored by Jake Morrison',
-                },
-                {
-                  name: 'Maya Patel',
-                  quote:
-                    'The personalized training plan and recruitment guidance were game-changers. I went from being overlooked to having multiple D1 offers.',
-                  transformation: '0 offers to 4 D1 commitments',
-                  mentor: 'Mentored by Sarah Chen',
-                },
-              ].map((story, index) => (
-                <Card
-                  key={index}
-                  className={`border-0 shadow-lg transition-all duration-700 ${
-                    isVisible('success-testimonials')
-                      ? 'opacity-100 translate-y-0'
-                      : 'opacity-0 translate-y-4'
-                  }`}
-                  style={{ transitionDelay: `${index * 200}ms` }}
-                >
-                  <CardContent className="p-8">
-                    <div className="flex items-start space-x-4">
-                      <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#0891B2]/20 to-[#8B5CF6]/20 overflow-hidden flex-shrink-0">
-                        <Image
-                          src="/placeholder.svg?height=64&width=64"
-                          alt={story.name}
-                          width={64}
-                          height={64}
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                      <div className="flex-1">
-                        <div className="flex items-center mb-2">
-                          {[...Array(5)].map((_, i) => (
-                            <Star key={i} className="h-4 w-4 text-yellow-400 fill-current" />
-                          ))}
-                        </div>
-                        <p className="text-gray-700 mb-4 italic">&quot;{story.quote}&quot;</p>
-                        <div className="space-y-1">
-                          <p className="font-semibold text-gray-900">{story.name}</p>
-                          <p className="text-[#0891B2] font-medium text-sm">
-                            {story.transformation}
+
+          <div className="relative">
+            <div className="">
+              <div
+                className="flex transition-transform duration-500 ease-in-out py-2"
+                style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+              >
+                {[
+                  {
+                    name: 'Alex Johnson',
+                    message:
+                      'The personalized training and recruitment guidance were exactly what I needed. I went from being overlooked to committing to Boston University.',
+                    team: 'Boston University',
+                    position: 'Forward',
+                    icon: '/placeholder.svg?height=64&width=64',
+                  },
+                  {
+                    name: 'Maya Patel',
+                    message:
+                      'My mentor helped me identify the gaps in my game and gave me a clear roadmap to success. Now I have multiple D1 offers to choose from.',
+                    team: 'University of Minnesota',
+                    position: 'Defenseman',
+                    icon: '/placeholder.svg?height=64&width=64',
+                  },
+                  {
+                    name: 'Ryan Chen',
+                    message:
+                      "The video analysis sessions were game-changing. I improved my skating technique and now I'm playing at a whole new level.",
+                    team: 'Harvard University',
+                    position: 'Center',
+                    icon: '/placeholder.svg?height=64&width=64',
+                  },
+                ].map((testimonial, index) => (
+                  <div key={index} className="w-full flex-shrink-0 px-4">
+                    <Card className="border border-gray-100 shadow-xl hover:shadow-2xl transition-all duration-300 max-w-md mx-auto overflow-visible">
+                      <CardContent className="p-6">
+                        <div className="flex flex-col items-center text-center">
+                          <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#0891B2] to-[#8B5CF6] p-0.5 mb-4">
+                            <div className="w-full h-full rounded-full overflow-hidden bg-white">
+                              <Image
+                                src={testimonial.icon}
+                                alt={testimonial.name}
+                                width={64}
+                                height={64}
+                                className="w-full h-full object-cover"
+                              />
+                            </div>
+                          </div>
+                          <div className="flex items-center mb-3">
+                            {[...Array(5)].map((_, i) => (
+                              <Star key={i} className="h-4 w-4 text-yellow-400 fill-current" />
+                            ))}
+                          </div>
+                          <p className="text-gray-800 text-base mb-4 italic leading-relaxed">
+                            &quot;{testimonial.message}&quot;
                           </p>
-                          <p className="text-gray-500 text-sm">{story.mentor}</p>
+                          <div className="space-y-1">
+                            <p className="font-bold text-lg text-gray-900">{testimonial.name}</p>
+                            <p className="text-[#0891B2] font-semibold text-sm">
+                              {testimonial.position}
+                            </p>
+                            <p className="text-gray-500 text-sm">{testimonial.team}</p>
+                          </div>
                         </div>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
+                      </CardContent>
+                    </Card>
+                  </div>
+                ))}
+              </div>
             </div>
-            <div
-              id="success-video"
-              data-scroll-animate
-              className={`relative transition-all duration-1000 ${
-                isVisible('success-video')
-                  ? 'opacity-100 translate-x-0 scale-100'
-                  : 'opacity-0 translate-x-8 scale-95'
-              }`}
+
+            {/* Navigation Buttons */}
+            <Button
+              variant="ghost"
+              size="icon"
+              className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 bg-white rounded-full shadow-lg hover:bg-gray-50"
+              onClick={() => setCurrentSlide(Math.max(0, currentSlide - 1))}
             >
-              <div className="aspect-video rounded-2xl overflow-hidden bg-gradient-to-br from-[#0891B2]/20 to-[#8B5CF6]/20 relative">
-                <Image
-                  src="/placeholder.svg?height=400&width=600"
-                  alt="Success story video"
-                  width={600}
-                  height={400}
-                  className="w-full h-full object-cover"
+              <ChevronLeft className="h-6 w-6" />
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 bg-white rounded-full shadow-lg hover:bg-gray-50"
+              onClick={() => setCurrentSlide(Math.min(2, currentSlide + 1))}
+            >
+              <ChevronRight className="h-6 w-6" />
+            </Button>
+
+            {/* Dots */}
+            <div className="flex justify-center mt-8 space-x-2">
+              {[0, 1, 2].map((index) => (
+                <button
+                  key={index}
+                  className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
+                    currentSlide === index ? 'bg-[#0891B2] w-8' : 'bg-gray-300'
+                  }`}
+                  onClick={() => setCurrentSlide(index)}
                 />
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <Button
-                    size="lg"
-                    className="bg-white/90 hover:bg-white text-[#0891B2] rounded-full w-16 h-16 p-0"
-                  >
-                    <Play className="h-6 w-6 ml-1" />
-                  </Button>
-                </div>
-              </div>
-              <div className="absolute -bottom-4 -right-4 bg-white rounded-xl p-4 shadow-lg border">
-                <div className="text-center">
-                  <p className="text-2xl font-bold text-[#0891B2]">94%</p>
-                  <p className="text-sm text-gray-600">Success Rate</p>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
         </div>
