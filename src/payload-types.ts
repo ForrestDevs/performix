@@ -85,6 +85,9 @@ export interface Config {
     mentors: Mentor;
     students: Student;
     testimonials: Testimonial;
+    articles: Article;
+    'article-tags': ArticleTag;
+    schools: School;
     'payload-folders': FolderInterface;
     'payload-jobs': PayloadJob;
     'payload-locked-documents': PayloadLockedDocument;
@@ -122,6 +125,9 @@ export interface Config {
     mentors: MentorsSelect<false> | MentorsSelect<true>;
     students: StudentsSelect<false> | StudentsSelect<true>;
     testimonials: TestimonialsSelect<false> | TestimonialsSelect<true>;
+    articles: ArticlesSelect<false> | ArticlesSelect<true>;
+    'article-tags': ArticleTagsSelect<false> | ArticleTagsSelect<true>;
+    schools: SchoolsSelect<false> | SchoolsSelect<true>;
     'payload-folders': PayloadFoldersSelect<false> | PayloadFoldersSelect<true>;
     'payload-jobs': PayloadJobsSelect<false> | PayloadJobsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
@@ -837,13 +843,15 @@ export interface MediaBlock {
  */
 export interface Mentor {
   id: number;
+  slug?: string | null;
+  slugLock?: boolean | null;
   name: string;
+  bio?: string | null;
   avatar?: (number | null) | Media;
+  age?: number | null;
   currentTeam?: string | null;
   position?: string | null;
-  bio?: string | null;
-  age?: number | null;
-  school?: string | null;
+  school?: (number | null) | School;
   sports?:
     | {
         sport?: string | null;
@@ -873,6 +881,17 @@ export interface Mentor {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "schools".
+ */
+export interface School {
+  id: number;
+  name: string;
+  logo: number | Media;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "students".
  */
 export interface Student {
@@ -892,6 +911,66 @@ export interface Testimonial {
   image?: (number | null) | Media;
   team?: string | null;
   position?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Blog posts
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "articles".
+ */
+export interface Article {
+  id: number;
+  title: string;
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  relatedPosts?: (number | Article)[] | null;
+  tags?: (number | ArticleTag)[] | null;
+  meta?: {
+    title?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    description?: string | null;
+  };
+  publishedAt?: string | null;
+  authors?: (number | User)[] | null;
+  populatedAuthors?:
+    | {
+        id?: string | null;
+        name?: string | null;
+      }[]
+    | null;
+  slug?: string | null;
+  slugLock?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "article-tags".
+ */
+export interface ArticleTag {
+  id: number;
+  title: string;
+  slug?: string | null;
+  slugLock?: boolean | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1065,6 +1144,18 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'testimonials';
         value: number | Testimonial;
+      } | null)
+    | ({
+        relationTo: 'articles';
+        value: number | Article;
+      } | null)
+    | ({
+        relationTo: 'article-tags';
+        value: number | ArticleTag;
+      } | null)
+    | ({
+        relationTo: 'schools';
+        value: number | School;
       } | null)
     | ({
         relationTo: 'payload-folders';
@@ -1510,12 +1601,14 @@ export interface MediaBlockSelect<T extends boolean = true> {
  * via the `definition` "mentors_select".
  */
 export interface MentorsSelect<T extends boolean = true> {
+  slug?: T;
+  slugLock?: T;
   name?: T;
+  bio?: T;
   avatar?: T;
+  age?: T;
   currentTeam?: T;
   position?: T;
-  bio?: T;
-  age?: T;
   school?: T;
   sports?:
     | T
@@ -1565,6 +1658,57 @@ export interface TestimonialsSelect<T extends boolean = true> {
   image?: T;
   team?: T;
   position?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "articles_select".
+ */
+export interface ArticlesSelect<T extends boolean = true> {
+  title?: T;
+  content?: T;
+  relatedPosts?: T;
+  tags?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        image?: T;
+        description?: T;
+      };
+  publishedAt?: T;
+  authors?: T;
+  populatedAuthors?:
+    | T
+    | {
+        id?: T;
+        name?: T;
+      };
+  slug?: T;
+  slugLock?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "article-tags_select".
+ */
+export interface ArticleTagsSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  slugLock?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "schools_select".
+ */
+export interface SchoolsSelect<T extends boolean = true> {
+  name?: T;
+  logo?: T;
   updatedAt?: T;
   createdAt?: T;
 }

@@ -10,6 +10,9 @@ import { Pages } from './Pages'
 import { Mentors } from './Mentors'
 import Students from './Students'
 import Testimonials from './Testimonials'
+import Articles from './Articles'
+import ArticleTags from './ArticleTags'
+import Schools from './Schools'
 
 export const collections = [
   Courses,
@@ -24,4 +27,7 @@ export const collections = [
   Mentors,
   Students,
   Testimonials,
+  Articles,
+  ArticleTags,
+  Schools,
 ]

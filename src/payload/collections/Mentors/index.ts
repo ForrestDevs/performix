@@ -1,5 +1,6 @@
 import { CollectionConfig } from 'payload'
-import { MENTOR_SLUG } from '../constants'
+import { MENTOR_SLUG, SCHOOLS_SLUG } from '../constants'
+import { slugField } from '@/payload/fields/slug'
 
 export const Mentors: CollectionConfig = {
   slug: MENTOR_SLUG,
@@ -7,10 +8,15 @@ export const Mentors: CollectionConfig = {
     useAsTitle: 'name',
   },
   fields: [
+    ...slugField('name'),
     {
       name: 'name',
       type: 'text',
       required: true,
+    },
+    {
+      name: 'bio',
+      type: 'textarea',
     },
     {
       name: 'avatar',
@@ -18,24 +24,30 @@ export const Mentors: CollectionConfig = {
       relationTo: 'media',
     },
     {
-      name: 'currentTeam',
-      type: 'text',
-    },
-    {
-      name: 'position',
-      type: 'text',
-    },
-    {
-      name: 'bio',
-      type: 'textarea',
-    },
-    {
       name: 'age',
       type: 'number',
     },
     {
-      name: 'school',
+      name: 'currentTeam',
       type: 'text',
+      admin: {
+        position: 'sidebar',
+      },
+    },
+    {
+      name: 'position',
+      type: 'text',
+      admin: {
+        position: 'sidebar',
+      },
+    },
+    {
+      name: 'school',
+      type: 'relationship',
+      relationTo: SCHOOLS_SLUG,
+      admin: {
+        position: 'sidebar',
+      },
     },
     {
       name: 'sports',

@@ -23,3 +23,6 @@ export const SHIPPING_OPTION_SLUG = 'shipping-options' as const
 
 export const MENTOR_SLUG = 'mentors' as const
 export const STUDENT_SLUG = 'students' as const
+export const ARTICLE_TAG_SLUG = 'article-tags' as const
+export const ARTICLE_SLUG = 'articles' as const
+export const SCHOOLS_SLUG = 'schools' as const

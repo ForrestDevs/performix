@@ -9,27 +9,13 @@ import {
   HowItWorksSection,
   WhatYouGetEveryMonth,
   ExtraValueSection,
-  FeaturedMentorsSection,
-  TestimonialsSection,
   TrustSection,
   FAQSection,
 } from '@/components/layout/home'
-import { getPayload } from '@/lib/utilities/getPayload'
-import { TESTIMONIALS_SLUG, MENTOR_SLUG } from '@/payload/collections/constants'
+import { FeaturedMentorsSection } from '@/components/layout/home/featured-mentors'
+import { TestimonialsSection } from '@/components/layout/home/testimonials'
 
-export default async function HomePage() {
-  const payload = await getPayload()
-
-  const testimonials = await payload.find({
-    collection: TESTIMONIALS_SLUG,
-    limit: 6,
-  })
-
-  const mentors = await payload.find({
-    collection: MENTOR_SLUG,
-    limit: 4,
-  })
-
+export default function HomePage() {
   return (
     <div className="min-h-screen bg-white">
       <section className="relative overflow-hidden bg-gradient-to-b from-gray-50 to-white py-20 sm:py-32">
@@ -117,8 +103,8 @@ export default async function HomePage() {
       <HowItWorksSection />
       <WhatYouGetEveryMonth />
       <ExtraValueSection />
-      <FeaturedMentorsSection mentors={mentors.docs} />
-      <TestimonialsSection testimonials={testimonials.docs} />
+      <FeaturedMentorsSection />
+      <TestimonialsSection />
       <TrustSection />
       <FAQSection />
       <section className="py-20 bg-gradient-to-r from-[#0891B2] to-[#0E7490]">

@@ -1,97 +1,102 @@
 import Link from 'next/link'
 import { PerformixLogoDark } from '@/components/logo'
+import { Mail, Phone } from 'lucide-react'
+import { FacebookIcon, InstagramIcon, TikTokIcon } from '@/components/ui/icons'
 
 export default function Footer() {
   return (
-    <footer className="bg-gray-900 text-white py-12">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid md:grid-cols-4 gap-8">
-          <div>
-            <div className="mb-4">
-              <PerformixLogoDark />
-            </div>
-            <p className="text-gray-400 leading-relaxed">
+    <footer className="bg-gray-900 text-white py-8 md:py-12">
+      <div className="container mx-auto px-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="space-y-4">
+            <PerformixLogoDark />
+            <p className="text-gray-400 text-sm">
               Connecting elite hockey talent with proven D1+ mentors to accelerate your path to
               success.
             </p>
+            <div className="flex flex-col space-y-2">
+              <Link
+                href="mailto:mateo@performix.ca"
+                className="flex items-center text-gray-400 hover:text-white transition-colors text-sm"
+              >
+                <Mail className="h-4 w-4 mr-2" />
+                mateo@performix.ca
+              </Link>
+              <Link
+                href="tel:+16476256177"
+                className="flex items-center text-gray-400 hover:text-white transition-colors text-sm"
+              >
+                <Phone className="h-4 w-4 mr-2" />
+                (647) 625-6177
+              </Link>
+            </div>
+            <div className="flex space-x-4">
+              <Link
+                href="https://instagram.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-400 hover:text-white transition-colors"
+              >
+                <InstagramIcon />
+              </Link>
+              <Link
+                href="https://facebook.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-400 hover:text-white transition-colors"
+              >
+                <FacebookIcon />
+              </Link>
+              <Link
+                href="https://tiktok.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-400 hover:text-white transition-colors"
+              >
+                <TikTokIcon />
+              </Link>
+            </div>
           </div>
-          <div>
-            <h4 className="font-semibold mb-4">Platform</h4>
-            <ul className="space-y-2 text-gray-400">
+
+          <div className="space-y-4">
+            <h4 className="font-semibold text-sm">Quick Links</h4>
+            <ul className="space-y-2 text-gray-400 text-sm">
               <li>
-                <Link href="#" className="hover:text-white transition-colors">
-                  Find Mentors
+                <Link href="/mentors" className="hover:text-white transition-colors">
+                  Find a Mentor
                 </Link>
               </li>
               <li>
-                <Link href="#" className="hover:text-white transition-colors">
-                  How It Works
+                <Link href="/resources" className="hover:text-white transition-colors">
+                  Resources
                 </Link>
               </li>
               <li>
-                <Link href="#" className="hover:text-white transition-colors">
-                  Success Stories
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className="hover:text-white transition-colors">
+                <Link href="/pricing" className="hover:text-white transition-colors">
                   Pricing
                 </Link>
               </li>
             </ul>
           </div>
-          <div>
-            <h4 className="font-semibold mb-4">Support</h4>
-            <ul className="space-y-2 text-gray-400">
-              <li>
-                <Link href="#" className="hover:text-white transition-colors">
-                  Help Center
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className="hover:text-white transition-colors">
-                  Contact Us
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className="hover:text-white transition-colors">
-                  Safety
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className="hover:text-white transition-colors">
-                  Parent Resources
-                </Link>
-              </li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="font-semibold mb-4">Company</h4>
-            <ul className="space-y-2 text-gray-400">
-              <li>
-                <Link href="#" className="hover:text-white transition-colors">
-                  About
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className="hover:text-white transition-colors">
-                  Careers
-                </Link>
-              </li>
+
+          <div className="space-y-4">
+            <h4 className="font-semibold text-sm">Legal</h4>
+            <ul className="space-y-2 text-gray-400 text-sm">
               <li>
                 <Link href="/privacy" className="hover:text-white transition-colors">
-                  Privacy
+                  Privacy Policy
                 </Link>
               </li>
               <li>
                 <Link href="/terms" className="hover:text-white transition-colors">
-                  Terms
+                  Terms of Service
                 </Link>
               </li>
             </ul>
           </div>
         </div>
-        <div className="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400">
+
+        <div className="border-t border-gray-800 mt-8 pt-6 text-center text-gray-400 text-sm">
           <p>&copy; {new Date().getFullYear()} Performix. All rights reserved.</p>
         </div>
       </div>

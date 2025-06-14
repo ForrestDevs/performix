@@ -1,19 +1,40 @@
-import { vercelPostgresAdapter } from '@payloadcms/db-vercel-postgres'
 import sharp from 'sharp' // sharp-import
 import path from 'path'
-import { buildConfig, PayloadRequest } from 'payload'
+import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
 import { plugins } from './payload/plugins'
 import { defaultLexical } from '@/payload/fields/defaultLexical'
 import { USER_SLUG } from './payload/collections/constants'
 import { collections } from './payload/collections'
+import { vercelPostgresAdapter } from '@payloadcms/db-vercel-postgres'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
+const serverURL = process.env.NEXT_PUBLIC_SERVER_URL
+
+export const allowedOrigins = [
+  serverURL,
+  'https://performix.ca',
+  'https://www.performix.ca',
+  'https://app.performix.ca',
+  'https://performix.vercel.app',
+].filter(Boolean)
+
 export default buildConfig({
-  serverURL: process.env.PAYLOAD_PUBLIC_SERVER_URL,
+  serverURL: serverURL,
   admin: {
+    meta: {
+      applicationName: 'Performix',
+      icons: [
+        {
+          url: '/favicon.ico',
+          sizes: '32x32',
+          type: 'image/x-icon',
+        },
+      ],
+      titleSuffix: '- Performix',
+    },
     user: USER_SLUG,
     livePreview: {
       breakpoints: [
@@ -38,6 +59,7 @@ export default buildConfig({
       ],
     },
   },
+
   editor: defaultLexical,
   db: vercelPostgresAdapter({
     pool: {
@@ -46,58 +68,13 @@ export default buildConfig({
     push: false,
     migrationDir: path.resolve(dirname, 'lib/migrations'),
   }),
-  
   collections,
-  cors: [process.env.PAYLOAD_PUBLIC_SITE_URL || ''],
-  csrf: [process.env.PAYLOAD_PUBLIC_SITE_URL || ''],
+  cors: allowedOrigins,
+  csrf: allowedOrigins,
   plugins: [...plugins],
   secret: process.env.PAYLOAD_SECRET,
   sharp,
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
-  jobs: {
-    access: {
-      run: ({ req }: { req: PayloadRequest }): boolean => {
-        // Allow logged in users to execute this endpoint (default)
-        if (req.user) return true
-
-        // If there is no logged in user, then check
-        // for the Vercel Cron secret to be present as an
-        // Authorization header:
-        const authHeader = req.headers.get('authorization')
-        return authHeader === `Bearer ${process.env.CRON_SECRET}`
-      },
-    },
-    tasks: [],
-  },
-  // onInit: async (cms) => {
-  //   // Check for existing admin users
-  //   const existingAdmins = await cms.find({
-  //     collection: 'users',
-  //     where: {
-  //       roles: {
-  //         contains: 'admin',
-  //       },
-  //     },
-  //   })
-
-  //   // If no admin users exist, create one using environment variables
-  //   if (!existingAdmins.docs || existingAdmins.docs.length === 0) {
-  //     try {
-  //       await cms.create({
-  //         collection: 'users',
-  //         data: {
-  //           email: 'dev@perfomix.com',
-  //           password: 'devs',
-  //           roles: ['admin'],
-  //           name: 'Dev Admin',
-  //         },
-  //       })
-  //       console.log('Admin user created successfully')
-  //     } catch (err) {
-  //       console.error('Error creating admin user:', err)
-  //     }
-  //   }
-  // },
 })
