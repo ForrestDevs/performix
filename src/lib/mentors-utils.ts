@@ -36,7 +36,7 @@ export function filterAndSortMentors(
         mentor.name?.toLowerCase().includes(query) ||
         mentor.position?.toLowerCase().includes(query) ||
         mentor.bio?.toLowerCase().includes(query) ||
-        mentor.skills?.some((spec) => spec?.skill?.toLowerCase().includes(query)),
+        mentor.skills?.some((skill) => skill.toLowerCase().includes(query)),
     )
   }
 
