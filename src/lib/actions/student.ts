@@ -20,7 +20,7 @@ export interface StudentProfileData {
 }
 
 export async function createStudentProfileAction(
-  userId: string,
+  userId: number,
   profileData: StudentProfileData,
 ) {
   try {
