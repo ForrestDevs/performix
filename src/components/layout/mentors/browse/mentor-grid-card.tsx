@@ -11,6 +11,7 @@ import { Media as MediaComponent } from '@/components/Media'
 import { useState } from 'react'
 import Link from 'next/link'
 import { cn } from '@/lib/utilities/ui'
+import { prettifySkill } from '@/lib/utilities/prettify'
 
 interface MentorGridCardProps {
   mentor: Mentor
@@ -95,8 +96,8 @@ export function MentorGridCard({ mentor, index }: MentorGridCardProps) {
           <p className="text-sm text-gray-600 mb-3.5 line-clamp-2">{mentor.bio}</p>
           <div className="flex flex-wrap gap-1.5 mb-4">
             {mentor.skills?.slice(0, 3).map((skill) => (
-              <Badge key={skill?.skill} variant="outline" className="text-xs px-2 py-0.5">
-                {skill?.skill}
+              <Badge key={skill} variant="outline" className="text-xs px-2 py-0.5">
+                {prettifySkill(skill)}
               </Badge>
             ))}
           </div>

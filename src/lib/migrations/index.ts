@@ -3,6 +3,9 @@ import * as migration_20250613_205520_testimonials from './20250613_205520_testi
 import * as migration_20250614_153201_articles from './20250614_153201_articles';
 import * as migration_20250614_160421_schools from './20250614_160421_schools';
 import * as migration_20250614_161927_mentors2 from './20250614_161927_mentors2';
+import * as migration_20250617_142718_mentors3 from './20250617_142718_mentors3';
+import * as migration_20250617_144919_testi2 from './20250617_144919_testi2';
+import * as migration_20250617_150416_mentorsFeatured from './20250617_150416_mentorsFeatured';
 
 export const migrations = [
   {
@@ -28,6 +31,21 @@ export const migrations = [
   {
     up: migration_20250614_161927_mentors2.up,
     down: migration_20250614_161927_mentors2.down,
-    name: '20250614_161927_mentors2'
+    name: '20250614_161927_mentors2',
+  },
+  {
+    up: migration_20250617_142718_mentors3.up,
+    down: migration_20250617_142718_mentors3.down,
+    name: '20250617_142718_mentors3',
+  },
+  {
+    up: migration_20250617_144919_testi2.up,
+    down: migration_20250617_144919_testi2.down,
+    name: '20250617_144919_testi2',
+  },
+  {
+    up: migration_20250617_150416_mentorsFeatured.up,
+    down: migration_20250617_150416_mentorsFeatured.down,
+    name: '20250617_150416_mentorsFeatured'
   },
 ];

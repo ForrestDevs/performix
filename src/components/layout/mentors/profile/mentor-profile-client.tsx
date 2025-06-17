@@ -33,15 +33,7 @@ export function MentorProfileClient({ mentor }: MentorProfileClientProps) {
   return (
     <MentorProvider mentor={mentor}>
       <div className="min-h-screen bg-gray-50">
-        {/* Hero Section */}
-        <MentorHero onBookingOpen={() => setIsBookingOpen(true)} />
-
-        {/* Profile Navigation */}
-        {/* <MentorNavigation
-          activeTab={activeTab}
-          setActiveTab={setActiveTab}
-          sectionRefs={sectionRefs}
-        /> */}
+        <MentorHero />
 
         {/* Main Content */}
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -69,7 +61,9 @@ export function MentorProfileClient({ mentor }: MentorProfileClientProps) {
                   </p>
                   <Button
                     className="w-full bg-[#0891B2] hover:bg-[#0E7490] text-white"
-                    onClick={() => window.open('https://calendly.com/mateodixon/d1-mentorship-call', '_blank')}
+                    onClick={() =>
+                      window.open('https://calendly.com/mateodixon/d1-mentorship-call', '_blank')
+                    }
                   >
                     Book a Call
                   </Button>
@@ -77,10 +71,10 @@ export function MentorProfileClient({ mentor }: MentorProfileClientProps) {
               </Card>
 
               {/* Location Card */}
-              <MentorLocationCard />
+              {/* <MentorLocationCard /> */}
 
               {/* Contact Card */}
-              <MentorContactCard onScheduleCall={() => setIsBookingOpen(true)} />
+              {/* <MentorContactCard onScheduleCall={() => setIsBookingOpen(true)} /> */}
 
               {/* TODO: Add other sidebar components */}
               {/* <MentorProfileCard onBookingOpen={() => setIsBookingOpen(true)} />

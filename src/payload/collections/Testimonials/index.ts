@@ -1,11 +1,15 @@
 import { CollectionConfig } from 'payload'
 import { TESTIMONIALS_SLUG } from '../constants'
+import { revalidateTestimonials } from './hooks/revalidate'
 
 export const Testimonials: CollectionConfig = {
   slug: TESTIMONIALS_SLUG,
   labels: {
     singular: 'Testimonial',
     plural: 'Testimonials',
+  },
+  hooks: {
+    afterChange: [revalidateTestimonials],
   },
   fields: [
     {
@@ -28,6 +32,11 @@ export const Testimonials: CollectionConfig = {
     {
       name: 'position',
       type: 'text',
+    },
+    {
+      name: 'featured',
+      type: 'checkbox',
+      defaultValue: true,
     },
   ],
 } as const

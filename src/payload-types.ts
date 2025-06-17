@@ -846,35 +846,49 @@ export interface Mentor {
   slug?: string | null;
   slugLock?: boolean | null;
   name: string;
+  /**
+   * The short intro that goes in the mentor card and at the top of the profile. (Perferably written in the third person).
+   */
+  intro: string;
+  /**
+   * The bio is a longer description of the mentor and can be written in the first person.
+   */
   bio?: string | null;
-  avatar?: (number | null) | Media;
+  location: string;
   age?: number | null;
+  /**
+   * Upload/ Select a profile picture for the mentor
+   */
+  avatar?: (number | null) | Media;
   currentTeam?: string | null;
-  position?: string | null;
+  position?: ('forward' | 'defence' | 'goalie') | null;
+  levelOfPlay?: ('d1' | 'pro' | 'usports') | null;
   school?: (number | null) | School;
-  sports?:
-    | {
-        sport?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  agesServed?:
-    | {
-        age?: string | null;
-        id?: string | null;
-      }[]
-    | null;
+  sports?: ('hockey' | 'soccer' | 'baseball' | 'basketball' | 'volleyball')[] | null;
+  featured: boolean;
   socials?: {
     eliteProspects?: string | null;
-    tiktok?: string | null;
     instagram?: string | null;
-    youtube?: string | null;
   };
   skills?:
-    | {
-        skill?: string | null;
-        id?: string | null;
-      }[]
+    | (
+        | 'defensive-awareness'
+        | 'defending-the-rush'
+        | 'offensive-production'
+        | 'breaking-out'
+        | 'winning-the-battle'
+        | 'playmaking'
+        | 'skating-ability'
+        | 'puck-handling'
+        | 'reaction-speed'
+        | 'agility'
+        | 'speed'
+        | 'wallplay'
+        | 'stickhandling'
+        | 'hockey-iq'
+        | 'teamwork'
+        | 'leadership'
+      )[]
     | null;
   updatedAt: string;
   createdAt: string;
@@ -911,6 +925,7 @@ export interface Testimonial {
   image?: (number | null) | Media;
   team?: string | null;
   position?: string | null;
+  featured?: boolean | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1604,38 +1619,24 @@ export interface MentorsSelect<T extends boolean = true> {
   slug?: T;
   slugLock?: T;
   name?: T;
+  intro?: T;
   bio?: T;
-  avatar?: T;
+  location?: T;
   age?: T;
+  avatar?: T;
   currentTeam?: T;
   position?: T;
+  levelOfPlay?: T;
   school?: T;
-  sports?:
-    | T
-    | {
-        sport?: T;
-        id?: T;
-      };
-  agesServed?:
-    | T
-    | {
-        age?: T;
-        id?: T;
-      };
+  sports?: T;
+  featured?: T;
   socials?:
     | T
     | {
         eliteProspects?: T;
-        tiktok?: T;
         instagram?: T;
-        youtube?: T;
       };
-  skills?:
-    | T
-    | {
-        skill?: T;
-        id?: T;
-      };
+  skills?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1658,6 +1659,7 @@ export interface TestimonialsSelect<T extends boolean = true> {
   image?: T;
   team?: T;
   position?: T;
+  featured?: T;
   updatedAt?: T;
   createdAt?: T;
 }

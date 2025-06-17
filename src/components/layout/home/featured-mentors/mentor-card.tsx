@@ -14,7 +14,7 @@ export function MentorCard({
   index: number
   isVisible: (id: string) => boolean
 }) {
-//   console.log(mentor)
+  //   console.log(mentor)
   return (
     <Card
       key={index}
@@ -52,7 +52,7 @@ export function MentorCard({
             <span className="text-sm text-gray-600">{mentor.school?.name}</span>
           </div>
         )}
-        <p className="text-sm text-gray-500 mb-4">{mentor.bio}</p>
+        <p className="text-sm text-gray-500 mb-4 line-clamp-2">{mentor.intro}</p>
         <Link
           href={`/mentors/${mentor.slug}`}
           className={cn(
