@@ -11,6 +11,7 @@ import { cn } from '@/lib/utilities/ui'
 import { type MentorSample } from '@/lib/mentors-utils'
 import { Media, Mentor } from '@/payload-types'
 import { useState } from 'react'
+import { prettifySkill } from '@/lib/utilities/prettify'
 
 interface MentorCardProps {
   mentor: Mentor
@@ -94,7 +95,7 @@ export function MentorCard({ mentor, isVisible, index }: MentorCardProps) {
             <div className="flex flex-wrap gap-2 mb-4">
               {mentor.skills?.map((skill, index) => (
                 <Badge key={index} variant="outline" className="text-xs">
-                  {skill?.skill}
+                  {prettifySkill(skill)}
                 </Badge>
               ))}
             </div>
