@@ -6,8 +6,12 @@ import Breadcrumb from './breadcrumb'
 import { cn } from '@/lib/utilities/ui'
 import { MobileMenu, MobileMenuButton } from './mobile-menu'
 import { MobileMenuProvider } from './context'
+import { getSessionAction, signOutAction } from '@/lib/actions/auth'
+import { UserMenu } from '@/components/layout/UserMenu'
 
-export default function Header() {
+export default async function Header() {
+  const user = await getSessionAction()
+
   return (
     <MobileMenuProvider>
       <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-100">
@@ -47,24 +51,50 @@ export default function Header() {
               >
                 Success Stories
               </Link> */}
-              <Link
-                href="/sign-in"
-                className={cn(
-                  buttonVariants({ variant: 'outline' }),
-                  'border-[#0891B2] text-[#0891B2] hover:bg-[#0891B2] hover:text-white',
-                )}
-              >
-                Sign In
-              </Link>
-              <Link
-                href="/get-started"
-                className={cn(
-                  buttonVariants({ variant: 'default' }),
-                  'bg-[#0891B2] hover:bg-[#0E7490] text-white',
-                )}
-              >
-                Get Started
-              </Link>
+              {user ? (
+                // Authenticated user navigation
+                <div className="flex items-center space-x-4">
+                  <Link
+                    href="/consumer"
+                    className={cn(
+                      buttonVariants({ variant: 'default' }),
+                      'bg-[#0891B2] hover:bg-[#0E7490] text-white',
+                    )}
+                  >
+                    Dashboard
+                  </Link>
+                  <UserMenu 
+                    user={{
+                      id: user.id,
+                      name: user.name,
+                      email: user.email,
+                      image: user.image,
+                    }} 
+                  />
+                </div>
+              ) : (
+                // Unauthenticated user navigation
+                <>
+                  <Link
+                    href="/sign-in"
+                    className={cn(
+                      buttonVariants({ variant: 'outline' }),
+                      'border-[#0891B2] text-[#0891B2] hover:bg-[#0891B2] hover:text-white',
+                    )}
+                  >
+                    Sign In
+                  </Link>
+                  <Link
+                    href="/get-started"
+                    className={cn(
+                      buttonVariants({ variant: 'default' }),
+                      'bg-[#0891B2] hover:bg-[#0E7490] text-white',
+                    )}
+                  >
+                    Get Started
+                  </Link>
+                </>
+              )}
             </nav>
           </div>
         </div>

@@ -1,46 +1,68 @@
 'use client'
 
-import type React from 'react'
-
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent } from '@/components/ui/card'
-import {
-  ChevronRight,
-  Mail,
-  Lock,
-  Eye,
-  EyeOff,
-  ArrowRight,
-  CheckCircle,
-  Users,
-  Trophy,
-} from 'lucide-react'
-import Image from 'next/image'
+import { Mail, Lock, Eye, EyeOff, ArrowRight, CheckCircle, Users, Trophy } from 'lucide-react'
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
+import { useState, useTransition } from 'react'
+import { useRouter } from 'next/navigation'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
 import { useScrollAnimation } from '@/lib/hooks/useScrollAnimation'
 import { PerformixLogo } from '@/components/logo'
+import { signInAction } from '@/lib/actions/auth'
+import { toast } from 'sonner'
+
+const signInSchema = z.object({
+  email: z.string().email('Please enter a valid email address'),
+  password: z.string().min(1, 'Password is required'),
+  rememberMe: z.boolean().optional(),
+})
+
+type SignInData = z.infer<typeof signInSchema>
 
 export default function SignInPage() {
   const visibleElements = useScrollAnimation()
   const [showPassword, setShowPassword] = useState(false)
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-    rememberMe: false,
+  const [isPending, startTransition] = useTransition()
+  const router = useRouter()
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setError,
+  } = useForm<SignInData>({
+    resolver: zodResolver(signInSchema),
+    defaultValues: {
+      email: '',
+      password: '',
+      rememberMe: false,
+    },
   })
 
   const isVisible = (id: string) => visibleElements.has(id)
 
-  const handleInputChange = (field: string, value: string | boolean) => {
-    setFormData((prev) => ({ ...prev, [field]: value }))
-  }
+  const onSubmit = (data: SignInData) => {
+    startTransition(async () => {
+      try {
+        const result = await signInAction(data.email, data.password)
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    console.log('Sign in attempt:', formData)
-    // Handle sign in logic here
+        if (result.error) {
+          setError('root', { message: result.error })
+          toast.error(result.error)
+        } else {
+          toast.success('Signed in successfully!')
+          router.push('/consumer')
+        }
+      } catch (error) {
+        console.error('Sign in error:', error)
+        setError('root', { message: 'An unexpected error occurred' })
+        toast.error('An unexpected error occurred')
+      }
+    })
   }
 
   return (
@@ -52,6 +74,17 @@ export default function SignInPage() {
             <div className="flex items-center space-x-4">
               <Link href="/">
                 <PerformixLogo />
+              </Link>
+            </div>
+            <div className="flex items-center space-x-4">
+              <span className="text-sm text-gray-600">Don&apos;t have an account?</span>
+              <Link href="/get-started">
+                <Button
+                  variant="outline"
+                  className="border-[#0891B2] text-[#0891B2] hover:bg-[#0891B2] hover:text-white"
+                >
+                  Get Started
+                </Button>
               </Link>
             </div>
           </div>
@@ -75,7 +108,7 @@ export default function SignInPage() {
                 <p className="text-gray-600">Continue your journey to excellence</p>
               </div>
 
-              <form onSubmit={handleSubmit} className="space-y-6">
+              <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Email Address
@@ -84,13 +117,15 @@ export default function SignInPage() {
                     <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
                     <Input
                       type="email"
-                      value={formData.email}
-                      onChange={(e) => handleInputChange('email', e.target.value)}
+                      {...register('email')}
                       className="pl-10 border-2 border-gray-200 focus:border-[#0891B2] rounded-lg h-12"
                       placeholder="Enter your email address"
-                      required
+                      disabled={isPending}
                     />
                   </div>
+                  {errors.email && (
+                    <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
+                  )}
                 </div>
 
                 <div>
@@ -99,20 +134,23 @@ export default function SignInPage() {
                     <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
                     <Input
                       type={showPassword ? 'text' : 'password'}
-                      value={formData.password}
-                      onChange={(e) => handleInputChange('password', e.target.value)}
+                      {...register('password')}
                       className="pl-10 pr-10 border-2 border-gray-200 focus:border-[#0891B2] rounded-lg h-12"
                       placeholder="Enter your password"
-                      required
+                      disabled={isPending}
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
                       className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                      disabled={isPending}
                     >
                       {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                     </button>
                   </div>
+                  {errors.password && (
+                    <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>
+                  )}
                 </div>
 
                 <div className="flex items-center justify-between">
@@ -120,28 +158,33 @@ export default function SignInPage() {
                     <input
                       id="remember-me"
                       type="checkbox"
-                      checked={formData.rememberMe}
-                      onChange={(e) => handleInputChange('rememberMe', e.target.checked)}
+                      {...register('rememberMe')}
                       className="h-4 w-4 text-[#0891B2] focus:ring-[#0891B2] border-gray-300 rounded"
+                      disabled={isPending}
                     />
                     <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700">
                       Remember me
                     </label>
                   </div>
                   <Link
-                    href="/forgot-password"
+                    href="/recover-password"
                     className="text-sm text-[#0891B2] hover:text-[#0E7490]"
                   >
                     Forgot password?
                   </Link>
                 </div>
 
+                {errors.root && (
+                  <div className="text-red-500 text-sm text-center">{errors.root.message}</div>
+                )}
+
                 <Button
                   type="submit"
+                  disabled={isPending}
                   className="w-full bg-[#0891B2] hover:bg-[#0E7490] text-white h-12 text-lg"
                 >
-                  Sign In
-                  <ArrowRight className="h-5 w-5 ml-2" />
+                  {isPending ? 'Signing In...' : 'Sign In'}
+                  {!isPending && <ArrowRight className="h-5 w-5 ml-2" />}
                 </Button>
               </form>
 
