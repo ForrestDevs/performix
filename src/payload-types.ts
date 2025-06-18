@@ -910,7 +910,61 @@ export interface School {
  */
 export interface Student {
   id: number;
-  name?: string | null;
+  user: number | User;
+  /**
+   * Full name of the student
+   */
+  name: string;
+  /**
+   * Student email address
+   */
+  email: string;
+  /**
+   * Phone number
+   */
+  phone?: string | null;
+  /**
+   * Student age
+   */
+  age: number;
+  /**
+   * Current level of play
+   */
+  currentLevel:
+    | 'aaa-bantam'
+    | 'aaa-midget'
+    | 'junior-a'
+    | 'junior-b'
+    | 'ushl'
+    | 'nahl'
+    | 'bchl'
+    | 'high-school-varsity'
+    | 'prep-school'
+    | 'other';
+  /**
+   * Primary position
+   */
+  position: 'left-wing' | 'right-wing' | 'center' | 'left-defense' | 'right-defense' | 'goalie';
+  /**
+   * Current team name
+   */
+  currentTeam: string;
+  /**
+   * Goal level of play
+   */
+  goalLevel: 'd1' | 'd3' | 'acha' | 'junior' | 'professional' | 'not-sure';
+  /**
+   * Personal goals and aspirations
+   */
+  goals?: string | null;
+  /**
+   * Personal biography
+   */
+  bio?: string | null;
+  /**
+   * Whether the student has completed their profile setup
+   */
+  profileCompleted?: boolean | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1645,7 +1699,18 @@ export interface MentorsSelect<T extends boolean = true> {
  * via the `definition` "students_select".
  */
 export interface StudentsSelect<T extends boolean = true> {
+  user?: T;
   name?: T;
+  email?: T;
+  phone?: T;
+  age?: T;
+  currentLevel?: T;
+  position?: T;
+  currentTeam?: T;
+  goalLevel?: T;
+  goals?: T;
+  bio?: T;
+  profileCompleted?: T;
   updatedAt?: T;
   createdAt?: T;
 }

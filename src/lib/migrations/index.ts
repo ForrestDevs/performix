@@ -6,6 +6,7 @@ import * as migration_20250614_161927_mentors2 from './20250614_161927_mentors2'
 import * as migration_20250617_142718_mentors3 from './20250617_142718_mentors3';
 import * as migration_20250617_144919_testi2 from './20250617_144919_testi2';
 import * as migration_20250617_150416_mentorsFeatured from './20250617_150416_mentorsFeatured';
+import * as migration_20250617_165604_students from './20250617_165604_students';
 
 export const migrations = [
   {
@@ -46,6 +47,11 @@ export const migrations = [
   {
     up: migration_20250617_150416_mentorsFeatured.up,
     down: migration_20250617_150416_mentorsFeatured.down,
-    name: '20250617_150416_mentorsFeatured'
+    name: '20250617_150416_mentorsFeatured',
+  },
+  {
+    up: migration_20250617_165604_students.up,
+    down: migration_20250617_165604_students.down,
+    name: '20250617_165604_students'
   },
 ];
