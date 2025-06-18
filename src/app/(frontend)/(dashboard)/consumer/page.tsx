@@ -164,20 +164,60 @@ export default async function ConsumerDashboard() {
           </div>
         </div>
 
-        {/* Active Courses Card */}
-        <div className="p-6 bg-white dark:bg-gray-800 rounded-lg shadow">
-          <h2 className="text-xl font-semibold mb-4">Active Courses</h2>
-          <div className="space-y-2">
-            <p className="text-gray-600 dark:text-gray-300">Currently enrolled in:</p>
-            <ul className="list-disc list-inside text-gray-600 dark:text-gray-300">
-              <li>Performance Optimization</li>
-              <li>Advanced Training Methods</li>
-            </ul>
-            <Link href="/courses" className="text-blue-600 hover:underline">
-              Browse More Courses
-            </Link>
-          </div>
-        </div>
+        {/* Profile Status Banner */}
+        {!profileStatus.isComplete && (
+          <Card className="mb-8 border-l-4 border-l-orange-500 bg-orange-50">
+            <CardContent className="p-6">
+              <div className="flex items-center space-x-4">
+                <AlertCircle className="h-8 w-8 text-orange-500" />
+                <div className="flex-1">
+                  <h3 className="text-lg font-semibold text-orange-900">Complete Your Profile</h3>
+                  <p className="text-orange-700 mb-4">
+                    Finish setting up your hockey profile to get matched with the perfect mentor
+                  </p>
+                  <Link href="/get-started?step=3">
+                    <Button className="bg-orange-500 hover:bg-orange-600 text-white">
+                      Complete Profile
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Main Content */}
+          <div className="lg:col-span-2 space-y-8">
+            {/* Quick Stats */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <Card>
+                <CardContent className="p-6">
+                  <div className="flex items-center space-x-4">
+                    <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                      <BookOpen className="h-6 w-6 text-blue-600" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-gray-600">Resources</p>
+                      <p className="text-2xl font-bold text-gray-900">12</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardContent className="p-6">
+                  <div className="flex items-center space-x-4">
+                    <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                      <Users className="h-6 w-6 text-green-600" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-gray-600">Mentors</p>
+                      <p className="text-2xl font-bold text-gray-900">24</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
 
         {/* Mentor Matching Card */}
         <div className="p-6 bg-white dark:bg-gray-800 rounded-lg shadow">
@@ -201,28 +241,86 @@ export default async function ConsumerDashboard() {
               View Certificates
             </Link>
           </div>
-        </div>
-      </div>
 
-      {/* Learning Resources Section */}
-      <div className="mt-8">
-        <h2 className="text-2xl font-semibold mb-4">Quick Access</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <Link 
-            href="/resources"
-            className="p-4 bg-white dark:bg-gray-800 rounded-lg shadow hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
-          >
-            <h3 className="font-medium">Learning Resources</h3>
-            <p className="text-sm text-gray-600 dark:text-gray-300">Access supplementary materials and guides</p>
-          </Link>
-          
-          <Link 
-            href="/community"
-            className="p-4 bg-white dark:bg-gray-800 rounded-lg shadow hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
-          >
-            <h3 className="font-medium">Community</h3>
-            <p className="text-sm text-gray-600 dark:text-gray-300">Connect with other learners and instructors</p>
-          </Link>
+          {/* Sidebar */}
+          <div className="space-y-6">
+            {/* Profile Summary */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center space-x-2">
+                  <User className="h-5 w-5" />
+                  <span>Your Profile</span>
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div>
+                    <p className="text-sm font-medium text-gray-600">Name</p>
+                    <p className="text-sm text-gray-900">{user.name || 'Not set'}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-gray-600">Email</p>
+                    <p className="text-sm text-gray-900">{user.email}</p>
+                  </div>
+                  {studentProfile && (
+                    <>
+                      <div>
+                        <p className="text-sm font-medium text-gray-600">Position</p>
+                        <p className="text-sm text-gray-900 capitalize">
+                          {studentProfile.position?.replace('-', ' ') || 'Not set'}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium text-gray-600">Current Level</p>
+                        <p className="text-sm text-gray-900 capitalize">
+                          {studentProfile.currentLevel?.replace('-', ' ') || 'Not set'}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium text-gray-600">Goal</p>
+                        <p className="text-sm text-gray-900 uppercase">
+                          {studentProfile.goalLevel || 'Not set'}
+                        </p>
+                      </div>
+                    </>
+                  )}
+                  <Button variant="outline" className="w-full">
+                    <Settings className="h-4 w-4 mr-2" />
+                    Edit Profile
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Quick Actions */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Quick Actions</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  <Link href="/mentors">
+                    <Button variant="outline" className="w-full justify-start">
+                      <Users className="h-4 w-4 mr-2" />
+                      Find a Mentor
+                    </Button>
+                  </Link>
+                  <Link href="/resources">
+                    <Button variant="outline" className="w-full justify-start">
+                      <BookOpen className="h-4 w-4 mr-2" />
+                      Browse Resources
+                    </Button>
+                  </Link>
+                  <Link href="/pricing">
+                    <Button variant="outline" className="w-full justify-start">
+                      <Award className="h-4 w-4 mr-2" />
+                      Upgrade Plan
+                    </Button>
+                  </Link>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
         </div>
       </div>
     </div>
@@ -239,4 +337,3 @@ export async function generateMetadata(): Promise<Metadata> {
     }),
   }
 }
-
