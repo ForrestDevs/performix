@@ -1,16 +1,14 @@
 import React from 'react'
-import { PerformixLogo, PerformixLogoClear } from '@/components/logo'
+import { PerformixLogoClear } from '@/components/logo'
 import Link from 'next/link'
-import { Button, buttonVariants } from '@/components/ui/button'
 import Breadcrumb from './breadcrumb'
-import { cn } from '@/lib/utilities/ui'
 import { MobileMenu, MobileMenuButton } from './mobile-menu'
 import { MobileMenuProvider } from './context'
-import { getSessionAction, signOutAction } from '@/lib/actions/auth'
-import { UserMenu } from '@/components/layout/UserMenu'
+import { getUserSessionAction } from '@/lib/actions/auth'
+import { AuthButtons } from './auth-buttons'
 
 export default async function Header() {
-  const user = await getSessionAction()
+  const user = await getUserSessionAction()
 
   return (
     <MobileMenuProvider>
@@ -45,56 +43,7 @@ export default async function Header() {
               >
                 Pricing
               </Link>
-              {/* <Link
-                href="/testimonials"
-                className="text-gray-600 hover:text-[#0891B2] transition-colors"
-              >
-                Success Stories
-              </Link> */}
-              {user ? (
-                // Authenticated user navigation
-                <div className="flex items-center space-x-4">
-                  <Link
-                    href="/consumer"
-                    className={cn(
-                      buttonVariants({ variant: 'default' }),
-                      'bg-[#0891B2] hover:bg-[#0E7490] text-white',
-                    )}
-                  >
-                    Dashboard
-                  </Link>
-                  <UserMenu
-                    user={{
-                      id: user.id,
-                      name: user.name,
-                      email: user.email,
-                      image: user.image,
-                    }}
-                  />
-                </div>
-              ) : (
-                // Unauthenticated user navigation
-                <>
-                  <Link
-                    href="/sign-in"
-                    className={cn(
-                      buttonVariants({ variant: 'outline' }),
-                      'border-[#0891B2] text-[#0891B2] hover:bg-[#0891B2] hover:text-white',
-                    )}
-                  >
-                    Sign In
-                  </Link>
-                  <Link
-                    href="/get-started"
-                    className={cn(
-                      buttonVariants({ variant: 'default' }),
-                      'bg-[#0891B2] hover:bg-[#0E7490] text-white',
-                    )}
-                  >
-                    Get Started
-                  </Link>
-                </>
-              )}
+              <AuthButtons />
             </nav>
           </div>
         </div>

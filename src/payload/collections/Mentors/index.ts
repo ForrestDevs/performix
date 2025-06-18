@@ -190,8 +190,8 @@ export const Mentors: CollectionConfig = {
           value: 'breaking-out',
         },
         {
-          label: 'Winning the Battle',
-          value: 'winning-the-battle',
+          label: 'Winning Battles',
+          value: 'winning-battles',
         },
         {
           label: 'Playmaking',
@@ -212,6 +212,14 @@ export const Mentors: CollectionConfig = {
         {
           label: 'Agility',
           value: 'agility',
+        },
+        {
+          label: 'Physicality',
+          value: 'physicality',
+        },
+        {
+          label: 'Goal Scoring',
+          value: 'goal-scoring',
         },
         {
           label: 'Speed',

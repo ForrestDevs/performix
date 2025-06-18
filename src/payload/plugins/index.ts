@@ -131,9 +131,6 @@ export const plugins: Plugin[] = [
     token: process.env.BLOB_READ_WRITE_TOKEN,
   }),
   betterAuthPlugin({
-    debug: {
-      enableDebugLogs: true,
-    },
     disableDefaultPayloadAuth: true,
     admin: {
       loginMethods: ['google', 'emailPassword', 'passkey'],

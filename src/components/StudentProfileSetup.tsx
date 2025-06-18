@@ -3,7 +3,7 @@
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
+import { Textarea } from '@/components/ui/textarea'
 import {
   User,
   Phone,
@@ -13,76 +13,113 @@ import {
   Trophy,
   CheckCircle,
   ArrowRight,
+  Heart,
 } from 'lucide-react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { toast } from 'sonner'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
+import { createStudentProfileAction, type StudentProfileData } from '@/lib/actions/student'
+import { useBetterAuth } from '@/lib/auth/context'
+import type { TypedUser } from 'payload'
 
-interface StudentProfileData {
-  phone: string
-  age: string
-  currentLevel: string
-  position: string
-  currentTeam: string
-  goalLevel: string
-}
+const studentProfileSchema = z.object({
+  firstName: z.string().min(1, 'First name is required'),
+  lastName: z.string().min(1, 'Last name is required'),
+  phone: z.string().optional(),
+  birthDate: z.string().min(1, 'Birth date is required'),
+  currentLevel: z.string().min(1, 'Current level is required'),
+  position: z.enum(['forward', 'defence', 'goalie'], {
+    required_error: 'Position is required',
+  }),
+  currentTeam: z.string().min(1, 'Current team is required'),
+  goals: z.string().optional(),
+  bio: z.string().optional(),
+})
+
+type StudentProfileFormData = z.infer<typeof studentProfileSchema>
 
 interface StudentProfileSetupProps {
-  onProfileComplete: (data: StudentProfileData) => void
   isLoading?: boolean
 }
 
-export default function StudentProfileSetup({ onProfileComplete, isLoading = false }: StudentProfileSetupProps) {
+export default function StudentProfileSetup({ isLoading = false }: StudentProfileSetupProps) {
   const [currentStep, setCurrentStep] = useState(1)
-  const [formData, setFormData] = useState<StudentProfileData>({
-    phone: '',
-    age: '',
-    currentLevel: '',
-    position: '',
-    currentTeam: '',
-    goalLevel: '',
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [currentUser, setCurrentUser] = useState<TypedUser | null>(null)
+  const { currentUserPromise } = useBetterAuth()
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+    setValue,
+    trigger,
+  } = useForm<StudentProfileFormData>({
+    resolver: zodResolver(studentProfileSchema),
+    mode: 'onChange',
   })
 
+  // Load current user and split name
+  useEffect(() => {
+    const loadUser = async () => {
+      try {
+        const user = await currentUserPromise
+        setCurrentUser(user)
+
+        if (user?.name) {
+          // Split the name into first and last name
+          const nameParts = user.name.trim().split(' ')
+          const firstName = nameParts[0] || ''
+          const lastName = nameParts.slice(1).join(' ') || ''
+
+          setValue('firstName', firstName)
+          setValue('lastName', lastName)
+        }
+      } catch (error) {
+        console.error('Failed to load user:', error)
+      }
+    }
+
+    loadUser()
+  }, [currentUserPromise, setValue])
+
   const currentLevels = [
-    'AAA Bantam',
-    'AAA Midget',
+    'A',
+    'AA',
+    'AAA',
     'Junior A',
     'Junior B',
-    'USHL',
-    'NAHL',
-    'BCHL',
-    'High School Varsity',
+    'High School',
     'Prep School',
+    'European',
     'Other',
   ]
 
-  const positions = ['Left Wing', 'Right Wing', 'Center', 'Left Defense', 'Right Defense', 'Goalie']
-
-  const goalLevels = [
-    'Division 1 (D1)',
-    'Division 3 (D3)',
-    'ACHA',
-    'Junior Hockey',
-    'Professional',
-    'Not Sure Yet',
+  const positions = [
+    { value: 'forward', label: 'Forward' },
+    { value: 'defence', label: 'Defence' },
+    { value: 'goalie', label: 'Goalie' },
   ]
 
-  const handleInputChange = (field: keyof StudentProfileData, value: string) => {
-    setFormData((prev) => ({ ...prev, [field]: value }))
-  }
-
-  const validateStep = (step: number) => {
+  const validateStep = async (step: number) => {
     switch (step) {
       case 1:
-        return formData.phone && formData.age
+        return await trigger(['firstName', 'lastName', 'phone', 'birthDate'])
       case 2:
-        return formData.currentLevel && formData.position && formData.currentTeam && formData.goalLevel
+        return await trigger(['currentLevel', 'position', 'currentTeam'])
+      case 3:
+        return await trigger(['goals', 'bio'])
       default:
         return false
     }
   }
 
-  const nextStep = () => {
-    if (validateStep(currentStep) && currentStep < 2) {
+  const nextStep = async () => {
+    const isValid = await validateStep(currentStep)
+    if (isValid && currentStep < 3) {
       setCurrentStep(currentStep + 1)
     }
   }
@@ -93,18 +130,36 @@ export default function StudentProfileSetup({ onProfileComplete, isLoading = fal
     }
   }
 
-  const handleSubmit = () => {
-    if (validateStep(2)) {
-      onProfileComplete(formData)
-    } else {
-      toast.error('Please fill in all required fields')
+  const onSubmit = async (data: StudentProfileFormData) => {
+    if (!currentUser?.id) {
+      toast.error('User session not found. Please sign in again.')
+      return
+    }
+
+    setIsSubmitting(true)
+    try {
+      const response = await createStudentProfileAction(currentUser.id, data)
+
+      if (response.error) {
+        toast.error(response.error)
+      } else {
+        toast.success('Profile created successfully!')
+        // You can add navigation logic here
+      }
+    } catch (error) {
+      toast.error('An unexpected error occurred. Please try again.')
+    } finally {
+      setIsSubmitting(false)
     }
   }
 
   const steps = [
     { number: 1, title: 'Personal Info', icon: User },
     { number: 2, title: 'Hockey Background', icon: Trophy },
+    { number: 3, title: 'Goals & Bio', icon: Heart },
   ]
+
+  const watchedFields = watch()
 
   return (
     <div className="max-w-2xl mx-auto">
@@ -152,176 +207,260 @@ export default function StudentProfileSetup({ onProfileComplete, isLoading = fal
             Step {currentStep} of {steps.length}: {steps[currentStep - 1]?.title}
           </div>
 
-          {/* Step 1: Personal Information */}
-          {currentStep === 1 && (
-            <div className="space-y-6">
-              <div className="grid md:grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Phone Number *
-                  </label>
-                  <div className="relative">
-                    <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-                    <Input
-                      type="tel"
-                      value={formData.phone}
-                      onChange={(e) => handleInputChange('phone', e.target.value)}
-                      className="pl-10 border-2 border-gray-200 focus:border-[#0891B2] rounded-lg h-12"
-                      placeholder="(555) 123-4567"
-                    />
+          <form onSubmit={handleSubmit(onSubmit)}>
+            {/* Step 1: Personal Information */}
+            {currentStep === 1 && (
+              <div className="space-y-6">
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      First Name *
+                    </label>
+                    <div className="relative">
+                      <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+                      <Input
+                        {...register('firstName')}
+                        className="pl-10 border-2 border-gray-200 focus:border-[#0891B2] rounded-lg h-12"
+                        placeholder="Enter your first name"
+                      />
+                    </div>
+                    {errors.firstName && (
+                      <p className="text-red-500 text-sm mt-1">{errors.firstName.message}</p>
+                    )}
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Last Name *
+                    </label>
+                    <div className="relative">
+                      <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+                      <Input
+                        {...register('lastName')}
+                        className="pl-10 border-2 border-gray-200 focus:border-[#0891B2] rounded-lg h-12"
+                        placeholder="Enter your last name"
+                      />
+                    </div>
+                    {errors.lastName && (
+                      <p className="text-red-500 text-sm mt-1">{errors.lastName.message}</p>
+                    )}
                   </div>
                 </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Age *
-                  </label>
-                  <div className="relative">
-                    <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-                    <Input
-                      type="number"
-                      min="13"
-                      max="22"
-                      value={formData.age}
-                      onChange={(e) => handleInputChange('age', e.target.value)}
-                      className="pl-10 border-2 border-gray-200 focus:border-[#0891B2] rounded-lg h-12"
-                      placeholder="Enter your age"
-                    />
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Phone Number
+                    </label>
+                    <div className="relative">
+                      <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+                      <Input
+                        type="tel"
+                        {...register('phone')}
+                        className="pl-10 border-2 border-gray-200 focus:border-[#0891B2] rounded-lg h-12"
+                        placeholder="(555) 123-4567"
+                      />
+                    </div>
+                    {errors.phone && (
+                      <p className="text-red-500 text-sm mt-1">{errors.phone.message}</p>
+                    )}
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Birth Date *
+                    </label>
+                    <div className="relative">
+                      <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+                      <Input
+                        type="date"
+                        {...register('birthDate')}
+                        className="pl-10 border-2 border-gray-200 focus:border-[#0891B2] rounded-lg h-12"
+                      />
+                    </div>
+                    {errors.birthDate && (
+                      <p className="text-red-500 text-sm mt-1">{errors.birthDate.message}</p>
+                    )}
                   </div>
                 </div>
               </div>
-            </div>
-          )}
-
-          {/* Step 2: Hockey Background */}
-          {currentStep === 2 && (
-            <div className="space-y-6">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Current Level *
-                </label>
-                <select
-                  value={formData.currentLevel}
-                  onChange={(e) => handleInputChange('currentLevel', e.target.value)}
-                  className="w-full border-2 border-gray-200 focus:border-[#0891B2] rounded-lg px-3 py-3 focus:outline-none h-12"
-                >
-                  <option value="">Select your current level</option>
-                  {currentLevels.map((level) => (
-                    <option key={level} value={level}>
-                      {level}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Position *
-                </label>
-                <select
-                  value={formData.position}
-                  onChange={(e) => handleInputChange('position', e.target.value)}
-                  className="w-full border-2 border-gray-200 focus:border-[#0891B2] rounded-lg px-3 py-3 focus:outline-none h-12"
-                >
-                  <option value="">Select your position</option>
-                  {positions.map((position) => (
-                    <option key={position} value={position}>
-                      {position}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Current Team *
-                </label>
-                <div className="relative">
-                  <Users className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-                  <Input
-                    type="text"
-                    value={formData.currentTeam}
-                    onChange={(e) => handleInputChange('currentTeam', e.target.value)}
-                    className="pl-10 border-2 border-gray-200 focus:border-[#0891B2] rounded-lg h-12"
-                    placeholder="Enter your current team name"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Goal Level *
-                </label>
-                <select
-                  value={formData.goalLevel}
-                  onChange={(e) => handleInputChange('goalLevel', e.target.value)}
-                  className="w-full border-2 border-gray-200 focus:border-[#0891B2] rounded-lg px-3 py-3 focus:outline-none h-12"
-                >
-                  <option value="">Select your goal level</option>
-                  {goalLevels.map((level) => (
-                    <option key={level} value={level}>
-                      {level}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              {/* Hockey Stats Preview */}
-              <div className="bg-gray-50 rounded-lg p-6 mt-6">
-                <h3 className="font-semibold text-gray-900 mb-4">Your Hockey Profile Preview</h3>
-                <div className="grid grid-cols-2 gap-4 text-sm">
-                  <div>
-                    <span className="text-gray-600">Current Level:</span>
-                    <p className="font-medium">{formData.currentLevel || 'Not selected'}</p>
-                  </div>
-                  <div>
-                    <span className="text-gray-600">Position:</span>
-                    <p className="font-medium">{formData.position || 'Not selected'}</p>
-                  </div>
-                  <div>
-                    <span className="text-gray-600">Current Team:</span>
-                    <p className="font-medium">{formData.currentTeam || 'Not entered'}</p>
-                  </div>
-                  <div>
-                    <span className="text-gray-600">Goal Level:</span>
-                    <p className="font-medium">{formData.goalLevel || 'Not selected'}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* Navigation Buttons */}
-          <div className="flex justify-between items-center mt-8 pt-6 border-t border-gray-200">
-            <Button
-              variant="outline"
-              onClick={prevStep}
-              disabled={currentStep === 1 || isLoading}
-              className="border-gray-300 text-gray-600 hover:bg-gray-50"
-            >
-              Previous
-            </Button>
-
-            {currentStep < 2 ? (
-              <Button
-                onClick={nextStep}
-                disabled={!validateStep(currentStep) || isLoading}
-                className="bg-[#0891B2] hover:bg-[#0E7490] text-white"
-              >
-                Next Step
-                <ArrowRight className="h-4 w-4 ml-2" />
-              </Button>
-            ) : (
-              <Button
-                onClick={handleSubmit}
-                disabled={!validateStep(2) || isLoading}
-                className="bg-gradient-to-r from-[#0891B2] to-[#8B5CF6] hover:from-[#0E7490] hover:to-[#7C3AED] text-white px-8"
-              >
-                {isLoading ? 'Saving Profile...' : 'Complete Profile'}
-                <ArrowRight className="h-4 w-4 ml-2" />
-              </Button>
             )}
-          </div>
+
+            {/* Step 2: Hockey Background */}
+            {currentStep === 2 && (
+              <div className="space-y-6">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Current Level *
+                  </label>
+                  <select
+                    {...register('currentLevel')}
+                    className="w-full border-2 border-gray-200 focus:border-[#0891B2] rounded-lg px-3 py-3 focus:outline-none h-12"
+                  >
+                    <option value="">Select your current level</option>
+                    {currentLevels.map((level) => (
+                      <option key={level} value={level}>
+                        {level}
+                      </option>
+                    ))}
+                  </select>
+                  {errors.currentLevel && (
+                    <p className="text-red-500 text-sm mt-1">{errors.currentLevel.message}</p>
+                  )}
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Position *</label>
+                  <select
+                    {...register('position')}
+                    className="w-full border-2 border-gray-200 focus:border-[#0891B2] rounded-lg px-3 py-3 focus:outline-none h-12"
+                  >
+                    <option value="">Select your position</option>
+                    {positions.map((position) => (
+                      <option key={position.value} value={position.value}>
+                        {position.label}
+                      </option>
+                    ))}
+                  </select>
+                  {errors.position && (
+                    <p className="text-red-500 text-sm mt-1">{errors.position.message}</p>
+                  )}
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Current Team *
+                  </label>
+                  <div className="relative">
+                    <Users className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+                    <Input
+                      {...register('currentTeam')}
+                      className="pl-10 border-2 border-gray-200 focus:border-[#0891B2] rounded-lg h-12"
+                      placeholder="Enter your current team name"
+                    />
+                  </div>
+                  {errors.currentTeam && (
+                    <p className="text-red-500 text-sm mt-1">{errors.currentTeam.message}</p>
+                  )}
+                </div>
+
+                {/* Hockey Profile Preview */}
+                <div className="bg-gray-50 rounded-lg p-6 mt-6">
+                  <h3 className="font-semibold text-gray-900 mb-4">Your Hockey Profile Preview</h3>
+                  <div className="grid grid-cols-2 gap-4 text-sm">
+                    <div>
+                      <span className="text-gray-600">Current Level:</span>
+                      <p className="font-medium">{watchedFields.currentLevel || 'Not selected'}</p>
+                    </div>
+                    <div>
+                      <span className="text-gray-600">Position:</span>
+                      <p className="font-medium">{watchedFields.position || 'Not selected'}</p>
+                    </div>
+                    <div>
+                      <span className="text-gray-600">Current Team:</span>
+                      <p className="font-medium">{watchedFields.currentTeam || 'Not entered'}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Step 3: Goals & Bio */}
+            {currentStep === 3 && (
+              <div className="space-y-6">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Personal Goals & Aspirations
+                  </label>
+                  <div className="relative">
+                    <Target className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+                    <Textarea
+                      {...register('goals')}
+                      className="pl-10 border-2 border-gray-200 focus:border-[#0891B2] rounded-lg min-h-[100px]"
+                      placeholder="What are your hockey goals and aspirations? (e.g., play Division 1, improve skating speed, develop leadership skills)"
+                    />
+                  </div>
+                  {errors.goals && (
+                    <p className="text-red-500 text-sm mt-1">{errors.goals.message}</p>
+                  )}
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Personal Bio
+                  </label>
+                  <Textarea
+                    {...register('bio')}
+                    className="border-2 border-gray-200 focus:border-[#0891B2] rounded-lg min-h-[120px]"
+                    placeholder="Tell us a bit about yourself, your hockey journey, and what you're passionate about..."
+                  />
+                  {errors.bio && <p className="text-red-500 text-sm mt-1">{errors.bio.message}</p>}
+                </div>
+
+                {/* Final Profile Preview */}
+                <div className="bg-gray-50 rounded-lg p-6 mt-6">
+                  <h3 className="font-semibold text-gray-900 mb-4">Complete Profile Preview</h3>
+                  <div className="grid grid-cols-1 gap-4 text-sm">
+                    <div>
+                      <span className="text-gray-600">Name:</span>
+                      <p className="font-medium">
+                        {`${watchedFields.firstName || ''} ${watchedFields.lastName || ''}`.trim() ||
+                          'Not entered'}
+                      </p>
+                    </div>
+                    <div>
+                      <span className="text-gray-600">Hockey Background:</span>
+                      <p className="font-medium">
+                        {`${watchedFields.position || ''} at ${watchedFields.currentLevel || ''} with ${watchedFields.currentTeam || ''}`
+                          .replace(/^at\s+/, '')
+                          .replace(/\s+with\s+$/, '') || 'Not completed'}
+                      </p>
+                    </div>
+                    {watchedFields.goals && (
+                      <div>
+                        <span className="text-gray-600">Goals:</span>
+                        <p className="font-medium line-clamp-2">{watchedFields.goals}</p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Navigation Buttons */}
+            <div className="flex justify-between items-center mt-8 pt-6 border-t border-gray-200">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={prevStep}
+                disabled={currentStep === 1 || isLoading || isSubmitting}
+                className="border-gray-300 text-gray-600 hover:bg-gray-50"
+              >
+                Previous
+              </Button>
+
+              {currentStep < 3 ? (
+                <Button
+                  type="button"
+                  onClick={nextStep}
+                  disabled={isLoading || isSubmitting}
+                  className="bg-[#0891B2] hover:bg-[#0E7490] text-white"
+                >
+                  Next Step
+                  <ArrowRight className="h-4 w-4 ml-2" />
+                </Button>
+              ) : (
+                <Button
+                  type="submit"
+                  disabled={isLoading || isSubmitting}
+                  className="bg-gradient-to-r from-[#0891B2] to-[#8B5CF6] hover:from-[#0E7490] hover:to-[#7C3AED] text-white px-8"
+                >
+                  {isSubmitting ? 'Creating Profile...' : 'Complete Profile'}
+                  <ArrowRight className="h-4 w-4 ml-2" />
+                </Button>
+              )}
+            </div>
+          </form>
         </CardContent>
       </Card>
     </div>

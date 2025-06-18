@@ -4,6 +4,7 @@ import React from 'react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { useMobileMenu } from './context'
+import { AuthButtons } from './auth-buttons'
 
 export const MobileMenu: React.FC = () => {
   const { isOpen, setIsOpen } = useMobileMenu()
@@ -59,15 +60,7 @@ export const MobileMenu: React.FC = () => {
       </div>
       <div className="pt-4 pb-3 border-t border-gray-200">
         <div className="px-2">
-          <Link
-            onClick={() => {
-              setIsOpen(false)
-            }}
-            href="/get-started"
-            className="w-full flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-blue-600 hover:bg-blue-700"
-          >
-            Get Started
-          </Link>
+          <AuthButtons />
         </div>
       </div>
     </div>

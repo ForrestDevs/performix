@@ -876,12 +876,14 @@ export interface Mentor {
         | 'defending-the-rush'
         | 'offensive-production'
         | 'breaking-out'
-        | 'winning-the-battle'
+        | 'winning-battles'
         | 'playmaking'
         | 'skating-ability'
         | 'puck-handling'
         | 'reaction-speed'
         | 'agility'
+        | 'physicality'
+        | 'goal-scoring'
         | 'speed'
         | 'wallplay'
         | 'stickhandling'
@@ -912,47 +914,33 @@ export interface Student {
   id: number;
   user: number | User;
   /**
-   * Full name of the student
+   * First name of the student
    */
-  name: string;
+  firstName: string;
   /**
-   * Student email address
+   * Last name of the student
    */
-  email: string;
+  lastName: string;
   /**
    * Phone number
    */
   phone?: string | null;
   /**
-   * Student age
+   * Birth date of the student
    */
-  age: number;
+  birthDate: string;
   /**
    * Current level of play
    */
-  currentLevel:
-    | 'aaa-bantam'
-    | 'aaa-midget'
-    | 'junior-a'
-    | 'junior-b'
-    | 'ushl'
-    | 'nahl'
-    | 'bchl'
-    | 'high-school-varsity'
-    | 'prep-school'
-    | 'other';
+  currentLevel: string;
   /**
    * Primary position
    */
-  position: 'left-wing' | 'right-wing' | 'center' | 'left-defense' | 'right-defense' | 'goalie';
+  position: 'forward' | 'defence' | 'goalie';
   /**
    * Current team name
    */
   currentTeam: string;
-  /**
-   * Goal level of play
-   */
-  goalLevel: 'd1' | 'd3' | 'acha' | 'junior' | 'professional' | 'not-sure';
   /**
    * Personal goals and aspirations
    */
@@ -1700,14 +1688,13 @@ export interface MentorsSelect<T extends boolean = true> {
  */
 export interface StudentsSelect<T extends boolean = true> {
   user?: T;
-  name?: T;
-  email?: T;
+  firstName?: T;
+  lastName?: T;
   phone?: T;
-  age?: T;
+  birthDate?: T;
   currentLevel?: T;
   position?: T;
   currentTeam?: T;
-  goalLevel?: T;
   goals?: T;
   bio?: T;
   profileCompleted?: T;

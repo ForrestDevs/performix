@@ -31,6 +31,7 @@ export async function getMentors() {
       const mentors = await payload.find({
         collection: MENTOR_SLUG,
         depth: 3,
+        limit: 100,
       })
 
       return mentors.docs

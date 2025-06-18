@@ -7,24 +7,13 @@ import { STUDENT_SLUG } from '@/payload/collections/constants'
 const payload = await getPayload()
 
 export interface StudentProfileData {
-  name: string
-  email: string
+  firstName: string
+  lastName: string
   phone?: string
-  age: number
-  currentLevel:
-    | 'aaa-bantam'
-    | 'aaa-midget'
-    | 'junior-a'
-    | 'junior-b'
-    | 'ushl'
-    | 'nahl'
-    | 'bchl'
-    | 'high-school-varsity'
-    | 'prep-school'
-    | 'other'
-  position: 'left-wing' | 'right-wing' | 'center' | 'left-defense' | 'right-defense' | 'goalie'
+  birthDate: string
+  currentLevel: string
+  position: 'forward' | 'defence' | 'goalie'
   currentTeam: string
-  goalLevel: 'd1' | 'd3' | 'acha' | 'junior' | 'professional' | 'not-sure'
   goals?: string
   bio?: string
 }

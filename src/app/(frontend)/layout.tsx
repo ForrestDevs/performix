@@ -4,6 +4,8 @@ import { NuqsAdapter } from 'nuqs/adapters/next/app'
 import Footer from '../../components/layout/footer'
 import '@/lib/styles/globals.css'
 import '@/lib/styles/scroll-animations.css'
+import { BetterAuthProvider } from '@/lib/auth/context'
+import { getContextProps } from '@/lib/auth/context/get-context-props'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -26,8 +28,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body className={`${inter.className} ${spaceGrotesk.variable} font-sans antialiased`}>
         <NuqsAdapter>
-          <main>{children}</main>
-          <Footer />
+          <BetterAuthProvider {...getContextProps()}>
+            <main>{children}</main>
+            <Footer />
+          </BetterAuthProvider>
         </NuqsAdapter>
       </body>
     </html>

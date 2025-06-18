@@ -6,17 +6,19 @@ import { User, LogOut, Settings, ChevronDown } from 'lucide-react'
 import { signOutAction } from '@/lib/actions/auth'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
+import { cn } from '@/lib/utilities/ui'
 
 interface UserMenuProps {
+  className?: string
   user: {
-    id: string
+    id: number
     name: string
     email: string
     image?: string | null
   }
 }
 
-export function UserMenu({ user }: UserMenuProps) {
+export function UserMenu({ user, className }: UserMenuProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [isPending, startTransition] = useTransition()
   const router = useRouter()
@@ -35,7 +37,7 @@ export function UserMenu({ user }: UserMenuProps) {
   }
 
   return (
-    <div className="relative">
+    <div className={cn('relative', className)}>
       <Button
         variant="ghost"
         className="flex items-center space-x-2 h-10 px-3"

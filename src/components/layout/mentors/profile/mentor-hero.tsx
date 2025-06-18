@@ -3,13 +3,16 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { motion } from 'motion/react'
-import { Button } from '@/components/ui/button'
+import { Button, buttonVariants } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { MapPin, Calendar, Users, Award, Share2, Check } from 'lucide-react'
 import { useMentor } from './mentor-context'
 import { Media as MediaComponent } from '@/components/Media'
 import { Media } from '@/payload-types'
 import { EliteProspectsIcon, InstagramIcon } from '@/components/ui/icons'
+import { cn } from '@/lib/utilities/ui'
+import Image from 'next/image'
+import { getPosition } from '@/lib/utilities/postion'
 
 export function MentorHero() {
   const { mentor } = useMentor()
@@ -67,7 +70,7 @@ export function MentorHero() {
             </div>
             <div className="flex items-center space-x-2 text-white/90">
               <Award className="h-5 w-5 text-[#0891B2]" />
-              <span>{mentor.position}</span>
+              <span>{getPosition(mentor.position)}</span>
             </div>
             <div className="flex items-center space-x-2 text-white/90">
               <MapPin className="h-5 w-5 text-[#0891B2]" />
@@ -80,7 +83,10 @@ export function MentorHero() {
               href={`https://calendly.com/mateodixon/d1-mentorship-call`}
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-[#0891B2] hover:bg-[#0E7490] text-white"
+              className={cn(
+                buttonVariants({ variant: 'default', size: 'lg' }),
+                'bg-[#0891B2] hover:bg-[#0E7490] text-white',
+              )}
             >
               Book a Session
               <Calendar className="ml-2 h-5 w-5" />
@@ -99,9 +105,15 @@ export function MentorHero() {
                 href={`${mentor.socials?.eliteProspects}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-white hover:text-[#0891B2] transition-colors duration-300"
+                className="w-10 h-10 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-white hover:text-[#0891B2] transition-colors duration-300 overflow-hidden"
               >
-                <EliteProspectsIcon />
+                <Image
+                  src="/ep.jpeg"
+                  alt="Elite Prospects"
+                  width={40}
+                  height={40}
+                  className="w-full h-full object-cover"
+                />
               </Link>
             )}
             {mentor.socials?.instagram && (

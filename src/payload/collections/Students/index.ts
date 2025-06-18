@@ -8,8 +8,8 @@ export const Students: CollectionConfig = {
     plural: 'Students',
   },
   admin: {
-    useAsTitle: 'name',
-    defaultColumns: ['name', 'email', 'currentLevel', 'goalLevel'],
+    useAsTitle: 'firstName',
+    defaultColumns: ['firstName', 'lastName', 'currentLevel', 'position'],
   },
   access: {
     // Students can only see their own profile
@@ -54,19 +54,19 @@ export const Students: CollectionConfig = {
       },
     },
     {
-      name: 'name',
+      name: 'firstName',
       type: 'text',
       required: true,
       admin: {
-        description: 'Full name of the student',
+        description: 'First name of the student',
       },
     },
     {
-      name: 'email',
-      type: 'email',
+      name: 'lastName',
+      type: 'text',
       required: true,
       admin: {
-        description: 'Student email address',
+        description: 'Last name of the student',
       },
     },
     {
@@ -77,31 +77,17 @@ export const Students: CollectionConfig = {
       },
     },
     {
-      name: 'age',
-      type: 'number',
+      name: 'birthDate',
+      type: 'date',
       required: true,
-      min: 13,
-      max: 25,
       admin: {
-        description: 'Student age',
+        description: 'Birth date of the student',
       },
     },
     {
       name: 'currentLevel',
-      type: 'select',
+      type: 'text',
       required: true,
-      options: [
-        { label: 'AAA Bantam', value: 'aaa-bantam' },
-        { label: 'AAA Midget', value: 'aaa-midget' },
-        { label: 'Junior A', value: 'junior-a' },
-        { label: 'Junior B', value: 'junior-b' },
-        { label: 'USHL', value: 'ushl' },
-        { label: 'NAHL', value: 'nahl' },
-        { label: 'BCHL', value: 'bchl' },
-        { label: 'High School Varsity', value: 'high-school-varsity' },
-        { label: 'Prep School', value: 'prep-school' },
-        { label: 'Other', value: 'other' },
-      ],
       admin: {
         description: 'Current level of play',
       },
@@ -111,11 +97,8 @@ export const Students: CollectionConfig = {
       type: 'select',
       required: true,
       options: [
-        { label: 'Left Wing', value: 'left-wing' },
-        { label: 'Right Wing', value: 'right-wing' },
-        { label: 'Center', value: 'center' },
-        { label: 'Left Defense', value: 'left-defense' },
-        { label: 'Right Defense', value: 'right-defense' },
+        { label: 'Forward', value: 'forward' },
+        { label: 'Defence', value: 'defence' },
         { label: 'Goalie', value: 'goalie' },
       ],
       admin: {
@@ -128,22 +111,6 @@ export const Students: CollectionConfig = {
       required: true,
       admin: {
         description: 'Current team name',
-      },
-    },
-    {
-      name: 'goalLevel',
-      type: 'select',
-      required: true,
-      options: [
-        { label: 'Division 1 (D1)', value: 'd1' },
-        { label: 'Division 3 (D3)', value: 'd3' },
-        { label: 'ACHA', value: 'acha' },
-        { label: 'Junior Hockey', value: 'junior' },
-        { label: 'Professional', value: 'professional' },
-        { label: 'Not Sure Yet', value: 'not-sure' },
-      ],
-      admin: {
-        description: 'Goal level of play',
       },
     },
     {
