@@ -1,220 +1,95 @@
 'use client'
 
+import React from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent } from '@/components/ui/card'
 import {
-  ChevronLeft,
-  User,
   Mail,
-  Phone,
   Lock,
-  Calendar,
-  Target,
-  Users,
-  Trophy,
-  CheckCircle,
-  ArrowRight,
   Eye,
   EyeOff,
+  ArrowRight,
+  CheckCircle,
+  Users,
+  Trophy,
 } from 'lucide-react'
 import Link from 'next/link'
-import { useState, useTransition } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'zod'
+import { useState } from 'react'
 import { useScrollAnimation } from '@/lib/hooks/useScrollAnimation'
 import { PerformixLogo } from '@/components/logo'
-import { signUpAction } from '@/lib/actions/auth'
-import { createStudentProfileAction, type StudentProfileData } from '@/lib/actions/student'
+import { authClient } from '@/lib/auth/client'
+import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
-
-// Form schemas for each step
-const accountSchema = z
-  .object({
-    firstName: z.string().min(2, 'First name must be at least 2 characters'),
-    lastName: z.string().min(2, 'Last name must be at least 2 characters'),
-    email: z.string().email('Please enter a valid email address'),
-    phone: z.string().min(10, 'Phone number must be at least 10 digits'),
-    age: z.number().min(13, 'Must be at least 13 years old').max(25, 'Must be 25 or younger'),
-    password: z.string().min(8, 'Password must be at least 8 characters'),
-    confirmPassword: z.string(),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords don't match",
-    path: ['confirmPassword'],
-  })
-
-const profileSchema = z.object({
-  currentLevel: z.enum([
-    'aaa-bantam',
-    'aaa-midget',
-    'junior-a',
-    'junior-b',
-    'ushl',
-    'nahl',
-    'bchl',
-    'high-school-varsity',
-    'prep-school',
-    'other',
-  ]),
-  position: z.enum([
-    'left-wing',
-    'right-wing',
-    'center',
-    'left-defense',
-    'right-defense',
-    'goalie',
-  ]),
-  currentTeam: z.string().min(2, 'Team name must be at least 2 characters'),
-  goalLevel: z.enum(['d1', 'd3', 'acha', 'junior', 'professional', 'not-sure']),
-  goals: z.string().optional(),
-  bio: z.string().optional(),
-})
-
-type AccountData = z.infer<typeof accountSchema>
-type ProfileData = z.infer<typeof profileSchema>
 
 export default function GetStartedPage() {
   const visibleElements = useScrollAnimation()
-  const [currentStep, setCurrentStep] = useState(1)
-  const [showPassword, setShowPassword] = useState(false)
-  const [isPending, startTransition] = useTransition()
-  const [userId, setUserId] = useState<number | null>(null)
-  const [emailVerified, setEmailVerified] = useState(false)
   const router = useRouter()
-  const searchParams = useSearchParams()
-
-  // Check if we're coming back from email verification
-  const verifiedParam = searchParams?.get('verified')
-  const tokenParam = searchParams?.get('token')
-
-  const accountForm = useForm<AccountData>({
-    resolver: zodResolver(accountSchema),
-    defaultValues: {
-      firstName: '',
-      lastName: '',
-      email: '',
-      phone: '',
-      age: 18,
-      password: '',
-      confirmPassword: '',
-    },
-  })
-
-  const profileForm = useForm<ProfileData>({
-    resolver: zodResolver(profileSchema),
-    defaultValues: {
-      currentLevel: 'high-school-varsity',
-      position: 'center',
-      currentTeam: '',
-      goalLevel: 'd1',
-      goals: '',
-      bio: '',
-    },
+  const [showPassword, setShowPassword] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+    confirmPassword: '',
+    name: '',
   })
 
   const isVisible = (id: string) => visibleElements.has(id)
 
-  const steps = [
-    { number: 1, title: 'Personal Info', icon: User },
-    { number: 2, title: 'Email Verification', icon: Mail },
-    { number: 3, title: 'Hockey Profile', icon: Trophy },
-  ]
-
-  const currentLevelOptions = [
-    { label: 'AAA Bantam', value: 'aaa-bantam' as const },
-    { label: 'AAA Midget', value: 'aaa-midget' as const },
-    { label: 'Junior A', value: 'junior-a' as const },
-    { label: 'Junior B', value: 'junior-b' as const },
-    { label: 'USHL', value: 'ushl' as const },
-    { label: 'NAHL', value: 'nahl' as const },
-    { label: 'BCHL', value: 'bchl' as const },
-    { label: 'High School Varsity', value: 'high-school-varsity' as const },
-    { label: 'Prep School', value: 'prep-school' as const },
-    { label: 'Other', value: 'other' as const },
-  ]
-
-  const positionOptions = [
-    { label: 'Left Wing', value: 'left-wing' as const },
-    { label: 'Right Wing', value: 'right-wing' as const },
-    { label: 'Center', value: 'center' as const },
-    { label: 'Left Defense', value: 'left-defense' as const },
-    { label: 'Right Defense', value: 'right-defense' as const },
-    { label: 'Goalie', value: 'goalie' as const },
-  ]
-
-  const goalLevelOptions = [
-    { label: 'Division 1 (D1)', value: 'd1' as const },
-    { label: 'Division 3 (D3)', value: 'd3' as const },
-    { label: 'ACHA', value: 'acha' as const },
-    { label: 'Junior Hockey', value: 'junior' as const },
-    { label: 'Professional', value: 'professional' as const },
-    { label: 'Not Sure Yet', value: 'not-sure' as const },
-  ]
-
-  const onAccountSubmit = (data: AccountData) => {
-    startTransition(async () => {
-      try {
-        const result = await signUpAction(data.firstName, data.lastName, data.email, data.password)
-
-        if (result.error) {
-          accountForm.setError('root', { message: result.error })
-          toast.error(result.error)
-        } else {
-          toast.success(result.message || 'Account created successfully!')
-          setUserId(result.user ?? null)
-          setCurrentStep(2)
-        }
-      } catch (error) {
-        console.error('Sign up error:', error)
-        accountForm.setError('root', { message: 'An unexpected error occurred' })
-        toast.error('An unexpected error occurred')
-      }
-    })
+  const handleInputChange = (field: string, value: string) => {
+    setFormData((prev) => ({ ...prev, [field]: value }))
   }
 
-  const onProfileSubmit = (data: ProfileData) => {
-    startTransition(async () => {
-      try {
-        const accountData = accountForm.getValues()
-        const profileData: StudentProfileData = {
-          name: `${accountData.firstName} ${accountData.lastName}`,
-          email: accountData.email,
-          phone: accountData.phone,
-          age: accountData.age,
-          ...data,
-        }
-
-        const result = await createStudentProfileAction(userId ?? null, profileData)
-
-        if (result.error) {
-          profileForm.setError('root', { message: result.error })
-          toast.error(result.error)
-        } else {
-          toast.success('Profile created successfully!')
-          router.push('/consumer')
-        }
-      } catch (error) {
-        console.error('Profile creation error:', error)
-        profileForm.setError('root', { message: 'An unexpected error occurred' })
-        toast.error('An unexpected error occurred')
-      }
-    })
-  }
-
-  const nextStep = () => {
-    if (currentStep < 3) {
-      setCurrentStep(currentStep + 1)
+  const handleGoogleSignUp = async () => {
+    try {
+      setIsLoading(true)
+      await authClient.signIn.social({
+        provider: 'google',
+        callbackURL: '/consumer', // Redirect to dashboard
+      })
+    } catch (error) {
+      console.error('Google sign up error:', error)
+      toast.error('Failed to sign up with Google. Please try again.')
+    } finally {
+      setIsLoading(false)
     }
   }
 
-  const prevStep = () => {
-    if (currentStep > 1) {
-      setCurrentStep(currentStep - 1)
+  const handleEmailSignUp = async (e: React.FormEvent) => {
+    e.preventDefault()
+    
+    if (formData.password !== formData.confirmPassword) {
+      toast.error('Passwords do not match')
+      return
+    }
+
+    if (formData.password.length < 4) {
+      toast.error('Password must be at least 4 characters long')
+      return
+    }
+
+    try {
+      setIsLoading(true)
+      const result = await authClient.signUp.email({
+        email: formData.email,
+        password: formData.password,
+        name: formData.name,
+        callbackURL: '/consumer', // Redirect to dashboard after email verification
+      })
+
+      if (result.data) {
+        toast.success('Account created! Please check your email to verify your account.')
+        // User will be redirected after email verification
+      }
+    } catch (error: any) {
+      console.error('Email sign up error:', error)
+      toast.error(error.message || 'Failed to create account. Please try again.')
+    } finally {
+      setIsLoading(false)
     }
   }
+
+  const isFormValid = formData.email && formData.password && formData.confirmPassword && formData.name
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -261,48 +136,16 @@ export default function GetStartedPage() {
             </h1>
             <p className="text-xl mb-8 opacity-90 max-w-2xl mx-auto">
               Join hundreds of players who&apos;ve transformed their hockey careers with elite
-              mentorship
+              mentorship. Create your account to get started!
             </p>
-
-            {/* Progress Indicator */}
-            <div className="flex justify-center items-center space-x-4 mb-8">
-              {steps.map((step, index) => (
-                <div key={step.number} className="flex items-center">
-                  <div
-                    className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 ${
-                      currentStep >= step.number
-                        ? 'bg-white text-[#0891B2]'
-                        : 'bg-white/20 text-white/60'
-                    }`}
-                  >
-                    {currentStep > step.number ? (
-                      <CheckCircle className="h-5 w-5" />
-                    ) : (
-                      <step.icon className="h-5 w-5" />
-                    )}
-                  </div>
-                  {index < steps.length - 1 && (
-                    <div
-                      className={`w-16 h-0.5 mx-2 transition-all duration-300 ${
-                        currentStep > step.number ? 'bg-white' : 'bg-white/20'
-                      }`}
-                    />
-                  )}
-                </div>
-              ))}
-            </div>
-
-            <div className="text-sm opacity-75">
-              Step {currentStep} of {steps.length}: {steps[currentStep - 1]?.title}
-            </div>
           </div>
         </div>
       </section>
 
-      {/* Form Section */}
+      {/* Signup Section */}
       <section className="py-16">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-2xl mx-auto">
+          <div className="max-w-md mx-auto">
             <Card
               id="signup-form"
               data-scroll-animate
@@ -311,395 +154,190 @@ export default function GetStartedPage() {
               }`}
             >
               <CardContent className="p-8">
-                {/* Step 1: Personal Information */}
-                {currentStep === 1 && (
-                  <div className="space-y-6">
-                    <div className="text-center mb-8">
-                      <h2 className="text-2xl font-bold text-gray-900 mb-2">
-                        Personal Information
-                      </h2>
-                      <p className="text-gray-600">Let&apos;s start with the basics</p>
-                    </div>
+                <div className="text-center mb-8">
+                  <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                    Create Your Account
+                  </h2>
+                  <p className="text-gray-600">You&apos;ll complete your hockey profile after signing up</p>
+                </div>
 
-                    <form
-                      onSubmit={accountForm.handleSubmit(onAccountSubmit)}
-                      className="space-y-6"
-                    >
-                      <div className="grid md:grid-cols-2 gap-6">
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">
-                            First Name *
-                          </label>
-                          <div className="relative">
-                            <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-                            <Input
-                              type="text"
-                              {...accountForm.register('firstName')}
-                              className="pl-10 border-2 border-gray-200 focus:border-[#0891B2] rounded-lg"
-                              placeholder="Enter your first name"
-                              disabled={isPending}
-                            />
-                          </div>
-                          {accountForm.formState.errors.firstName && (
-                            <p className="text-red-500 text-sm mt-1">
-                              {accountForm.formState.errors.firstName.message}
-                            </p>
-                          )}
-                        </div>
+                {/* Google Sign Up Button */}
+                <Button
+                  onClick={handleGoogleSignUp}
+                  disabled={isLoading}
+                  className="w-full mb-6 bg-white hover:bg-gray-50 text-gray-900 border border-gray-300 h-12 text-lg flex items-center justify-center space-x-3"
+                >
+                  <svg className="w-5 h-5" viewBox="0 0 24 24">
+                    <path
+                      fill="currentColor"
+                      d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                    />
+                    <path
+                      fill="currentColor"
+                      d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                    />
+                    <path
+                      fill="currentColor"
+                      d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+                    />
+                    <path
+                      fill="currentColor"
+                      d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+                    />
+                  </svg>
+                  <span>Continue with Google</span>
+                </Button>
 
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">
-                            Last Name *
-                          </label>
-                          <div className="relative">
-                            <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-                            <Input
-                              type="text"
-                              {...accountForm.register('lastName')}
-                              className="pl-10 border-2 border-gray-200 focus:border-[#0891B2] rounded-lg"
-                              placeholder="Enter your last name"
-                              disabled={isPending}
-                            />
-                          </div>
-                          {accountForm.formState.errors.lastName && (
-                            <p className="text-red-500 text-sm mt-1">
-                              {accountForm.formState.errors.lastName.message}
-                            </p>
-                          )}
-                        </div>
-                      </div>
-
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Email Address *
-                        </label>
-                        <div className="relative">
-                          <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-                          <Input
-                            type="email"
-                            {...accountForm.register('email')}
-                            className="pl-10 border-2 border-gray-200 focus:border-[#0891B2] rounded-lg"
-                            placeholder="Enter your email address"
-                            disabled={isPending}
-                          />
-                        </div>
-                        {accountForm.formState.errors.email && (
-                          <p className="text-red-500 text-sm mt-1">
-                            {accountForm.formState.errors.email.message}
-                          </p>
-                        )}
-                      </div>
-
-                      <div className="grid md:grid-cols-2 gap-6">
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">
-                            Phone Number *
-                          </label>
-                          <div className="relative">
-                            <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-                            <Input
-                              type="tel"
-                              {...accountForm.register('phone')}
-                              className="pl-10 border-2 border-gray-200 focus:border-[#0891B2] rounded-lg"
-                              placeholder="(555) 123-4567"
-                              disabled={isPending}
-                            />
-                          </div>
-                          {accountForm.formState.errors.phone && (
-                            <p className="text-red-500 text-sm mt-1">
-                              {accountForm.formState.errors.phone.message}
-                            </p>
-                          )}
-                        </div>
-
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">
-                            Age *
-                          </label>
-                          <div className="relative">
-                            <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-                            <Input
-                              type="number"
-                              min="13"
-                              max="25"
-                              {...accountForm.register('age', { valueAsNumber: true })}
-                              className="pl-10 border-2 border-gray-200 focus:border-[#0891B2] rounded-lg"
-                              placeholder="Enter your age"
-                              disabled={isPending}
-                            />
-                          </div>
-                          {accountForm.formState.errors.age && (
-                            <p className="text-red-500 text-sm mt-1">
-                              {accountForm.formState.errors.age.message}
-                            </p>
-                          )}
-                        </div>
-                      </div>
-
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Password *
-                        </label>
-                        <div className="relative">
-                          <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-                          <Input
-                            type={showPassword ? 'text' : 'password'}
-                            {...accountForm.register('password')}
-                            className="pl-10 pr-10 border-2 border-gray-200 focus:border-[#0891B2] rounded-lg"
-                            placeholder="Create a secure password"
-                            disabled={isPending}
-                          />
-                          <button
-                            type="button"
-                            onClick={() => setShowPassword(!showPassword)}
-                            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                            disabled={isPending}
-                          >
-                            {showPassword ? (
-                              <EyeOff className="h-5 w-5" />
-                            ) : (
-                              <Eye className="h-5 w-5" />
-                            )}
-                          </button>
-                        </div>
-                        {accountForm.formState.errors.password && (
-                          <p className="text-red-500 text-sm mt-1">
-                            {accountForm.formState.errors.password.message}
-                          </p>
-                        )}
-                      </div>
-
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Confirm Password *
-                        </label>
-                        <div className="relative">
-                          <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-                          <Input
-                            type="password"
-                            {...accountForm.register('confirmPassword')}
-                            className="pl-10 border-2 border-gray-200 focus:border-[#0891B2] rounded-lg"
-                            placeholder="Confirm your password"
-                            disabled={isPending}
-                          />
-                        </div>
-                        {accountForm.formState.errors.confirmPassword && (
-                          <p className="text-red-500 text-sm mt-1">
-                            {accountForm.formState.errors.confirmPassword.message}
-                          </p>
-                        )}
-                      </div>
-
-                      {accountForm.formState.errors.root && (
-                        <div className="text-red-500 text-sm text-center">
-                          {accountForm.formState.errors.root.message}
-                        </div>
-                      )}
-
-                      <Button
-                        type="submit"
-                        disabled={isPending}
-                        className="w-full bg-[#0891B2] hover:bg-[#0E7490] text-white h-12"
-                      >
-                        {isPending ? 'Creating Account...' : 'Create Account'}
-                        {!isPending && <ArrowRight className="h-5 w-5 ml-2" />}
-                      </Button>
-                    </form>
+                <div className="relative mb-6">
+                  <div className="absolute inset-0 flex items-center">
+                    <div className="w-full border-t border-gray-300" />
                   </div>
-                )}
+                  <div className="relative flex justify-center text-sm">
+                    <span className="px-2 bg-white text-gray-500">or</span>
+                  </div>
+                </div>
 
-                {/* Step 2: Email Verification */}
-                {currentStep === 2 && (
-                  <div className="space-y-6 text-center">
-                    <div className="mb-8">
-                      <div className="w-16 h-16 bg-[#0891B2]/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <Mail className="h-8 w-8 text-[#0891B2]" />
-                      </div>
-                      <h2 className="text-2xl font-bold text-gray-900 mb-2">Check Your Email</h2>
-                      <p className="text-gray-600">
-                        We&apos;ve sent a verification link to{' '}
-                        <span className="font-semibold">{accountForm.getValues('email')}</span>
-                      </p>
+                {/* Email Signup Form */}
+                <form onSubmit={handleEmailSignUp} className="space-y-6">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Full Name *
+                    </label>
+                    <Input
+                      type="text"
+                      value={formData.name}
+                      onChange={(e) => handleInputChange('name', e.target.value)}
+                      className="border-2 border-gray-200 focus:border-[#0891B2] rounded-lg h-12"
+                      placeholder="Enter your full name"
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Email Address *
+                    </label>
+                    <div className="relative">
+                      <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+                      <Input
+                        type="email"
+                        value={formData.email}
+                        onChange={(e) => handleInputChange('email', e.target.value)}
+                        className="pl-10 border-2 border-gray-200 focus:border-[#0891B2] rounded-lg h-12"
+                        placeholder="Enter your email address"
+                        required
+                      />
                     </div>
+                  </div>
 
-                    <div className="space-y-4">
-                      <p className="text-sm text-gray-500">
-                        Click the verification link in your email to continue setting up your
-                        profile.
-                      </p>
-                      <p className="text-sm text-gray-500">
-                        Once verified, you&apos;ll be automatically redirected to complete your
-                        hockey profile.
-                      </p>
-                    </div>
-
-                    <div className="flex justify-between">
-                      <Button
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Password *
+                    </label>
+                    <div className="relative">
+                      <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+                      <Input
+                        type={showPassword ? 'text' : 'password'}
+                        value={formData.password}
+                        onChange={(e) => handleInputChange('password', e.target.value)}
+                        className="pl-10 pr-10 border-2 border-gray-200 focus:border-[#0891B2] rounded-lg h-12"
+                        placeholder="Create a secure password"
+                        required
+                      />
+                      <button
                         type="button"
-                        variant="outline"
-                        onClick={prevStep}
-                        className="flex items-center"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
                       >
-                        <ChevronLeft className="h-4 w-4 mr-2" />
-                        Back
-                      </Button>
-                      <Button
-                        type="button"
-                        onClick={() => setCurrentStep(3)}
-                        className="bg-[#0891B2] hover:bg-[#0E7490] text-white"
-                      >
-                        Skip for Demo
-                        <ArrowRight className="h-4 w-4 ml-2" />
-                      </Button>
+                        {showPassword ? (
+                          <EyeOff className="h-5 w-5" />
+                        ) : (
+                          <Eye className="h-5 w-5" />
+                        )}
+                      </button>
                     </div>
                   </div>
-                )}
 
-                {/* Step 3: Hockey Profile */}
-                {currentStep === 3 && (
-                  <div className="space-y-6">
-                    <div className="text-center mb-8">
-                      <h2 className="text-2xl font-bold text-gray-900 mb-2">Hockey Profile</h2>
-                      <p className="text-gray-600">
-                        Tell us about your hockey background and goals
-                      </p>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Confirm Password *
+                    </label>
+                    <div className="relative">
+                      <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+                      <Input
+                        type="password"
+                        value={formData.confirmPassword}
+                        onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
+                        className="pl-10 border-2 border-gray-200 focus:border-[#0891B2] rounded-lg h-12"
+                        placeholder="Confirm your password"
+                        required
+                      />
                     </div>
-
-                    <form
-                      onSubmit={profileForm.handleSubmit(onProfileSubmit)}
-                      className="space-y-6"
-                    >
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Current Level *
-                        </label>
-                        <select
-                          {...profileForm.register('currentLevel')}
-                          className="w-full border-2 border-gray-200 focus:border-[#0891B2] rounded-lg px-3 py-3 focus:outline-none"
-                          disabled={isPending}
-                        >
-                          {currentLevelOptions.map((option) => (
-                            <option key={option.value} value={option.value}>
-                              {option.label}
-                            </option>
-                          ))}
-                        </select>
-                        {profileForm.formState.errors.currentLevel && (
-                          <p className="text-red-500 text-sm mt-1">
-                            {profileForm.formState.errors.currentLevel.message}
-                          </p>
-                        )}
-                      </div>
-
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Position *
-                        </label>
-                        <select
-                          {...profileForm.register('position')}
-                          className="w-full border-2 border-gray-200 focus:border-[#0891B2] rounded-lg px-3 py-3 focus:outline-none"
-                          disabled={isPending}
-                        >
-                          {positionOptions.map((option) => (
-                            <option key={option.value} value={option.value}>
-                              {option.label}
-                            </option>
-                          ))}
-                        </select>
-                        {profileForm.formState.errors.position && (
-                          <p className="text-red-500 text-sm mt-1">
-                            {profileForm.formState.errors.position.message}
-                          </p>
-                        )}
-                      </div>
-
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Current Team *
-                        </label>
-                        <div className="relative">
-                          <Users className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-                          <Input
-                            type="text"
-                            {...profileForm.register('currentTeam')}
-                            className="pl-10 border-2 border-gray-200 focus:border-[#0891B2] rounded-lg"
-                            placeholder="Enter your current team name"
-                            disabled={isPending}
-                          />
-                        </div>
-                        {profileForm.formState.errors.currentTeam && (
-                          <p className="text-red-500 text-sm mt-1">
-                            {profileForm.formState.errors.currentTeam.message}
-                          </p>
-                        )}
-                      </div>
-
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Goal Level *
-                        </label>
-                        <select
-                          {...profileForm.register('goalLevel')}
-                          className="w-full border-2 border-gray-200 focus:border-[#0891B2] rounded-lg px-3 py-3 focus:outline-none"
-                          disabled={isPending}
-                        >
-                          {goalLevelOptions.map((option) => (
-                            <option key={option.value} value={option.value}>
-                              {option.label}
-                            </option>
-                          ))}
-                        </select>
-                        {profileForm.formState.errors.goalLevel && (
-                          <p className="text-red-500 text-sm mt-1">
-                            {profileForm.formState.errors.goalLevel.message}
-                          </p>
-                        )}
-                      </div>
-
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Goals & Aspirations
-                        </label>
-                        <textarea
-                          {...profileForm.register('goals')}
-                          className="w-full border-2 border-gray-200 focus:border-[#0891B2] rounded-lg px-3 py-3 focus:outline-none resize-none"
-                          rows={4}
-                          placeholder="Tell us about your hockey goals and what you hope to achieve..."
-                          disabled={isPending}
-                        />
-                      </div>
-
-                      {profileForm.formState.errors.root && (
-                        <div className="text-red-500 text-sm text-center">
-                          {profileForm.formState.errors.root.message}
-                        </div>
+                    {formData.password &&
+                      formData.confirmPassword &&
+                      formData.password !== formData.confirmPassword && (
+                        <p className="text-red-500 text-sm mt-1">Passwords do not match</p>
                       )}
-
-                      <div className="flex justify-between">
-                        <Button
-                          type="button"
-                          variant="outline"
-                          onClick={prevStep}
-                          disabled={isPending}
-                          className="flex items-center"
-                        >
-                          <ChevronLeft className="h-4 w-4 mr-2" />
-                          Back
-                        </Button>
-                        <Button
-                          type="submit"
-                          disabled={isPending}
-                          className="bg-[#0891B2] hover:bg-[#0E7490] text-white"
-                        >
-                          {isPending ? 'Creating Profile...' : 'Complete Setup'}
-                          {!isPending && <ArrowRight className="h-4 w-4 ml-2" />}
-                        </Button>
-                      </div>
-                    </form>
                   </div>
-                )}
+
+                  <Button
+                    type="submit"
+                    disabled={!isFormValid || isLoading}
+                    className="w-full bg-[#0891B2] hover:bg-[#0E7490] text-white h-12 text-lg"
+                  >
+                    {isLoading ? 'Creating Account...' : 'Create Account'}
+                    <ArrowRight className="h-5 w-5 ml-2" />
+                  </Button>
+                </form>
+
+                <div className="mt-6 text-center">
+                  <p className="text-xs text-gray-500 mb-4">
+                    By creating an account, you agree to our Terms of Service and Privacy Policy
+                  </p>
+                </div>
               </CardContent>
             </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* Trust Indicators */}
+      <section className="py-12 bg-white">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div
+            id="trust-indicators"
+            data-scroll-animate
+            className={`transition-all duration-1000 ${
+              isVisible('trust-indicators')
+                ? 'opacity-100 translate-y-0'
+                : 'opacity-0 translate-y-8'
+            }`}
+          >
+            <div className="grid md:grid-cols-3 gap-8 text-center">
+              <div className="space-y-3">
+                <div className="w-12 h-12 bg-[#0891B2]/10 rounded-full flex items-center justify-center mx-auto">
+                  <CheckCircle className="h-6 w-6 text-[#0891B2]" />
+                </div>
+                <h3 className="font-semibold text-gray-900">Email Verification Required</h3>
+                <p className="text-gray-600 text-sm">
+                  Secure account setup with email verification
+                </p>
+              </div>
+              <div className="space-y-3">
+                <div className="w-12 h-12 bg-[#0891B2]/10 rounded-full flex items-center justify-center mx-auto">
+                  <Users className="h-6 w-6 text-[#0891B2]" />
+                </div>
+                <h3 className="font-semibold text-gray-900">Complete Profile Later</h3>
+                <p className="text-gray-600 text-sm">Set up your hockey profile on your dashboard</p>
+              </div>
+              <div className="space-y-3">
+                <div className="w-12 h-12 bg-[#0891B2]/10 rounded-full flex items-center justify-center mx-auto">
+                  <Trophy className="h-6 w-6 text-[#0891B2]" />
+                </div>
+                <h3 className="font-semibold text-gray-900">Proven Results</h3>
+                <p className="text-gray-600 text-sm">94% success rate in D1 placements</p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
