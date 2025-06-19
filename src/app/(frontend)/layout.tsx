@@ -6,6 +6,7 @@ import '@/lib/styles/globals.css'
 import '@/lib/styles/scroll-animations.css'
 import { BetterAuthProvider } from '@/lib/auth/context'
 import { getContextProps } from '@/lib/auth/context/get-context-props'
+import { Toaster } from 'sonner'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -31,6 +32,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <BetterAuthProvider {...getContextProps()}>
             <main>{children}</main>
             <Footer />
+            <Toaster />
           </BetterAuthProvider>
         </NuqsAdapter>
       </body>

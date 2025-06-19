@@ -22,6 +22,8 @@ import { passkey } from 'better-auth/plugins/passkey'
 import { emailHarmony } from 'better-auth-harmony'
 import { nextCookies } from 'better-auth/next-js'
 import { allowedOrigins } from '@/payload/allowed-origins'
+import { sendEmail } from '@/lib/data/email'
+import { renderVerificationEmail } from '@/lib/email/templates/verification-email'
 
 const generateTitle: GenerateTitle<Page> = ({ doc }) => {
   return doc?.title ? `${doc.title} | Payload Website Template` : 'Payload Website Template'
@@ -57,9 +59,34 @@ export const betterAuthOptions: BetterAuthOptions = {
     enabled: true,
     requireEmailVerification: true,
     minPasswordLength: 4,
-    // autoSignIn: true,
     async sendResetPassword({ user, url }) {
       console.log('Send reset password for user: ', user.id, 'at url', url)
+
+      try {
+        await sendEmail({
+          to: process.env.NODE_ENV === 'development' ? 'luke.gannon@me.com' : user.email,
+          subject: 'Reset Your Performix Password',
+          html: `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+              <h1 style="color: #0891B2;">Reset Your Performix Password</h1>
+              <p>Hi ${user.name || 'Player'},</p>
+              <p>You requested to reset your password. Click the button below to create a new password:</p>
+              <div style="text-align: center; margin: 32px 0;">
+                <a href="${url}" style="background-color: #0891B2; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block;">
+                  Reset Password
+                </a>
+              </div>
+              <p>If you didn't request this, please ignore this email.</p>
+              <p>This link will expire in 24 hours.</p>
+            </div>
+          `,
+          text: `Reset your Performix password by visiting: ${url}`,
+        })
+        console.log('Password reset email sent successfully to:', user.email)
+      } catch (error) {
+        console.error('Failed to send password reset email:', error)
+        throw new Error('Failed to send password reset email')
+      }
     },
   },
   socialProviders: {
@@ -72,7 +99,25 @@ export const betterAuthOptions: BetterAuthOptions = {
     sendOnSignUp: true,
     autoSignInAfterVerification: true,
     async sendVerificationEmail({ user, url }) {
-      console.log('Send verification email for user: ', url)
+      console.log('Send verification email for user TT: ', url)
+
+      const emailHtml = renderVerificationEmail({
+        name: user.name || 'Player',
+        verificationUrl: url,
+      })
+
+      try {
+        await sendEmail({
+          to: process.env.NODE_ENV === 'development' ? 'luke.gannon@me.com' : user.email,
+          subject: 'Verify Your Performix Account - Start Your Journey!',
+          html: emailHtml,
+          text: `Welcome to Performix! Please verify your email address by visiting: ${url}`,
+        })
+        console.log('Verification email sent successfully to:', user.email)
+      } catch (error) {
+        console.error('Failed to send verification email:', error)
+        throw new Error('Failed to send verification email')
+      }
     },
   },
   plugins: betterAuthPlugins,
@@ -132,13 +177,22 @@ export const plugins: Plugin[] = [
   }),
   betterAuthPlugin({
     disableDefaultPayloadAuth: true,
+    hidePluginCollections: true,
     admin: {
       loginMethods: ['google', 'emailPassword', 'passkey'],
     },
+    collectionAdminGroup: 'Admin',
     users: {
       roles: ['student', 'mentor', 'admin'],
       defaultRole: 'student',
       defaultAdminRole: 'admin',
+      collectionOverrides: ({ collection }) => ({
+        ...collection,
+        admin: {
+          ...collection.admin,
+          defaultColumns: ['name', 'email', 'role'],
+        },
+      }),
     },
     betterAuthOptions: betterAuthOptions,
   }),

@@ -57,6 +57,7 @@ export default function StudentProfileSetup({ isLoading = false }: StudentProfil
     formState: { errors },
     setValue,
     trigger,
+    getValues,
   } = useForm<StudentProfileFormData>({
     resolver: zodResolver(studentProfileSchema),
     mode: 'onChange',
@@ -85,6 +86,11 @@ export default function StudentProfileSetup({ isLoading = false }: StudentProfil
 
     loadUser()
   }, [currentUserPromise, setValue])
+
+  // Debug step changes
+  useEffect(() => {
+    console.log(`Step changed to: ${currentStep}`)
+  }, [currentStep])
 
   const currentLevels = [
     'A',
@@ -120,6 +126,7 @@ export default function StudentProfileSetup({ isLoading = false }: StudentProfil
   const nextStep = async () => {
     const isValid = await validateStep(currentStep)
     if (isValid && currentStep < 3) {
+      console.log(`Moving from step ${currentStep} to step ${currentStep + 1}`)
       setCurrentStep(currentStep + 1)
     }
   }
@@ -130,7 +137,17 @@ export default function StudentProfileSetup({ isLoading = false }: StudentProfil
     }
   }
 
-  const onSubmit = async (data: StudentProfileFormData) => {
+  const handleFinalSubmit = async () => {
+    // Get all form values
+    const formData = getValues()
+
+    // Validate the entire form
+    const isValid = await trigger()
+    if (!isValid) {
+      toast.error('Please fix the errors in the form')
+      return
+    }
+
     if (!currentUser?.id) {
       toast.error('User session not found. Please sign in again.')
       return
@@ -138,7 +155,7 @@ export default function StudentProfileSetup({ isLoading = false }: StudentProfil
 
     setIsSubmitting(true)
     try {
-      const response = await createStudentProfileAction(currentUser.id, data)
+      const response = await createStudentProfileAction(currentUser.id, formData)
 
       if (response.error) {
         toast.error(response.error)
@@ -207,7 +224,7 @@ export default function StudentProfileSetup({ isLoading = false }: StudentProfil
             Step {currentStep} of {steps.length}: {steps[currentStep - 1]?.title}
           </div>
 
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <div>
             {/* Step 1: Personal Information */}
             {currentStep === 1 && (
               <div className="space-y-6">
@@ -451,7 +468,8 @@ export default function StudentProfileSetup({ isLoading = false }: StudentProfil
                 </Button>
               ) : (
                 <Button
-                  type="submit"
+                  type="button"
+                  onClick={handleFinalSubmit}
                   disabled={isLoading || isSubmitting}
                   className="bg-gradient-to-r from-[#0891B2] to-[#8B5CF6] hover:from-[#0E7490] hover:to-[#7C3AED] text-white px-8"
                 >
@@ -460,7 +478,7 @@ export default function StudentProfileSetup({ isLoading = false }: StudentProfil
                 </Button>
               )}
             </div>
-          </form>
+          </div>
         </CardContent>
       </Card>
     </div>

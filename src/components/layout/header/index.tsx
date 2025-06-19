@@ -19,7 +19,7 @@ export default async function Header() {
               <Link href="/">
                 <PerformixLogoClear />
               </Link>
-              <Breadcrumb />
+              {/* <Breadcrumb /> */}
             </div>
             <div className="-mr-2 -my-2 lg:hidden">
               <MobileMenuButton />

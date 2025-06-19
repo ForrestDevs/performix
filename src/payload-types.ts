@@ -79,7 +79,6 @@ export interface Config {
     enrollments: Enrollment;
     progress: Progress;
     reviews: Review;
-    categories: Category;
     media: Media;
     pages: Page;
     mentors: Mentor;
@@ -88,6 +87,7 @@ export interface Config {
     articles: Article;
     'article-tags': ArticleTag;
     schools: School;
+    blueprints: Blueprint;
     'payload-folders': FolderInterface;
     'payload-jobs': PayloadJob;
     'payload-locked-documents': PayloadLockedDocument;
@@ -101,6 +101,7 @@ export interface Config {
     };
     chapters: {
       lessons: 'lessons';
+      children: 'chapters';
     };
     'payload-folders': {
       documentsAndFolders: 'payload-folders' | 'media';
@@ -119,7 +120,6 @@ export interface Config {
     enrollments: EnrollmentsSelect<false> | EnrollmentsSelect<true>;
     progress: ProgressSelect<false> | ProgressSelect<true>;
     reviews: ReviewsSelect<false> | ReviewsSelect<true>;
-    categories: CategoriesSelect<false> | CategoriesSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     pages: PagesSelect<false> | PagesSelect<true>;
     mentors: MentorsSelect<false> | MentorsSelect<true>;
@@ -128,6 +128,7 @@ export interface Config {
     articles: ArticlesSelect<false> | ArticlesSelect<true>;
     'article-tags': ArticleTagsSelect<false> | ArticleTagsSelect<true>;
     schools: SchoolsSelect<false> | SchoolsSelect<true>;
+    blueprints: BlueprintsSelect<false> | BlueprintsSelect<true>;
     'payload-folders': PayloadFoldersSelect<false> | PayloadFoldersSelect<true>;
     'payload-jobs': PayloadJobsSelect<false> | PayloadJobsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
@@ -388,9 +389,22 @@ export interface AdminInvitation {
  */
 export interface Course {
   id: number;
+  slug?: string | null;
+  slugLock?: boolean | null;
+  status: 'draft' | 'published' | 'archived';
   title: string;
-  slug: string;
-  description: {
+  /**
+   * Upload a thumbnail for the course
+   */
+  thumbnail: number | Media;
+  /**
+   * A short description of the course
+   */
+  description?: string | null;
+  /**
+   * The content of the course
+   */
+  richText: {
     root: {
       type: string;
       children: {
@@ -405,30 +419,6 @@ export interface Course {
     };
     [k: string]: unknown;
   };
-  producer: number | User;
-  price: number;
-  status: 'draft' | 'published' | 'archived';
-  thumbnail: number | Media;
-  category: string;
-  tags?:
-    | {
-        tag?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  requirements?:
-    | {
-        requirement?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  whatYouWillLearn?:
-    | {
-        learning?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  structureType: 'flat' | 'hierarchical';
   chapters?: {
     docs?: (number | Chapter)[];
     hasNextPage?: boolean;
@@ -439,6 +429,18 @@ export interface Course {
     hasNextPage?: boolean;
     totalDocs?: number;
   };
+  /**
+   * If enabled, the course structure (chapters or lessons) will be visable
+   */
+  freePreview?: boolean | null;
+  /**
+   * The price of the course, leave 0 for free courses
+   */
+  price: number;
+  /**
+   * The structure type of the course, flat or hierarchical. Flat is for courses with a single level of lessons, hierarchical is for courses with multiple levels of chapters and lessons within those chapters
+   */
+  structureType: 'flat' | 'hierarchical';
   updatedAt: string;
   createdAt: string;
 }
@@ -519,92 +521,92 @@ export interface FolderInterface {
  */
 export interface Chapter {
   id: number;
+  slug?: string | null;
+  slugLock?: boolean | null;
+  /**
+   * The full URL path for this chapter, computed from the parent chain (e.g.: course/chapter/subchapter).
+   */
+  fullSlug?: string | null;
+  /**
+   * The title of the chapter
+   */
   title: string;
-  course: number | Course;
+  /**
+   * A short description of the chapter
+   */
+  description?: string | null;
   lessons?: {
     docs?: (number | Lesson)[];
     hasNextPage?: boolean;
     totalDocs?: number;
   };
-  parentChapter?: (number | null) | Chapter;
-  description?: string | null;
+  course: number | Course;
   /**
-   * Order within the current level
+   * The parent chapter of this chapter.
    */
-  order: number;
+  parent?: (number | null) | Chapter;
   /**
-   * 0 for main chapters, 1+ for subchapters
+   * Indicates if the chapter is a leaf (i.e. has no children).
    */
-  depth: number;
+  isLeaf?: boolean | null;
+  children?: {
+    docs?: (number | Chapter)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
   updatedAt: string;
   createdAt: string;
 }
 /**
+ * Lessons are the individual units of content within a chapter or course.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "lessons".
  */
 export interface Lesson {
   id: number;
+  slug?: string | null;
+  slugLock?: boolean | null;
+  /**
+   * The title of the lesson
+   */
   title: string;
+  /**
+   * The description of the lesson
+   */
+  description?: string | null;
+  richText?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * The downloads for the lesson
+   */
+  downloads?: (number | Media)[] | null;
+  videos?:
+    | {
+        title: string;
+        url: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * The order of the lesson in the chapter/course
+   */
+  order: number;
   course: number | Course;
   chapter?: (number | null) | Chapter;
-  order: number;
-  /**
-   * e.g., "1.2.3" for hierarchical or "1" for flat
-   */
-  displayOrder?: string | null;
-  contentType: 'video' | 'article' | 'mixed';
-  content: {
-    primaryContent: {
-      type: 'video' | 'rich_text';
-      videoData?: {
-        videoUrl: string;
-        videoProvider: 'youtube' | 'vimeo' | 'custom';
-        videoThumbnail?: (number | null) | Media;
-        /**
-         * Duration in minutes
-         */
-        duration?: number | null;
-      };
-      richTextData?: {
-        root: {
-          type: string;
-          children: {
-            type: string;
-            version: number;
-            [k: string]: unknown;
-          }[];
-          direction: ('ltr' | 'rtl') | null;
-          format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-          indent: number;
-          version: number;
-        };
-        [k: string]: unknown;
-      } | null;
-    };
-    additionalResources?:
-      | {
-          type: 'pdf' | 'link' | 'file' | 'embed';
-          title: string;
-          description?: string | null;
-          url?: string | null;
-          file?: (number | null) | Media;
-          id?: string | null;
-        }[]
-      | null;
-    attachments?:
-      | {
-          file: number | Media;
-          id?: string | null;
-        }[]
-      | null;
-    downloads?:
-      | {
-          file: number | Media;
-          id?: string | null;
-        }[]
-      | null;
-  };
   isPreview?: boolean | null;
   /**
    * Estimated duration in minutes
@@ -620,22 +622,72 @@ export interface Lesson {
 export interface Enrollment {
   id: number;
   user: number | User;
-  course: number | Course;
-  status: 'active' | 'completed' | 'refunded';
+  type: 'course' | 'blueprint';
+  enrolledCourse?: {
+    relationTo: 'courses';
+    value: number | Course;
+  } | null;
+  enrolledBlueprint?: {
+    relationTo: 'blueprints';
+    value: number | Blueprint;
+  } | null;
+  status: 'active' | 'refunded';
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Blueprints are a collection of resources.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "blueprints".
+ */
+export interface Blueprint {
+  id: number;
+  slug?: string | null;
+  slugLock?: boolean | null;
+  title?: string | null;
   /**
-   * Lesson completion status and progress data
+   * Upload a thumbnail for the blueprint
    */
-  progress?:
-    | {
+  thumbnail?: (number | null) | Media;
+  /**
+   * A short description of the blueprint
+   */
+  description?: string | null;
+  /**
+   * The content of the blueprint
+   */
+  richText?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
         [k: string]: unknown;
-      }
-    | unknown[]
-    | string
-    | number
-    | boolean
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Upload files to the blueprint (PDF, DOCX, Images)
+   */
+  files?: (number | Media)[] | null;
+  /**
+   * Add videos to the blueprint (YouTube, Vimeo, etc.)
+   */
+  videos?:
+    | {
+        title?: string | null;
+        url?: string | null;
+        id?: string | null;
+      }[]
     | null;
-  purchased_at: string;
-  completed_at?: string | null;
+  isPaid?: boolean | null;
+  price?: number | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -663,18 +715,6 @@ export interface Review {
   user: number | User;
   rating: number;
   content: string;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "categories".
- */
-export interface Category {
-  id: number;
-  title: string;
-  slug?: string | null;
-  slugLock?: boolean | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1179,10 +1219,6 @@ export interface PayloadLockedDocument {
         value: number | Review;
       } | null)
     | ({
-        relationTo: 'categories';
-        value: number | Category;
-      } | null)
-    | ({
         relationTo: 'media';
         value: number | Media;
       } | null)
@@ -1213,6 +1249,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'schools';
         value: number | School;
+      } | null)
+    | ({
+        relationTo: 'blueprints';
+        value: number | Blueprint;
       } | null)
     | ({
         relationTo: 'payload-folders';
@@ -1357,35 +1397,18 @@ export interface AdminInvitationsSelect<T extends boolean = true> {
  * via the `definition` "courses_select".
  */
 export interface CoursesSelect<T extends boolean = true> {
-  title?: T;
   slug?: T;
-  description?: T;
-  producer?: T;
-  price?: T;
+  slugLock?: T;
   status?: T;
+  title?: T;
   thumbnail?: T;
-  category?: T;
-  tags?:
-    | T
-    | {
-        tag?: T;
-        id?: T;
-      };
-  requirements?:
-    | T
-    | {
-        requirement?: T;
-        id?: T;
-      };
-  whatYouWillLearn?:
-    | T
-    | {
-        learning?: T;
-        id?: T;
-      };
-  structureType?: T;
+  description?: T;
+  richText?: T;
   chapters?: T;
   lessons?: T;
+  freePreview?: T;
+  price?: T;
+  structureType?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1394,13 +1417,16 @@ export interface CoursesSelect<T extends boolean = true> {
  * via the `definition` "chapters_select".
  */
 export interface ChaptersSelect<T extends boolean = true> {
+  slug?: T;
+  slugLock?: T;
+  fullSlug?: T;
   title?: T;
-  course?: T;
-  lessons?: T;
-  parentChapter?: T;
   description?: T;
-  order?: T;
-  depth?: T;
+  lessons?: T;
+  course?: T;
+  parent?: T;
+  isLeaf?: T;
+  children?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1409,52 +1435,22 @@ export interface ChaptersSelect<T extends boolean = true> {
  * via the `definition` "lessons_select".
  */
 export interface LessonsSelect<T extends boolean = true> {
+  slug?: T;
+  slugLock?: T;
   title?: T;
-  course?: T;
-  chapter?: T;
-  order?: T;
-  displayOrder?: T;
-  contentType?: T;
-  content?:
+  description?: T;
+  richText?: T;
+  downloads?: T;
+  videos?:
     | T
     | {
-        primaryContent?:
-          | T
-          | {
-              type?: T;
-              videoData?:
-                | T
-                | {
-                    videoUrl?: T;
-                    videoProvider?: T;
-                    videoThumbnail?: T;
-                    duration?: T;
-                  };
-              richTextData?: T;
-            };
-        additionalResources?:
-          | T
-          | {
-              type?: T;
-              title?: T;
-              description?: T;
-              url?: T;
-              file?: T;
-              id?: T;
-            };
-        attachments?:
-          | T
-          | {
-              file?: T;
-              id?: T;
-            };
-        downloads?:
-          | T
-          | {
-              file?: T;
-              id?: T;
-            };
+        title?: T;
+        url?: T;
+        id?: T;
       };
+  order?: T;
+  course?: T;
+  chapter?: T;
   isPreview?: T;
   estimatedDuration?: T;
   updatedAt?: T;
@@ -1466,11 +1462,10 @@ export interface LessonsSelect<T extends boolean = true> {
  */
 export interface EnrollmentsSelect<T extends boolean = true> {
   user?: T;
-  course?: T;
+  type?: T;
+  enrolledCourse?: T;
+  enrolledBlueprint?: T;
   status?: T;
-  progress?: T;
-  purchased_at?: T;
-  completed_at?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1496,17 +1491,6 @@ export interface ReviewsSelect<T extends boolean = true> {
   user?: T;
   rating?: T;
   content?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "categories_select".
- */
-export interface CategoriesSelect<T extends boolean = true> {
-  title?: T;
-  slug?: T;
-  slugLock?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1763,6 +1747,30 @@ export interface ArticleTagsSelect<T extends boolean = true> {
 export interface SchoolsSelect<T extends boolean = true> {
   name?: T;
   logo?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "blueprints_select".
+ */
+export interface BlueprintsSelect<T extends boolean = true> {
+  slug?: T;
+  slugLock?: T;
+  title?: T;
+  thumbnail?: T;
+  description?: T;
+  richText?: T;
+  files?: T;
+  videos?:
+    | T
+    | {
+        title?: T;
+        url?: T;
+        id?: T;
+      };
+  isPaid?: T;
+  price?: T;
   updatedAt?: T;
   createdAt?: T;
 }

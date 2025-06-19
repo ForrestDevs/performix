@@ -4,150 +4,148 @@ import React, { useTransition } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent } from '@/components/ui/card'
-import {
-  Mail,
-  Lock,
-  Eye,
-  EyeOff,
-  ArrowRight,
-  CheckCircle,
-  Users,
-  Trophy,
-  Loader2,
-} from 'lucide-react'
+import { ArrowRight, CheckCircle, Users, Trophy, Loader2 } from 'lucide-react'
 import Link from 'next/link'
-import { useState } from 'react'
 import { useScrollAnimation } from '@/lib/hooks/useScrollAnimation'
-import { PerformixLogo } from '@/components/logo'
+import { PerformixLogo, PerformixLogoClear } from '@/components/logo'
 import { authClient } from '@/lib/auth/client'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form'
+import { PasswordInput } from '@/components/ui/password-input'
+
+const signUpSchema = z
+  .object({
+    name: z.string().min(2, 'Name must be at least 2 characters long'),
+    email: z.string().email('Please enter a valid email address'),
+    password: z.string().min(4, 'Password must be at least 4 characters long'),
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: 'Passwords do not match',
+    path: ['confirmPassword'],
+  })
+
+type SignUpData = z.infer<typeof signUpSchema>
 
 export default function GetStartedPage() {
   const visibleElements = useScrollAnimation()
   const router = useRouter()
-  const [showPassword, setShowPassword] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
-
   const [isPending, startTransition] = useTransition()
 
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-    confirmPassword: '',
-    name: '',
+  const form = useForm<SignUpData>({
+    resolver: zodResolver(signUpSchema),
+    defaultValues: {
+      name: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
+    },
   })
 
   const isVisible = (id: string) => visibleElements.has(id)
 
-  const handleInputChange = (field: string, value: string) => {
-    setFormData((prev) => ({ ...prev, [field]: value }))
-  }
-
-  const handleGoogleSignUp = async () => {
-    try {
-      setIsLoading(true)
-      await authClient.signIn.social({
-        provider: 'google',
-        callbackURL: '/consumer', // Redirect to dashboard
-      })
-    } catch (error) {
-      console.error('Google sign up error:', error)
-      toast.error('Failed to sign up with Google. Please try again.')
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
-  const handleEmailSignUp = async (e: React.FormEvent) => {
-    e.preventDefault()
-
-    if (formData.password !== formData.confirmPassword) {
-      toast.error('Passwords do not match')
-      return
-    }
-
-    if (formData.password.length < 4) {
-      toast.error('Password must be at least 4 characters long')
-      return
-    }
-
-    try {
-      setIsLoading(true)
-      const result = await authClient.signUp.email({
-        email: formData.email,
-        password: formData.password,
-        name: formData.name,
-        callbackURL: '/consumer', // Redirect to dashboard after email verification
-      })
-
-      if (result.data) {
-        toast.success('Account created! Please check your email to verify your account.')
-        // User will be redirected after email verification
+  const handleGoogleSignUp = () => {
+    startTransition(async () => {
+      try {
+        await authClient.signIn.social({
+          provider: 'google',
+          callbackURL: '/student',
+        })
+      } catch (error) {
+        toast.error('Failed to sign up with Google. Please try again.')
       }
-    } catch (error: any) {
-      console.error('Email sign up error:', error)
-      toast.error(error.message || 'Failed to create account. Please try again.')
-    } finally {
-      setIsLoading(false)
-    }
+    })
   }
 
-  const isFormValid =
-    formData.email && formData.password && formData.confirmPassword && formData.name
+  const onSubmit = (data: SignUpData) => {
+    startTransition(async () => {
+      try {
+        const { error } = await authClient.signUp.email({
+          name: data.name,
+          email: data.email,
+          password: data.password,
+          callbackURL: '/student', // Redirect to dashboard after email verification
+        })
+
+        if (error) {
+          toast.error(error.message)
+        } else {
+          toast.success('Account created! Please check your email to verify your account.')
+          router.push(`/verify-email?email=${encodeURIComponent(data.email)}`)
+        }
+      } catch (error: any) {
+        console.error('Email sign up error:', error)
+        toast.error(error.message || 'Failed to create account. Please try again.')
+      }
+    })
+  }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
+    <div className="min-h-screen bg-background">
       <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-100">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center space-x-4">
               <Link href="/">
-                <PerformixLogo />
-              </Link>
-            </div>
-            <div className="flex items-center space-x-4">
-              <span className="text-sm text-gray-600">Already have an account?</span>
-              <Link href="/sign-in">
-                <Button
-                  variant="outline"
-                  className="border-[#0891B2] text-[#0891B2] hover:bg-[#0891B2] hover:text-white"
-                >
-                  Sign In
-                </Button>
+                <PerformixLogoClear />
               </Link>
             </div>
           </div>
         </div>
       </header>
 
-      {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-[#0891B2] to-[#0E7490] py-16 overflow-hidden">
-        {/* Animated background elements */}
+      <section className="relative bg-gradient-to-br from-[#0891B2] via-[#0891B2] to-[#0E7490] py-20 lg:py-24 overflow-hidden">
         <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-20 left-20 w-32 h-32 border border-white/20 rounded-full animate-pulse"></div>
-          <div className="absolute bottom-32 right-32 w-24 h-24 border border-white/20 rounded-full animate-pulse delay-1000"></div>
-          <div className="absolute top-1/2 left-1/3 w-40 h-40 border border-white/10 rounded-full animate-pulse delay-500"></div>
+          <div className="absolute top-32 right-1/4 w-20 h-20 border border-white/10 rounded-full animate-pulse delay-300"></div>
+          <div className="absolute bottom-1/3 left-1/4 w-36 h-36 border border-white/10 rounded-full animate-pulse delay-700"></div>
+          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-white/5 to-transparent"></div>
+          <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-black/10 to-transparent"></div>
         </div>
 
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="text-center text-white">
-            <h1 className="text-4xl sm:text-5xl font-bold mb-4 font-['Space_Grotesk']">
-              Start Your{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-200">
-                D1 Journey
-              </span>
-            </h1>
-            <p className="text-xl mb-8 opacity-90 max-w-2xl mx-auto">
-              Join hundreds of players who&apos;ve transformed their hockey careers with elite
-              mentorship. Create your account to get started!
-            </p>
+          <div className="text-center text-white max-w-4xl mx-auto">
+            <div className="space-y-6">
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight font-['Space_Grotesk']">
+                Start Your{' '}
+                <span className="relative">
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-100 to-white">
+                    Journey to Excellence
+                  </span>
+                  <div className="absolute -bottom-2 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-white/50 to-transparent rounded-full"></div>
+                </span>
+              </h1>
+
+              <p className="text-lg sm:text-xl lg:text-2xl leading-relaxed opacity-95 max-w-3xl mx-auto font-light">
+                Join hundreds of players who&apos;ve transformed their hockey careers with elite
+                mentorship. Create your account to get started!
+              </p>
+
+              <div className="flex items-center justify-center space-x-8 pt-4 opacity-80">
+                <div className="flex items-center space-x-2">
+                  <div className="w-2 h-2 bg-white rounded-full animate-pulse delay-200"></div>
+                  <span className="text-sm font-medium">D1 Mentors</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <div className="w-2 h-2 bg-white rounded-full animate-pulse delay-400"></div>
+                  <span className="text-sm font-medium">Elite Results</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Signup Section */}
       <section className="py-16">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-md mx-auto">
@@ -165,99 +163,94 @@ export default function GetStartedPage() {
                     You&apos;ll complete your hockey profile after signing up
                   </p>
                 </div>
+                <Form {...form}>
+                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                    <div className="grid gap-4">
+                      <FormField
+                        control={form.control}
+                        name="name"
+                        render={({ field }) => (
+                          <FormItem className="grid gap-2">
+                            <FormLabel htmlFor="name">Full Name</FormLabel>
+                            <FormControl>
+                              <Input id="name" placeholder="Enter your full name" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
+                      <FormField
+                        control={form.control}
+                        name="email"
+                        render={({ field }) => (
+                          <FormItem className="grid gap-2">
+                            <FormLabel htmlFor="email">Email</FormLabel>
+                            <FormControl>
+                              <Input
+                                id="email"
+                                type="email"
+                                autoComplete="email"
+                                placeholder="Enter your email address"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
+                      <FormField
+                        control={form.control}
+                        name="password"
+                        render={({ field }) => (
+                          <FormItem className="grid gap-2">
+                            <FormLabel htmlFor="password">Password</FormLabel>
+                            <FormControl>
+                              <PasswordInput
+                                id="password"
+                                placeholder="******"
+                                autoComplete="new-password"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
+                      <FormField
+                        control={form.control}
+                        name="confirmPassword"
+                        render={({ field }) => (
+                          <FormItem className="grid gap-2">
+                            <FormLabel htmlFor="confirmPassword">Confirm Password</FormLabel>
+                            <FormControl>
+                              <PasswordInput
+                                id="confirmPassword"
+                                placeholder="******"
+                                autoComplete="new-password"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
+                      <Button
+                        type="submit"
+                        disabled={isPending}
+                        className="w-full bg-[#0891B2] hover:bg-[#0E7490] text-white h-12 text-lg"
+                      >
+                        {isPending ? 'Creating Account...' : 'Create Account'}
+                        <ArrowRight className="h-5 w-5 ml-2" />
+                      </Button>
+                    </div>
+                  </form>
+                </Form>
 
                 {/* Email Signup Form */}
-                <form onSubmit={handleEmailSignUp} className="space-y-6">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Full Name *
-                    </label>
-                    <Input
-                      type="text"
-                      value={formData.name}
-                      onChange={(e) => handleInputChange('name', e.target.value)}
-                      className="border-2 border-gray-200 focus:border-[#0891B2] rounded-lg h-12"
-                      placeholder="Enter your full name"
-                      required
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Email Address *
-                    </label>
-                    <div className="relative">
-                      <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-                      <Input
-                        type="email"
-                        value={formData.email}
-                        onChange={(e) => handleInputChange('email', e.target.value)}
-                        className="pl-10 border-2 border-gray-200 focus:border-[#0891B2] rounded-lg h-12"
-                        placeholder="Enter your email address"
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Password *
-                    </label>
-                    <div className="relative">
-                      <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-                      <Input
-                        type={showPassword ? 'text' : 'password'}
-                        value={formData.password}
-                        onChange={(e) => handleInputChange('password', e.target.value)}
-                        className="pl-10 pr-10 border-2 border-gray-200 focus:border-[#0891B2] rounded-lg h-12"
-                        placeholder="Create a secure password"
-                        required
-                      />
-                      <button
-                        type="button"
-                        onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                      >
-                        {showPassword ? (
-                          <EyeOff className="h-5 w-5" />
-                        ) : (
-                          <Eye className="h-5 w-5" />
-                        )}
-                      </button>
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Confirm Password *
-                    </label>
-                    <div className="relative">
-                      <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-                      <Input
-                        type="password"
-                        value={formData.confirmPassword}
-                        onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
-                        className="pl-10 border-2 border-gray-200 focus:border-[#0891B2] rounded-lg h-12"
-                        placeholder="Confirm your password"
-                        required
-                      />
-                    </div>
-                    {formData.password &&
-                      formData.confirmPassword &&
-                      formData.password !== formData.confirmPassword && (
-                        <p className="text-red-500 text-sm mt-1">Passwords do not match</p>
-                      )}
-                  </div>
-
-                  <Button
-                    type="submit"
-                    disabled={!isFormValid || isLoading}
-                    className="w-full bg-[#0891B2] hover:bg-[#0E7490] text-white h-12 text-lg"
-                  >
-                    {isLoading ? 'Creating Account...' : 'Create Account'}
-                    <ArrowRight className="h-5 w-5 ml-2" />
-                  </Button>
-                </form>
 
                 <div className="mt-6">
                   <div className="relative">
@@ -265,7 +258,7 @@ export default function GetStartedPage() {
                       <div className="w-full border-t border-gray-300" />
                     </div>
                     <div className="relative flex justify-center text-sm">
-                      <span className="px-2 bg-gray-50  text-gray-500">Or continue with</span>
+                      <span className="px-2 bg-background">Or continue with</span>
                     </div>
                   </div>
 
@@ -306,13 +299,18 @@ export default function GetStartedPage() {
                     By creating an account, you agree to our Terms of Service and Privacy Policy
                   </p>
                 </div>
+                <div className="mt-4 text-center text-sm">
+                  Already have an account?{' '}
+                  <Link href="/sign-in" className="underline">
+                    Sign In
+                  </Link>
+                </div>
               </CardContent>
             </Card>
           </div>
         </div>
       </section>
 
-      {/* Trust Indicators */}
       <section className="py-12 bg-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div

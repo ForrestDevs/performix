@@ -1,11 +1,13 @@
 import { isAdminOrProducer, admins, anyone } from '@/payload/access'
 import { CollectionConfig } from 'payload'
+import { CHAPTERS_SLUG, COURSES_SLUG, LESSONS_SLUG, MEDIA_SLUG } from '../constants'
+import { slugField } from '@/payload/fields/slug'
 
-export const Courses: CollectionConfig = {
-  slug: 'courses',
+const Courses: CollectionConfig = {
+  slug: COURSES_SLUG,
   admin: {
     useAsTitle: 'title',
-    group: 'Content',
+    group: 'Products',
     defaultColumns: ['title', 'producer', 'status', 'price'],
   },
   access: {
@@ -15,50 +17,7 @@ export const Courses: CollectionConfig = {
     delete: admins,
   },
   fields: [
-    {
-      name: 'title',
-      type: 'text',
-      required: true,
-    },
-    {
-      name: 'slug',
-      type: 'text',
-      required: true,
-      unique: true,
-      admin: {
-        position: 'sidebar',
-      },
-    },
-    {
-      name: 'description',
-      type: 'richText',
-      required: true,
-    },
-    {
-      name: 'producer',
-      type: 'relationship',
-      relationTo: 'users',
-      required: true,
-      admin: {
-        position: 'sidebar',
-      },
-      validate: (value, ctx) => {
-        if (ctx.req.user?.role === 'producer' && value !== ctx.req.user?.id) {
-          return 'As a producer, you can only create courses for yourself'
-        }
-        return true
-      },
-    },
-    {
-      name: 'price',
-      type: 'number',
-      required: true,
-      min: 0,
-      admin: {
-        position: 'sidebar',
-        step: 0.01,
-      },
-    },
+    ...slugField('title'),
     {
       name: 'status',
       type: 'select',
@@ -74,45 +33,87 @@ export const Courses: CollectionConfig = {
       },
     },
     {
-      name: 'thumbnail',
-      type: 'upload',
-      relationTo: 'media',
+      type: 'tabs',
+      tabs: [
+        {
+          label: 'Meta',
+          fields: [
+            {
+              name: 'title',
+              type: 'text',
+              required: true,
+            },
+            {
+              name: 'thumbnail',
+              type: 'upload',
+              relationTo: MEDIA_SLUG,
+              required: true,
+              admin: {
+                description: 'Upload a thumbnail for the course',
+              },
+            },
+            {
+              name: 'description',
+              type: 'textarea',
+              admin: {
+                description: 'A short description of the course',
+              },
+            },
+            {
+              name: 'richText',
+              label: 'Content',
+              admin: {
+                description: 'The content of the course',
+              },
+              type: 'richText',
+              required: true,
+            },
+          ],
+        },
+        {
+          label: 'Content',
+          fields: [
+            {
+              name: 'chapters',
+              type: 'join',
+              on: 'course',
+              collection: CHAPTERS_SLUG,
+              admin: {
+                condition: (data) => data.structureType === 'hierarchical',
+              },
+            },
+            {
+              name: 'lessons',
+              type: 'join',
+              on: 'course',
+              collection: LESSONS_SLUG,
+              admin: {
+                condition: (data) => data.structureType === 'flat',
+              },
+            },
+          ],
+        },
+      ],
+    },
+    {
+      name: 'freePreview',
+      type: 'checkbox',
+      defaultValue: true,
+      admin: {
+        position: 'sidebar',
+        description: 'If enabled, the course structure (chapters or lessons) will be visable',
+      },
+    },
+    {
+      name: 'price',
+      type: 'number',
       required: true,
-    },
-    {
-      name: 'category',
-      type: 'text',
-      required: true,
-    },
-    {
-      name: 'tags',
-      type: 'array',
-      fields: [
-        {
-          name: 'tag',
-          type: 'text',
-        },
-      ],
-    },
-    {
-      name: 'requirements',
-      type: 'array',
-      fields: [
-        {
-          name: 'requirement',
-          type: 'text',
-        },
-      ],
-    },
-    {
-      name: 'whatYouWillLearn',
-      type: 'array',
-      fields: [
-        {
-          name: 'learning',
-          type: 'text',
-        },
-      ],
+      defaultValue: 0,
+      min: 0,
+      admin: {
+        position: 'sidebar',
+        description: 'The price of the course, leave 0 for free courses',
+      },
     },
     {
       name: 'structureType',
@@ -123,19 +124,14 @@ export const Courses: CollectionConfig = {
         { label: 'Flat', value: 'flat' },
         { label: 'Hierarchical', value: 'hierarchical' },
       ],
-    },
-    {
-      name: 'chapters',
-      type: 'join',
-      on: 'course',
-      collection: 'chapters',
-    },
-    {
-      name: 'lessons',
-      type: 'join',
-      on: 'course',
-      collection: 'lessons',
+      admin: {
+        position: 'sidebar',
+        description:
+          'The structure type of the course, flat or hierarchical. Flat is for courses with a single level of lessons, hierarchical is for courses with multiple levels of chapters and lessons within those chapters',
+      },
     },
   ],
   timestamps: true,
-}
+} as const
+
+export default Courses

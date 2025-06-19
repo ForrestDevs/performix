@@ -1,13 +1,15 @@
-import { Courses } from './Courses'
-import { Chapters } from './Chapters'
-import { Lessons } from './Lessons'
-import { Enrollments } from './Enrollments'
 import { Progress } from './Progress'
 import { Reviews } from './Reviews'
-import { Categories } from './Categories'
 import { Media } from './Media'
 import { Pages } from './Pages'
-import { Mentors } from './Mentors'
+
+import Courses from './Courses'
+import Chapters from './Chapters'
+import Lessons from './Lessons'
+import Blueprints from './Blueprints'
+import Enrollments from './Enrollments'
+
+import Mentors from './Mentors'
 import Students from './Students'
 import Testimonials from './Testimonials'
 import Articles from './Articles'
@@ -21,7 +23,6 @@ export const collections = [
   Enrollments,
   Progress,
   Reviews,
-  Categories,
   Media,
   Pages,
   Mentors,
@@ -30,4 +31,5 @@ export const collections = [
   Articles,
   ArticleTags,
   Schools,
+  Blueprints,
 ]

@@ -4,6 +4,11 @@ import { revalidateTestimonials } from './hooks/revalidate'
 
 export const Testimonials: CollectionConfig = {
   slug: TESTIMONIALS_SLUG,
+  admin: {
+    useAsTitle: 'name',
+    group: 'Website',
+    defaultColumns: ['name', 'position', 'team', 'featured'],
+  },
   labels: {
     singular: 'Testimonial',
     plural: 'Testimonials',

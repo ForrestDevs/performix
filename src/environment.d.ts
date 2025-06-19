@@ -14,6 +14,10 @@ declare global {
       BETTER_AUTH_SECRET: string
       GOOGLE_CLIENT_ID: string
       GOOGLE_CLIENT_SECRET: string
+      EMAIL_HOST: string
+      EMAIL_PORT: string
+      EMAIL_USER: string
+      EMAIL_PASSWORD: string
     }
   }
 }

@@ -2,82 +2,130 @@
 
 import { Message } from '@/components/Message'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-// import { useAuth } from '@/lib/providers/Auth'
+import { authClient } from '@/lib/auth/client'
 import { useRouter, useSearchParams } from 'next/navigation'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { startTransition, useEffect, useTransition } from 'react'
 import { useForm } from 'react-hook-form'
+import { z } from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form'
+import { PasswordInput } from '@/components/ui/password-input'
+import { toast } from 'sonner'
 
-type FormData = {
-  password: string
-  token: string
-}
+const resetPasswordSchema = z
+  .object({
+    token: z.string(),
+    password: z.string().min(4, 'Password must be at least 4 characters long'),
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: 'Passwords do not match',
+    path: ['confirmPassword'],
+  })
 
-export const ResetPasswordForm: React.FC = () => {
-  const [error, setError] = useState('')
-  // const { login } = useAuth()
+type ResetPasswordData = z.infer<typeof resetPasswordSchema>
+
+export function ResetPasswordForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
+  const [isPending, startTransition] = useTransition()
   const token = searchParams.get('token')
 
-  const {
-    formState: { errors },
-    handleSubmit,
-    register,
-    reset,
-  } = useForm<FormData>()
-
-  const onSubmit = useCallback(
-    async (data: FormData) => {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/reset-password`,
-        {
-          body: JSON.stringify(data),
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          method: 'POST',
-        },
-      )
-
-      if (response.ok) {
-        const json = await response.json()
-
-        // Automatically log the user in after they successfully reset password
-        // await login({ email: json.user.email, password: data.password })
-
-        // Redirect them to `/account` with success message in URL
-        router.push('/account?success=Password reset successfully.')
-      } else {
-        setError('There was a problem while resetting your password. Please try again later.')
-      }
+  const form = useForm<ResetPasswordData>({
+    resolver: zodResolver(resetPasswordSchema),
+    defaultValues: {
+      token: token || '',
+      password: '',
+      confirmPassword: '',
     },
-    [router],
-  )
+  })
+
+  const onSubmit = (data: ResetPasswordData) => {
+    startTransition(async () => {
+      try {
+        const res = await authClient.resetPassword({
+          newPassword: data.password,
+          token: token || '',
+        })
+
+        if (res.error) {
+          toast.error(res.error.message)
+        } else {
+          toast.success('Password reset successfully')
+          router.push('/sign-in')
+        }
+      } catch (error) {
+        console.error(error)
+        toast.error('An error occurred while resetting your password')
+      }
+    })
+  }
 
   // when Next.js populates token within router,
   // reset form with new token value
   useEffect(() => {
-    reset({ token: token || undefined })
-  }, [reset, token])
+    form.reset({ token: token || undefined })
+  }, [form, token])
 
   return (
-    <form className="" onSubmit={handleSubmit(onSubmit)}>
-      <Message className="" error={error} />
-      <div className="mb-8">
-        <Label htmlFor="password">New password</Label>
-        <Input
-          id="password"
-          {...register('password', { required: true })}
-          required
-          type="password"
-        />
-      </div>
-      <input type="hidden" {...register('token')} />
-      <Button type="submit" variant="default">
-        Reset Password
-      </Button>
-    </form>
+    <Form {...form}>
+      <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
+        <div className="grid gap-4">
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem className="grid gap-2">
+                <FormLabel htmlFor="password">Password</FormLabel>
+                <FormControl>
+                  <PasswordInput
+                    id="password"
+                    placeholder="******"
+                    autoComplete="new-password"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="confirmPassword"
+            render={({ field }) => (
+              <FormItem className="grid gap-2">
+                <FormLabel htmlFor="confirmPassword">Confirm Password</FormLabel>
+                <FormControl>
+                  <PasswordInput
+                    id="confirmPassword"
+                    placeholder="******"
+                    autoComplete="new-password"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Message className="" error={form.formState.errors.root?.message} />
+          <Button
+            type="submit"
+            variant="default"
+            disabled={isPending}
+            className="w-full bg-[#0891B2] hover:bg-[#0E7490] text-white h-12 text-lg"
+          >
+            {isPending ? 'Resetting...' : 'Reset Password'}
+          </Button>
+        </div>
+      </form>
+    </Form>
   )
 }

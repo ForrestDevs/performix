@@ -3,27 +3,27 @@
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent } from '@/components/ui/card'
-import {
-  Mail,
-  Lock,
-  Eye,
-  EyeOff,
-  ArrowRight,
-  CheckCircle,
-  Users,
-  Trophy,
-  Loader2,
-} from 'lucide-react'
+import { ArrowRight, CheckCircle, Users, Trophy, Loader2 } from 'lucide-react'
 import Link from 'next/link'
-import { useState, useTransition } from 'react'
+import { useTransition } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { useScrollAnimation } from '@/lib/hooks/useScrollAnimation'
-import { PerformixLogo } from '@/components/logo'
+import { PerformixLogoClear } from '@/components/logo'
 import { authClient } from '@/lib/auth/client'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form'
+import { PasswordInput } from '@/components/ui/password-input'
+import { Checkbox } from '@/components/ui/checkbox'
 
 const signInSchema = z.object({
   email: z.string().email('Please enter a valid email address'),
@@ -37,15 +37,7 @@ export default function SignInPage() {
   const visibleElements = useScrollAnimation()
   const router = useRouter()
   const [isPending, startTransition] = useTransition()
-
-  const [showPassword, setShowPassword] = useState(false)
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    setError,
-  } = useForm<SignInData>({
+  const form = useForm<SignInData>({
     resolver: zodResolver(signInSchema),
     defaultValues: {
       email: '',
@@ -56,39 +48,12 @@ export default function SignInPage() {
 
   const isVisible = (id: string) => visibleElements.has(id)
 
-  const onSubmit = (data: SignInData) => {
-    startTransition(async () => {
-      try {
-        const result = await authClient.signIn.email({
-          email: data.email,
-          password: data.password,
-          rememberMe: data.rememberMe,
-          callbackURL: '/consumer', // Redirect to dashboard after successful login
-        })
-
-        if (result.data) {
-          toast.success('Signed in successfully!')
-          router.push('/consumer')
-        }
-
-        if (result.error) {
-          setError('root', { message: result.error.message })
-          toast.error(result.error.message)
-        }
-      } catch (error) {
-        console.error('Sign in error:', error)
-        setError('root', { message: 'An unexpected error occurred' })
-        toast.error('An unexpected error occurred')
-      }
-    })
-  }
-
   const handleGoogleSignIn = () => {
     startTransition(async () => {
       try {
         await authClient.signIn.social({
           provider: 'google',
-          callbackURL: '/consumer', // Redirect to dashboard
+          callbackURL: '/student', // Redirect to dashboard
         })
       } catch (error) {
         console.error('Google sign in error:', error)
@@ -97,32 +62,33 @@ export default function SignInPage() {
     })
   }
 
-  return (
-    <div className="bg-gray-50">
-      {/* Header */}
-      <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-100">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center space-x-4">
-              <Link href="/">
-                <PerformixLogo />
-              </Link>
-            </div>
-            <div className="flex items-center space-x-4">
-              <span className="text-sm text-gray-600">Don&apos;t have an account?</span>
-              <Link href="/get-started">
-                <Button
-                  variant="outline"
-                  className="border-[#0891B2] text-[#0891B2] hover:bg-[#0891B2] hover:text-white"
-                >
-                  Get Started
-                </Button>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </header>
+  const onSubmit = (data: SignInData) => {
+    startTransition(async () => {
+      try {
+        const { error } = await authClient.signIn.email({
+          email: data.email,
+          password: data.password,
+          rememberMe: data.rememberMe,
+          callbackURL: '/student', // Redirect to dashboard after successful login
+        })
 
+        if (error) {
+          toast.error(error.message)
+        } else {
+          toast.success('Signed in successfully!')
+          router.push('/student')
+        }
+      } catch (error: any) {
+        console.error('Sign in error:', error)
+        toast.error(error.message || 'An unexpected error occurred')
+      }
+    })
+  }
+
+  return (
+    <div className="bg-background">
+
+      
       <div className="flex items-center justify-center p-8">
         <div className="w-full max-w-md">
           <Card
@@ -140,94 +106,96 @@ export default function SignInPage() {
                 <p className="text-gray-600">Continue your journey to excellence</p>
               </div>
 
-              <div className="relative mb-6">
-                <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-gray-300" />
-                </div>
-                <div className="relative flex justify-center text-sm">
-                  <span className="px-2 bg-white text-gray-500">or</span>
-                </div>
-              </div>
-
-              <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Email Address
-                  </label>
-                  <div className="relative">
-                    <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-                    <Input
-                      type="email"
-                      {...register('email')}
-                      className="pl-10 border-2 border-gray-200 focus:border-[#0891B2] rounded-lg h-12"
-                      placeholder="Enter your email address"
-                      disabled={isPending}
+              <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                  <div className="grid gap-4">
+                    <FormField
+                      control={form.control}
+                      name="email"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel htmlFor="email">Email</FormLabel>
+                          <FormControl>
+                            <Input
+                              id="email"
+                              type="email"
+                              autoComplete="email"
+                              placeholder="Enter your email address"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
                     />
-                  </div>
-                  {errors.email && (
-                    <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
-                  )}
-                </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Password</label>
-                  <div className="relative">
-                    <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-                    <Input
-                      type={showPassword ? 'text' : 'password'}
-                      {...register('password')}
-                      className="pl-10 pr-10 border-2 border-gray-200 focus:border-[#0891B2] rounded-lg h-12"
-                      placeholder="Enter your password"
-                      disabled={isPending}
+                    <FormField
+                      control={form.control}
+                      name="password"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel htmlFor="password">Password</FormLabel>
+                          <FormControl>
+                            <PasswordInput
+                              id="password"
+                              placeholder="******"
+                              autoComplete="password"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
                     />
-                    <button
-                      type="button"
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+
+                    <FormField
+                      control={form.control}
+                      name="rememberMe"
+                      render={({ field }) => (
+                        <FormItem className="flex flex-row items-center space-x-3 space-y-0">
+                          <FormControl>
+                            <Checkbox
+                              id="rememberMe"
+                              checked={field.value || false}
+                              onCheckedChange={(checked) => {
+                                field.onChange(checked)
+                              }}
+                            />
+                          </FormControl>
+                          <FormLabel
+                            htmlFor="rememberMe"
+                            className="text-sm font-normal cursor-pointer"
+                          >
+                            Remember me
+                          </FormLabel>
+                        </FormItem>
+                      )}
+                    />
+                    {form.formState.errors.root && (
+                      <div className="text-red-500 text-sm text-center">
+                        {form.formState.errors.root.message}
+                      </div>
+                    )}
+
+                    <div className="flex justify-start">
+                      <Link
+                        href="/recover-password"
+                        className="text-sm text-[#0891B2] hover:text-[#0E7490] hover:underline"
+                      >
+                        Forgot your password?
+                      </Link>
+                    </div>
+                    <Button
+                      type="submit"
                       disabled={isPending}
+                      className="w-full bg-[#0891B2] hover:bg-[#0E7490] text-white h-12 text-lg"
                     >
-                      {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
-                    </button>
+                      {isPending ? 'Signing In...' : 'Sign In'}
+                      <ArrowRight className="h-5 w-5 ml-2" />
+                    </Button>
                   </div>
-                  {errors.password && (
-                    <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>
-                  )}
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center">
-                    <input
-                      id="remember-me"
-                      type="checkbox"
-                      {...register('rememberMe')}
-                      className="h-4 w-4 text-[#0891B2] focus:ring-[#0891B2] border-gray-300 rounded"
-                      disabled={isPending}
-                    />
-                    <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700">
-                      Remember me
-                    </label>
-                  </div>
-                  <Link
-                    href="/recover-password"
-                    className="text-sm text-[#0891B2] hover:text-[#0E7490]"
-                  >
-                    Forgot password?
-                  </Link>
-                </div>
-
-                {errors.root && (
-                  <div className="text-red-500 text-sm text-center">{errors.root.message}</div>
-                )}
-
-                <Button
-                  type="submit"
-                  disabled={isPending}
-                  className="w-full bg-[#0891B2] hover:bg-[#0E7490] text-white h-12 text-lg"
-                >
-                  {isPending ? 'Signing In...' : 'Sign In'}
-                  <ArrowRight className="h-5 w-5 ml-2" />
-                </Button>
-              </form>
+                </form>
+              </Form>
 
               <div className="mt-6">
                 <div className="relative">
@@ -235,7 +203,7 @@ export default function SignInPage() {
                     <div className="w-full border-t border-gray-300" />
                   </div>
                   <div className="relative flex justify-center text-sm">
-                    <span className="px-2 bg-gray-50  text-gray-500">Or continue with</span>
+                    <span className="px-2 bg-background text-gray-500">Or continue with</span>
                   </div>
                 </div>
 
@@ -287,8 +255,7 @@ export default function SignInPage() {
         </div>
       </div>
 
-      {/* Trust Indicators */}
-      <section className="py-12 bg-white">
+      <section className="py-12 bg-background">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div
             id="trust-indicators"

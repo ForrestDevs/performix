@@ -19,6 +19,9 @@ export const Media: CollectionConfig = {
   folders: {
     browseByFolder: true,
   },
+  admin: {
+    group: 'Files',
+  },
   access: {
     create: () => true,
     delete: () => true,

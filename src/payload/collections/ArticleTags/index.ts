@@ -14,6 +14,8 @@ const ArticleTags: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'title',
+    group: 'Website',
+    defaultColumns: ['title'],
   },
   fields: [
     {

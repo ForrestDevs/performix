@@ -8,6 +8,8 @@ import { USER_SLUG } from './payload/collections/constants'
 import { collections } from './payload/collections'
 import { vercelPostgresAdapter } from '@payloadcms/db-vercel-postgres'
 import { allowedOrigins, serverURL } from './payload/allowed-origins'
+import { nodemailerAdapter } from '@payloadcms/email-nodemailer'
+import nodemailer from 'nodemailer'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -50,7 +52,18 @@ export default buildConfig({
       ],
     },
   },
-
+  email: nodemailerAdapter({
+    defaultFromAddress: 'hello@performix.ca',
+    defaultFromName: 'Performix',
+    transport: nodemailer.createTransport({
+      host: process.env.EMAIL_HOST,
+      port: process.env.EMAIL_PORT,
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASSWORD,
+      },
+    }),
+  }),
   editor: defaultLexical,
   db: vercelPostgresAdapter({
     pool: {

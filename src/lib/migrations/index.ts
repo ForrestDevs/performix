@@ -9,6 +9,9 @@ import * as migration_20250617_150416_mentorsFeatured from './20250617_150416_me
 import * as migration_20250617_165604_students from './20250617_165604_students';
 import * as migration_20250618_163348_userAuth from './20250618_163348_userAuth';
 import * as migration_20250618_184100_mentorsSkills from './20250618_184100_mentorsSkills';
+import * as migration_20250619_193014_coursev2 from './20250619_193014_coursev2';
+import * as migration_20250619_194059_blueprints from './20250619_194059_blueprints';
+import * as migration_20250619_194839_enrollments from './20250619_194839_enrollments';
 
 export const migrations = [
   {
@@ -64,6 +67,21 @@ export const migrations = [
   {
     up: migration_20250618_184100_mentorsSkills.up,
     down: migration_20250618_184100_mentorsSkills.down,
-    name: '20250618_184100_mentorsSkills'
+    name: '20250618_184100_mentorsSkills',
+  },
+  {
+    up: migration_20250619_193014_coursev2.up,
+    down: migration_20250619_193014_coursev2.down,
+    name: '20250619_193014_coursev2',
+  },
+  {
+    up: migration_20250619_194059_blueprints.up,
+    down: migration_20250619_194059_blueprints.down,
+    name: '20250619_194059_blueprints',
+  },
+  {
+    up: migration_20250619_194839_enrollments.up,
+    down: migration_20250619_194839_enrollments.down,
+    name: '20250619_194839_enrollments'
   },
 ];

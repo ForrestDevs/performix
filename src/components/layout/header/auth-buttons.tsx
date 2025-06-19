@@ -29,17 +29,35 @@ export function AuthButtons() {
   if (user && user.role === 'student') {
     return (
       <div className="flex items-center space-x-4">
-        <Link
-          href="/consumer"
+        {/* <Link
+          href="/student"
           className={cn(
             buttonVariants({ variant: 'default' }),
-            'bg-[#0891B2] hover:bg-[#0E7490] text-white',
+            'lg:hidden bg-[#0891B2] hover:bg-[#0E7490] text-white',
           )}
         >
           Dashboard
         </Link>
+        <Link
+          href="/student/settings"
+          className={cn(
+            buttonVariants({ variant: 'default' }),
+            'lg:hidden bg-[#0891B2] hover:bg-[#0E7490] text-white',
+          )}
+        >
+          Settings
+        </Link>
+        <Link
+          href="/sign-out"
+          className={cn(
+            buttonVariants({ variant: 'default' }),
+            'lg:hidden bg-[#0891B2] hover:bg-[#0E7490] text-white',
+          )}
+        >
+          Sign Out
+        </Link> */}
         <UserMenu
-          className="hidden lg:block"
+          className="pl-6"
           user={{
             id: user.id,
             name: user.name,

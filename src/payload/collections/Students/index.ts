@@ -9,6 +9,7 @@ export const Students: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'firstName',
+    group: 'Admin',
     defaultColumns: ['firstName', 'lastName', 'currentLevel', 'position'],
   },
   access: {

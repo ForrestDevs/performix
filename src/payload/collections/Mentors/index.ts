@@ -3,10 +3,12 @@ import { MEDIA_SLUG, MENTOR_SLUG, SCHOOLS_SLUG } from '../constants'
 import { slugField } from '@/payload/fields/slug'
 import { revalidateMentors } from './hooks/revalidate'
 
-export const Mentors: CollectionConfig = {
+const Mentors: CollectionConfig = {
   slug: MENTOR_SLUG,
   admin: {
     useAsTitle: 'name',
+    group: 'Website',
+    defaultColumns: ['name', 'featured'],
   },
   hooks: {
     afterChange: [revalidateMentors],
@@ -62,7 +64,6 @@ export const Mentors: CollectionConfig = {
         description: 'Upload/ Select a profile picture for the mentor',
       },
     },
-
     {
       name: 'currentTeam',
       type: 'text',
@@ -248,4 +249,8 @@ export const Mentors: CollectionConfig = {
       ],
     },
   ],
-}
+  timestamps: true,
+  versions: false,
+} as const
+
+export default Mentors

@@ -5,6 +5,8 @@ const Schools: CollectionConfig = {
   slug: SCHOOLS_SLUG,
   admin: {
     useAsTitle: 'name',
+    group: 'Website',
+    defaultColumns: ['name'],
   },
   access: {
     read: () => true,
