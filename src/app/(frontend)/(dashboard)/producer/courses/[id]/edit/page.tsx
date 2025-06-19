@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation'
 import { getCurrentUser } from '@/lib/data/auth'
 import { getPayload } from '@/lib/utilities/getPayload'
 import { Course, User } from '@/payload-types'
-import { CourseForm } from '../../components/CourseForm'
+// import { CourseForm } from '../../components/CourseForm'
 import { ContentEditor } from '../components/ContentEditor'
 
 async function getCourse(id: number) {
@@ -33,12 +33,12 @@ export default async function EditCoursePage({ params }: EditCoursePageProps) {
     notFound()
   }
 
-  const producer = course.producer as User
+  // const producer = course.producer as User
 
   // Verify ownership
-  if (user?.id !== producer.id) {
-    notFound()
-  }
+  // if (user?.id !== producer.id) {
+  //   notFound()
+  // }
 
   return (
     <div>
@@ -53,7 +53,7 @@ export default async function EditCoursePage({ params }: EditCoursePageProps) {
       <div className="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-2">
         <div>
           <h3 className="text-lg font-medium text-gray-900 mb-4">Course Information</h3>
-          <CourseForm user={user} initialData={course} />
+          {/* <CourseForm user={user} initialData={course} /> */}
         </div>
 
         <div>

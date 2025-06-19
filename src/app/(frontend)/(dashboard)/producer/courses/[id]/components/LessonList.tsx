@@ -63,7 +63,7 @@ export function LessonList({ course, chapterId, onBack }: LessonListProps) {
                 <div className="mt-2 flex">
                   <div className="flex items-center text-sm text-gray-500">
                     <span className="truncate">
-                      {lesson.contentType.charAt(0).toUpperCase() + lesson.contentType.slice(1)} •{' '}
+                      {/* {lesson.contentType.charAt(0).toUpperCase() + lesson.contentType.slice(1)} •{' '} */}
                       {lesson.estimatedDuration} min
                     </span>
                   </div>

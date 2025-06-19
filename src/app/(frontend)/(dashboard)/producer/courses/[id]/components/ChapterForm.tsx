@@ -32,10 +32,7 @@ export function ChapterForm({ course, onSuccess, onCancel }: ChapterFormProps) {
 
       const chapters = course.chapters?.docs as Chapter[]
       // Get the highest order number from existing chapters
-      const maxOrder =
-        chapters?.reduce((max, chapter) => {
-          return Math.max(max, typeof chapter === 'number' ? chapter : chapter.order || 0)
-        }, 0) || 0
+      const maxOrder = 0
 
       await createChapter({
         title: formData.title,

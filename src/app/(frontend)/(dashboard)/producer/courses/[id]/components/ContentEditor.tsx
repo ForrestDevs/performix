@@ -5,7 +5,7 @@ import { Course } from '@/payload-types'
 import { ChapterList } from './ChapterList'
 import { LessonList } from './LessonList'
 import { ChapterForm } from './ChapterForm'
-import { LessonForm } from './LessonForm'
+// import { LessonForm } from './LessonForm'
 
 interface ContentEditorProps {
   course: Course
@@ -172,12 +172,12 @@ export function ContentEditor({ course }: ContentEditorProps) {
                 available for preview.
               </p>
             </div>
-            <LessonForm
+            {/* <LessonForm
               course={course}
               chapterId={course.structureType === 'hierarchical' ? selectedChapter : null}
               onSuccess={() => setMode('lessons')}
               onCancel={() => setMode('lessons')}
-            />
+            /> */}
           </div>
         )}
       </div>

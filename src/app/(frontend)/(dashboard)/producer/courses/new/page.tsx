@@ -1,5 +1,5 @@
 import { getCurrentUser } from '@/lib/data/auth'
-import { CourseForm } from '../components/CourseForm'
+// import { CourseForm } from '../components/CourseForm'
 
 export default async function NewCoursePage() {
   const user = await getCurrentUser()
@@ -15,7 +15,7 @@ export default async function NewCoursePage() {
       </div>
 
       <div className="mt-8">
-        <CourseForm user={user} />
+        {/* <CourseForm user={user} /> */}
       </div>
     </div>
   )

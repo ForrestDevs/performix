@@ -1,12 +1,13 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { Course, Media } from '@/payload-types'
-import { CourseStatus } from './components/CourseStatus'
+// import { CourseStatus } from './components/CourseStatus'
 import { getPayload } from '@/lib/utilities/getPayload'
 import { getCurrentUser } from '@/lib/data/auth'
 import { PayloadRedirects } from '@/components/PayloadRedirects'
 import RichText from '@/components/RichText'
 import { Media as MediaComponent } from '@/components/Media'
+
 async function getProducerCourses(producerId: number) {
   const payload = await getPayload()
 
@@ -115,13 +116,13 @@ export default async function ProducerCoursesPage() {
                             <div className="ml-4">
                               <div className="font-medium text-gray-900">{course.title}</div>
                               <div className="text-gray-500">
-                                <RichText data={course.description} />
+                                {/* <RichText data={course.description} /> */}
                               </div>
                             </div>
                           </div>
                         </td>
                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                          <CourseStatus status={course.status} />
+                          {/* <CourseStatus status={course.status} /> */}
                         </td>
                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                           ${course.price}
