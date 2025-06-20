@@ -1,14 +1,11 @@
 import React from 'react'
 import { PerformixLogoClear } from '@/components/logo'
 import Link from 'next/link'
-import Breadcrumb from './breadcrumb'
 import { MobileMenu, MobileMenuButton } from './mobile-menu'
 import { MobileMenuProvider } from './context'
-import { getUserSessionAction } from '@/lib/actions/auth'
 import { AuthButtons } from './auth-buttons'
 
-export default async function Header() {
-  const user = await getUserSessionAction()
+export default function Header() {
 
   return (
     <MobileMenuProvider>

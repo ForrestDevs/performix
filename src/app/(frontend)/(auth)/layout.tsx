@@ -3,8 +3,6 @@ import { getCurrentUser } from '@/lib/data/auth'
 import { redirect } from 'next/navigation'
 import Header from '@/components/layout/header'
 
-export const dynamic = 'force-dynamic'
-
 export default async function AuthLayout({ children }: { children: React.ReactNode }) {
   const user = await getCurrentUser()
 

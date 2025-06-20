@@ -5,7 +5,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { CheckCircle } from 'lucide-react'
 import { useMentor } from './mentor-context'
-import { useScrollAnimation } from '../hooks/use-scroll-animation'
+import { useScrollAnimation } from '@/lib/hooks/useScrollAnimation'
 import { prettifySkill } from '@/lib/utilities/prettify'
 
 interface MentorAboutProps {
@@ -14,7 +14,8 @@ interface MentorAboutProps {
 
 export function MentorAbout({ sectionRef }: MentorAboutProps) {
   const { mentor } = useMentor()
-  const { isVisible } = useScrollAnimation()
+  const visibleElements = useScrollAnimation()
+  const isVisible = (id: string) => visibleElements.has(id)
 
   return (
     <section ref={sectionRef} id="about-section" className="scroll-mt-32">

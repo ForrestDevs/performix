@@ -3,6 +3,7 @@
 import { motion } from 'motion/react'
 import { Play, ChevronRight, BookOpen, GraduationCap } from 'lucide-react'
 import Link from 'next/link'
+import Image from 'next/image'
 
 interface ProgramData {
   id: number
@@ -39,10 +40,12 @@ export default function StudentPrograms({ programs }: StudentProgramsProps) {
           {programs.map((program) => (
             <div key={program.id} className="border border-gray-200 rounded-lg p-4">
               <div className="flex items-center space-x-4">
-                <img
+                  <Image
                   src={program.image || '/placeholder.svg'}
                   alt={program.title}
                   className="w-20 h-12 rounded-lg object-cover"
+                  width={80}
+                  height={48}
                 />
                 <div className="flex-1">
                   <h3 className="font-semibold text-gray-900">{program.title}</h3>

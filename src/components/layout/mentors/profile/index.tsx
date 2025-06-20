@@ -6,7 +6,7 @@ export { MentorBookingModal } from './mentor-booking-modal'
 export { MentorProfileClient } from './mentor-profile-client'
 export { MentorLocationCard } from './mentor-location-card'
 export { MentorContactCard } from './mentor-contact-card'
-export { useScrollAnimation } from '../hooks/use-scroll-animation'
+// Removed duplicate useScrollAnimation export to prevent conflicts
 export { getMentorData } from '../data/get-mentor-data'
 
 // function MentorProfilePageTEST() {

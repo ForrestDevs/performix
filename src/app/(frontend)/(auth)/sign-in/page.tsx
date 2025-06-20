@@ -10,7 +10,6 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { useScrollAnimation } from '@/lib/hooks/useScrollAnimation'
-import { PerformixLogoClear } from '@/components/logo'
 import { authClient } from '@/lib/auth/client'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
@@ -87,8 +86,6 @@ export default function SignInPage() {
 
   return (
     <div className="bg-background">
-
-      
       <div className="flex items-center justify-center p-8">
         <div className="w-full max-w-md">
           <Card

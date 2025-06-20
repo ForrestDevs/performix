@@ -1,6 +1,7 @@
 'use client'
 
 import { motion } from 'motion/react'
+import Image from 'next/image'
 
 interface StudentData {
   firstName: string
@@ -35,10 +36,12 @@ export default function WelcomeSection({ student }: WelcomeSectionProps) {
           </div>
           <div className="hidden md:block">
             {student.user.image ? (
-              <img
+              <Image
                 src={student.user.image}
                 alt={student.user.name}
                 className="w-20 h-20 rounded-full border-4 border-white/20"
+                width={80}
+                height={80}
               />
             ) : (
               <div className="w-20 h-20 rounded-full border-4 border-white/20 bg-white/20 flex items-center justify-center">

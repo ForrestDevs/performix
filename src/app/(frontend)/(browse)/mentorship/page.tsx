@@ -1,5 +1,5 @@
 import { redirect } from 'next/navigation'
 
-export default function MentorshipPage() {
+export default async function MentorshipPage() {
   redirect('/')
 }

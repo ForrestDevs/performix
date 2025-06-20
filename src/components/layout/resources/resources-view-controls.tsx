@@ -5,13 +5,13 @@ import { useQueryState, parseAsStringLiteral } from 'nuqs'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Grid3X3, List } from 'lucide-react'
+import { useResourceViewMode } from './view-mode-context'
 
 interface ResourcesViewControlsProps {
   totalCount: number
   sortOptions?: Array<{ value: string; label: string }>
 }
 
-const VIEW_MODES = ['grid', 'list'] as const
 const SORT_OPTIONS = [
   { value: 'newest', label: 'Most Recent' },
   { value: 'oldest', label: 'Oldest First' },
@@ -23,13 +23,7 @@ export default function ResourcesViewControls({
   sortOptions = SORT_OPTIONS.map((opt) => ({ value: opt.value, label: opt.label })),
 }: ResourcesViewControlsProps) {
   const [isPending, startTransition] = useTransition()
-
-  const [viewMode, setViewMode] = useQueryState(
-    'view',
-    parseAsStringLiteral(VIEW_MODES).withDefault('grid').withOptions({
-      shallow: true, // View mode change doesn't need server update
-    }),
-  )
+  const { viewMode, setViewMode } = useResourceViewMode()
 
   const [sortBy, setSortBy] = useQueryState(
     'sort',
@@ -44,9 +38,9 @@ export default function ResourcesViewControls({
   return (
     <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
       <div className="flex items-center space-x-4">
-        <h2 className="text-2xl font-bold text-gray-900">Latest Articles</h2>
+        <h2 className="text-2xl font-bold text-gray-900">All Resources</h2>
         <Badge variant="outline" className="text-[#0891B2] border-[#0891B2]">
-          {totalCount} articles
+          {totalCount} resources
         </Badge>
       </div>
 

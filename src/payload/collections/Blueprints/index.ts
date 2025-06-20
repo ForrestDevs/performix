@@ -1,6 +1,7 @@
 import type { CollectionConfig } from 'payload'
 import { BLUEPRINTS_SLUG, MEDIA_SLUG } from '../constants'
 import { slugField } from '@/payload/fields/slug'
+import { admin, anyone } from '@/payload/access'
 
 const Blueprints: CollectionConfig = {
   slug: BLUEPRINTS_SLUG,
@@ -8,6 +9,12 @@ const Blueprints: CollectionConfig = {
     group: 'Products',
     useAsTitle: 'title',
     description: 'Blueprints are a collection of resources.',
+  },
+  access: {
+    read: anyone,
+    create: admin,
+    update: admin,
+    delete: admin,
   },
   fields: [
     ...slugField('title'),
