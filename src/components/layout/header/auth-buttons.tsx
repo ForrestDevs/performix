@@ -5,8 +5,13 @@ import Link from 'next/link'
 import { buttonVariants } from '@/components/ui/button'
 import { cn } from '@/lib/utilities/ui'
 import { User } from '@/lib/auth/types'
+import { authClient } from '@/lib/auth/client'
+import { use } from 'react'
 
-export function AuthButtons({ user }: { user: User | null }) {
+export function AuthButtons() {
+  const { data } = use(authClient.getSession())
+
+  const user = data?.user || null
   if (!user) {
     return (
       <>
