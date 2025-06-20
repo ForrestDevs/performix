@@ -1,12 +1,12 @@
+'use client'
+
 import { UserMenu } from '../UserMenu'
 import Link from 'next/link'
 import { buttonVariants } from '@/components/ui/button'
 import { cn } from '@/lib/utilities/ui'
-import { getUserSession } from '@/lib/actions/auth'
+import { User } from '@/lib/auth/types'
 
-export async function AuthButtons() {
-  const user = await getUserSession()
-
+export function AuthButtons({ user }: { user: User | null }) {
   if (!user) {
     return (
       <>

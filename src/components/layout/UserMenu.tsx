@@ -3,14 +3,8 @@
 import React, { useState, useTransition } from 'react'
 import { Button } from '@/components/ui/button'
 import { User, LogOut, Settings, ChevronDown } from 'lucide-react'
-import { signOutAction } from '@/lib/actions/auth'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
-import { cn } from '@/lib/utilities/ui'
-// import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -28,6 +22,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Avatar, AvatarImage, AvatarFallback } from '../ui/avatar'
+import { authClient } from '@/lib/auth/client'
 // import { ChevronDown, Config, User, Webcam } from '@mynaui/icons-react'
 
 interface UserMenuProps {
@@ -48,7 +43,7 @@ export function UserMenu({ user, className }: UserMenuProps) {
   const handleSignOut = () => {
     startTransition(async () => {
       try {
-        await signOutAction()
+        await authClient.signOut()
         toast.success('Signed out successfully')
         router.refresh()
       } catch (error) {

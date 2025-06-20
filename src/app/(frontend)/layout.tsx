@@ -29,7 +29,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <NuqsAdapter>
       <html lang="en">
         <body className={`${inter.className} ${spaceGrotesk.variable} font-sans antialiased`}>
-          {/* <Header /> */}
+          <Header />
           <main>{children}</main>
           <Footer />
           <Toaster />
