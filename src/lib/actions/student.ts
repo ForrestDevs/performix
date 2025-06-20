@@ -4,8 +4,6 @@ import { getPayload } from '@/lib/utilities/getPayload'
 import { revalidatePath } from 'next/cache'
 import { STUDENT_SLUG } from '@/payload/collections/constants'
 
-const payload = await getPayload()
-
 export interface StudentProfileData {
   firstName: string
   lastName: string
@@ -25,6 +23,7 @@ export async function createStudentProfileAction(
   if (!userId) {
     return { error: 'User ID is required' }
   }
+  const payload = await getPayload()
 
   try {
     // Check if user already has a student profile
@@ -63,6 +62,7 @@ export async function updateStudentProfileAction(
   studentId: string,
   profileData: Partial<StudentProfileData>,
 ) {
+  const payload = await getPayload()
   try {
     const student = await payload.update({
       collection: STUDENT_SLUG,
@@ -82,6 +82,7 @@ export async function updateStudentProfileAction(
 }
 
 export async function getStudentProfileAction(userId: string) {
+  const payload = await getPayload()
   try {
     const result = await payload.find({
       collection: STUDENT_SLUG,

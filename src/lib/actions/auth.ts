@@ -1,13 +1,13 @@
-'use server'
+'server only'
 
 import { getPayload } from '@/lib/utilities/getPayload'
 import { redirect } from 'next/navigation'
 import { revalidatePath } from 'next/cache'
 import { headers } from 'next/headers'
 
-const payload = await getPayload()
-
 export async function signInAction(email: string, password: string) {
+  const payload = await getPayload()
+
   try {
     const result = await payload.betterAuth.api.signInEmail({
       body: { email, password },
@@ -28,6 +28,8 @@ export async function signUpAction(
   email: string,
   password: string,
 ) {
+  const payload = await getPayload()
+
   try {
     const result = await payload.betterAuth.api.signUpEmail({
       body: {
@@ -50,6 +52,8 @@ export async function signUpAction(
 }
 
 export async function signOutAction() {
+  const payload = await getPayload()
+
   try {
     await payload.betterAuth.api.signOut({
       headers: await headers(),
@@ -64,8 +68,10 @@ export async function signOutAction() {
 }
 
 export async function verifyEmailAction(token: string) {
+  const payload = await getPayload()
+
   try {
-    const result = await payload.betterAuth.api.verifyEmail({
+    await payload.betterAuth.api.verifyEmail({
       query: { token },
       headers: await headers(),
     })
@@ -78,20 +84,19 @@ export async function verifyEmailAction(token: string) {
   }
 }
 
-export async function getUserSessionAction() {
-  try {
-    const session = await payload.betterAuth.api.getSession({
-      headers: await headers(),
-    })
+export async function getUserSession() {
+  const payload = await getPayload()
 
-    return session?.user || null
-  } catch (error) {
-    console.error('Get session error:', error)
-    return null
-  }
+  const session = await payload.betterAuth.api.getSession({
+    headers: await headers(),
+  })
+
+  return session?.user || null
 }
 
 export async function forgotPasswordAction(email: string) {
+  const payload = await getPayload()
+
   try {
     await payload.betterAuth.api.forgetPassword({
       body: { email },

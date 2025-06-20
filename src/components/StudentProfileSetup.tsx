@@ -21,7 +21,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { createStudentProfileAction, type StudentProfileData } from '@/lib/actions/student'
-import { useBetterAuth } from '@/lib/auth/context'
+// import { useBetterAuth } from '@/lib/auth/context'
 import type { TypedUser } from 'payload'
 
 const studentProfileSchema = z.object({
@@ -48,7 +48,7 @@ export default function StudentProfileSetup({ isLoading = false }: StudentProfil
   const [currentStep, setCurrentStep] = useState(1)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [currentUser, setCurrentUser] = useState<TypedUser | null>(null)
-  const { currentUserPromise } = useBetterAuth()
+  // const { currentUserPromise } = useBetterAuth()
 
   const {
     register,
@@ -64,28 +64,28 @@ export default function StudentProfileSetup({ isLoading = false }: StudentProfil
   })
 
   // Load current user and split name
-  useEffect(() => {
-    const loadUser = async () => {
-      try {
-        const user = await currentUserPromise
-        setCurrentUser(user)
+  // useEffect(() => {
+  //   const loadUser = async () => {
+  //     try {
+  //       const user = await currentUserPromise
+  //       setCurrentUser(user)
 
-        if (user?.name) {
-          // Split the name into first and last name
-          const nameParts = user.name.trim().split(' ')
-          const firstName = nameParts[0] || ''
-          const lastName = nameParts.slice(1).join(' ') || ''
+  //       if (user?.name) {
+  //         // Split the name into first and last name
+  //         const nameParts = user.name.trim().split(' ')
+  //         const firstName = nameParts[0] || ''
+  //         const lastName = nameParts.slice(1).join(' ') || ''
 
-          setValue('firstName', firstName)
-          setValue('lastName', lastName)
-        }
-      } catch (error) {
-        console.error('Failed to load user:', error)
-      }
-    }
+  //         setValue('firstName', firstName)
+  //         setValue('lastName', lastName)
+  //       }
+  //     } catch (error) {
+  //       console.error('Failed to load user:', error)
+  //     }
+  //   }
 
-    loadUser()
-  }, [currentUserPromise, setValue])
+  //   loadUser()
+  // }, [currentUserPromise, setValue])
 
   // Debug step changes
   useEffect(() => {

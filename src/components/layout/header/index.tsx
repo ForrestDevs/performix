@@ -1,12 +1,13 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import { PerformixLogoClear } from '@/components/logo'
 import Link from 'next/link'
 import { MobileMenu, MobileMenuButton } from './mobile-menu'
 import { MobileMenuProvider } from './context'
 import { AuthButtons } from './auth-buttons'
+import { buttonVariants } from '@/components/ui/button'
+import { cn } from '@/lib/utilities/ui'
 
 export default function Header() {
-
   return (
     <MobileMenuProvider>
       <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-100">
@@ -40,7 +41,32 @@ export default function Header() {
               >
                 Pricing
               </Link>
-              <AuthButtons />
+              <Suspense
+                fallback={
+                  <>
+                    <Link
+                      href="/sign-in"
+                      className={cn(
+                        buttonVariants({ variant: 'outline' }),
+                        'border-[#0891B2] text-[#0891B2] hover:bg-[#0891B2] hover:text-white',
+                      )}
+                    >
+                      Sign In
+                    </Link>
+                    <Link
+                      href="/get-started"
+                      className={cn(
+                        buttonVariants({ variant: 'default' }),
+                        'bg-[#0891B2] hover:bg-[#0E7490] text-white',
+                      )}
+                    >
+                      Get Started
+                    </Link>
+                  </>
+                }
+              >
+                <AuthButtons />
+              </Suspense>
             </nav>
           </div>
         </div>

@@ -29,13 +29,13 @@ export default async function RecoverPassword() {
   )
 }
 
-export async function generateMetadata(): Promise<Metadata> {
-  return {
-    title: 'Recover Password | Performix',
-    description: 'Enter your email address to recover your password.',
-    openGraph: mergeOpenGraph({
-      title: 'Recover Password',
-      url: '/recover-password',
-    }),
-  }
-}
+// export async function generateMetadata(): Promise<Metadata> {
+//   return {
+//     title: 'Recover Password | Performix',
+//     description: 'Enter your email address to recover your password.',
+//     openGraph: mergeOpenGraph({
+//       title: 'Recover Password',
+//       url: '/recover-password',
+//     }),
+//   }
+// }
