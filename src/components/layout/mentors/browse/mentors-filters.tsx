@@ -5,7 +5,7 @@ import { Badge } from '@/components/ui/badge'
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
 import { Checkbox } from '@/components/ui/checkbox'
 import { SlidersHorizontal, X, Filter } from 'lucide-react'
-import { useState } from 'react'
+import { useState, useTransition } from 'react'
 import { parseAsArrayOf, parseAsString, useQueryState } from 'nuqs'
 import { MentorsResponse } from '@/lib/data/mentors'
 
@@ -57,13 +57,21 @@ const sportsDisplayMap: { [key: string]: string } = {
 }
 
 export function MentorsFilters({ filtersData, isMobile = false }: EnhancedMentorsFiltersProps) {
+  const [isPending, startTransition] = useTransition()
+
   const [position, setPosition] = useQueryState(
     'position',
-    parseAsArrayOf(parseAsString).withDefault([]),
+    parseAsArrayOf(parseAsString).withDefault([]).withOptions({
+      shallow: false,
+      startTransition,
+    }),
   )
   const [levelOfPlay, setLevelOfPlay] = useQueryState(
     'levelOfPlay',
-    parseAsArrayOf(parseAsString).withDefault([]),
+    parseAsArrayOf(parseAsString).withDefault([]).withOptions({
+      shallow: false,
+      startTransition,
+    }),
   )
   const [skills, setSkills] = useQueryState('skills', parseAsArrayOf(parseAsString).withDefault([]))
   const [sports, setSports] = useQueryState('sports', parseAsArrayOf(parseAsString).withDefault([]))
@@ -109,31 +117,41 @@ export function MentorsFilters({ filtersData, isMobile = false }: EnhancedMentor
   }
 
   const FilterContent = () => (
-    <div className="space-y-8">
+    <div className="space-y-6">
+      {/* Loading State */}
+      {isPending && (
+        <div className="absolute inset-0 bg-white/80 backdrop-blur-sm z-10 flex items-center justify-center rounded-xl">
+          <div className="flex items-center space-x-3 text-[#0891B2]">
+            <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-[#0891B2]"></div>
+            <span className="text-sm font-medium">Updating results...</span>
+          </div>
+        </div>
+      )}
+
       {/* Active Filters */}
       {activeFiltersCount > 0 && (
-        <div className="space-y-4 pb-6 border-b border-gray-100">
+        <div className="space-y-3 pb-4 border-b border-gray-100">
           <div className="flex items-center justify-between">
-            <h3 className="text-base font-semibold text-gray-800">Active Filters</h3>
+            <h3 className="text-sm font-semibold text-gray-800">Active Filters</h3>
             <Button
               variant="ghost"
               size="sm"
               onClick={clearAllFilters}
-              className="text-[#0891B2] hover:text-[#0891B2]/80 hover:bg-[#0891B2]/5 font-medium text-sm"
+              className="text-[#0891B2] hover:text-[#0891B2]/80 hover:bg-[#0891B2]/5 font-medium text-xs h-7 px-2"
             >
               Clear All
             </Button>
           </div>
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-1.5">
             {position.map((pos) => (
               <Badge
                 key={pos}
                 variant="secondary"
-                className="gap-1.5 px-3 py-1.5 bg-[#0891B2]/10 text-[#0891B2] border-[#0891B2]/20 hover:bg-[#0891B2]/20 transition-colors"
+                className="gap-1 px-2 py-0.5 text-xs bg-[#0891B2]/10 text-[#0891B2] border-[#0891B2]/20 hover:bg-[#0891B2]/20 transition-colors"
               >
                 {positionDisplayMap[pos] || pos}
                 <X
-                  className="h-3.5 w-3.5 cursor-pointer hover:text-[#0891B2]/70 transition-colors"
+                  className="h-3 w-3 cursor-pointer hover:text-[#0891B2]/70 transition-colors"
                   onClick={() => removeFilter('position', pos)}
                 />
               </Badge>
@@ -142,11 +160,11 @@ export function MentorsFilters({ filtersData, isMobile = false }: EnhancedMentor
               <Badge
                 key={level}
                 variant="secondary"
-                className="gap-1.5 px-3 py-1.5 bg-[#0891B2]/10 text-[#0891B2] border-[#0891B2]/20 hover:bg-[#0891B2]/20 transition-colors"
+                className="gap-1 px-2 py-0.5 text-xs bg-[#0891B2]/10 text-[#0891B2] border-[#0891B2]/20 hover:bg-[#0891B2]/20 transition-colors"
               >
                 {levelDisplayMap[level] || level}
                 <X
-                  className="h-3.5 w-3.5 cursor-pointer hover:text-[#0891B2]/70 transition-colors"
+                  className="h-3 w-3 cursor-pointer hover:text-[#0891B2]/70 transition-colors"
                   onClick={() => removeFilter('levelOfPlay', level)}
                 />
               </Badge>
@@ -155,11 +173,11 @@ export function MentorsFilters({ filtersData, isMobile = false }: EnhancedMentor
               <Badge
                 key={skill}
                 variant="secondary"
-                className="gap-1.5 px-3 py-1.5 bg-[#0891B2]/10 text-[#0891B2] border-[#0891B2]/20 hover:bg-[#0891B2]/20 transition-colors"
+                className="gap-1 px-2 py-0.5 text-xs bg-[#0891B2]/10 text-[#0891B2] border-[#0891B2]/20 hover:bg-[#0891B2]/20 transition-colors"
               >
                 {skillDisplayMap[skill] || skill}
                 <X
-                  className="h-3.5 w-3.5 cursor-pointer hover:text-[#0891B2]/70 transition-colors"
+                  className="h-3 w-3 cursor-pointer hover:text-[#0891B2]/70 transition-colors"
                   onClick={() => removeFilter('skills', skill)}
                 />
               </Badge>
@@ -168,11 +186,11 @@ export function MentorsFilters({ filtersData, isMobile = false }: EnhancedMentor
               <Badge
                 key={sport}
                 variant="secondary"
-                className="gap-1.5 px-3 py-1.5 bg-[#0891B2]/10 text-[#0891B2] border-[#0891B2]/20 hover:bg-[#0891B2]/20 transition-colors"
+                className="gap-1 px-2 py-0.5 text-xs bg-[#0891B2]/10 text-[#0891B2] border-[#0891B2]/20 hover:bg-[#0891B2]/20 transition-colors"
               >
                 {sportsDisplayMap[sport] || sport}
                 <X
-                  className="h-3.5 w-3.5 cursor-pointer hover:text-[#0891B2]/70 transition-colors"
+                  className="h-3 w-3 cursor-pointer hover:text-[#0891B2]/70 transition-colors"
                   onClick={() => removeFilter('sports', sport)}
                 />
               </Badge>
@@ -180,11 +198,11 @@ export function MentorsFilters({ filtersData, isMobile = false }: EnhancedMentor
             {featured !== 'all' && (
               <Badge
                 variant="secondary"
-                className="gap-1.5 px-3 py-1.5 bg-[#0891B2]/10 text-[#0891B2] border-[#0891B2]/20 hover:bg-[#0891B2]/20 transition-colors"
+                className="gap-1 px-2 py-0.5 text-xs bg-[#0891B2]/10 text-[#0891B2] border-[#0891B2]/20 hover:bg-[#0891B2]/20 transition-colors"
               >
                 {featured === 'featured' ? 'Featured Only' : 'Regular Only'}
                 <X
-                  className="h-3.5 w-3.5 cursor-pointer hover:text-[#0891B2]/70 transition-colors"
+                  className="h-3 w-3 cursor-pointer hover:text-[#0891B2]/70 transition-colors"
                   onClick={() => removeFilter('featured', featured)}
                 />
               </Badge>
@@ -194,9 +212,9 @@ export function MentorsFilters({ filtersData, isMobile = false }: EnhancedMentor
       )}
 
       {/* Featured Filter */}
-      <div className="space-y-4">
-        <h3 className="text-base font-semibold text-gray-800">Featured Status</h3>
-        <div className="space-y-3">
+      <div className="space-y-3">
+        <h3 className="text-sm font-semibold text-gray-800">Featured Status</h3>
+        <div className="space-y-2">
           {[
             { value: 'all', label: 'All Mentors' },
             { value: 'featured', label: 'Featured Only' },
@@ -204,18 +222,18 @@ export function MentorsFilters({ filtersData, isMobile = false }: EnhancedMentor
           ].map((option) => (
             <div
               key={option.value}
-              className="flex items-center space-x-3 hover:bg-gray-50 rounded-lg p-2 -mx-2 transition-colors cursor-pointer"
+              className="flex items-center space-x-2.5 hover:bg-gray-50 rounded-md p-1.5 -mx-1.5 transition-colors cursor-pointer"
               onClick={() => setFeatured(option.value)}
             >
               <Checkbox
                 id={`featured-${option.value}`}
                 checked={featured === option.value}
                 onCheckedChange={() => setFeatured(option.value)}
-                className="data-[state=checked]:bg-[#0891B2] data-[state=checked]:border-[#0891B2]"
+                className="data-[state=checked]:bg-[#0891B2] data-[state=checked]:border-[#0891B2] h-4 w-4"
               />
               <label
                 htmlFor={`featured-${option.value}`}
-                className="text-sm font-medium text-gray-700 cursor-pointer select-none flex-1"
+                className="text-sm text-gray-700 cursor-pointer select-none flex-1"
               >
                 {option.label}
               </label>
@@ -226,13 +244,13 @@ export function MentorsFilters({ filtersData, isMobile = false }: EnhancedMentor
 
       {/* Position Filter */}
       {filtersData.positions.length > 0 && (
-        <div className="space-y-4">
-          <h3 className="text-base font-semibold text-gray-800">Position</h3>
-          <div className="space-y-3">
+        <div className="space-y-3">
+          <h3 className="text-sm font-semibold text-gray-800">Position</h3>
+          <div className="space-y-2">
             {filtersData.positions.map((pos) => (
               <div
                 key={pos.value}
-                className="flex items-center justify-between hover:bg-gray-50 rounded-lg p-2 -mx-2 transition-colors cursor-pointer"
+                className="flex items-center justify-between hover:bg-gray-50 rounded-md p-1.5 -mx-1.5 transition-colors cursor-pointer"
                 onClick={() => {
                   if (position.includes(pos.value)) {
                     setPosition(position.filter((p) => p !== pos.value))
@@ -241,7 +259,7 @@ export function MentorsFilters({ filtersData, isMobile = false }: EnhancedMentor
                   }
                 }}
               >
-                <div className="flex items-center space-x-3">
+                <div className="flex items-center space-x-2.5">
                   <Checkbox
                     id={`position-${pos.value}`}
                     checked={position.includes(pos.value)}
@@ -252,16 +270,16 @@ export function MentorsFilters({ filtersData, isMobile = false }: EnhancedMentor
                         setPosition(position.filter((p) => p !== pos.value))
                       }
                     }}
-                    className="data-[state=checked]:bg-[#0891B2] data-[state=checked]:border-[#0891B2]"
+                    className="data-[state=checked]:bg-[#0891B2] data-[state=checked]:border-[#0891B2] h-4 w-4"
                   />
                   <label
                     htmlFor={`position-${pos.value}`}
-                    className="text-sm font-medium text-gray-700 cursor-pointer select-none"
+                    className="text-sm text-gray-700 cursor-pointer select-none"
                   >
                     {positionDisplayMap[pos.value] || pos.value}
                   </label>
                 </div>
-                <span className="text-xs font-medium text-gray-500 bg-gray-100 px-2 py-1 rounded-full">
+                <span className="text-xs text-gray-500 bg-gray-100 px-1.5 py-0.5 rounded-full min-w-[20px] text-center">
                   {pos.count}
                 </span>
               </div>
@@ -272,13 +290,13 @@ export function MentorsFilters({ filtersData, isMobile = false }: EnhancedMentor
 
       {/* Level of Play Filter */}
       {filtersData.levelOfPlay.length > 0 && (
-        <div className="space-y-4">
-          <h3 className="text-base font-semibold text-gray-800">Level of Play</h3>
-          <div className="space-y-3">
+        <div className="space-y-3">
+          <h3 className="text-sm font-semibold text-gray-800">Level of Play</h3>
+          <div className="space-y-2">
             {filtersData.levelOfPlay.map((level) => (
               <div
                 key={level.value}
-                className="flex items-center justify-between hover:bg-gray-50 rounded-lg p-2 -mx-2 transition-colors cursor-pointer"
+                className="flex items-center justify-between hover:bg-gray-50 rounded-md p-1.5 -mx-1.5 transition-colors cursor-pointer"
                 onClick={() => {
                   if (levelOfPlay.includes(level.value)) {
                     setLevelOfPlay(levelOfPlay.filter((l) => l !== level.value))
@@ -287,7 +305,7 @@ export function MentorsFilters({ filtersData, isMobile = false }: EnhancedMentor
                   }
                 }}
               >
-                <div className="flex items-center space-x-3">
+                <div className="flex items-center space-x-2.5">
                   <Checkbox
                     id={`level-${level.value}`}
                     checked={levelOfPlay.includes(level.value)}
@@ -298,16 +316,16 @@ export function MentorsFilters({ filtersData, isMobile = false }: EnhancedMentor
                         setLevelOfPlay(levelOfPlay.filter((l) => l !== level.value))
                       }
                     }}
-                    className="data-[state=checked]:bg-[#0891B2] data-[state=checked]:border-[#0891B2]"
+                    className="data-[state=checked]:bg-[#0891B2] data-[state=checked]:border-[#0891B2] h-4 w-4"
                   />
                   <label
                     htmlFor={`level-${level.value}`}
-                    className="text-sm font-medium text-gray-700 cursor-pointer select-none"
+                    className="text-sm text-gray-700 cursor-pointer select-none"
                   >
                     {levelDisplayMap[level.value] || level.value}
                   </label>
                 </div>
-                <span className="text-xs font-medium text-gray-500 bg-gray-100 px-2 py-1 rounded-full">
+                <span className="text-xs text-gray-500 bg-gray-100 px-1.5 py-0.5 rounded-full min-w-[20px] text-center">
                   {level.count}
                 </span>
               </div>
@@ -318,13 +336,13 @@ export function MentorsFilters({ filtersData, isMobile = false }: EnhancedMentor
 
       {/* Sports Filter */}
       {filtersData.sports.length > 0 && (
-        <div className="space-y-4">
-          <h3 className="text-base font-semibold text-gray-800">Sports</h3>
-          <div className="space-y-3">
+        <div className="space-y-3">
+          <h3 className="text-sm font-semibold text-gray-800">Sports</h3>
+          <div className="space-y-2">
             {filtersData.sports.map((sport) => (
               <div
                 key={sport.value}
-                className="flex items-center justify-between hover:bg-gray-50 rounded-lg p-2 -mx-2 transition-colors cursor-pointer"
+                className="flex items-center justify-between hover:bg-gray-50 rounded-md p-1.5 -mx-1.5 transition-colors cursor-pointer"
                 onClick={() => {
                   if (sports.includes(sport.value)) {
                     setSports(sports.filter((s) => s !== sport.value))
@@ -333,7 +351,7 @@ export function MentorsFilters({ filtersData, isMobile = false }: EnhancedMentor
                   }
                 }}
               >
-                <div className="flex items-center space-x-3">
+                <div className="flex items-center space-x-2.5">
                   <Checkbox
                     id={`sport-${sport.value}`}
                     checked={sports.includes(sport.value)}
@@ -344,16 +362,16 @@ export function MentorsFilters({ filtersData, isMobile = false }: EnhancedMentor
                         setSports(sports.filter((s) => s !== sport.value))
                       }
                     }}
-                    className="data-[state=checked]:bg-[#0891B2] data-[state=checked]:border-[#0891B2]"
+                    className="data-[state=checked]:bg-[#0891B2] data-[state=checked]:border-[#0891B2] h-4 w-4"
                   />
                   <label
                     htmlFor={`sport-${sport.value}`}
-                    className="text-sm font-medium text-gray-700 cursor-pointer select-none"
+                    className="text-sm text-gray-700 cursor-pointer select-none"
                   >
                     {sportsDisplayMap[sport.value] || sport.value}
                   </label>
                 </div>
-                <span className="text-xs font-medium text-gray-500 bg-gray-100 px-2 py-1 rounded-full">
+                <span className="text-xs text-gray-500 bg-gray-100 px-1.5 py-0.5 rounded-full min-w-[20px] text-center">
                   {sport.count}
                 </span>
               </div>
@@ -364,13 +382,13 @@ export function MentorsFilters({ filtersData, isMobile = false }: EnhancedMentor
 
       {/* Skills Filter - Show top 15 most common */}
       {filtersData.skills.length > 0 && (
-        <div className="space-y-4">
-          <h3 className="text-base font-semibold text-gray-800">Skills</h3>
-          <div className="space-y-3 max-h-80 overflow-y-auto pr-2 custom-scrollbar">
+        <div className="space-y-3">
+          <h3 className="text-sm font-semibold text-gray-800">Skills</h3>
+          <div className="space-y-2 max-h-64 overflow-y-auto pr-1 custom-scrollbar">
             {filtersData.skills.slice(0, 15).map((skill) => (
               <div
                 key={skill.value}
-                className="flex items-center justify-between hover:bg-gray-50 rounded-lg p-2 -mx-2 transition-colors cursor-pointer"
+                className="flex items-center justify-between hover:bg-gray-50 rounded-md p-1.5 -mx-1.5 transition-colors cursor-pointer"
                 onClick={() => {
                   if (skills.includes(skill.value)) {
                     setSkills(skills.filter((s) => s !== skill.value))
@@ -379,7 +397,7 @@ export function MentorsFilters({ filtersData, isMobile = false }: EnhancedMentor
                   }
                 }}
               >
-                <div className="flex items-center space-x-3">
+                <div className="flex items-center space-x-2.5">
                   <Checkbox
                     id={`skill-${skill.value}`}
                     checked={skills.includes(skill.value)}
@@ -390,16 +408,16 @@ export function MentorsFilters({ filtersData, isMobile = false }: EnhancedMentor
                         setSkills(skills.filter((s) => s !== skill.value))
                       }
                     }}
-                    className="data-[state=checked]:bg-[#0891B2] data-[state=checked]:border-[#0891B2]"
+                    className="data-[state=checked]:bg-[#0891B2] data-[state=checked]:border-[#0891B2] h-4 w-4"
                   />
                   <label
                     htmlFor={`skill-${skill.value}`}
-                    className="text-sm font-medium text-gray-700 cursor-pointer select-none"
+                    className="text-sm text-gray-700 cursor-pointer select-none"
                   >
                     {skillDisplayMap[skill.value] || skill.value}
                   </label>
                 </div>
-                <span className="text-xs font-medium text-gray-500 bg-gray-100 px-2 py-1 rounded-full">
+                <span className="text-xs text-gray-500 bg-gray-100 px-1.5 py-0.5 rounded-full min-w-[20px] text-center">
                   {skill.count}
                 </span>
               </div>
