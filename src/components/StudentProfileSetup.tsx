@@ -21,7 +21,6 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { createStudentProfileAction, type StudentProfileData } from '@/lib/actions/student'
-import type { TypedUser } from 'payload'
 
 const studentProfileSchema = z.object({
   firstName: z.string().min(1, 'First name is required'),
@@ -40,13 +39,17 @@ const studentProfileSchema = z.object({
 type StudentProfileFormData = z.infer<typeof studentProfileSchema>
 
 interface StudentProfileSetupProps {
+  currentUserId: number
   isLoading?: boolean
 }
 
-export default function StudentProfileSetup({ isLoading = false }: StudentProfileSetupProps) {
+export default function StudentProfileSetup({
+  currentUserId,
+  isLoading = false,
+}: StudentProfileSetupProps) {
   const [currentStep, setCurrentStep] = useState(1)
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [currentUser, setCurrentUser] = useState<TypedUser | null>(null)
+  // const [currentUser, setCurrentUser] = useState<TypedUser | null>(initialCurrentUser)
   // const { currentUserPromise } = useBetterAuth()
 
   const {
@@ -147,14 +150,14 @@ export default function StudentProfileSetup({ isLoading = false }: StudentProfil
       return
     }
 
-    if (!currentUser?.id) {
+    if (!currentUserId) {
       toast.error('User session not found. Please sign in again.')
       return
     }
 
     setIsSubmitting(true)
     try {
-      const response = await createStudentProfileAction(currentUser.id, formData)
+      const response = await createStudentProfileAction(currentUserId, formData)
 
       if (response.error) {
         toast.error(response.error)

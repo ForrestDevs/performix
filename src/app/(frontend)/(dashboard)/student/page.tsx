@@ -42,7 +42,7 @@ export default async function ConsumerDashboard() {
             </p>
           </div>
 
-          <StudentProfileSetup />
+          <StudentProfileSetup currentUserId={Number(user.id)} />
 
           <div className="max-w-2xl mx-auto mt-8 sm:mt-12">
             <div className="border-0 shadow-2xl bg-white/95 backdrop-blur-sm rounded-lg p-6 sm:p-8">
