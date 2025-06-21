@@ -11,20 +11,20 @@ import { headers } from 'next/headers'
 // import { getUserSession } from '@/lib/actions/auth'
 
 export default async function Header() {
-  const payload = await getPayload()
+  // const payload = await getPayload()
   const headersList = await headers()
   headersList.forEach((header) => {
     console.log(header)
   })
-  const user = await payload.find({
-    collection: 'users',
-    where: {
-      email: {
-        equals: 'dominantsocials@gmail.com',
-      },
-    },
-  })
-  console.log(user)
+  // const user = await payload.find({
+  //   collection: 'users',
+  //   where: {
+  //     email: {
+  //       equals: 'dominantsocials@gmail.com',
+  //     },
+  //   },
+  // })
+  // console.log(user)
   // const session = await payload.betterAuth.api.getSession({
   //   headers: headersList,
   // })

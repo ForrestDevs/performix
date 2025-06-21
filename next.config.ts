@@ -28,6 +28,9 @@ const nextConfig: NextConfig = {
   devIndicators: {
     position: 'bottom-right',
   },
+  experimental: {
+    serverMinification: false,
+  },
   reactStrictMode: true,
   redirects,
 }
