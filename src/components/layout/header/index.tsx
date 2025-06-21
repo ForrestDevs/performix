@@ -4,32 +4,8 @@ import Link from 'next/link'
 import { MobileMenu, MobileMenuButton } from './mobile-menu'
 import { MobileMenuProvider } from './context'
 import { AuthButtons } from './auth-buttons'
-import { getPayload } from '@/lib/utilities/getPayload'
-import { headers } from 'next/headers'
-// import { buttonVariants } from '@/components/ui/button'
-// import { cn } from '@/lib/utilities/ui'
-// import { getUserSession } from '@/lib/actions/auth'
 
 export default async function Header() {
-  // const payload = await getPayload()
-  const headersList = await headers()
-  headersList.forEach((header) => {
-    console.log(header)
-  })
-  // const user = await payload.find({
-  //   collection: 'users',
-  //   where: {
-  //     email: {
-  //       equals: 'dominantsocials@gmail.com',
-  //     },
-  //   },
-  // })
-  // console.log(user)
-  // const session = await payload.betterAuth.api.getSession({
-  //   headers: headersList,
-  // })
-  // const user = session?.user || null
-
   return (
     <MobileMenuProvider>
       <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-100">
@@ -62,11 +38,11 @@ export default async function Header() {
               >
                 Pricing
               </Link>
-              {/* <AuthButtons user={user} /> */}
+              <AuthButtons />
             </nav>
           </div>
         </div>
-        {/* <MobileMenu user={user} /> */}
+        <MobileMenu />
       </header>
     </MobileMenuProvider>
   )

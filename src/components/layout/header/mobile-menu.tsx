@@ -8,11 +8,7 @@ import { AuthButtons } from './auth-buttons'
 import { type MouseEvent } from 'react'
 import { User } from '@/lib/auth/types'
 
-interface MobileMenuProps {
-  user: User | null
-}
-
-export const MobileMenu: React.FC<MobileMenuProps> = ({ user }) => {
+export const MobileMenu: React.FC = () => {
   const { isOpen, setIsOpen } = useMobileMenu()
 
   return (
@@ -51,7 +47,7 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ user }) => {
 
         {/* Authentication Section */}
         <div className="space-y-3">
-          <AuthButtons user={user} />
+          <AuthButtons />
         </div>
       </div>
     </div>

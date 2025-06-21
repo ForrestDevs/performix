@@ -3,14 +3,11 @@
 import Link from 'next/link'
 import { buttonVariants } from '@/components/ui/button'
 import { cn } from '@/lib/utilities/ui'
-import { Session } from '@/lib/auth/types'
 import { UserMenu } from '../UserMenu'
+import { authClient } from '@/lib/auth/client'
 
-interface AuthButtonsProps {
-  user: Session['user'] | null
-}
-
-export function AuthButtons({ user }: AuthButtonsProps) {
+export function AuthButtons() {
+  const { data: session, isPending } = authClient.useSession()
   // return (
   //   <div className="flex items-center gap-2">
   //     <Link
@@ -33,7 +30,7 @@ export function AuthButtons({ user }: AuthButtonsProps) {
   //     </Link>
   //   </div>
   // )
-  if (!user) {
+  if (!session?.user || isPending) {
     return (
       <div className="flex items-center gap-2">
         <Link
@@ -61,10 +58,10 @@ export function AuthButtons({ user }: AuthButtonsProps) {
     <UserMenu
       className="pl-6"
       user={{
-        id: Number(user.id),
-        name: user.name,
-        email: user.email,
-        image: user.image,
+        id: Number(session.user.id),
+        name: session.user.name,
+        email: session.user.email,
+        image: session.user.image,
       }}
     />
   )
