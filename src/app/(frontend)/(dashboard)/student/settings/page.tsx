@@ -7,9 +7,10 @@ export default async function DashboardPage() {
   return (
     <Main className="w-full">
       <div className="container mx-auto flex max-w-screen-lg flex-col gap-6">
-        <UserCard />
+        COMING SOON
+        {/* <UserCard />
         <BillingCard />
-        <InvoicesCard />
+        <InvoicesCard /> */}
       </div>
     </Main>
   )

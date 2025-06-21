@@ -30,12 +30,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body className={`${inter.className} ${spaceGrotesk.variable} font-sans antialiased`}>
-        <BetterAuthProvider {...getContextProps()}>
-          <Header />
-          <NuqsAdapter>{children}</NuqsAdapter>
-          <Footer />
-          <Toaster />
-        </BetterAuthProvider>
+        <Header />
+        <NuqsAdapter>{children}</NuqsAdapter>
+        <Footer />
+        <Toaster />
       </body>
     </html>
   )
