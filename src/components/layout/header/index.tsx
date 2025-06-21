@@ -13,10 +13,22 @@ import { headers } from 'next/headers'
 export default async function Header() {
   const payload = await getPayload()
   const headersList = await headers()
-  const session = await payload.betterAuth.api.getSession({
-    headers: headersList,
+  headersList.forEach((header) => {
+    console.log(header)
   })
-  const user = session?.user || null
+  const user = await payload.find({
+    collection: 'users',
+    where: {
+      email: {
+        equals: 'dominantsocials@gmail.com',
+      },
+    },
+  })
+  console.log(user)
+  // const session = await payload.betterAuth.api.getSession({
+  //   headers: headersList,
+  // })
+  // const user = session?.user || null
 
   return (
     <MobileMenuProvider>
@@ -50,11 +62,11 @@ export default async function Header() {
               >
                 Pricing
               </Link>
-              <AuthButtons user={user} />
+              {/* <AuthButtons user={user} /> */}
             </nav>
           </div>
         </div>
-        <MobileMenu user={user} />
+        {/* <MobileMenu user={user} /> */}
       </header>
     </MobileMenuProvider>
   )
