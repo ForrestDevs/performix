@@ -5,21 +5,22 @@ import { Badge } from '@/components/ui/badge'
 import { Button, buttonVariants } from '@/components/ui/button'
 import { Check, Share2, Star } from 'lucide-react'
 import { Media as MediaComponent } from '@/components/Media'
-import Image from 'next/image'
 import Link from 'next/link'
 import { cn } from '@/lib/utilities/ui'
-import { type MentorSample } from '@/lib/mentors-utils'
 import { Media, Mentor } from '@/payload-types'
 import { useState } from 'react'
 import { prettifySkill } from '@/lib/utilities/prettify'
+import { toast } from 'sonner'
+import { useScrollAnimation } from '@/lib/hooks/useScrollAnimation'
 
 interface MentorCardProps {
   mentor: Mentor
-  isVisible: (id: string) => boolean
   index: number
 }
 
-export function MentorCard({ mentor, isVisible, index }: MentorCardProps) {
+export function MentorCard({ mentor, index }: MentorCardProps) {
+  const visibleElements = useScrollAnimation()
+  const isVisible = (id: string) => visibleElements.has(id)
   const [copied, setCopied] = useState(false)
 
   const handleShare = async (e: React.MouseEvent) => {
@@ -30,10 +31,10 @@ export function MentorCard({ mentor, isVisible, index }: MentorCardProps) {
       await navigator.clipboard.writeText(profileUrl)
       setCopied(true)
       setTimeout(() => setCopied(false), 2000)
-      // You could add a toast notification here to show success
+      toast.success('Link copied to clipboard')
     } catch (err) {
       console.error('Failed to copy link:', err)
-      // You could add a toast notification here to show error
+      toast.error('Failed to copy link')
     }
   }
 

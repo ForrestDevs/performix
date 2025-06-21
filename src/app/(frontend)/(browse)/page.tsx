@@ -74,11 +74,12 @@ export default function HomePage() {
             <div className="relative animate-fade-in-right">
               <div className="rounded-2xl overflow-hidden bg-gradient-to-br from-[#0891B2]/20 to-[#8B5CF6]/20 hover:scale-105 transition-transform duration-500">
                 <Image
-                  src="/hero2.png"
+                  src="/hero2.webp"
                   alt="Hockey player in action"
                   width={800}
                   height={600}
                   className="w-full h-full object-contain"
+                  priority={true}
                 />
               </div>
               <div className="absolute -bottom-4 -left-4 bg-white/95 backdrop-blur-sm rounded-lg p-2.5 shadow-sm border border-gray-100 hover:shadow-md transition-all duration-300 animate-float">

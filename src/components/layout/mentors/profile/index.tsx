@@ -7,8 +7,6 @@ export { MentorProfileClient } from './mentor-profile-client'
 export { MentorLocationCard } from './mentor-location-card'
 export { MentorContactCard } from './mentor-contact-card'
 // Removed duplicate useScrollAnimation export to prevent conflicts
-export { getMentorData } from '../data/get-mentor-data'
-
 // function MentorProfilePageTEST() {
 //   const visibleElements = useScrollAnimation()
 //   const [activeTab, setActiveTab] = useState('about')

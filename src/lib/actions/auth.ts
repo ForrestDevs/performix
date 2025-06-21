@@ -86,9 +86,10 @@ export async function verifyEmailAction(token: string) {
 
 export async function getUserSession() {
   const payload = await getPayload()
+  const headersList = await headers()
 
   const session = await payload.betterAuth.api.getSession({
-    headers: await headers(),
+    headers: headersList,
   })
 
   return session?.user || null

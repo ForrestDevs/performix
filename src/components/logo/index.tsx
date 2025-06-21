@@ -65,37 +65,17 @@ export function PerformixLogo(props: Props) {
 }
 
 export function PerformixLogoClear(props: Props) {
-  const { loading: loadingFromProps, priority: priorityFromProps, className } = props
-
-  const loading = loadingFromProps || 'lazy'
-  const priority = priorityFromProps || 'low'
-
+  const { className } = props
   return (
     <Image
       alt="Performix Logo"
       width={150}
       height={100}
-      loading={loading}
-      fetchPriority={priority}
+      priority
       decoding="async"
       className={clsx('w-auto h-auto object-contain', className)}
       src="/PerformixClear.png"
     />
-
-    // <div className="flex items-center space-x-2">
-    //   <div className="relative w-8 h-8">
-    //     <svg viewBox="0 0 32 32" className="w-full h-full">
-    //       <path
-    //         d="M8 8L24 24M24 8L8 24"
-    //         stroke="#0891B2"
-    //         strokeWidth="3"
-    //         strokeLinecap="round"
-    //         className="drop-shadow-sm"
-    //       />
-    //     </svg>
-    //   </div>
-    //   <span className="text-xl font-bold text-gray-900">Performix</span>
-    // </div>
   )
 }
 

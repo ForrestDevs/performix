@@ -357,7 +357,7 @@ export function PricingCTA() {
               href="https://calendly.com/mateodixon/d1-mentorship-call"
               className={cn(
                 buttonVariants({ size: 'lg', variant: 'outline' }),
-                'border-white text-white hover:bg-white hover:text-[#0891B2] px-8',
+                'border-white text-[#0891B2] hover:bg-white hover:text-[#0891B2] px-8',
               )}
             >
               Schedule a Consultation

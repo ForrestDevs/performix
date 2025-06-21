@@ -151,8 +151,10 @@ export const betterAuthOptions: BetterAuthOptions = {
   session: {
     cookieCache: {
       enabled: true,
-      maxAge: 5 * 60, // Cache duration in seconds
+      maxAge: 60 * 60, // Cache duration in seconds (1 hour instead of 5 minutes)
     },
+    updateAge: 60 * 60 * 24, // Only update session once per day
+    disableSessionRefresh: false, // Keep session refresh enabled but less frequent
   },
   account: {
     accountLinking: {

@@ -4,17 +4,16 @@ import { UserMenu } from '../UserMenu'
 import Link from 'next/link'
 import { buttonVariants } from '@/components/ui/button'
 import { cn } from '@/lib/utilities/ui'
-import { User } from '@/lib/auth/types'
-import { authClient } from '@/lib/auth/client'
 import { use } from 'react'
+import { useBetterAuth } from '@/lib/auth/context'
+import { authClient } from '@/lib/auth/client'
 
 export function AuthButtons() {
-  const { data } = use(authClient.getSession())
+  const { data, isPending } = authClient.useSession()
 
-  const user = data?.user || null
-  if (!user) {
+  if (!data?.user || isPending) {
     return (
-      <>
+      <div className="flex items-center gap-2">
         <Link
           href="/sign-in"
           className={cn(
@@ -33,7 +32,7 @@ export function AuthButtons() {
         >
           Get Started
         </Link>
-      </>
+      </div>
     )
   }
 
@@ -41,10 +40,10 @@ export function AuthButtons() {
     <UserMenu
       className="pl-6"
       user={{
-        id: Number(user.id),
-        name: user.name,
-        email: user.email,
-        image: user.image,
+        id: Number(data.user.id),
+        name: data.user.name,
+        email: data.user.email,
+        image: data.user.image,
       }}
     />
   )

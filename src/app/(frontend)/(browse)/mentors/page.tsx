@@ -6,10 +6,10 @@ import { Badge } from '@/components/ui/badge'
 import { Users, Star, Award, TrendingUp, Search } from 'lucide-react'
 import { mentorsSearchParamsCache } from '@/lib/searchParamsCache'
 import { getMentorsWithFilters } from '@/lib/data/mentors'
-import { EnhancedMentorsSearch } from '@/components/layout/mentors/browse/enhanced-mentors-search'
-import { EnhancedMentorsFilters } from '@/components/layout/mentors/browse/enhanced-mentors-filters'
-import { EnhancedMentorsControls } from '@/components/layout/mentors/browse/enhanced-mentors-controls'
-import { EnhancedMentorsGrid } from '@/components/layout/mentors/browse/enhanced-mentors-grid'
+import { MentorsSearchBar } from '@/components/layout/mentors/browse/mentors-search-bar'
+import { MentorsFilters } from '@/components/layout/mentors/browse/mentors-filters'
+import { MentorsControls } from '@/components/layout/mentors/browse/mentors-controls'
+import { MentorsGrid } from '@/components/layout/mentors/browse/mentors-grid'
 import { MentorViewModeProvider } from '@/components/layout/mentors/browse/view-mode-context'
 
 interface BrowseMentorsPageProps {
@@ -22,7 +22,6 @@ interface BrowseMentorsPageProps {
 export default async function BrowseMentorsPage({ searchParams }: BrowseMentorsPageProps) {
   const params = mentorsSearchParamsCache.parse(await searchParams)
 
-  // Fetch mentors with filters applied
   const mentorsData = await getMentorsWithFilters({
     search: params.search,
     position: params.position,
@@ -37,7 +36,6 @@ export default async function BrowseMentorsPage({ searchParams }: BrowseMentorsP
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Hero Section */}
       <section className="relative bg-white py-16 lg:py-20 overflow-hidden">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center mb-12">
@@ -58,24 +56,18 @@ export default async function BrowseMentorsPage({ searchParams }: BrowseMentorsP
               game and achieve your hockey goals.
             </p>
 
-            {/* Search Bar */}
             <Suspense
               fallback={
                 <div className="h-16 bg-gray-100 rounded-xl animate-pulse max-w-2xl mx-auto mb-8" />
               }
             >
-              <EnhancedMentorsSearch className="mb-8" />
+              <MentorsSearchBar className="mb-8" />
             </Suspense>
 
-            {/* Quick Stats */}
             <div className="flex flex-wrap justify-center gap-6 lg:gap-8 text-sm lg:text-base text-gray-600 mb-8">
               <div className="flex items-center space-x-2">
                 <Users className="h-5 w-5 text-[#0891B2]" />
-                <span>{mentorsData.totalCount} Active Mentors</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Star className="h-5 w-5 text-yellow-400 fill-current" />
-                <span>4.9 Average Rating</span>
+                <span>30+ Active Mentors</span>
               </div>
               <div className="flex items-center space-x-2">
                 <Award className="h-5 w-5 text-[#0891B2]" />
@@ -83,7 +75,6 @@ export default async function BrowseMentorsPage({ searchParams }: BrowseMentorsP
               </div>
             </div>
 
-            {/* Position Quick Filters */}
             <div className="flex flex-wrap justify-center gap-3">
               {mentorsData.filters.positions.map((position) => (
                 <Link
@@ -110,7 +101,6 @@ export default async function BrowseMentorsPage({ searchParams }: BrowseMentorsP
           </div>
         </div>
 
-        {/* Background Decoration */}
         <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-white to-purple-50 opacity-50" />
         <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-[#0891B2]/10 to-transparent rounded-full -translate-y-32 translate-x-32" />
         <div className="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-tr from-[#8B5CF6]/10 to-transparent rounded-full translate-y-32 -translate-x-32" />
@@ -119,27 +109,21 @@ export default async function BrowseMentorsPage({ searchParams }: BrowseMentorsP
       {/* Main Content */}
       <section className="py-12 lg:py-16 bg-gray-50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Mobile Filter Button - Only show on mobile */}
           <div className="lg:hidden mb-6">
             <Suspense fallback={<div className="h-12 bg-gray-100 rounded-lg animate-pulse" />}>
-              <EnhancedMentorsFilters filtersData={mentorsData.filters} isMobile={true} />
+              <MentorsFilters filtersData={mentorsData.filters} isMobile={true} />
             </Suspense>
           </div>
 
           <div className="grid lg:grid-cols-4 xl:grid-cols-5 gap-8">
-            {/* Desktop Filters Sidebar */}
             <div className="lg:col-span-1 hidden lg:block">
               <Suspense fallback={<div className="h-96 bg-gray-100 rounded-lg animate-pulse" />}>
-                <EnhancedMentorsFilters
-                  filtersData={mentorsData.filters}
-                  className="sticky top-4"
-                />
+                <MentorsFilters filtersData={mentorsData.filters} className="sticky top-4" />
               </Suspense>
             </div>
 
             {/* Main Content */}
             <div className="lg:col-span-3 xl:col-span-4">
-              {/* Results Summary */}
               {(params.search ||
                 params.position.length > 0 ||
                 params.levelOfPlay.length > 0 ||
@@ -201,21 +185,14 @@ export default async function BrowseMentorsPage({ searchParams }: BrowseMentorsP
                 </div>
               )}
 
-              {/* View Mode Provider and Controls */}
               <MentorViewModeProvider>
-                <EnhancedMentorsControls
+                <MentorsControls
                   mentorCount={mentorsData.mentors.length}
                   totalCount={mentorsData.totalCount}
                 />
-
-                {/* Mentors Grid */}
-                <EnhancedMentorsGrid
-                  mentors={mentorsData.mentors}
-                  isVisible={() => true} // Simplified for now
-                />
+                <MentorsGrid mentors={mentorsData.mentors} />
               </MentorViewModeProvider>
 
-              {/* Empty State */}
               {mentorsData.mentors.length === 0 && (
                 <div className="text-center py-16">
                   <div className="mx-auto w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-6">
@@ -242,7 +219,6 @@ export default async function BrowseMentorsPage({ searchParams }: BrowseMentorsP
         </div>
       </section>
 
-      {/* CTA Section */}
       <section className="py-20 bg-gradient-to-r from-[#0891B2] to-[#0E7490]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
           <h2 className="text-3xl sm:text-4xl font-bold mb-4">
@@ -265,7 +241,7 @@ export default async function BrowseMentorsPage({ searchParams }: BrowseMentorsP
               href="/get-started"
               className={cn(
                 buttonVariants({ variant: 'outline', size: 'lg' }),
-                'border-white text-white hover:bg-white hover:text-[#0891B2] px-8',
+                'border-white text-[#0891B2] hover:bg-white hover:text-[#0891B2] px-8',
               )}
             >
               Get Started Free

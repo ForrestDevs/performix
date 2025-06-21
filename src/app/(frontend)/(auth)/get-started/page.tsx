@@ -93,18 +93,6 @@ export default function GetStartedPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-100">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center space-x-4">
-              <Link href="/">
-                <PerformixLogoClear />
-              </Link>
-            </div>
-          </div>
-        </div>
-      </header>
-
       <section className="relative bg-gradient-to-br from-[#0891B2] via-[#0891B2] to-[#0E7490] py-20 lg:py-24 overflow-hidden">
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute top-32 right-1/4 w-20 h-20 border border-white/10 rounded-full animate-pulse delay-300"></div>

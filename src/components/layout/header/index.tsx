@@ -4,9 +4,9 @@ import Link from 'next/link'
 import { MobileMenu, MobileMenuButton } from './mobile-menu'
 import { MobileMenuProvider } from './context'
 import { AuthButtons } from './auth-buttons'
-import { buttonVariants } from '@/components/ui/button'
-import { cn } from '@/lib/utilities/ui'
-import { getUserSession } from '@/lib/actions/auth'
+// import { buttonVariants } from '@/components/ui/button'
+// import { cn } from '@/lib/utilities/ui'
+// import { getUserSession } from '@/lib/actions/auth'
 
 export default async function Header() {
   // const user = await getUserSession()

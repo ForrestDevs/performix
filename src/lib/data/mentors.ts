@@ -91,89 +91,168 @@ export async function getMentorsWithFilters(params: MentorFilters): Promise<Ment
         limit = 12,
       } = params
 
+      const sortMap = {
+        name: 'name',
+        position: 'position',
+        newest: '-createdAt', // Newest first
+        oldest: 'createdAt', // Oldest first
+      }
+
       // Get all mentors for filtering counts
-      const allMentors = await payload.find({
+      const mentors = await payload.find({
         collection: MENTOR_SLUG,
         depth: 3,
-        limit: 1000, // Get all mentors for proper filtering
+        where: {
+          and: [
+            {
+              or: [
+                {
+                  name: {
+                    like: `%${search}%`,
+                  },
+                },
+                {
+                  bio: {
+                    like: `%${search}%`,
+                  },
+                },
+                {
+                  intro: {
+                    like: `%${search}%`,
+                  },
+                },
+                {
+                  location: {
+                    like: `%${search}%`,
+                  },
+                },
+                {
+                  currentTeam: {
+                    like: `%${search}%`,
+                  },
+                },
+              ],
+            },
+            ...(position.length > 0
+              ? [
+                  {
+                    position: {
+                      in: position,
+                    },
+                  },
+                ]
+              : []),
+            ...(levelOfPlay.length > 0
+              ? [
+                  {
+                    levelOfPlay: {
+                      in: levelOfPlay,
+                    },
+                  },
+                ]
+              : []),
+            ...(skills.length > 0
+              ? [
+                  {
+                    skills: {
+                      in: skills,
+                    },
+                  },
+                ]
+              : []),
+            ...(sports.length > 0
+              ? [
+                  {
+                    sports: {
+                      in: sports,
+                    },
+                  },
+                ]
+              : []),
+            ...(featured === 'featured' ? [{ featured: { equals: true } }] : []),
+            ...(featured === 'regular' ? [{ featured: { equals: false } }] : []),
+          ],
+        },
+        sort: sortMap[sort],
+        limit,
       })
 
-      let filteredMentors = [...allMentors.docs]
+      // let filteredMentors = [...allMentors.docs]
 
-      // Apply search filter
-      if (search) {
-        const searchTerm = search.toLowerCase()
-        filteredMentors = filteredMentors.filter((mentor) => {
-          return (
-            mentor.name?.toLowerCase().includes(searchTerm) ||
-            mentor.bio?.toLowerCase().includes(searchTerm) ||
-            mentor.intro?.toLowerCase().includes(searchTerm) ||
-            mentor.location?.toLowerCase().includes(searchTerm) ||
-            mentor.currentTeam?.toLowerCase().includes(searchTerm) ||
-            mentor.skills?.some((skill) => skill.toLowerCase().includes(searchTerm)) ||
-            // @ts-ignore - accessing school name if it's populated
-            mentor.school?.name?.toLowerCase().includes(searchTerm)
-          )
-        })
-      }
+      // // Apply search filter
+      // if (search) {
+      //   const searchTerm = search.toLowerCase()
+      //   filteredMentors = filteredMentors.filter((mentor) => {
+      //     return (
+      //       mentor.name?.toLowerCase().includes(searchTerm) ||
+      //       mentor.bio?.toLowerCase().includes(searchTerm) ||
+      //       mentor.intro?.toLowerCase().includes(searchTerm) ||
+      //       mentor.location?.toLowerCase().includes(searchTerm) ||
+      //       mentor.currentTeam?.toLowerCase().includes(searchTerm) ||
+      //       mentor.skills?.some((skill) => skill.toLowerCase().includes(searchTerm)) ||
+      //       // @ts-ignore - accessing school name if it's populated
+      //       mentor.school?.name?.toLowerCase().includes(searchTerm)
+      //     )
+      //   })
+      // }
 
-      // Apply position filter
-      if (position.length > 0) {
-        filteredMentors = filteredMentors.filter((mentor) =>
-          mentor.position ? position.includes(mentor.position) : false,
-        )
-      }
+      // // Apply position filter
+      // if (position.length > 0) {
+      //   filteredMentors = filteredMentors.filter((mentor) =>
+      //     mentor.position ? position.includes(mentor.position) : false,
+      //   )
+      // }
 
-      // Apply level of play filter
-      if (levelOfPlay.length > 0) {
-        filteredMentors = filteredMentors.filter((mentor) =>
-          mentor.levelOfPlay ? levelOfPlay.includes(mentor.levelOfPlay) : false,
-        )
-      }
+      // // Apply level of play filter
+      // if (levelOfPlay.length > 0) {
+      //   filteredMentors = filteredMentors.filter((mentor) =>
+      //     mentor.levelOfPlay ? levelOfPlay.includes(mentor.levelOfPlay) : false,
+      //   )
+      // }
 
-      // Apply skills filter
-      if (skills.length > 0) {
-        filteredMentors = filteredMentors.filter((mentor) =>
-          mentor.skills?.some((skill) => skills.includes(skill)),
-        )
-      }
+      // // Apply skills filter
+      // if (skills.length > 0) {
+      //   filteredMentors = filteredMentors.filter((mentor) =>
+      //     mentor.skills?.some((skill) => skills.includes(skill)),
+      //   )
+      // }
 
-      // Apply sports filter
-      if (sports.length > 0) {
-        filteredMentors = filteredMentors.filter((mentor) =>
-          mentor.sports?.some((sport) => sports.includes(sport)),
-        )
-      }
+      // // Apply sports filter
+      // if (sports.length > 0) {
+      //   filteredMentors = filteredMentors.filter((mentor) =>
+      //     mentor.sports?.some((sport) => sports.includes(sport)),
+      //   )
+      // }
 
       // Apply featured filter
-      if (featured === 'featured') {
-        filteredMentors = filteredMentors.filter((mentor) => mentor.featured === true)
-      } else if (featured === 'regular') {
-        filteredMentors = filteredMentors.filter((mentor) => mentor.featured !== true)
-      }
+      // if (featured === 'featured') {
+      //   filteredMentors = filteredMentors.filter((mentor) => mentor.featured === true)
+      // } else if (featured === 'regular') {
+      //   filteredMentors = filteredMentors.filter((mentor) => mentor.featured !== true)
+      // }
 
       // Apply sorting
-      const sortedMentors = [...filteredMentors].sort((a, b) => {
-        switch (sort) {
-          case 'name':
-            return (a.name || '').localeCompare(b.name || '')
-          case 'position':
-            return (a.position || '').localeCompare(b.position || '')
-          case 'newest':
-            return new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime()
-          case 'oldest':
-            return new Date(a.createdAt || 0).getTime() - new Date(b.createdAt || 0).getTime()
-          default:
-            return (a.name || '').localeCompare(b.name || '')
-        }
-      })
+      // const sortedMentors = [...filteredMentors].sort((a, b) => {
+      //   switch (sort) {
+      //     case 'name':
+      //       return (a.name || '').localeCompare(b.name || '')
+      //     case 'position':
+      //       return (a.position || '').localeCompare(b.position || '')
+      //     case 'newest':
+      //       return new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime()
+      //     case 'oldest':
+      //       return new Date(a.createdAt || 0).getTime() - new Date(b.createdAt || 0).getTime()
+      //     default:
+      //       return (a.name || '').localeCompare(b.name || '')
+      //   }
+      // })
 
       // Pagination
-      const totalCount = sortedMentors.length
-      const totalPages = Math.ceil(totalCount / limit)
-      const startIndex = (page - 1) * limit
-      const endIndex = startIndex + limit
-      const paginatedMentors = sortedMentors.slice(startIndex, endIndex)
+      // const totalCount = sortedMentors.length
+      // const totalPages = Math.ceil(totalCount / limit)
+      // const startIndex = (page - 1) * limit
+      // const endIndex = startIndex + limit
+      // const paginatedMentors = sortedMentors.slice(startIndex, endIndex)
 
       // Generate filter counts for UI
       const getFilterCounts = () => {
@@ -182,7 +261,7 @@ export async function getMentorsWithFilters(params: MentorFilters): Promise<Ment
         const skills: { [key: string]: number } = {}
         const sports: { [key: string]: number } = {}
 
-        allMentors.docs.forEach((mentor) => {
+        mentors.docs.forEach((mentor) => {
           // Position counts
           if (mentor.position) {
             positions[mentor.position] = (positions[mentor.position] || 0) + 1
@@ -215,11 +294,11 @@ export async function getMentorsWithFilters(params: MentorFilters): Promise<Ment
       }
 
       return {
-        mentors: paginatedMentors,
-        totalCount,
-        hasMore: page < totalPages,
+        mentors: mentors.docs,
+        totalCount: mentors.totalDocs,
+        hasMore: mentors.hasNextPage,
         currentPage: page,
-        totalPages,
+        totalPages: mentors.totalPages,
         filters: getFilterCounts(),
       }
     },

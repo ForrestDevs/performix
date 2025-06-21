@@ -3,8 +3,7 @@
 import { Button, buttonVariants } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Share2, Play, Star, DollarSign, Check } from 'lucide-react'
-import Image from 'next/image'
+import { Share2, Star, Check } from 'lucide-react'
 import { useScrollAnimation } from '@/lib/hooks/useScrollAnimation'
 import { Mentor } from '@/payload-types'
 import { Media as MediaComponent } from '@/components/Media'
@@ -12,6 +11,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { cn } from '@/lib/utilities/ui'
 import { prettifySkill } from '@/lib/utilities/prettify'
+import { toast } from 'sonner'
 
 interface MentorGridCardProps {
   mentor: Mentor
@@ -31,10 +31,10 @@ export function MentorGridCard({ mentor, index }: MentorGridCardProps) {
       await navigator.clipboard.writeText(profileUrl)
       setCopied(true)
       setTimeout(() => setCopied(false), 2000)
-      // You could add a toast notification here to show success
+      toast.success('Link copied to clipboard')
     } catch (err) {
       console.error('Failed to copy link:', err)
-      // You could add a toast notification here to show error
+      toast.error('Failed to copy link')
     }
   }
 
@@ -46,12 +46,13 @@ export function MentorGridCard({ mentor, index }: MentorGridCardProps) {
       style={{ transitionDelay: `${index * 100}ms` }}
     >
       <CardContent className="p-0">
-        <div className="relative h-56 bg-gradient-to-br from-[#0891B2]/10 to-[#8B5CF6]/10 overflow-hidden">
+        <div className="relative h-56 bg-gradient-to-br from-[#0891B2]/10 to-[#8B5CF6]/10 flex items-center justify-center">
           {typeof mentor.avatar === 'object' && (
             <MediaComponent
               resource={mentor.avatar!}
-              className="absolute inset-0"
-              imgClassName="w-full h-full object-cover"
+              className="w-full h-full"
+              imgClassName="w-full h-full object-cover sm:object-contain"
+              fill
             />
           )}
           <div className="absolute top-3 left-3">

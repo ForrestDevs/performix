@@ -1,11 +1,10 @@
 'use client'
 
 import { MentorViewModeProvider } from './view-mode-context'
-import { EnhancedMentorsSearch } from './enhanced-mentors-search'
-import { EnhancedMentorsFilters } from './enhanced-mentors-filters'
-import { EnhancedMentorsControls } from './enhanced-mentors-controls'
-import { EnhancedMentorsGrid } from './enhanced-mentors-grid'
-import { useScrollAnimation } from '@/lib/hooks/useScrollAnimation'
+import { MentorsSearchBar } from './mentors-search-bar'
+import { MentorsFilters } from './mentors-filters'
+import { MentorsControls } from './mentors-controls'
+import { MentorsGrid } from './mentors-grid'
 import { MentorsResponse } from '@/lib/data/mentors'
 import { Badge } from '@/components/ui/badge'
 import { Users, Star, Award } from 'lucide-react'
@@ -15,9 +14,6 @@ interface MentorsClientWrapperProps {
 }
 
 export function MentorsClientWrapper({ mentorsData }: MentorsClientWrapperProps) {
-  const visibleElements = useScrollAnimation()
-  const isVisible = (id: string) => visibleElements.has(id)
-
   return (
     <MentorViewModeProvider>
       {/* Hero Section with Search */}
@@ -41,7 +37,7 @@ export function MentorsClientWrapper({ mentorsData }: MentorsClientWrapperProps)
 
             {/* Search Bar */}
             <div className="max-w-2xl mx-auto mb-8">
-              <EnhancedMentorsSearch />
+              <MentorsSearchBar />
             </div>
 
             {/* Quick Filter Pills */}
@@ -89,7 +85,7 @@ export function MentorsClientWrapper({ mentorsData }: MentorsClientWrapperProps)
           <div className="flex flex-col lg:flex-row gap-8">
             {/* Desktop Filters Sidebar */}
             <div className="hidden lg:block w-80 flex-shrink-0">
-              <EnhancedMentorsFilters filtersData={mentorsData.filters} />
+              <MentorsFilters filtersData={mentorsData.filters} />
             </div>
 
             {/* Main Content */}
@@ -98,12 +94,12 @@ export function MentorsClientWrapper({ mentorsData }: MentorsClientWrapperProps)
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
                 {/* Mobile Filters Button */}
                 <div className="lg:hidden">
-                  <EnhancedMentorsFilters filtersData={mentorsData.filters} isMobile />
+                  <MentorsFilters filtersData={mentorsData.filters} isMobile />
                 </div>
 
                 {/* Controls for both mobile and desktop */}
                 <div className="w-full lg:w-auto">
-                  <EnhancedMentorsControls
+                  <MentorsControls
                     mentorCount={mentorsData.mentors.length}
                     totalCount={mentorsData.totalCount}
                   />
@@ -111,7 +107,7 @@ export function MentorsClientWrapper({ mentorsData }: MentorsClientWrapperProps)
               </div>
 
               {/* Mentors Grid */}
-              <EnhancedMentorsGrid mentors={mentorsData.mentors} isVisible={isVisible} />
+              <MentorsGrid mentors={mentorsData.mentors} />
 
               {/* Load More */}
               {mentorsData.hasMore && (

@@ -56,17 +56,15 @@ export default async function ResourcesPage({ searchParams }: ResourcesPageProps
               you need to take your game to the next level.
             </p>
 
-            {/* Search Bar */}
-            <Suspense
+            {/* <Suspense
               fallback={
                 <div className="h-16 bg-gray-100 rounded-xl animate-pulse max-w-2xl mx-auto mb-8" />
               }
             >
               <EnhancedResourcesSearch className="mb-8" />
-            </Suspense>
+            </Suspense> */}
 
-            {/* Quick Stats */}
-            <div className="flex flex-wrap justify-center gap-6 lg:gap-8 text-sm lg:text-base text-gray-600 mb-8">
+            {/* <div className="flex flex-wrap justify-center gap-6 lg:gap-8 text-sm lg:text-base text-gray-600 mb-8">
               <div className="flex items-center space-x-2">
                 <BookOpen className="h-5 w-5 text-[#0891B2]" />
                 <span>{counts.total} Resources</span>
@@ -83,9 +81,8 @@ export default async function ResourcesPage({ searchParams }: ResourcesPageProps
                 <Eye className="h-5 w-5 text-[#0891B2]" />
                 <span>50K+ Monthly Views</span>
               </div>
-            </div>
+            </div> */}
 
-            {/* Resource Type Quick Filters */}
             <div className="flex flex-wrap justify-center gap-3">
               <Link
                 href={`/resources?types=article`}
@@ -124,16 +121,13 @@ export default async function ResourcesPage({ searchParams }: ResourcesPageProps
           </div>
         </div>
 
-        {/* Background Decoration */}
         <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-white to-purple-50 opacity-50" />
         <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-[#0891B2]/10 to-transparent rounded-full -translate-y-32 translate-x-32" />
         <div className="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-tr from-[#8B5CF6]/10 to-transparent rounded-full translate-y-32 -translate-x-32" />
       </section>
 
-      {/* Main Content */}
       <section className="py-12 lg:py-16 bg-gray-50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Mobile Filter Button - Only show on mobile */}
           <div className="lg:hidden mb-6">
             <Suspense fallback={<div className="h-12 bg-gray-100 rounded-lg animate-pulse" />}>
               <EnhancedResourcesFilters tags={tags} counts={counts} isMobile={true} />
@@ -141,16 +135,13 @@ export default async function ResourcesPage({ searchParams }: ResourcesPageProps
           </div>
 
           <div className="grid lg:grid-cols-4 xl:grid-cols-5 gap-8">
-            {/* Desktop Filters Sidebar */}
             <div className="lg:col-span-1 hidden lg:block">
               <Suspense fallback={<div className="h-96 bg-gray-100 rounded-lg animate-pulse" />}>
                 <EnhancedResourcesFilters tags={tags} counts={counts} className="sticky top-4" />
               </Suspense>
             </div>
 
-            {/* Main Content */}
             <div className="lg:col-span-3 xl:col-span-4">
-              {/* Results Summary */}
               {(params.search ||
                 params.tags.length > 0 ||
                 params.types.length > 0 ||
@@ -170,7 +161,6 @@ export default async function ResourcesPage({ searchParams }: ResourcesPageProps
                         )}
                       </p>
 
-                      {/* Active Filters Summary */}
                       <div className="flex flex-wrap gap-2 mt-2">
                         {params.types.map((type) => (
                           <Badge key={type} variant="secondary" className="text-xs">
@@ -208,14 +198,12 @@ export default async function ResourcesPage({ searchParams }: ResourcesPageProps
                 </div>
               )}
 
-              {/* Client-side Resources Section */}
               <ResourcesClientWrapper
                 resources={resources}
                 totalCount={totalCount}
                 showLeadMagnet={true}
               />
 
-              {/* Pagination */}
               {totalPages > 1 && (
                 <Suspense
                   fallback={<div className="h-16 bg-gray-100 rounded-lg animate-pulse mt-8" />}
@@ -229,7 +217,6 @@ export default async function ResourcesPage({ searchParams }: ResourcesPageProps
                 </Suspense>
               )}
 
-              {/* Load More for Mobile */}
               {resources.length > 0 && totalPages > currentPage && (
                 <div className="text-center mt-12 lg:hidden">
                   <Link
@@ -252,7 +239,6 @@ export default async function ResourcesPage({ searchParams }: ResourcesPageProps
                 </div>
               )}
 
-              {/* Empty State */}
               {resources.length === 0 && (
                 <div className="text-center py-16">
                   <div className="mx-auto w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-6">

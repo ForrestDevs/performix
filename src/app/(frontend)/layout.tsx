@@ -7,6 +7,8 @@ import Header from '@/components/layout/header'
 
 import '@/lib/styles/globals.css'
 import '@/lib/styles/scroll-animations.css'
+import { BetterAuthProvider } from '@/lib/auth/context'
+import { getContextProps } from '@/lib/auth/context/get-context-props'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -26,15 +28,15 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <NuqsAdapter>
-      <html lang="en">
-        <body className={`${inter.className} ${spaceGrotesk.variable} font-sans antialiased`}>
+    <html lang="en">
+      <body className={`${inter.className} ${spaceGrotesk.variable} font-sans antialiased`}>
+        <BetterAuthProvider {...getContextProps()}>
           <Header />
-          <main>{children}</main>
+          <NuqsAdapter>{children}</NuqsAdapter>
           <Footer />
           <Toaster />
-        </body>
-      </html>
-    </NuqsAdapter>
+        </BetterAuthProvider>
+      </body>
+    </html>
   )
 }
