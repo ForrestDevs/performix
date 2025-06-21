@@ -4,12 +4,19 @@ import Link from 'next/link'
 import { MobileMenu, MobileMenuButton } from './mobile-menu'
 import { MobileMenuProvider } from './context'
 import { AuthButtons } from './auth-buttons'
+import { getPayload } from '@/lib/utilities/getPayload'
+import { headers } from 'next/headers'
 // import { buttonVariants } from '@/components/ui/button'
 // import { cn } from '@/lib/utilities/ui'
 // import { getUserSession } from '@/lib/actions/auth'
 
 export default async function Header() {
-  // const user = await getUserSession()
+  const payload = await getPayload()
+  const headersList = await headers()
+  const session = await payload.betterAuth.api.getSession({
+    headers: headersList,
+  })
+  const user = session?.user || null
 
   return (
     <MobileMenuProvider>
@@ -43,11 +50,11 @@ export default async function Header() {
               >
                 Pricing
               </Link>
-              <AuthButtons />
+              <AuthButtons user={user} />
             </nav>
           </div>
         </div>
-        <MobileMenu />
+        <MobileMenu user={user} />
       </header>
     </MobileMenuProvider>
   )

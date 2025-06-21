@@ -36,7 +36,6 @@ interface UserMenuProps {
 }
 
 export function UserMenu({ user, className }: UserMenuProps) {
-  const [isOpen, setIsOpen] = useState(false)
   const [isPending, startTransition] = useTransition()
   const router = useRouter()
 

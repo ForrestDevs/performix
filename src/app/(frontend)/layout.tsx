@@ -7,8 +7,8 @@ import Header from '@/components/layout/header'
 
 import '@/lib/styles/globals.css'
 import '@/lib/styles/scroll-animations.css'
-import { BetterAuthProvider } from '@/lib/auth/context'
-import { getContextProps } from '@/lib/auth/context/get-context-props'
+import { Suspense } from 'react'
+import HeaderSkeleton from '@/components/layout/header/header-skeleton'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -30,7 +30,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body className={`${inter.className} ${spaceGrotesk.variable} font-sans antialiased`}>
-        <Header />
+        <Suspense fallback={<HeaderSkeleton />}>
+          <Header />
+        </Suspense>
         <NuqsAdapter>{children}</NuqsAdapter>
         <Footer />
         <Toaster />
