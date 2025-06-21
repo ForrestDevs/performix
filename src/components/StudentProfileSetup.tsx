@@ -21,7 +21,6 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { createStudentProfileAction, type StudentProfileData } from '@/lib/actions/student'
-// import { useBetterAuth } from '@/lib/auth/context'
 import type { TypedUser } from 'payload'
 
 const studentProfileSchema = z.object({

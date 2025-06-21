@@ -43,7 +43,7 @@ export function MentorHero() {
       >
         <MediaComponent
           resource={mentor.avatar as Media}
-          imgClassName="object-cover"
+          imgClassName="object-contain"
           priority
           fill
         />
@@ -94,7 +94,7 @@ export function MentorHero() {
             <Button
               size="lg"
               variant="outline"
-              className="border-white text-white hover:bg-white hover:text-[#0891B2]"
+              className="border-white text-[#0891B2] hover:bg-white hover:text-[#0891B2]"
               onClick={handleShare}
             >
               {copied ? <Check className="mr-2 h-5 w-5" /> : <Share2 className="mr-2 h-5 w-5" />}

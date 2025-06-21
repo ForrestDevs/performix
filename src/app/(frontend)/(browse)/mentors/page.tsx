@@ -31,7 +31,7 @@ export default async function BrowseMentorsPage({ searchParams }: BrowseMentorsP
     featured: params.featured,
     sort: params.sort,
     page: params.page,
-    limit: 12,
+    limit: 1000,
   })
 
   return (
@@ -67,7 +67,7 @@ export default async function BrowseMentorsPage({ searchParams }: BrowseMentorsP
             <div className="flex flex-wrap justify-center gap-6 lg:gap-8 text-sm lg:text-base text-gray-600 mb-8">
               <div className="flex items-center space-x-2">
                 <Users className="h-5 w-5 text-[#0891B2]" />
-                <span>30+ Active Mentors</span>
+                <span>{mentorsData.totalCount} Active Mentors</span>
               </div>
               <div className="flex items-center space-x-2">
                 <Award className="h-5 w-5 text-[#0891B2]" />
