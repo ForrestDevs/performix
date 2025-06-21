@@ -35,7 +35,6 @@ export default async function ResourcesPage({ searchParams }: ResourcesPageProps
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Hero Section */}
       <section className="relative bg-white py-16 lg:py-20 overflow-hidden">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center mb-12">
@@ -56,13 +55,13 @@ export default async function ResourcesPage({ searchParams }: ResourcesPageProps
               you need to take your game to the next level.
             </p>
 
-            {/* <Suspense
+            <Suspense
               fallback={
                 <div className="h-16 bg-gray-100 rounded-xl animate-pulse max-w-2xl mx-auto mb-8" />
               }
             >
               <EnhancedResourcesSearch className="mb-8" />
-            </Suspense> */}
+            </Suspense>
 
             {/* <div className="flex flex-wrap justify-center gap-6 lg:gap-8 text-sm lg:text-base text-gray-600 mb-8">
               <div className="flex items-center space-x-2">
@@ -265,7 +264,6 @@ export default async function ResourcesPage({ searchParams }: ResourcesPageProps
         </div>
       </section>
 
-      {/* CTA Section */}
       <section className="py-20 bg-gradient-to-r from-[#0891B2] to-[#0E7490]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
           <h2 className="text-3xl sm:text-4xl font-bold mb-4">
