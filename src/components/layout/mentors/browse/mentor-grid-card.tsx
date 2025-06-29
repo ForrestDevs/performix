@@ -45,7 +45,7 @@ export function MentorGridCard({ mentor, index }: MentorGridCardProps) {
       }`}
       style={{ transitionDelay: `${index * 100}ms` }}
     >
-      <CardContent className="p-0">
+      <CardContent className="p-0 h-full flex flex-col">
         <div className="relative h-56 flex items-center justify-center">
           {typeof mentor.avatar === 'object' && (
             <MediaComponent
@@ -73,7 +73,7 @@ export function MentorGridCard({ mentor, index }: MentorGridCardProps) {
             </Button>
           </div>
         </div>
-        <div className="p-5 h-full flex flex-col">
+        <div className="p-5 flex flex-col flex-grow">
           <div className="flex items-center justify-between mb-2.5">
             <h3 className="text-lg font-bold text-gray-900">{mentor.name}</h3>
             <div className="flex items-center space-x-1">

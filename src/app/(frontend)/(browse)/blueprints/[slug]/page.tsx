@@ -94,7 +94,7 @@ export default async function Blueprint({ params }: { params: Params }) {
     <BlueprintPageClient
       blueprint={blueprintData}
       isAuthenticated={!!user}
-      user={user}
+      user={user || null}
       isEnrolled={isEnrolled}
     />
   )

@@ -41,3 +41,17 @@ export async function getEnrolledBlueprints(userId: number) {
 
   return cacheFn(userId)
 }
+
+export async function enrollBlueprint(blueprintId: number, userId: number) {
+  const payload = await getPayload()
+
+  await payload.create({
+    collection: ENROLLMENTS_SLUG,
+    data: {
+      user: userId,
+      type: 'blueprint',
+      status: 'active',
+      enrolledBlueprint: blueprintId,
+    },
+  })
+}

@@ -3,9 +3,12 @@
 import React from 'react'
 import { Button, buttonVariants } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { ShoppingCart, Lock, Check, Download, Eye } from 'lucide-react'
+import { ShoppingCart, Lock, Check, Download, Eye, User } from 'lucide-react'
 import Link from 'next/link'
 import { cn } from '@/lib/utilities/ui'
+import { useRouter } from 'next/navigation'
+import { enrollBlueprint } from '@/lib/data/blueprints'
+import { toast } from 'sonner'
 
 interface PurchaseButtonProps {
   price: number
@@ -13,6 +16,7 @@ interface PurchaseButtonProps {
   isAuthenticated: boolean
   isEnrolled: boolean
   blueprintId: string
+  userId: number | undefined
 }
 
 export default function PurchaseButton({
@@ -21,9 +25,22 @@ export default function PurchaseButton({
   isAuthenticated,
   isEnrolled,
   blueprintId,
+  userId,
 }: PurchaseButtonProps) {
+  const router = useRouter()
+
+  const handleEnroll = async () => {
+    if (userId) {
+      await enrollBlueprint(Number(blueprintId), userId)
+      toast.success('Blueprint enrolled successfully')
+      router.refresh()
+    } else {
+      router.push('/get-started')
+    }
+  }
+
   // Free blueprint
-  if (isAuthenticated && !isPaid && price <= 0) {
+  if (!isPaid && price <= 0) {
     return (
       <div className="bg-green-50 border-2 border-green-200 rounded-lg p-6">
         <div className="text-center">
@@ -32,10 +49,26 @@ export default function PurchaseButton({
           <p className="text-green-700 text-sm mb-4">
             This blueprint is available for free. Start using it right away!
           </p>
-          <Button className="w-full bg-green-600 hover:bg-green-700 text-white">
-            <Download className="w-4 h-4 mr-2" />
-            Access Blueprint
-          </Button>
+          {isAuthenticated ? (
+            <Button
+              onClick={handleEnroll}
+              className="w-full bg-green-600 hover:bg-green-700 text-white"
+            >
+              <Download className="w-4 h-4 mr-2" />
+              Enroll
+            </Button>
+          ) : (
+            <Link
+              href="/get-started"
+              className={cn(
+                buttonVariants({ variant: 'default' }),
+                'w-full bg-green-600 hover:bg-green-700 text-white',
+              )}
+            >
+              <User className="w-4 h-4 mr-2" />
+              Get Started to Enroll
+            </Link>
+          )}
         </div>
       </div>
     )

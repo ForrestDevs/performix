@@ -55,6 +55,21 @@ export default function DownloadableFiles({
     return `${fileSize.toFixed(1)} ${units[unitIndex]}`
   }
 
+  const getFileTypeLabel = (mimeType?: string) => {
+    if (!mimeType) return 'unknown'
+
+    const type = mimeType.split('/')[1]
+
+    // Handle specific complex mime types
+    if (type === 'vnd.openxmlformats-officedocument.wordprocessingml.document') return 'docx'
+    if (type === 'vnd.openxmlformats-officedocument.spreadsheetml.sheet') return 'xlsx'
+    if (type === 'vnd.openxmlformats-officedocument.presentationml.presentation') return 'pptx'
+    if (type === 'vnd.ms-excel') return 'xls'
+    if (type === 'msword') return 'doc'
+
+    return type
+  }
+
   const handleDownload = (file: Media) => {
     if (!isAuthenticated) {
       onAuthRequired()
@@ -111,7 +126,7 @@ export default function DownloadableFiles({
                     <div className="flex items-center gap-2 text-xs text-gray-500">
                       {file.mimeType && (
                         <span className="uppercase font-medium bg-gray-100 px-2 py-0.5 rounded">
-                          {file.mimeType.split('/')[1]}
+                          {getFileTypeLabel(file.mimeType)}
                         </span>
                       )}
                       {file.filesize && (

@@ -27,7 +27,7 @@ export function MentorCard({
       }`}
       style={{ transitionDelay: `${index * 150}ms` }}
     >
-      <CardContent className="p-6">
+      <CardContent className="p-6 flex flex-col h-full">
         <div className="aspect-square rounded-xl bg-gradient-to-br from-[#0891B2]/20 to-[#8B5CF6]/20 mb-4 overflow-hidden relative">
           {typeof mentor.avatar === 'object' && (
             <MediaComponent
@@ -52,12 +52,12 @@ export function MentorCard({
             <span className="text-sm text-gray-600">{mentor.school?.name}</span>
           </div>
         )}
-        <p className="text-sm text-gray-500 mb-4 line-clamp-2">{mentor.intro}</p>
+        <p className="text-sm text-gray-500 mb-4 line-clamp-2 flex-grow">{mentor.intro}</p>
         <Link
           href={`/mentors/${mentor.slug}`}
           className={cn(
             buttonVariants({ variant: 'outline', size: 'sm' }),
-            'w-full border-[#0891B2] text-[#0891B2] hover:bg-[#0891B2] hover:text-white',
+            'w-full border-[#0891B2] text-[#0891B2] hover:bg-[#0891B2] hover:text-white mt-auto',
           )}
         >
           View Profile

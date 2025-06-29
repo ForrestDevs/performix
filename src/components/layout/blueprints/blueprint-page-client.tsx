@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { motion } from 'motion/react'
 import { SerializedEditorState } from 'lexical'
-import { Media } from '@/payload-types'
+import { Media, User } from '@/payload-types'
 
 // Component imports
 import BlueprintHeader from './blueprint-header'
@@ -38,7 +38,7 @@ interface BlueprintData {
 interface BlueprintPageClientProps {
   blueprint: BlueprintData
   isAuthenticated: boolean
-  user?: any
+  user: User | null
   isEnrolled: boolean
 }
 
@@ -53,6 +53,8 @@ export default function BlueprintPageClient({
   const handleAuthRequired = () => {
     setIsAuthModalOpen(true)
   }
+
+  const isLocked = blueprint.isPaid && !isEnrolled
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -97,7 +99,7 @@ export default function BlueprintPageClient({
                   files={blueprint.files}
                   isAuthenticated={isAuthenticated}
                   onAuthRequired={handleAuthRequired}
-                  isLocked={!isEnrolled}
+                  isLocked={isLocked}
                 />
               )}
 
@@ -107,6 +109,7 @@ export default function BlueprintPageClient({
                 isPaid={blueprint.isPaid}
                 isAuthenticated={isAuthenticated}
                 isEnrolled={isEnrolled}
+                userId={user?.id || undefined}
               />
             </motion.div>
           </div>
