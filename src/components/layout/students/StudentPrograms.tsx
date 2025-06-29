@@ -12,6 +12,7 @@ interface EnrolledBlueprintsProps {
 }
 
 export default function EnrolledBlueprints({ blueprints }: EnrolledBlueprintsProps) {
+  console.log(blueprints)
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}

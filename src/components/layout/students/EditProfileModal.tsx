@@ -57,15 +57,14 @@ export default function EditProfileModal({ isOpen, onClose, student }: EditProfi
   })
 
   const currentLevels = [
-    'AAA Bantam',
-    'AAA Midget',
+    'A',
+    'AA',
+    'AAA',
     'Junior A',
     'Junior B',
-    'USHL',
-    'NAHL',
-    'BCHL',
-    'High School Varsity',
+    'High School',
     'Prep School',
+    'European',
     'Other',
   ]
 
