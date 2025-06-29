@@ -1,3 +1,5 @@
+'use server'
+
 import { BLUEPRINTS_SLUG, ENROLLMENTS_SLUG } from '@/payload/collections/constants'
 import { getPayload } from '../utilities/getPayload'
 import { CACHE_TAGS } from '../cache/contants'
