@@ -73,7 +73,7 @@ export function MentorGridCard({ mentor, index }: MentorGridCardProps) {
             </Button>
           </div>
         </div>
-        <div className="p-5">
+        <div className="p-5 h-full flex flex-col">
           <div className="flex items-center justify-between mb-2.5">
             <h3 className="text-lg font-bold text-gray-900">{mentor.name}</h3>
             <div className="flex items-center space-x-1">
@@ -94,7 +94,7 @@ export function MentorGridCard({ mentor, index }: MentorGridCardProps) {
               <span className="text-sm text-gray-600">{mentor.school?.name}</span>
             </div>
           )}
-          <p className="text-sm text-gray-600 mb-3.5 line-clamp-2">{mentor.bio}</p>
+          <p className="text-sm text-gray-600 mb-3.5 line-clamp-2 flex-grow">{mentor.bio}</p>
           <div className="flex flex-wrap gap-1.5 mb-4">
             {mentor.skills?.slice(0, 3).map((skill) => (
               <Badge key={skill} variant="outline" className="text-xs px-2 py-0.5">
@@ -102,7 +102,7 @@ export function MentorGridCard({ mentor, index }: MentorGridCardProps) {
               </Badge>
             ))}
           </div>
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between mt-auto">
             <Link
               href={`/mentors/${mentor.slug}`}
               className={cn(

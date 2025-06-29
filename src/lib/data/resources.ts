@@ -6,54 +6,12 @@ import {
   ARTICLE_TAG_SLUG,
 } from '@/payload/collections/constants'
 import type { Article, Blueprint, Course, ArticleTag } from '@/payload-types'
-
-export type ResourceType = 'article' | 'blueprint' | 'course'
-
-export interface UnifiedResource {
-  id: string
-  type: ResourceType
-  title: string
-  description?: string
-  thumbnail?: any
-  slug: string
-  publishedAt?: string
-  createdAt: string
-  updatedAt: string
-  tags?: string[]
-  isPaid: boolean
-  price?: number
-  url: string
-  readTime?: number
-  difficulty?: 'beginner' | 'intermediate' | 'advanced'
-  // Original data for type-specific rendering
-  originalData: Article | Blueprint | Course
-}
-
-interface GetResourcesParams {
-  search?: string
-  tags?: string[]
-  types?: ResourceType[]
-  access?: 'all' | 'free' | 'paid'
-  page?: number
-  limit?: number
-  sort?: 'newest' | 'oldest' | 'title' | 'popular'
-}
-
-interface GetResourcesResult {
-  resources: UnifiedResource[]
-  totalCount: number
-  totalPages: number
-  currentPage: number
-  pageSize: number
-  counts: {
-    total: number
-    articles: number
-    blueprints: number
-    courses: number
-    free: number
-    paid: number
-  }
-}
+import type {
+  GetResourcesParams,
+  GetResourcesResult,
+  Resource,
+  ResourceType,
+} from '../types/resources'
 
 export async function getResources({
   search = '',
@@ -103,7 +61,7 @@ export async function getResources({
   ])
 
   // Transform to unified format
-  const unifiedResources: UnifiedResource[] = [
+  const unifiedResources: Resource[] = [
     ...articlesData.map(transformArticle),
     ...blueprintsData.map(transformBlueprint),
     ...coursesData.map(transformCourse),
@@ -222,13 +180,13 @@ async function fetchCourses(payload: any, { search, access }: any): Promise<Cour
   }
 }
 
-function transformArticle(article: Article): UnifiedResource {
+function transformArticle(article: Article): Resource {
   return {
     id: article.id.toString(),
     type: 'article',
     title: article.title,
     description: article.meta?.description || '',
-    thumbnail: article.meta?.image,
+    thumbnail: article.meta?.image || undefined,
     slug: article.slug || '',
     publishedAt: article.publishedAt || '',
     createdAt: article.createdAt,
@@ -245,13 +203,13 @@ function transformArticle(article: Article): UnifiedResource {
   }
 }
 
-function transformBlueprint(blueprint: Blueprint): UnifiedResource {
+function transformBlueprint(blueprint: Blueprint): Resource {
   return {
     id: blueprint.id.toString(),
     type: 'blueprint',
     title: blueprint.title || '',
     description: blueprint.description || '',
-    thumbnail: blueprint.thumbnail,
+    thumbnail: blueprint.thumbnail || undefined,
     slug: blueprint.slug || '',
     createdAt: blueprint.createdAt,
     updatedAt: blueprint.updatedAt,
@@ -263,19 +221,19 @@ function transformBlueprint(blueprint: Blueprint): UnifiedResource {
   }
 }
 
-function transformCourse(course: Course): UnifiedResource {
+function transformCourse(course: Course): Resource {
   return {
     id: course.id.toString(),
     type: 'course',
     title: course.title,
     description: course.description || '',
-    thumbnail: course.thumbnail,
+    thumbnail: course.thumbnail || undefined,
     slug: course.slug || '',
     createdAt: course.createdAt,
     updatedAt: course.updatedAt,
     tags: [], // Courses don't have tags in current schema
     isPaid: (course.price || 0) > 0,
-    price: course.price,
+    price: course.price || 0,
     url: `/courses/${course.slug}`,
     originalData: course,
   }
@@ -289,7 +247,7 @@ function calculateReadTime(content: any): number {
   return Math.max(1, Math.ceil(wordCount / wordsPerMinute))
 }
 
-function sortResources(resources: UnifiedResource[], sort: string): UnifiedResource[] {
+function sortResources(resources: Resource[], sort: string): Resource[] {
   switch (sort) {
     case 'oldest':
       return resources.sort(

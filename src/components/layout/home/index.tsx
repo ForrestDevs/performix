@@ -48,7 +48,22 @@ export function ValuePropSection() {
             Join the platform that&apos;s advancing the next generation of serious hockey players.
           </p>
         </div>
-        <div className="grid md:grid-cols-4 gap-8">
+        <div className="max-w-5xl mx-auto relative rounded-2xl overflow-hidden shadow-2xl bg-gradient-to-br from-[#0891B2]/10 to-[#8B5CF6]/10 p-2 hover:shadow-3xl transition-all duration-500">
+          <div className="relative aspect-video rounded-xl overflow-hidden bg-black">
+            <iframe
+              src="https://www.youtube.com/embed/i5CWo6c0N1E"
+              title="Performix - Elite Hockey Mentorship"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              className="absolute inset-0 w-full h-full"
+            />
+          </div>
+
+          {/* Decorative elements */}
+          <div className="absolute -top-4 -left-4 w-8 h-8 bg-gradient-to-br from-[#0891B2] to-[#0E7490] rounded-full opacity-20 animate-pulse"></div>
+          <div className="absolute -bottom-4 -right-4 w-12 h-12 bg-gradient-to-br from-[#8B5CF6] to-[#0891B2] rounded-full opacity-20 animate-pulse delay-1000"></div>
+        </div>
+        <div className="mt-12 grid md:grid-cols-4 gap-8">
           {[
             {
               icon: GraduationCap,
@@ -446,10 +461,6 @@ export function ExtraValueSection() {
     </section>
   )
 }
-
-
-
-
 
 export function TrustSection() {
   const visibleElements = useScrollAnimation()

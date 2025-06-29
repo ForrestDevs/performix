@@ -101,6 +101,54 @@ export default function HomePage() {
         </div>
       </section>
       <ValuePropSection />
+      {/* <section className="py-20 bg-gradient-to-br from-gray-50 to-white">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4 bg-gradient-to-r from-[#0891B2] to-[#0E7490] bg-clip-text text-transparent">
+              See Performix in Action
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Watch how our elite D1 mentors are transforming hockey careers and helping players reach their full potential
+            </p>
+          </div>
+          
+          <div className="max-w-4xl mx-auto">
+            
+            
+            <div className=" grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div className="text-center group">
+                <div className="w-16 h-16 bg-gradient-to-br from-[#0891B2] to-[#0E7490] rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                  <Users className="h-8 w-8 text-white" />
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">Real Mentorship</h3>
+                <p className="text-gray-600 text-sm">
+                  See actual mentoring sessions with D1 players and coaches
+                </p>
+              </div>
+              
+              <div className="text-center group">
+                <div className="w-16 h-16 bg-gradient-to-br from-[#0891B2] to-[#0E7490] rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                  <TrendingUp className="h-8 w-8 text-white" />
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">Proven Results</h3>
+                <p className="text-gray-600 text-sm">
+                  Watch success stories from players who made it to D1
+                </p>
+              </div>
+              
+              <div className="text-center group">
+                <div className="w-16 h-16 bg-gradient-to-br from-[#0891B2] to-[#0E7490] rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                  <CheckCircle className="h-8 w-8 text-white" />
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">Expert Guidance</h3>
+                <p className="text-gray-600 text-sm">
+                  Learn from coaches who know what it takes to succeed
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section> */}
       <HowItWorksSection />
       <WhatYouGetEveryMonth />
       <ExtraValueSection />

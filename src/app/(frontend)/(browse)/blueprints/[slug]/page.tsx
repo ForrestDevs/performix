@@ -2,7 +2,7 @@ import React from 'react'
 import type { Metadata } from 'next'
 import { getPayload } from '@/lib/utilities/getPayload'
 import { generateMeta } from '@/lib/utilities/generateMeta'
-import { BLUEPRINTS_SLUG } from '@/payload/collections/constants'
+import { BLUEPRINTS_SLUG, ENROLLMENTS_SLUG, STUDENT_SLUG } from '@/payload/collections/constants'
 import { SerializedEditorState } from 'lexical'
 import { Media } from '@/payload-types'
 import { getCurrentUser } from '@/lib/data/auth'
@@ -31,6 +31,42 @@ export default async function Blueprint({ params }: { params: Params }) {
     return notFound()
   }
 
+  let isEnrolled = false
+  if (user) {
+    try {
+      const res = await payload.find({
+        collection: ENROLLMENTS_SLUG,
+        where: {
+          and: [
+            {
+              user: {
+                equals: user?.id,
+              },
+            },
+            {
+              enrolledBlueprint: {
+                equals: blueprint.id,
+              },
+            },
+            {
+              type: {
+                equals: 'blueprint',
+              },
+            },
+          ],
+        },
+        limit: 1,
+      })
+      isEnrolled = res.docs.length > 0
+      // console.log(res.docs)
+      // const isEnrolled = res.docs.length > 0
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  // const isEnrolled = res.docs.length > 0
+
   // Transform blueprint data for client components
   const blueprintData = {
     id: blueprint.id.toString(),
@@ -54,5 +90,12 @@ export default async function Blueprint({ params }: { params: Params }) {
     updatedAt: blueprint.updatedAt,
   }
 
-  return <BlueprintPageClient blueprint={blueprintData} isAuthenticated={!!user} />
+  return (
+    <BlueprintPageClient
+      blueprint={blueprintData}
+      isAuthenticated={!!user}
+      user={user}
+      isEnrolled={isEnrolled}
+    />
+  )
 }

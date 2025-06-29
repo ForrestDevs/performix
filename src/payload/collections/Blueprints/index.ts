@@ -2,6 +2,10 @@ import type { CollectionConfig } from 'payload'
 import { BLUEPRINTS_SLUG, MEDIA_SLUG } from '../constants'
 import { slugField } from '@/payload/fields/slug'
 import { admin, anyone } from '@/payload/access'
+import { stripeLinkField } from '@/payload/fields/stripeLink'
+import { deleteFromStripe } from './hooks/delete'
+import { createNewInStripe } from './hooks/create'
+import { syncExistingWithStripe } from './hooks/update'
 
 const Blueprints: CollectionConfig = {
   slug: BLUEPRINTS_SLUG,
@@ -16,8 +20,14 @@ const Blueprints: CollectionConfig = {
     update: admin,
     delete: admin,
   },
+  hooks: {
+    beforeValidate: [createNewInStripe],
+    beforeChange: [syncExistingWithStripe],
+    afterDelete: [deleteFromStripe],
+  },
   fields: [
     ...slugField('title'),
+    ...stripeLinkField('stripeProductId', 'products', false),
     {
       type: 'tabs',
       tabs: [
@@ -100,8 +110,38 @@ const Blueprints: CollectionConfig = {
       },
     },
     {
+      name: 'skipSync',
+      type: 'checkbox',
+      admin: {
+        condition: (data) => data.isPaid,
+        position: 'sidebar',
+        readOnly: false,
+      },
+      label: 'Skip Sync',
+    },
+    {
+      name: 'stripeProductId',
+      type: 'text',
+      admin: {
+        condition: (data) => data.isPaid,
+        readOnly: false,
+        position: 'sidebar',
+      },
+    },
+    {
+      name: 'stripePriceId',
+      type: 'text',
+      admin: {
+        condition: (data) => data.isPaid,
+        readOnly: false,
+        position: 'sidebar',
+      },
+    },
+    {
       name: 'price',
       type: 'number',
+      defaultValue: 0,
+      min: 0,
       admin: {
         condition: (data) => data.isPaid,
         position: 'sidebar',

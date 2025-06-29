@@ -7,10 +7,9 @@ import { BookOpen } from 'lucide-react'
 
 interface BlueprintContentProps {
   richText?: SerializedEditorState
-  isAuthenticated: boolean
 }
 
-export default function BlueprintContent({ richText, isAuthenticated }: BlueprintContentProps) {
+export default function BlueprintContent({ richText }: BlueprintContentProps) {
   if (!richText) return null
 
   return (
@@ -30,7 +29,6 @@ export default function BlueprintContent({ richText, isAuthenticated }: Blueprin
       </div>
 
       <div className="relative">
-        {/* Content */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -39,16 +37,6 @@ export default function BlueprintContent({ richText, isAuthenticated }: Blueprin
         >
           <RichText data={richText} />
         </motion.div>
-
-        {/* Blur overlay for unauthenticated users */}
-        {!isAuthenticated && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1, duration: 0.5 }}
-            className="absolute inset-0 bg-gradient-to-b from-transparent via-white/70 to-white backdrop-blur-sm rounded-lg"
-          />
-        )}
       </div>
     </motion.div>
   )

@@ -2,6 +2,7 @@
 
 import { createAuthClient } from 'better-auth/react'
 // import { toast } from 'sonner'
+import { stripeClient } from '@better-auth/stripe/client'
 
 export const authClient = createAuthClient({
   baseURL: `${process.env.NEXT_PUBLIC_BETTER_AUTH_URL}`,
@@ -16,4 +17,7 @@ export const authClient = createAuthClient({
       }
     },
   },
+  plugins: [
+    stripeClient()
+  ]
 })

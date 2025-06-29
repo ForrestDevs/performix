@@ -71,14 +71,6 @@ export default function AuthModal({ isOpen, onClose, blueprintTitle }: AuthModal
               </ul>
             </div>
 
-            {/* Social Proof */}
-            <div className="text-center py-2">
-              <div className="flex items-center justify-center gap-2 text-sm text-gray-600">
-                <Users className="h-4 w-4" />
-                <span>Join 5,000+ hockey players improving their game</span>
-              </div>
-            </div>
-
             {/* Action Buttons */}
             <div className="space-y-3">
               <Link href="/sign-in" className="block">
@@ -103,7 +95,7 @@ export default function AuthModal({ isOpen, onClose, blueprintTitle }: AuthModal
 
             {/* Trust Indicators */}
             <div className="text-center text-xs text-gray-500 pt-2">
-              <p>✓ Free to join • ✓ No credit card required • ✓ Cancel anytime</p>
+              <p>✓ Free to join • ✓ No credit card required</p>
             </div>
           </motion.div>
         </motion.div>

@@ -7,7 +7,7 @@ import { ChevronRight } from 'lucide-react'
 const pathToTitle = {
   '/': 'Home',
   '/mentors': 'Mentors',
-  '/pricing': 'Pricing',
+  '/plans': 'Plans',
   '/testimonials': 'Testimonials',
   '/contact': 'Contact',
 }

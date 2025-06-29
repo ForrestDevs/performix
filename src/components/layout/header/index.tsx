@@ -32,11 +32,8 @@ export default async function Header() {
               >
                 Resources
               </Link>
-              <Link
-                href="/pricing"
-                className="text-gray-600 hover:text-[#0891B2] transition-colors"
-              >
-                Pricing
+              <Link href="/plans" className="text-gray-600 hover:text-[#0891B2] transition-colors">
+                Plans
               </Link>
               <AuthButtons />
             </nav>

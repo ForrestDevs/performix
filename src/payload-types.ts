@@ -88,6 +88,8 @@ export interface Config {
     'article-tags': ArticleTag;
     schools: School;
     blueprints: Blueprint;
+    transactions: Transaction;
+    plans: Plan;
     'payload-folders': FolderInterface;
     'payload-jobs': PayloadJob;
     'payload-locked-documents': PayloadLockedDocument;
@@ -129,6 +131,8 @@ export interface Config {
     'article-tags': ArticleTagsSelect<false> | ArticleTagsSelect<true>;
     schools: SchoolsSelect<false> | SchoolsSelect<true>;
     blueprints: BlueprintsSelect<false> | BlueprintsSelect<true>;
+    transactions: TransactionsSelect<false> | TransactionsSelect<true>;
+    plans: PlansSelect<false> | PlansSelect<true>;
     'payload-folders': PayloadFoldersSelect<false> | PayloadFoldersSelect<true>;
     'payload-jobs': PayloadJobsSelect<false> | PayloadJobsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
@@ -217,6 +221,10 @@ export interface User {
    * The date and time when the ban will expire
    */
   banExpires?: string | null;
+  /**
+   * The Stripe customer ID of the user
+   */
+  stripeCustomerId?: string | null;
 }
 /**
  * Sessions are active sessions for users. They are used to authenticate users with a session token
@@ -433,10 +441,14 @@ export interface Course {
    * If enabled, the course structure (chapters or lessons) will be visable
    */
   freePreview?: boolean | null;
+  isPaid?: boolean | null;
+  skipSync?: boolean | null;
+  stripeProductId?: string | null;
+  stripePriceId?: string | null;
   /**
    * The price of the course, leave 0 for free courses
    */
-  price: number;
+  price?: number | null;
   /**
    * The structure type of the course, flat or hierarchical. Flat is for courses with a single level of lessons, hierarchical is for courses with multiple levels of chapters and lessons within those chapters
    */
@@ -622,15 +634,10 @@ export interface Lesson {
 export interface Enrollment {
   id: number;
   user: number | User;
-  type: 'course' | 'blueprint';
-  enrolledCourse?: {
-    relationTo: 'courses';
-    value: number | Course;
-  } | null;
-  enrolledBlueprint?: {
-    relationTo: 'blueprints';
-    value: number | Blueprint;
-  } | null;
+  type: 'course' | 'blueprint' | 'plan';
+  enrolledCourse?: (number | null) | Course;
+  enrolledBlueprint?: (number | null) | Blueprint;
+  enrolledPlan?: (number | null) | Plan;
   status: 'active' | 'refunded';
   updatedAt: string;
   createdAt: string;
@@ -687,7 +694,55 @@ export interface Blueprint {
       }[]
     | null;
   isPaid?: boolean | null;
+  skipSync?: boolean | null;
+  stripeProductId?: string | null;
+  stripePriceId?: string | null;
   price?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "plans".
+ */
+export interface Plan {
+  id: number;
+  slug?: string | null;
+  slugLock?: boolean | null;
+  /**
+   * The title of the plan
+   */
+  title?: string | null;
+  /**
+   * The description of the plan
+   */
+  description?: string | null;
+  /**
+   * Whether the plan is the most popular
+   */
+  mostPopular?: boolean | null;
+  /**
+   * The thumbnail of the plan
+   */
+  thumbnail?: (number | null) | Media;
+  /**
+   * Who the plan is best for
+   */
+  bestFor?: string | null;
+  /**
+   * What the plan includes
+   */
+  includes?:
+    | {
+        item?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  skipSync?: boolean | null;
+  stripeProductId?: string | null;
+  stripePriceId?: string | null;
+  price?: number | null;
+  period?: ('monthly' | 'yearly') | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -993,6 +1048,10 @@ export interface Student {
    * Whether the student has completed their profile setup
    */
   profileCompleted?: boolean | null;
+  /**
+   * Whether this profile is a parent of another student
+   */
+  isParent?: boolean | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1068,6 +1127,56 @@ export interface ArticleTag {
   title: string;
   slug?: string | null;
   slugLock?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "transactions".
+ */
+export interface Transaction {
+  id: number;
+  user: number | User;
+  product: (
+    | {
+        relationTo: 'blueprints';
+        value: number | Blueprint;
+      }
+    | {
+        relationTo: 'courses';
+        value: number | Course;
+      }
+    | {
+        relationTo: 'plans';
+        value: number | Plan;
+      }
+  )[];
+  type: 'blueprint' | 'course' | 'plan';
+  /**
+   * Amount in USD (not cents)
+   */
+  total: number;
+  /**
+   * Transaction currency
+   */
+  currency?: string | null;
+  status: 'pending' | 'completed' | 'failed' | 'refunded';
+  /**
+   * Stripe checkout session ID or payment intent ID
+   */
+  stripePaymentId?: string | null;
+  /**
+   * Stripe customer ID for this transaction
+   */
+  stripeCustomerId?: string | null;
+  /**
+   * Stripe client secret for this transaction
+   */
+  stripeClientSecret?: string | null;
+  /**
+   * Date and time when the transaction will expire
+   */
+  expiresAt?: number | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1255,6 +1364,14 @@ export interface PayloadLockedDocument {
         value: number | Blueprint;
       } | null)
     | ({
+        relationTo: 'transactions';
+        value: number | Transaction;
+      } | null)
+    | ({
+        relationTo: 'plans';
+        value: number | Plan;
+      } | null)
+    | ({
         relationTo: 'payload-folders';
         value: number | FolderInterface;
       } | null)
@@ -1320,6 +1437,7 @@ export interface UsersSelect<T extends boolean = true> {
   banned?: T;
   banReason?: T;
   banExpires?: T;
+  stripeCustomerId?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1407,6 +1525,10 @@ export interface CoursesSelect<T extends boolean = true> {
   chapters?: T;
   lessons?: T;
   freePreview?: T;
+  isPaid?: T;
+  skipSync?: T;
+  stripeProductId?: T;
+  stripePriceId?: T;
   price?: T;
   structureType?: T;
   updatedAt?: T;
@@ -1465,6 +1587,7 @@ export interface EnrollmentsSelect<T extends boolean = true> {
   type?: T;
   enrolledCourse?: T;
   enrolledBlueprint?: T;
+  enrolledPlan?: T;
   status?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -1682,6 +1805,7 @@ export interface StudentsSelect<T extends boolean = true> {
   goals?: T;
   bio?: T;
   profileCompleted?: T;
+  isParent?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1770,7 +1894,54 @@ export interface BlueprintsSelect<T extends boolean = true> {
         id?: T;
       };
   isPaid?: T;
+  skipSync?: T;
+  stripeProductId?: T;
+  stripePriceId?: T;
   price?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "transactions_select".
+ */
+export interface TransactionsSelect<T extends boolean = true> {
+  user?: T;
+  product?: T;
+  type?: T;
+  total?: T;
+  currency?: T;
+  status?: T;
+  stripePaymentId?: T;
+  stripeCustomerId?: T;
+  stripeClientSecret?: T;
+  expiresAt?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "plans_select".
+ */
+export interface PlansSelect<T extends boolean = true> {
+  slug?: T;
+  slugLock?: T;
+  title?: T;
+  description?: T;
+  mostPopular?: T;
+  thumbnail?: T;
+  bestFor?: T;
+  includes?:
+    | T
+    | {
+        item?: T;
+        id?: T;
+      };
+  skipSync?: T;
+  stripeProductId?: T;
+  stripePriceId?: T;
+  price?: T;
+  period?: T;
   updatedAt?: T;
   createdAt?: T;
 }

@@ -137,6 +137,15 @@ export const Students: CollectionConfig = {
         description: 'Whether the student has completed their profile setup',
       },
     },
+    {
+      name: 'isParent',
+      type: 'checkbox',
+      defaultValue: false,
+      admin: {
+        position: 'sidebar',
+        description: 'Whether this profile is a parent of another student',
+      },
+    },
   ],
 } as const
 

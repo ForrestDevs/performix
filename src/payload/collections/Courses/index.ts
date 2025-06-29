@@ -2,6 +2,10 @@ import { isAdminOrProducer, admins, anyone } from '@/payload/access'
 import { CollectionConfig } from 'payload'
 import { CHAPTERS_SLUG, COURSES_SLUG, LESSONS_SLUG, MEDIA_SLUG } from '../constants'
 import { slugField } from '@/payload/fields/slug'
+import { stripeLinkField } from '@/payload/fields/stripeLink'
+import { deleteFromStripe } from './hooks/delete'
+import { createNewInStripe } from './hooks/create'
+import { syncExistingWithStripe } from './hooks/update'
 
 const Courses: CollectionConfig = {
   slug: COURSES_SLUG,
@@ -16,8 +20,14 @@ const Courses: CollectionConfig = {
     update: isAdminOrProducer,
     delete: admins,
   },
+  hooks: {
+    beforeValidate: [createNewInStripe],
+    beforeChange: [syncExistingWithStripe],
+    afterDelete: [deleteFromStripe],
+  },
   fields: [
     ...slugField('title'),
+    ...stripeLinkField('stripeProductId', 'products', false),
     {
       name: 'status',
       type: 'select',
@@ -105,12 +115,47 @@ const Courses: CollectionConfig = {
       },
     },
     {
+      name: 'isPaid',
+      type: 'checkbox',
+      defaultValue: false,
+      admin: {
+        position: 'sidebar',
+      },
+    },
+    {
+      name: 'skipSync',
+      type: 'checkbox',
+      admin: {
+        condition: (data) => data.isPaid,
+        position: 'sidebar',
+        readOnly: false,
+      },
+    },
+    {
+      name: 'stripeProductId',
+      type: 'text',
+      admin: {
+        condition: (data) => data.isPaid,
+        readOnly: false,
+        position: 'sidebar',
+      },
+    },
+    {
+      name: 'stripePriceId',
+      type: 'text',
+      admin: {
+        condition: (data) => data.isPaid,
+        readOnly: false,
+        position: 'sidebar',
+      },
+    },
+    {
       name: 'price',
       type: 'number',
-      required: true,
       defaultValue: 0,
       min: 0,
       admin: {
+        condition: (data) => data.isPaid,
         position: 'sidebar',
         description: 'The price of the course, leave 0 for free courses',
       },

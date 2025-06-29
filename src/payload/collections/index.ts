@@ -16,6 +16,9 @@ import Articles from './Articles'
 import ArticleTags from './ArticleTags'
 import Schools from './Schools'
 
+import Transactions from './Transactions'
+import Plans from './Plans'
+
 export const collections = [
   Courses,
   Chapters,
@@ -32,4 +35,6 @@ export const collections = [
   ArticleTags,
   Schools,
   Blueprints,
+  Transactions,
+  Plans,
 ]

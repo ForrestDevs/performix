@@ -8,7 +8,7 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
 import { X, Filter, FileText, Download, PlayCircle, Star, DollarSign, Shield } from 'lucide-react'
 import type { ArticleTag } from '@/payload-types'
-import type { ResourceType } from '@/lib/data/resources'
+import type { ResourceType } from '@/lib/types/resources'
 import { cn } from '@/lib/utilities/ui'
 
 interface EnhancedResourcesFiltersProps {
@@ -123,7 +123,6 @@ export default function EnhancedResourcesFilters({
               >
                 <Icon className="h-4 w-4 text-gray-500" />
                 <span>{label}</span>
-                {count !== undefined && <span className="text-gray-400 text-xs">({count})</span>}
               </label>
             </div>
           ))}
@@ -151,7 +150,6 @@ export default function EnhancedResourcesFilters({
             >
               <Icon className="h-4 w-4 mb-1" />
               <span className="text-center">{label}</span>
-              {count !== undefined && <span className="text-xs opacity-70">({count})</span>}
             </Button>
           ))}
         </div>

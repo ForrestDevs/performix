@@ -35,23 +35,54 @@ import {
 } from '@/components/ui/table'
 import { X } from 'lucide-react'
 import Image from 'next/image'
-import { authClient as client } from '@/lib/auth/client'
+import { authClient, authClient as client } from '@/lib/auth/client'
 import { useBetterAuth } from '@/lib/auth/context'
 import { MobileIcon } from '@radix-ui/react-icons'
 import { Edit, Laptop, Loader2, LogOut, ShieldCheck, ShieldOff } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import { use, useState } from 'react'
+import { use, useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import { UAParser } from 'ua-parser-js'
 
 export function UserCard() {
   const router = useRouter()
-  const { sessionPromise, userAccountsPromise, deviceSessionsPromise, currentUserPromise } =
-    useBetterAuth()
-  const session = use(sessionPromise)
-  const accounts = use(userAccountsPromise)
-  const sessions = use(deviceSessionsPromise)
-  const currentUser = use(currentUserPromise)
+  // const { sessionPromise, userAccountsPromise, deviceSessionsPromise, currentUserPromise } =
+  //   useBetterAuth()
+  // const session = use(sessionPromise)
+  // const accounts = use(userAccountsPromise)
+  // const sessions = use(deviceSessionsPromise)
+  // const currentUser = use(currentUserPromise)
+
+  const { data: session, error: sessionError } = authClient.useSession()
+  const currentUser = session?.user
+
+  const [sessions, setSessions] = useState<any[]>([])
+  const [accounts, setAccounts] = useState<any[]>([])
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const { data: sessions, error: sessionsError } = await authClient.listSessions()
+      const { data: accounts, error: accountsError } = await authClient.listAccounts()
+
+      setSessions(sessions || [])
+      setAccounts(accounts || [])
+    }
+
+    fetchData()
+  }, [sessionError])
+
+  // const [sessions, setSessions] = useState([])
+  // const [accounts, setAccounts] = useState([])
+  // const [currentUser, setCurrentUser] = useState(null)
+  // const { data: sessions } = authClient.listSessions()
+  // const { data: accounts } = authClient.listAccounts()
+  // const { data: currentUser } = authClient.getCurrentUser()
+
+  // const { data: session } = authClient.useSession()
+  // const { data: sessions } = authClient.listSessions()
+  // const { data: accounts } = authClient.listAccounts()
+  // const { data: currentUser } = authClient.getCurrentUser()
+
   const [isTerminating, setIsTerminating] = useState<string | undefined>(undefined)
   const [isPendingTwoFa, setIsPendingTwoFa] = useState<boolean>(false)
   const [twoFaPassword, setTwoFaPassword] = useState<string>('')
@@ -371,8 +402,10 @@ function ChangePassword() {
 }
 
 function EditUserDialog() {
-  const { currentUserPromise } = useBetterAuth()
-  const currentUser = use(currentUserPromise)
+  const { data: session, error: sessionError } = authClient.useSession()
+  const currentUser = session?.user
+  // const { currentUserPromise } = useBetterAuth()
+  // const currentUser = use(currentUserPromise)
   const [name, setName] = useState<string>()
   const router = useRouter()
   const [image, setImage] = useState<File | null>(null)

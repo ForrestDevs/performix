@@ -4,11 +4,14 @@ import { GenerateTitle, GenerateURL } from '@payloadcms/plugin-seo/types'
 import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
 import { Page } from '@/payload-types'
 import { getServerSideURL } from '@/lib/utilities/getURL'
+import { stripePlugin } from '@payloadcms/plugin-stripe'
+import { stripe } from '@better-auth/stripe'
 import { BetterAuthOptions, betterAuthPlugin } from 'payload-auth/better-auth'
 import {
   admin,
   anonymous,
   apiKey,
+  BetterAuthPlugin,
   emailOTP,
   magicLink,
   multiSession,
@@ -24,6 +27,9 @@ import { nextCookies } from 'better-auth/next-js'
 import { allowedOrigins } from '@/payload/allowed-origins'
 import { sendEmail } from '@/lib/data/email'
 import { renderVerificationEmail } from '@/lib/email/templates/verification-email'
+import { BLUEPRINTS_SLUG, USER_SLUG } from '../collections/constants'
+import { stripeClient } from '@/lib/stripe'
+import { handleWebhooks } from '@/lib/stripe/handle-webhooks'
 
 const generateTitle: GenerateTitle<Page> = ({ doc }) => {
   return doc?.title ? `${doc.title} | Payload Website Template` : 'Payload Website Template'
@@ -35,7 +41,7 @@ const generateURL: GenerateURL<Page> = ({ doc }) => {
   return doc?.slug ? `${url}/${doc.slug}` : url
 }
 
-export const betterAuthPlugins = [
+export const betterAuthPlugins: BetterAuthPlugin[] = [
   emailHarmony(),
   passkey({
     rpID: 'payload-better-auth',
@@ -45,6 +51,11 @@ export const betterAuthPlugins = [
   admin({
     defaultRole: 'student',
     adminRoles: ['admin'],
+  }),
+  stripe({
+    stripeClient,
+    stripeWebhookSecret: process.env.STRIPE_WEBHOOK_SECRET!,
+    createCustomerOnSignUp: true,
   }),
   nextCookies(),
 ]
@@ -194,8 +205,26 @@ export const plugins: Plugin[] = [
           ...collection.admin,
           defaultColumns: ['name', 'email', 'role'],
         },
+        fields: collection.fields.map((field) => {
+          if ((field as any).name === 'stripeCustomerId') {
+            return {
+              ...field,
+              saveToJWT: true,
+            } as any
+          }
+          return field
+        }),
       }),
     },
     betterAuthOptions: betterAuthOptions,
+  }),
+  stripePlugin({
+    logs: true,
+    isTestKey: process.env.NODE_ENV === 'development',
+    stripeSecretKey: process.env.STRIPE_SECRET_KEY,
+    stripeWebhooksEndpointSecret: process.env.STRIPE_WEBHOOK_SECRET,
+    webhooks: async ({ event, stripe, config, payload, req }) => {
+      await handleWebhooks(event, stripe, config, payload, req)
+    },
   }),
 ]

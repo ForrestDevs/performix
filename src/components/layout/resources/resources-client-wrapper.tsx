@@ -3,11 +3,11 @@
 import { Suspense } from 'react'
 import { ResourceViewModeProvider } from './view-mode-context'
 import ResourcesViewControls from './resources-view-controls'
-import UnifiedResourcesGrid from './unified-resources-grid'
-import type { UnifiedResource } from '@/lib/data/resources'
+import UnifiedResourcesGrid from './resources-list'
+import type { Resource } from '@/lib/types/resources'
 
 interface ResourcesClientWrapperProps {
-  resources: UnifiedResource[]
+  resources: Resource[]
   totalCount: number
   showLeadMagnet?: boolean
 }

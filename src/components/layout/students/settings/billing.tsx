@@ -6,6 +6,8 @@ import { Button, buttonVariants } from '@/components/ui/button'
 import { CreditCard, Calendar, DollarSign, Package } from 'lucide-react'
 import Link from 'next/link'
 import { cn } from '@/lib/utilities/ui'
+import { authClient } from '@/lib/auth/client'
+import { useEffect, useState } from 'react'
 
 // Mock data - replace with actual subscription data
 interface Subscription {
@@ -126,7 +128,7 @@ function EmptyState() {
           the most out of your learning experience.
         </p>
         <Link
-          href="/pricing"
+          href="/plans"
           className={cn(
             buttonVariants({ variant: 'default' }),
             'bg-[#0891B2] hover:bg-[#0E7490] text-white',
@@ -139,8 +141,25 @@ function EmptyState() {
   )
 }
 
-export default function BillingCard() {
-  const hasSubscriptions = mockSubscriptions.length > 0
+export default function BillingCard({ customerId }: { customerId: string }) {
+  const [link, setLink] = useState<string | null>(null)
+  useEffect(() => {
+    const fetchLink = async () => {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BETTER_AUTH_URL}/api/students/manage-billing`,
+        {
+          method: 'POST',
+          body: JSON.stringify({
+            customerId: customerId,
+          }),
+        },
+      )
+      const data = await res.json()
+      setLink(data.url)
+    }
+
+    fetchLink()
+  }, [])
 
   return (
     <div className="space-y-6">
@@ -151,14 +170,12 @@ export default function BillingCard() {
         </p>
       </div>
 
-      {hasSubscriptions ? (
+      {link && (
         <div className="space-y-4">
-          {mockSubscriptions.map((subscription) => (
-            <SubscriptionCard key={subscription.id} subscription={subscription} />
-          ))}
+          <Link href={link} className={cn(buttonVariants({ variant: 'outline' }))}>
+            Manage Billing
+          </Link>
         </div>
-      ) : (
-        <EmptyState />
       )}
     </div>
   )

@@ -23,6 +23,10 @@ const nextConfig: NextConfig = {
         hostname: 'www.performix.ca',
         protocol: 'https',
       },
+      {
+        hostname: 'lh3.googleusercontent.com',
+        protocol: 'https',
+      },
     ],
   },
   devIndicators: {

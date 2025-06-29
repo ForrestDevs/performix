@@ -63,24 +63,7 @@ export default async function ResourcesPage({ searchParams }: ResourcesPageProps
               <EnhancedResourcesSearch className="mb-8" />
             </Suspense>
 
-            {/* <div className="flex flex-wrap justify-center gap-6 lg:gap-8 text-sm lg:text-base text-gray-600 mb-8">
-              <div className="flex items-center space-x-2">
-                <BookOpen className="h-5 w-5 text-[#0891B2]" />
-                <span>{counts.total} Resources</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Users className="h-5 w-5 text-[#0891B2]" />
-                <span>5,000+ Members</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Star className="h-5 w-5 text-yellow-400 fill-current" />
-                <span>4.9 Average Rating</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Eye className="h-5 w-5 text-[#0891B2]" />
-                <span>50K+ Monthly Views</span>
-              </div>
-            </div> */}
+          
 
             <div className="flex flex-wrap justify-center gap-3">
               <Link

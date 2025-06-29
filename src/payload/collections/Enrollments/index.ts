@@ -1,6 +1,12 @@
 import { CollectionConfig } from 'payload'
-import { BLUEPRINTS_SLUG, COURSES_SLUG, ENROLLMENTS_SLUG, USER_SLUG } from '../constants'
-import { admin } from '@/payload/access'
+import {
+  BLUEPRINTS_SLUG,
+  COURSES_SLUG,
+  ENROLLMENTS_SLUG,
+  PLANS_SLUG,
+  USER_SLUG,
+} from '../constants'
+// import { admin, anyone } from '@/payload/access'
 
 const Enrollments: CollectionConfig = {
   slug: ENROLLMENTS_SLUG,
@@ -10,10 +16,10 @@ const Enrollments: CollectionConfig = {
     defaultColumns: ['user', 'type', 'enrolledIn', 'status'],
   },
   access: {
-    create: admin,
-    read: admin,
-    update: admin,
-    delete: admin,
+    create: () => true,
+    read: () => true,
+    update: () => true,
+    delete: () => true,
   },
   fields: [
     {
@@ -30,13 +36,14 @@ const Enrollments: CollectionConfig = {
       options: [
         { label: 'Course', value: 'course' },
         { label: 'Blueprint', value: 'blueprint' },
+        { label: 'Plan', value: 'plan' },
       ],
     },
     {
       name: 'enrolledCourse',
       type: 'relationship',
       label: 'Enrolled Course',
-      relationTo: [COURSES_SLUG],
+      relationTo: COURSES_SLUG,
       hasMany: false,
       admin: {
         condition: (data) => data.type === 'course',
@@ -46,10 +53,20 @@ const Enrollments: CollectionConfig = {
       name: 'enrolledBlueprint',
       type: 'relationship',
       label: 'Enrolled Blueprint',
-      relationTo: [BLUEPRINTS_SLUG],
+      relationTo: BLUEPRINTS_SLUG,
       hasMany: false,
       admin: {
         condition: (data) => data.type === 'blueprint',
+      },
+    },
+    {
+      name: 'enrolledPlan',
+      type: 'relationship',
+      label: 'Enrolled Plan',
+      relationTo: PLANS_SLUG,
+      hasMany: false,
+      admin: {
+        condition: (data) => data.type === 'plan',
       },
     },
     {

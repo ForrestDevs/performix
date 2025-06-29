@@ -2,10 +2,10 @@
 
 import { useState } from 'react'
 import { UnifiedResourcesGrid, LeadMagnetModal } from './index'
-import type { UnifiedResource } from '@/lib/data/resources'
+import type { Resource } from '@/lib/types/resources'
 
 interface ResourcesWithLeadMagnetProps {
-  resources: UnifiedResource[]
+  resources: Resource[]
   viewMode?: 'grid' | 'list'
 }
 
@@ -15,10 +15,10 @@ export default function ResourcesWithLeadMagnet({
 }: ResourcesWithLeadMagnetProps) {
   const [leadMagnetState, setLeadMagnetState] = useState({
     isOpen: false,
-    resource: null as UnifiedResource | null,
+    resource: null as Resource | null,
   })
 
-  const handleResourceClick = (resource: UnifiedResource) => {
+  const handleResourceClick = (resource: Resource) => {
     // Only show lead magnet for paid content or premium resources
     if (resource.isPaid) {
       setLeadMagnetState({

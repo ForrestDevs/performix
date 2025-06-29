@@ -31,3 +31,5 @@ export const COURSES_SLUG = 'courses' as const
 export const CHAPTERS_SLUG = 'chapters' as const
 export const LESSONS_SLUG = 'lessons' as const
 export const ENROLLMENTS_SLUG = 'enrollments' as const
+export const TRANSACTIONS_SLUG = 'transactions' as const
+export const PLANS_SLUG = 'plans' as const

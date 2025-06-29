@@ -8,28 +8,7 @@ import { authClient } from '@/lib/auth/client'
 
 export function AuthButtons() {
   const { data: session, isPending } = authClient.useSession()
-  // return (
-  //   <div className="flex items-center gap-2">
-  //     <Link
-  //       href="/sign-in"
-  //       className={cn(
-  //         buttonVariants({ variant: 'outline' }),
-  //         'border-[#0891B2] text-[#0891B2] hover:bg-[#0891B2] hover:text-white',
-  //       )}
-  //     >
-  //       Sign In
-  //     </Link>
-  //     <Link
-  //       href="/get-started"
-  //       className={cn(
-  //         buttonVariants({ variant: 'default' }),
-  //         'bg-[#0891B2] hover:bg-[#0E7490] text-white',
-  //       )}
-  //     >
-  //       Get Started
-  //     </Link>
-  //   </div>
-  // )
+
   if (!session?.user || isPending) {
     return (
       <div className="flex items-center gap-2">
