@@ -4,6 +4,7 @@ import { BLUEPRINTS_SLUG, ENROLLMENTS_SLUG } from '@/payload/collections/constan
 import { getPayload } from '../utilities/getPayload'
 import { CACHE_TAGS } from '../cache/contants'
 import { cache } from '../utilities/cache'
+import { revalidatePath, revalidateTag } from 'next/cache'
 
 export async function getEnrolledBlueprints(userId: number) {
   const payload = await getPayload()
@@ -56,4 +57,9 @@ export async function enrollBlueprint(blueprintId: number, userId: number) {
       enrolledBlueprint: blueprintId,
     },
   })
+
+  const tag = CACHE_TAGS.GET_ENROLLED_BLUEPRINTS + userId.toString()
+
+  revalidateTag(tag)
+  revalidatePath('/student')
 }
