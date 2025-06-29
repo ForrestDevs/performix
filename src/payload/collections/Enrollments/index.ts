@@ -6,6 +6,7 @@ import {
   PLANS_SLUG,
   USER_SLUG,
 } from '../constants'
+import { revalidateEnrollments } from './hooks/revalidate'
 // import { admin, anyone } from '@/payload/access'
 
 const Enrollments: CollectionConfig = {
@@ -20,6 +21,9 @@ const Enrollments: CollectionConfig = {
     read: () => true,
     update: () => true,
     delete: () => true,
+  },
+  hooks: {
+    afterChange: [revalidateEnrollments],
   },
   fields: [
     {
