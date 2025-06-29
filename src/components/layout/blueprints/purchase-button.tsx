@@ -40,7 +40,7 @@ export default function PurchaseButton({
   }
 
   // Free blueprint
-  if (!isPaid && price <= 0) {
+  if (!isEnrolled && !isPaid && price <= 0) {
     return (
       <div className="bg-green-50 border-2 border-green-200 rounded-lg p-6">
         <div className="text-center">

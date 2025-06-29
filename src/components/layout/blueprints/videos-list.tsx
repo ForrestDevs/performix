@@ -67,15 +67,66 @@ export default function VideosList({ videos, isAuthenticated, onAuthRequired }: 
                   height={100}
                 />
               ) : (
-                <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
-                  <Play className="h-8 w-8 text-purple-600" />
-                </div>
+                <>
+                  {/* Try to extract thumbnail from video URL */}
+                  {(() => {
+                    // YouTube thumbnail extraction
+                    const youtubeMatch = video.url.match(
+                      /(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]+)/,
+                    )
+                    if (youtubeMatch) {
+                      const videoId = youtubeMatch[1]
+                      return (
+                        <Image
+                          src={`https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`}
+                          alt={video.title}
+                          className="w-full h-full object-cover"
+                          width={100}
+                          height={100}
+                          onError={(e) => {
+                            // Fallback to default thumbnail if YouTube thumbnail fails
+                            e.currentTarget.style.display = 'none'
+                          }}
+                        />
+                      )
+                    }
+
+                    // Loom thumbnail extraction
+                    const loomMatch = video.url.match(/loom\.com\/share\/([a-zA-Z0-9]+)/)
+                    if (loomMatch) {
+                      const videoId = loomMatch[1]
+                      return (
+                        <Image
+                          src={`https://cdn.loom.com/sessions/thumbnails/${videoId}-with-play.gif`}
+                          alt={video.title}
+                          className="w-full h-full object-cover"
+                          width={100}
+                          height={100}
+                          onError={(e) => {
+                            // Fallback to default thumbnail if Loom thumbnail fails
+                            e.currentTarget.style.display = 'none'
+                          }}
+                        />
+                      )
+                    }
+
+                    // Default fallback
+                    return (
+                      <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
+                        <Play className="h-8 w-8 text-purple-600" />
+                      </div>
+                    )
+                  })()}
+                </>
               )}
 
               {/* Play Overlay */}
               <div className="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                 <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-lg transform scale-100 group-hover:scale-110 transition-transform duration-300">
-                  <Play className="h-6 w-6 text-purple-600 ml-1" />
+                  <Play
+                    className="h-6 w-6 text-purple-600 ml-1"
+                    onClick={() => handleVideoClick(video)}
+                  />
                 </div>
               </div>
 
