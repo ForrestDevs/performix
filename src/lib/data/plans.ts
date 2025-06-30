@@ -13,6 +13,14 @@ export async function getPlans() {
       const plans = await payload.find({
         collection: PLANS_SLUG,
         sort: 'price',
+        select: {
+          title: true,
+          description: true,
+          includes: true,
+          bestFor: true,
+          price: true,
+          mostPopular: true,
+        },
         limit: 100,
       })
 

@@ -11,7 +11,7 @@ import { useEffect, useState } from 'react'
 import { isEnrolled } from '@/lib/data/plans'
 
 interface PlanCardProps {
-  plan: Plan
+  plan: Pick<Plan, 'id' | 'title' | 'description' | 'includes' | 'bestFor' | 'price' | 'mostPopular'>
   index: number
   isAuthenticated: boolean
   userId: number | undefined
@@ -87,22 +87,44 @@ export function PlanCard({ plan, index, isAuthenticated, userId }: PlanCardProps
             </div>
           </div>
         )}
-        <CardHeader className="text-center pt-8 pb-4">
-          <h3 className={`text-xl font-bold ${textColor}`}>{plan.title}</h3>
-          <div className="mt-4">
-            <span className="text-4xl font-bold text-gray-900">${plan.price}</span>
-            <span className="text-gray-600 ml-1">USD/month</span>
+        <CardHeader className="text-center pt-6 sm:pt-8 pb-4 sm:pb-6 px-4 sm:px-6 space-y-2">
+          <h3 className={`text-lg sm:text-xl lg:text-2xl font-bold leading-tight tracking-wider uppercase ${textColor}`}>
+            {plan.title}
+          </h3>
+          <p className="text-gray-600 text-sm sm:text-base lg:text-base mt-2">
+            {plan.description}
+          </p>
+          <div className="my-2">
+            <span className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 tracking-tighter">
+              ${plan.price}
+            </span>
+            <span className="text-gray-600 text-sm sm:text-base ml-1 block sm:inline">
+              USD/month
+            </span>
           </div>
         </CardHeader>
-        <CardContent className="flex-grow">
-          <ul className="space-y-3">
-            {plan.includes?.map((feature, i) => (
-              <li key={i} className="flex items-start">
-                <Check className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                <span className="text-gray-700">{feature.item}</span>
-              </li>
-            ))}
-          </ul>
+        <CardContent className="flex-grow px-4 sm:px-6 pb-6">
+          <div className="space-y-4">
+            <ul className="space-y-3">
+              {plan.includes?.map((feature, i) => (
+                <li key={i} className="flex items-start group">
+                  <div className="flex-shrink-0 w-5 h-5 rounded-full bg-green-100 flex items-center justify-center mt-0.5 mr-3 group-hover:bg-green-200 transition-colors duration-200">
+                    <Check className="h-3 w-3 text-green-600" />
+                  </div>
+                  <span className="text-gray-700 text-sm sm:text-base leading-relaxed">
+                    {feature.item}
+                  </span>
+                </li>
+              ))}
+            </ul>
+            {plan.bestFor && (
+              <div className="mt-4">
+                <div className="p-4">
+                  <p className="text-gray-600 text-md leading-relaxed">{plan.bestFor}</p>
+                </div>
+              </div>
+            )}
+          </div>
         </CardContent>
         <CardFooter className="pt-4 pb-8">
           <Link

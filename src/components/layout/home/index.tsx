@@ -48,7 +48,7 @@ export function ValuePropSection() {
             Join the platform that&apos;s advancing the next generation of serious hockey players.
           </p>
         </div>
-        
+
         <div className="mt-12 grid md:grid-cols-4 gap-8">
           {[
             {
@@ -306,7 +306,7 @@ export function WhatYouGetEveryMonth() {
               {
                 title: 'The Performance Lab Course',
                 description:
-                  'A structured course with the highest-level tools and strategies across training, nutrition, recovery, sleep, mental performance, and development strategy.',
+                  'A decade of elite development tools compressed into one course — covering training, nutrition, recovery, mental performance, hockey IQ, long term strategy and more. Built from D1 and pro-level systems, distilled into what actually works.',
               },
               {
                 title: 'Daily D1 Mentor Access',
