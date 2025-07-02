@@ -11,7 +11,6 @@ import { Media, Mentor } from '@/payload-types'
 import { useState } from 'react'
 import { prettifySkill } from '@/lib/utilities/prettify'
 import { toast } from 'sonner'
-import { useScrollAnimation } from '@/lib/hooks/useScrollAnimation'
 
 interface MentorCardProps {
   mentor: Mentor
@@ -19,8 +18,6 @@ interface MentorCardProps {
 }
 
 export function MentorCard({ mentor, index }: MentorCardProps) {
-  const visibleElements = useScrollAnimation()
-  const isVisible = (id: string) => visibleElements.has(id)
   const [copied, setCopied] = useState(false)
 
   const handleShare = async (e: React.MouseEvent) => {
@@ -41,9 +38,7 @@ export function MentorCard({ mentor, index }: MentorCardProps) {
   return (
     <Card
       key={mentor.id}
-      className={`border-0 shadow-lg hover:shadow-xl transition-all duration-500 group cursor-pointer ${
-        isVisible('mentor-grid') ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'
-      }`}
+      className={`border-0 shadow-lg hover:shadow-xl transition-all duration-500 group cursor-pointer`}
       style={{ transitionDelay: `${index * 100}ms` }}
     >
       <CardContent className="p-6">

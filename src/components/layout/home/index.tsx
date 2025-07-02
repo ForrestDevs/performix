@@ -24,6 +24,7 @@ import {
 } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { describe } from 'node:test'
 import { useState } from 'react'
 
 export function ValuePropSection() {
@@ -270,6 +271,42 @@ export function WhatYouGetEveryMonth() {
   const visibleElements = useScrollAnimation()
   const isVisible = (id: string) => visibleElements.has(id)
 
+  const features = [
+    {
+      title: 'Private Video Analysis Sessions',
+      description:
+        'Private 1-on-1 game analysis with a D1+ mentor to improve hockey IQ and decision-making on the ice.',
+    },
+    {
+      title: 'The Performance Lab Course',
+      description:
+        'A decade of elite development tools compressed into one course — covering training, nutrition, recovery, mental performance, hockey IQ, long term strategy and more. Built from D1 and pro-level systems, distilled into what actually works.',
+    },
+    {
+      title: 'Expert Guests',
+      description:
+        'Alongside D1 mentors, we bring in coaches and specialists to share key lessons in training, mindset, and development — giving you deeper insight and new tools to level up.',
+    },
+    {
+      title: 'Daily D1 Mentor Access',
+      description: 'Direct messaging with your mentor for real-time guidance and support.',
+    },
+    {
+      title: 'Monthly Goal Setting',
+      description:
+        'Work with your D1 mentor to set clear, achievable goals and track your progress with personalized milestones.',
+    },
+    {
+      title: 'Biweekly D1 Zoom Sessions',
+      description: 'Live group sessions with D1 athletes and guest experts for hockey development.',
+    },
+    {
+      title: 'Private Community',
+      description:
+        'An exclusive community of elite athletes and experts sharing game-changing insights and strategies.',
+    },
+  ]
+
   return (
     <section className="py-20 bg-white">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -297,38 +334,7 @@ export function WhatYouGetEveryMonth() {
                 : 'opacity-0 -translate-x-8'
             }`}
           >
-            {[
-              {
-                title: 'Private Video Analysis Sessions',
-                description:
-                  'Private 1-on-1 game analysis with a D1+ mentor to improve hockey IQ and decision-making on the ice.',
-              },
-              {
-                title: 'The Performance Lab Course',
-                description:
-                  'A decade of elite development tools compressed into one course — covering training, nutrition, recovery, mental performance, hockey IQ, long term strategy and more. Built from D1 and pro-level systems, distilled into what actually works.',
-              },
-              {
-                title: 'Daily D1 Mentor Access',
-                description:
-                  'Direct messaging with your mentor for real-time guidance and support.',
-              },
-              {
-                title: 'Monthly Goal Setting',
-                description:
-                  'Work with your D1 mentor to set clear, achievable goals and track your progress with personalized milestones.',
-              },
-              {
-                title: 'Biweekly D1 Zoom Sessions',
-                description:
-                  'Live group sessions with D1 athletes and guest experts for hockey development.',
-              },
-              {
-                title: 'Private Community',
-                description:
-                  'An exclusive community of elite athletes and experts sharing game-changing insights and strategies.',
-              },
-            ].map((feature, index) => (
+            {features.map((feature, index) => (
               <div
                 key={index}
                 id={`feature-${index}`}

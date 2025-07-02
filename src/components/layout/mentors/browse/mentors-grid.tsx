@@ -1,6 +1,5 @@
 'use client'
 
-import { useScrollAnimation } from '@/lib/hooks/useScrollAnimation'
 import { MentorCard } from './mentor-card'
 import { MentorGridCard } from './mentor-grid-card'
 import { useMentorViewMode } from './view-mode-context'
@@ -12,9 +11,7 @@ interface EnhancedMentorsGridProps {
 
 export function MentorsGrid({ mentors }: EnhancedMentorsGridProps) {
   const { viewMode } = useMentorViewMode()
-  const visibleElements = useScrollAnimation()
-  const isVisible = (id: string) => visibleElements.has(id)
-
+  
   if (mentors.length === 0) {
     return (
       <div className="text-center py-12">
@@ -31,7 +28,7 @@ export function MentorsGrid({ mentors }: EnhancedMentorsGridProps) {
     <div
       id="mentor-grid"
       data-scroll-animate
-      className={`transition-all duration-1000 ${isVisible('mentor-grid') ? 'opacity-100' : 'opacity-0'}`}
+      className={`transition-all duration-1000`}
     >
       {viewMode === 'grid' ? (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">

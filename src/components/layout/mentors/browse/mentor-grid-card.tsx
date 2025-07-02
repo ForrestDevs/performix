@@ -4,7 +4,6 @@ import { Button, buttonVariants } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Share2, Star, Check } from 'lucide-react'
-import { useScrollAnimation } from '@/lib/hooks/useScrollAnimation'
 import { Mentor } from '@/payload-types'
 import { Media as MediaComponent } from '@/components/Media'
 import { useState } from 'react'
@@ -19,8 +18,6 @@ interface MentorGridCardProps {
 }
 
 export function MentorGridCard({ mentor, index }: MentorGridCardProps) {
-  const visibleElements = useScrollAnimation()
-  const isVisible = (id: string) => visibleElements.has(id)
   const [copied, setCopied] = useState(false)
 
   const handleShare = async (e: React.MouseEvent) => {
@@ -40,9 +37,7 @@ export function MentorGridCard({ mentor, index }: MentorGridCardProps) {
 
   return (
     <Card
-      className={`border-0 shadow-lg hover:shadow-xl transition-all duration-500 hover:-translate-y-1 group cursor-pointer ${
-        isVisible('mentor-grid') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-      }`}
+      className={`border-0 shadow-lg hover:shadow-xl transition-all duration-500 hover:-translate-y-1 group cursor-pointer`}
       style={{ transitionDelay: `${index * 100}ms` }}
     >
       <CardContent className="p-0 h-full flex flex-col">
