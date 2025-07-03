@@ -18,6 +18,7 @@ import Schools from './Schools'
 
 import Transactions from './Transactions'
 import Plans from './Plans'
+import Videos from './Videos'
 
 export const collections = [
   Courses,
@@ -37,4 +38,5 @@ export const collections = [
   Blueprints,
   Transactions,
   Plans,
+  // Videos,
 ]
