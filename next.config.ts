@@ -14,18 +14,27 @@ const nextConfig: NextConfig = {
       {
         hostname: 'localhost',
         protocol: 'http',
+        pathname: '/**',
       },
       {
         hostname: 'performix.ca',
         protocol: 'https',
+        pathname: '/**',
       },
       {
         hostname: 'www.performix.ca',
         protocol: 'https',
+        pathname: '/**',
       },
       {
         hostname: 'lh3.googleusercontent.com',
         protocol: 'https',
+        pathname: '/**',
+      },
+      {
+        hostname: 'image.mux.com',
+        protocol: 'https',
+        pathname: '/**',
       },
     ],
   },

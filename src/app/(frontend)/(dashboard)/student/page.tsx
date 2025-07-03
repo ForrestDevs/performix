@@ -23,6 +23,7 @@ import CurrentPlan from '@/components/layout/students/current-plan'
 import { getEnrolledPlan, getPlans, isEnrolledInAnyPlan } from '@/lib/data/plans'
 import { getEnrolledBlueprints } from '@/lib/data/blueprints'
 import EnrolledBlueprints from '@/components/layout/students/StudentPrograms'
+import { Video } from 'lucide-react'
 
 export default async function ConsumerDashboard() {
   const payload = await getPayload()
@@ -164,6 +165,18 @@ export default async function ConsumerDashboard() {
 
           <div className="space-y-8">
             <StudentProfile student={studentData} />
+            <section className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+              <h2 className="text-xl font-bold text-gray-900 font-['Space_Grotesk']">
+                Video Library
+              </h2>
+              <Link
+                href="/video-library"
+                className="text-cyan-600 hover:text-cyan-700 font-medium text-sm flex items-center"
+              >
+                <Video className="w-4 h-4 mr-1" />
+                Access the Video Library
+              </Link>
+            </section>
             <StudentGoals student={studentData} />
             <RecentActivity activities={dashboardData.recentActivity} />
           </div>
