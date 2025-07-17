@@ -17,7 +17,6 @@ interface EnhancedResourcesFiltersProps {
     total: number
     articles: number
     blueprints: number
-    courses: number
     free: number
     paid: number
   }
@@ -44,7 +43,7 @@ export default function EnhancedResourcesFilters({
 
   const [selectedTypes, setSelectedTypes] = useQueryState(
     'types',
-    parseAsArrayOf(parseAsStringLiteral(['article', 'blueprint', 'course'] as const))
+    parseAsArrayOf(parseAsStringLiteral(['article', 'blueprint'] as const))
       .withDefault([])
       .withOptions({
         shallow: false,
@@ -108,7 +107,6 @@ export default function EnhancedResourcesFilters({
               icon: Download,
               count: counts?.blueprints,
             },
-            { type: 'course' as const, label: 'Courses', icon: PlayCircle, count: counts?.courses },
           ].map(({ type, label, icon: Icon, count }) => (
             <div key={type} className="flex items-center space-x-3 py-1">
               <Checkbox

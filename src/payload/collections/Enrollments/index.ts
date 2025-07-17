@@ -7,6 +7,7 @@ import {
   USER_SLUG,
 } from '../constants'
 import { revalidateEnrollments } from './hooks/revalidate'
+import { admin } from '@/payload/access'
 // import { admin, anyone } from '@/payload/access'
 
 const Enrollments: CollectionConfig = {
@@ -17,10 +18,10 @@ const Enrollments: CollectionConfig = {
     defaultColumns: ['user', 'type', 'enrolledIn', 'status'],
   },
   access: {
-    create: () => true,
-    read: () => true,
-    update: () => true,
-    delete: () => true,
+    create: admin,
+    read: admin,
+    update: admin,
+    delete: admin,
   },
   hooks: {
     afterChange: [revalidateEnrollments],
@@ -38,20 +39,9 @@ const Enrollments: CollectionConfig = {
       type: 'select',
       required: true,
       options: [
-        { label: 'Course', value: 'course' },
         { label: 'Blueprint', value: 'blueprint' },
         { label: 'Plan', value: 'plan' },
       ],
-    },
-    {
-      name: 'enrolledCourse',
-      type: 'relationship',
-      label: 'Enrolled Course',
-      relationTo: COURSES_SLUG,
-      hasMany: false,
-      admin: {
-        condition: (data) => data.type === 'course',
-      },
     },
     {
       name: 'enrolledBlueprint',

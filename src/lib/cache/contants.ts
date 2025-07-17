@@ -1,10 +1,19 @@
-
-
-
 export const CACHE_TAGS = {
   GET_PLANS: 'getPlans',
   IS_ENROLLED_PLAN: 'isEnrolledPlan',
   IS_ENROLLED_IN_ANY_PLAN: 'isEnrolledInAnyPlan',
   GET_ENROLLED_PLAN: 'getEnrolledPlan',
   GET_ENROLLED_BLUEPRINTS: 'getEnrolledBlueprints',
+  GET_LAB_MODULES: 'getLabModules',
+  GET_LAB_MODULES_BY_SLUG: 'getLabModulesBySlug',
+  GET_LAB_VOLUMES: 'getLabVolumes',
+  GET_LAB_VOLUMES_BY_SLUG: 'getLabVolumesBySlug',
+  GET_LAB_LESSONS: 'getLabLessons',
+  GET_LAB_LESSONS_BY_SLUG: 'getLabLessonsBySlug',
+  GET_LAB_VIDEOS: 'getLabVideos',
+  GET_LAB_VIDEOS_BY_SLUG: 'getLabVideosBySlug',
+  GET_LAB_STATS: 'getLabStats',
+  GET_LAB_MODULE_COMPLETION: 'getLabModuleCompletion',
+  GET_LAB_PROGRESS: 'getLabProgress',
+  GET_LAB_LESSONS_BY_ID: 'getLabLessonsById',
 } as const

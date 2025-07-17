@@ -28,7 +28,7 @@ const Transactions: CollectionConfig = {
     {
       name: 'product',
       type: 'relationship',
-      relationTo: [BLUEPRINTS_SLUG, COURSES_SLUG, PLANS_SLUG],
+      relationTo: [BLUEPRINTS_SLUG, PLANS_SLUG],
       hasMany: true,
       required: true,
       admin: {
@@ -41,7 +41,6 @@ const Transactions: CollectionConfig = {
       required: true,
       options: [
         { label: 'Blueprint', value: 'blueprint' },
-        { label: 'Course', value: 'course' },
         { label: 'Plan', value: 'plan' },
       ],
       admin: {

@@ -22,8 +22,6 @@ const getResourceIcon = (type: string, className = 'h-4 w-4') => {
       return <FileText className={className} />
     case 'blueprint':
       return <Download className={className} />
-    case 'course':
-      return <PlayCircle className={className} />
     default:
       return <BookOpen className={className} />
   }
@@ -35,8 +33,6 @@ const getResourceTypeLabel = (type: string) => {
       return 'Article'
     case 'blueprint':
       return 'Blueprint'
-    case 'course':
-      return 'Course'
     default:
       return 'Resource'
   }
@@ -48,8 +44,6 @@ const getResourceTypeColor = (type: string) => {
       return 'bg-blue-100 text-blue-800 border-blue-200'
     case 'blueprint':
       return 'bg-green-100 text-green-800 border-green-200'
-    case 'course':
-      return 'bg-purple-100 text-purple-800 border-purple-200'
     default:
       return 'bg-gray-100 text-gray-800 border-gray-200'
   }

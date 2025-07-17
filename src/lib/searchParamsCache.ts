@@ -9,9 +9,7 @@ import {
 export const resourcesSearchParamsCache = createSearchParamsCache({
   search: parseAsString.withDefault(''),
   tags: parseAsArrayOf(parseAsString).withDefault([]),
-  types: parseAsArrayOf(
-    parseAsStringLiteral(['article', 'blueprint', 'course'] as const),
-  ).withDefault([]),
+  types: parseAsArrayOf(parseAsStringLiteral(['article', 'blueprint'] as const)).withDefault([]),
   page: parseAsInteger.withDefault(1),
   sort: parseAsStringLiteral(['newest', 'oldest', 'title', 'popular'] as const).withDefault(
     'newest',

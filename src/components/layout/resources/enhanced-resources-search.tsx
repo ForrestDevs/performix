@@ -13,7 +13,7 @@ interface EnhancedResourcesSearchProps {
 }
 
 export default function EnhancedResourcesSearch({
-  placeholder = 'Search articles, blueprints, courses, and more...',
+  placeholder = 'Search articles, blueprints, and more...',
   className,
 }: EnhancedResourcesSearchProps) {
   const [isPending, startTransition] = useTransition()

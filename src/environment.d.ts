@@ -21,6 +21,10 @@ declare global {
       STRIPE_SECRET_KEY: string
       STRIPE_WEBHOOK_SECRET: string
       NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: string
+      MUX_TOKEN_ID: string
+      MUX_TOKEN_SECRET: string
+      MUX_WEBHOOK_SECRET: string
+      YOUTUBE_API_KEY: string
     }
   }
 }

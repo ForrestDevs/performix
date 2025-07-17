@@ -83,24 +83,24 @@ const Courses: CollectionConfig = {
         {
           label: 'Content',
           fields: [
-            {
-              name: 'chapters',
-              type: 'join',
-              on: 'course',
-              collection: CHAPTERS_SLUG,
-              admin: {
-                condition: (data) => data.structureType === 'hierarchical',
-              },
-            },
-            {
-              name: 'lessons',
-              type: 'join',
-              on: 'course',
-              collection: LESSONS_SLUG,
-              admin: {
-                condition: (data) => data.structureType === 'flat',
-              },
-            },
+            // {
+            //   name: 'chapters',
+            //   type: 'join',
+            //   on: 'course',
+            //   collection: CHAPTERS_SLUG,
+            //   admin: {
+            //     condition: (data) => data.structureType === 'hierarchical',
+            //   },
+            // },
+            // {
+            //   name: 'lessons',
+            //   type: 'join',
+            //   on: 'course',
+            //   collection: LESSONS_SLUG,
+            //   admin: {
+            //     condition: (data) => data.structureType === 'flat',
+            //   },
+            // },
           ],
         },
       ],

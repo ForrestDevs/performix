@@ -63,8 +63,6 @@ export default async function ResourcesPage({ searchParams }: ResourcesPageProps
               <EnhancedResourcesSearch className="mb-8" />
             </Suspense>
 
-          
-
             <div className="flex flex-wrap justify-center gap-3">
               <Link
                 href={`/resources?types=article`}
@@ -87,17 +85,6 @@ export default async function ResourcesPage({ searchParams }: ResourcesPageProps
                 )}
               >
                 Blueprints ({counts.blueprints})
-              </Link>
-              <Link
-                href={`/resources?types=course`}
-                className={cn(
-                  'inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 hover:scale-105',
-                  params.types.includes('course')
-                    ? 'bg-purple-500 text-white shadow-lg'
-                    : 'bg-purple-50 text-purple-700 hover:bg-purple-100',
-                )}
-              >
-                Courses ({counts.courses})
               </Link>
             </div>
           </div>

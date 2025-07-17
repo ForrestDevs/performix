@@ -56,7 +56,11 @@ export async function isEnrolled(userId: number, planId: number) {
   return cacheFn(userId, planId)
 }
 
-export async function isEnrolledInAnyPlan(userId: number) {
+export async function isEnrolledInAnyPlan(userId: number | undefined) {
+  if (!userId) {
+    return false
+  }
+
   const payload = await getPayload()
 
   const cacheFn = cache(

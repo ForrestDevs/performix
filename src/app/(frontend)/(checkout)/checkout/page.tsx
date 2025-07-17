@@ -5,7 +5,6 @@ import { getPayload } from '@/lib/utilities/getPayload'
 import { BLUEPRINTS_SLUG, COURSES_SLUG, PLANS_SLUG } from '@/payload/collections/constants'
 import { ProductData } from '@/lib/types/checkout'
 import { headers } from 'next/headers'
-// import CheckoutPageClient from './checkout-client'
 
 type SearchParams = Promise<{
   t?: string // type: blueprint, course, plan
@@ -51,24 +50,6 @@ export default async function CheckoutPage({ searchParams }: { searchParams: Sea
         id: String(result.id),
         slug: result.slug || '',
         type: 'blueprints',
-        title: result.title || '',
-        description: result.description || '',
-        price: result.price || 0,
-        thumbnail: result.thumbnail,
-        stripeProductId: result.stripeProductId || '',
-        stripePriceId: result.stripePriceId || '',
-        mode: 'payment',
-      }
-    } else if (t === 'course') {
-      const result = await payload.findByID({
-        collection: COURSES_SLUG,
-        id: pid,
-        depth: 1,
-      })
-      product = {
-        id: String(result.id),
-        slug: result.slug || '',
-        type: 'courses',
         title: result.title || '',
         description: result.description || '',
         price: result.price || 0,

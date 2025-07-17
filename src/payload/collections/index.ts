@@ -3,8 +3,6 @@ import { Reviews } from './Reviews'
 import { Media } from './Media'
 import { Pages } from './Pages'
 
-import Courses from './Courses'
-import Chapters from './Chapters'
 import Lessons from './Lessons'
 import Blueprints from './Blueprints'
 import Enrollments from './Enrollments'
@@ -19,10 +17,10 @@ import Schools from './Schools'
 import Transactions from './Transactions'
 import Plans from './Plans'
 import Videos from './Videos'
+import { Modules } from './Modules'
+import { Volumes } from './Volumes'
 
 export const collections = [
-  Courses,
-  Chapters,
   Lessons,
   Enrollments,
   Progress,
@@ -38,5 +36,7 @@ export const collections = [
   Blueprints,
   Transactions,
   Plans,
-  // Videos,
+  Videos,
+  Modules,
+  Volumes,
 ]

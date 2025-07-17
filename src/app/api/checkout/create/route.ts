@@ -107,7 +107,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         user: parseInt(data.userId),
         status: 'pending',
         total: (session.amount_total || 0) / 100,
-        type: type as 'blueprint' | 'course' | 'plan',
+        type: type as 'blueprint' | 'plan',
         product,
         stripePaymentId: session.id,
         stripeCustomerId: data.customerId,

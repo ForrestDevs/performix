@@ -1,6 +1,6 @@
-import { Article, Blueprint, Course, Media } from '@/payload-types'
+import { Article, Blueprint, Media } from '@/payload-types'
 
-export type ResourceType = 'article' | 'blueprint' | 'course'
+export type ResourceType = 'article' | 'blueprint'
 
 export interface Resource {
   id: string
@@ -18,7 +18,7 @@ export interface Resource {
   url: string
   readTime?: number
   difficulty?: 'beginner' | 'intermediate' | 'advanced'
-  originalData: Article | Blueprint | Course
+  originalData: Article | Blueprint
 }
 
 export interface GetResourcesParams {
@@ -41,7 +41,6 @@ export interface GetResourcesResult {
     total: number
     articles: number
     blueprints: number
-    courses: number
     free: number
     paid: number
   }

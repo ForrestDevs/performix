@@ -10,6 +10,9 @@ import { vercelPostgresAdapter } from '@payloadcms/db-vercel-postgres'
 import { allowedOrigins, serverURL } from './payload/allowed-origins'
 import { nodemailerAdapter } from '@payloadcms/email-nodemailer'
 import nodemailer from 'nodemailer'
+import { muxWebhooksHandler } from './payload/endpoints/mux-webhook'
+import { createMuxUploadHandler, getMuxUploadHandler } from './payload/endpoints/mux-upload'
+import mux from './lib/mux'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -52,18 +55,22 @@ export default buildConfig({
       ],
     },
   },
-  email: nodemailerAdapter({
-    defaultFromAddress: 'hello@performix.ca',
-    defaultFromName: 'Performix',
-    transport: nodemailer.createTransport({
-      host: process.env.EMAIL_HOST,
-      port: process.env.EMAIL_PORT,
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASSWORD,
-      },
-    }),
-  }),
+  ...(process.env.NODE_ENV === 'production'
+    ? {
+        email: nodemailerAdapter({
+          defaultFromAddress: 'hello@performix.ca',
+          defaultFromName: 'Performix',
+          transportOptions: {
+            host: process.env.EMAIL_HOST || '',
+            port: Number(process.env.EMAIL_PORT) || 587,
+            auth: {
+              user: process.env.EMAIL_USER || '',
+              pass: process.env.EMAIL_PASSWORD || '',
+            },
+          },
+        }),
+      }
+    : {}),
   editor: defaultLexical,
   db: vercelPostgresAdapter({
     pool: {
@@ -72,6 +79,23 @@ export default buildConfig({
     push: false,
     migrationDir: path.resolve(dirname, 'lib/migrations'),
   }),
+  endpoints: [
+    {
+      method: 'post',
+      path: '/mux/upload',
+      handler: createMuxUploadHandler(mux),
+    },
+    {
+      method: 'get',
+      path: '/mux/upload',
+      handler: getMuxUploadHandler(mux),
+    },
+    {
+      path: '/mux/webhook',
+      method: 'post',
+      handler: muxWebhooksHandler(mux),
+    },
+  ],
   collections,
   cors: allowedOrigins,
   csrf: allowedOrigins,

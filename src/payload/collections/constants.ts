@@ -29,8 +29,12 @@ export const SCHOOLS_SLUG = 'schools' as const
 export const BLUEPRINTS_SLUG = 'blueprints' as const
 export const COURSES_SLUG = 'courses' as const
 export const CHAPTERS_SLUG = 'chapters' as const
-export const LESSONS_SLUG = 'lessons' as const
 export const ENROLLMENTS_SLUG = 'enrollments' as const
 export const TRANSACTIONS_SLUG = 'transactions' as const
 export const PLANS_SLUG = 'plans' as const
+
+export const PROGRESS_SLUG = 'progress' as const
+export const MODULES_SLUG = 'modules' as const
+export const VOLUMES_SLUG = 'volumes' as const
+export const LESSONS_SLUG = 'lessons' as const
 export const VIDEOS_SLUG = 'videos' as const

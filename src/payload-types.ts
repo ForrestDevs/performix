@@ -73,8 +73,6 @@ export interface Config {
     verifications: Verification;
     passkeys: Passkey;
     'admin-invitations': AdminInvitation;
-    courses: Course;
-    chapters: Chapter;
     lessons: Lesson;
     enrollments: Enrollment;
     progress: Progress;
@@ -90,6 +88,9 @@ export interface Config {
     blueprints: Blueprint;
     transactions: Transaction;
     plans: Plan;
+    videos: Video;
+    modules: Module;
+    volumes: Volume;
     'payload-folders': FolderInterface;
     'payload-jobs': PayloadJob;
     'payload-locked-documents': PayloadLockedDocument;
@@ -97,16 +98,15 @@ export interface Config {
     'payload-migrations': PayloadMigration;
   };
   collectionsJoins: {
-    courses: {
-      chapters: 'chapters';
+    modules: {
+      volumes: 'volumes';
       lessons: 'lessons';
     };
-    chapters: {
+    volumes: {
       lessons: 'lessons';
-      children: 'chapters';
     };
     'payload-folders': {
-      documentsAndFolders: 'payload-folders' | 'media';
+      documentsAndFolders: 'payload-folders' | 'media' | 'videos';
     };
   };
   collectionsSelect: {
@@ -116,8 +116,6 @@ export interface Config {
     verifications: VerificationsSelect<false> | VerificationsSelect<true>;
     passkeys: PasskeysSelect<false> | PasskeysSelect<true>;
     'admin-invitations': AdminInvitationsSelect<false> | AdminInvitationsSelect<true>;
-    courses: CoursesSelect<false> | CoursesSelect<true>;
-    chapters: ChaptersSelect<false> | ChaptersSelect<true>;
     lessons: LessonsSelect<false> | LessonsSelect<true>;
     enrollments: EnrollmentsSelect<false> | EnrollmentsSelect<true>;
     progress: ProgressSelect<false> | ProgressSelect<true>;
@@ -133,6 +131,9 @@ export interface Config {
     blueprints: BlueprintsSelect<false> | BlueprintsSelect<true>;
     transactions: TransactionsSelect<false> | TransactionsSelect<true>;
     plans: PlansSelect<false> | PlansSelect<true>;
+    videos: VideosSelect<false> | VideosSelect<true>;
+    modules: ModulesSelect<false> | ModulesSelect<true>;
+    volumes: VolumesSelect<false> | VolumesSelect<true>;
     'payload-folders': PayloadFoldersSelect<false> | PayloadFoldersSelect<true>;
     'payload-jobs': PayloadJobsSelect<false> | PayloadJobsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
@@ -392,27 +393,27 @@ export interface AdminInvitation {
   createdAt: string;
 }
 /**
+ * Lessons are the individual units of content within volumes.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "courses".
+ * via the `definition` "lessons".
  */
-export interface Course {
+export interface Lesson {
   id: number;
   slug?: string | null;
   slugLock?: boolean | null;
-  status: 'draft' | 'published' | 'archived';
+  /**
+   * The title of the lesson
+   */
   title: string;
   /**
-   * Upload a thumbnail for the course
+   * The subtitle of the lesson
    */
-  thumbnail: number | Media;
+  subtitle?: string | null;
   /**
-   * A short description of the course
+   * Rich text content for the lesson
    */
-  description?: string | null;
-  /**
-   * The content of the course
-   */
-  richText: {
+  richText?: {
     root: {
       type: string;
       children: {
@@ -426,33 +427,29 @@ export interface Course {
       version: number;
     };
     [k: string]: unknown;
-  };
-  chapters?: {
-    docs?: (number | Chapter)[];
-    hasNextPage?: boolean;
-    totalDocs?: number;
-  };
-  lessons?: {
-    docs?: (number | Lesson)[];
-    hasNextPage?: boolean;
-    totalDocs?: number;
-  };
+  } | null;
   /**
-   * If enabled, the course structure (chapters or lessons) will be visable
+   * Downloadable resources for the lesson
    */
-  freePreview?: boolean | null;
-  isPaid?: boolean | null;
-  skipSync?: boolean | null;
-  stripeProductId?: string | null;
-  stripePriceId?: string | null;
+  downloads?: (number | Media)[] | null;
   /**
-   * The price of the course, leave 0 for free courses
+   * Videos associated with this lesson
    */
-  price?: number | null;
+  videos?: (number | Video)[] | null;
   /**
-   * The structure type of the course, flat or hierarchical. Flat is for courses with a single level of lessons, hierarchical is for courses with multiple levels of chapters and lessons within those chapters
+   * The order of the lesson within the volume
    */
-  structureType: 'flat' | 'hierarchical';
+  order: number;
+  module: number | Module;
+  volume: number | Volume;
+  /**
+   * Whether this lesson is available as a preview without subscription
+   */
+  isPreview?: boolean | null;
+  /**
+   * Estimated duration in minutes
+   */
+  estimatedDuration?: number | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -520,6 +517,10 @@ export interface FolderInterface {
           relationTo?: 'media';
           value: number | Media;
         }
+      | {
+          relationTo?: 'videos';
+          value: number | Video;
+        }
     )[];
     hasNextPage?: boolean;
     totalDocs?: number;
@@ -529,64 +530,65 @@ export interface FolderInterface {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "chapters".
+ * via the `definition` "videos".
  */
-export interface Chapter {
+export interface Video {
   id: number;
-  slug?: string | null;
-  slugLock?: boolean | null;
+  source?: ('mux' | 'youtube' | 'loom') | null;
   /**
-   * The full URL path for this chapter, computed from the parent chain (e.g.: course/chapter/subchapter).
-   */
-  fullSlug?: string | null;
-  /**
-   * The title of the chapter
+   * A unique title for this video that will help you identify it later.
    */
   title: string;
+  youtubeUrl?: string | null;
+  loomUrl?: string | null;
+  assetId?: string | null;
+  duration?: number | null;
   /**
-   * A short description of the chapter
+   * Pick a timestamp (in seconds) from the video to be used as the poster image. When unset, defaults to the middle of the video.
    */
-  description?: string | null;
-  lessons?: {
-    docs?: (number | Lesson)[];
-    hasNextPage?: boolean;
-    totalDocs?: number;
-  };
-  course: number | Course;
-  /**
-   * The parent chapter of this chapter.
-   */
-  parent?: (number | null) | Chapter;
-  /**
-   * Indicates if the chapter is a leaf (i.e. has no children).
-   */
-  isLeaf?: boolean | null;
-  children?: {
-    docs?: (number | Chapter)[];
-    hasNextPage?: boolean;
-    totalDocs?: number;
-  };
+  posterTimestamp?: number | null;
+  aspectRatio?: string | null;
+  maxWidth?: number | null;
+  maxHeight?: number | null;
+  playbackOptions?:
+    | {
+        playbackId?: string | null;
+        playbackPolicy?: ('signed' | 'public') | null;
+        playbackUrl?: string | null;
+        posterUrl?: string | null;
+        gifUrl?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  thumbnailUrl?: string | null;
+  folder?: (number | null) | FolderInterface;
   updatedAt: string;
   createdAt: string;
 }
 /**
- * Lessons are the individual units of content within a chapter or course.
- *
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "lessons".
+ * via the `definition` "modules".
  */
-export interface Lesson {
+export interface Module {
   id: number;
   slug?: string | null;
   slugLock?: boolean | null;
   /**
-   * The title of the lesson
+   * The title of the module (e.g., "Speed Development Mastery")
    */
   title: string;
   /**
-   * The description of the lesson
+   * The subtitle of the module (e.g., "Master the art of speed development")
    */
-  description?: string | null;
+  subtitle?: string | null;
+  thumbnail?: (number | null) | Media;
+  topics?:
+    | {
+        topic?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  introVideo?: (number | null) | Video;
   richText?: {
     root: {
       type: string;
@@ -602,28 +604,86 @@ export interface Lesson {
     };
     [k: string]: unknown;
   } | null;
+  volumes?: {
+    docs?: (number | Volume)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  lessons?: {
+    docs?: (number | Lesson)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
   /**
-   * The downloads for the lesson
+   * Order in which this module appears (0 = first)
    */
-  downloads?: (number | Media)[] | null;
-  videos?:
+  order: number;
+  /**
+   * Estimated completion time (e.g., "8 hours", "2 weeks")
+   */
+  estimatedTime?: string | null;
+  /**
+   * Total number of lessons in this module (auto-calculated)
+   */
+  totalLessons?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Volumes are chapters within modules that group related lessons.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "volumes".
+ */
+export interface Volume {
+  id: number;
+  slug?: string | null;
+  slugLock?: boolean | null;
+  /**
+   * The title of the volume (e.g., "Speed Foundations")
+   */
+  title: string;
+  /**
+   * The subtitle of the volume (e.g., "Master the art of speed development")
+   */
+  subtitle?: string | null;
+  thumbnail?: (number | null) | Media;
+  topics?:
     | {
-        title: string;
-        url: string;
+        topic?: string | null;
         id?: string | null;
       }[]
     | null;
+  introVideo?: (number | null) | Video;
+  richText?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  lessons?: {
+    docs?: (number | Lesson)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  module: number | Module;
   /**
-   * The order of the lesson in the chapter/course
+   * Order within the module (0 = first)
    */
   order: number;
-  course: number | Course;
-  chapter?: (number | null) | Chapter;
-  isPreview?: boolean | null;
   /**
-   * Estimated duration in minutes
+   * Total number of lessons in this volume (auto-calculated)
    */
-  estimatedDuration?: number | null;
+  totalLessons?: number | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -634,8 +694,7 @@ export interface Lesson {
 export interface Enrollment {
   id: number;
   user: number | User;
-  type: 'course' | 'blueprint' | 'plan';
-  enrolledCourse?: (number | null) | Course;
+  type: 'blueprint' | 'plan';
   enrolledBlueprint?: (number | null) | Blueprint;
   enrolledPlan?: (number | null) | Plan;
   status: 'active' | 'refunded';
@@ -752,11 +811,10 @@ export interface Plan {
  */
 export interface Progress {
   id: number;
-  enrollment: number | Enrollment;
+  user: number | User;
   lesson: number | Lesson;
-  status: 'not_started' | 'in_progress' | 'completed';
-  completion_date?: string | null;
-  last_accessed?: string | null;
+  completed?: boolean | null;
+  completionDate?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -766,7 +824,6 @@ export interface Progress {
  */
 export interface Review {
   id: number;
-  course: number | Course;
   user: number | User;
   rating: number;
   content: string;
@@ -1143,15 +1200,11 @@ export interface Transaction {
         value: number | Blueprint;
       }
     | {
-        relationTo: 'courses';
-        value: number | Course;
-      }
-    | {
         relationTo: 'plans';
         value: number | Plan;
       }
   )[];
-  type: 'blueprint' | 'course' | 'plan';
+  type: 'blueprint' | 'plan';
   /**
    * Amount in USD (not cents)
    */
@@ -1304,14 +1357,6 @@ export interface PayloadLockedDocument {
         value: number | AdminInvitation;
       } | null)
     | ({
-        relationTo: 'courses';
-        value: number | Course;
-      } | null)
-    | ({
-        relationTo: 'chapters';
-        value: number | Chapter;
-      } | null)
-    | ({
         relationTo: 'lessons';
         value: number | Lesson;
       } | null)
@@ -1370,6 +1415,18 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'plans';
         value: number | Plan;
+      } | null)
+    | ({
+        relationTo: 'videos';
+        value: number | Video;
+      } | null)
+    | ({
+        relationTo: 'modules';
+        value: number | Module;
+      } | null)
+    | ({
+        relationTo: 'volumes';
+        value: number | Volume;
       } | null)
     | ({
         relationTo: 'payload-folders';
@@ -1512,67 +1569,19 @@ export interface AdminInvitationsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "courses_select".
- */
-export interface CoursesSelect<T extends boolean = true> {
-  slug?: T;
-  slugLock?: T;
-  status?: T;
-  title?: T;
-  thumbnail?: T;
-  description?: T;
-  richText?: T;
-  chapters?: T;
-  lessons?: T;
-  freePreview?: T;
-  isPaid?: T;
-  skipSync?: T;
-  stripeProductId?: T;
-  stripePriceId?: T;
-  price?: T;
-  structureType?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "chapters_select".
- */
-export interface ChaptersSelect<T extends boolean = true> {
-  slug?: T;
-  slugLock?: T;
-  fullSlug?: T;
-  title?: T;
-  description?: T;
-  lessons?: T;
-  course?: T;
-  parent?: T;
-  isLeaf?: T;
-  children?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "lessons_select".
  */
 export interface LessonsSelect<T extends boolean = true> {
   slug?: T;
   slugLock?: T;
   title?: T;
-  description?: T;
+  subtitle?: T;
   richText?: T;
   downloads?: T;
-  videos?:
-    | T
-    | {
-        title?: T;
-        url?: T;
-        id?: T;
-      };
+  videos?: T;
   order?: T;
-  course?: T;
-  chapter?: T;
+  module?: T;
+  volume?: T;
   isPreview?: T;
   estimatedDuration?: T;
   updatedAt?: T;
@@ -1585,7 +1594,6 @@ export interface LessonsSelect<T extends boolean = true> {
 export interface EnrollmentsSelect<T extends boolean = true> {
   user?: T;
   type?: T;
-  enrolledCourse?: T;
   enrolledBlueprint?: T;
   enrolledPlan?: T;
   status?: T;
@@ -1597,11 +1605,10 @@ export interface EnrollmentsSelect<T extends boolean = true> {
  * via the `definition` "progress_select".
  */
 export interface ProgressSelect<T extends boolean = true> {
-  enrollment?: T;
+  user?: T;
   lesson?: T;
-  status?: T;
-  completion_date?: T;
-  last_accessed?: T;
+  completed?: T;
+  completionDate?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1610,7 +1617,6 @@ export interface ProgressSelect<T extends boolean = true> {
  * via the `definition` "reviews_select".
  */
 export interface ReviewsSelect<T extends boolean = true> {
-  course?: T;
   user?: T;
   rating?: T;
   content?: T;
@@ -1942,6 +1948,87 @@ export interface PlansSelect<T extends boolean = true> {
   stripePriceId?: T;
   price?: T;
   period?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "videos_select".
+ */
+export interface VideosSelect<T extends boolean = true> {
+  source?: T;
+  title?: T;
+  youtubeUrl?: T;
+  loomUrl?: T;
+  assetId?: T;
+  duration?: T;
+  posterTimestamp?: T;
+  aspectRatio?: T;
+  maxWidth?: T;
+  maxHeight?: T;
+  playbackOptions?:
+    | T
+    | {
+        playbackId?: T;
+        playbackPolicy?: T;
+        playbackUrl?: T;
+        posterUrl?: T;
+        gifUrl?: T;
+        id?: T;
+      };
+  thumbnailUrl?: T;
+  folder?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "modules_select".
+ */
+export interface ModulesSelect<T extends boolean = true> {
+  slug?: T;
+  slugLock?: T;
+  title?: T;
+  subtitle?: T;
+  thumbnail?: T;
+  topics?:
+    | T
+    | {
+        topic?: T;
+        id?: T;
+      };
+  introVideo?: T;
+  richText?: T;
+  volumes?: T;
+  lessons?: T;
+  order?: T;
+  estimatedTime?: T;
+  totalLessons?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "volumes_select".
+ */
+export interface VolumesSelect<T extends boolean = true> {
+  slug?: T;
+  slugLock?: T;
+  title?: T;
+  subtitle?: T;
+  thumbnail?: T;
+  topics?:
+    | T
+    | {
+        topic?: T;
+        id?: T;
+      };
+  introVideo?: T;
+  richText?: T;
+  lessons?: T;
+  module?: T;
+  order?: T;
+  totalLessons?: T;
   updatedAt?: T;
   createdAt?: T;
 }

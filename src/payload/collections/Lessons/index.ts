@@ -1,23 +1,29 @@
-import { anyone, isAdminOrProducer } from '@/payload/access'
+import { admin, anyone, isAdminOrProducer } from '@/payload/access'
 import { slugField } from '@/payload/fields/slug'
-import { CollectionConfig, ValidateOptions } from 'payload'
-import { COURSES_SLUG, MEDIA_SLUG } from '../constants'
+import { CollectionConfig } from 'payload'
+import { MEDIA_SLUG, MODULES_SLUG, VOLUMES_SLUG, VIDEOS_SLUG } from '../constants'
+import { revalidateLabLesson } from './hooks/revalidate'
+import { beforeChangeLabLesson } from './hooks/beforeChange'
 
 const Lessons: CollectionConfig = {
   slug: 'lessons',
   admin: {
     useAsTitle: 'title',
-    group: 'Products',
-    defaultColumns: ['title'],
-    description: 'Lessons are the individual units of content within a chapter or course.',
+    group: 'Lab',
+    defaultColumns: ['title', 'subtitle'],
+    description: 'Lessons are the individual units of content within volumes.',
   },
   access: {
-    read: anyone,
-    create: anyone,
-    update: anyone,
-    delete: anyone,
+    read: admin,
+    create: admin,
+    update: admin,
+    delete: admin,
   },
   lockDocuments: false,
+  hooks: {
+    beforeValidate: [beforeChangeLabLesson],
+    afterChange: [revalidateLabLesson],
+  },
   fields: [
     ...slugField('title'),
     {
@@ -35,10 +41,10 @@ const Lessons: CollectionConfig = {
               },
             },
             {
-              name: 'description',
-              type: 'textarea',
+              name: 'subtitle',
+              type: 'text',
               admin: {
-                description: 'The description of the lesson',
+                description: 'The subtitle of the lesson',
               },
             },
           ],
@@ -49,6 +55,9 @@ const Lessons: CollectionConfig = {
             {
               name: 'richText',
               type: 'richText',
+              admin: {
+                description: 'Rich text content for the lesson',
+              },
             },
             {
               name: 'downloads',
@@ -56,24 +65,17 @@ const Lessons: CollectionConfig = {
               relationTo: MEDIA_SLUG,
               hasMany: true,
               admin: {
-                description: 'The downloads for the lesson',
+                description: 'Downloadable resources for the lesson',
               },
             },
             {
               name: 'videos',
-              type: 'array',
-              fields: [
-                {
-                  name: 'title',
-                  type: 'text',
-                  required: true,
-                },
-                {
-                  name: 'url',
-                  type: 'text',
-                  required: true,
-                },
-              ],
+              type: 'relationship',
+              relationTo: VIDEOS_SLUG,
+              hasMany: true,
+              admin: {
+                description: 'Videos associated with this lesson',
+              },
             },
           ],
         },
@@ -84,85 +86,36 @@ const Lessons: CollectionConfig = {
       type: 'number',
       required: true,
       min: 0,
+      defaultValue: 0,
       admin: {
         position: 'sidebar',
-        description: 'The order of the lesson in the chapter/course',
-      },
-      validate: async (value, ctx): Promise<string | true> => {
-        if (!value) return 'Order is required'
-        if (value < 0) return 'Order must be greater than 0'
-        // Get the course to check its structure type
-        const courseId = typeof ctx.data?.course === 'object' ? ctx.data.course.id : ctx.data.course
-        if (!courseId) return 'Course is required to validate order'
-        const course = await ctx.req.payload.findByID({
-          collection: 'courses',
-          id: courseId,
-        })
-        if (!course) return 'Course not found'
-        // Check for conflicts based on course structure type
-        if (course.structureType === 'flat') {
-          // For flat courses, check all lessons in the course
-          const existingLessons = await ctx.req.payload.find({
-            collection: 'lessons',
-            where: {
-              and: [
-                { course: { equals: courseId } },
-                { order: { equals: value } },
-                ...(ctx.id ? [{ id: { not_equals: ctx.id } }] : []), // Exclude current lesson if updating
-              ],
-            },
-          })
-          if (existingLessons.totalDocs > 0) {
-            return `Order ${value} is already used by another lesson in this course`
-          }
-        } else if (course.structureType === 'hierarchical') {
-          // For hierarchical courses, check lessons in the same chapter
-          const chapterId =
-            typeof ctx.data?.chapter === 'object' ? ctx.data.chapter.id : ctx.data.chapter
-          if (!chapterId) return 'Chapter is required for hierarchical courses'
-          const existingLessons = await ctx.req.payload.find({
-            collection: 'lessons',
-            where: {
-              and: [
-                { chapter: { equals: chapterId } },
-                { order: { equals: value } },
-                ...(ctx.id ? [{ id: { not_equals: ctx.id } }] : []), // Exclude current lesson if updating
-              ],
-            },
-          })
-          if (existingLessons.totalDocs > 0) {
-            return `Order ${value} is already used by another lesson in this chapter`
-          }
-        }
-        return true
+        description: 'The order of the lesson within the volume',
       },
     },
-
     {
-      name: 'course',
+      name: 'module',
       type: 'relationship',
-      relationTo: COURSES_SLUG,
+      relationTo: MODULES_SLUG,
       required: true,
-      hasMany: false,
       admin: {
+        readOnly: true,
         position: 'sidebar',
+      },
+      validate: (value, { siblingData }) => {
+        if (siblingData?.volume) {
+          return true
+        }
+
+        return Boolean(value) || 'Module is required'
       },
     },
     {
-      name: 'chapter',
+      name: 'volume',
       type: 'relationship',
-      relationTo: 'chapters',
-      hasMany: false,
+      relationTo: VOLUMES_SLUG,
+      required: true,
       admin: {
         position: 'sidebar',
-        condition: (data) => data.course?.structureType === 'hierarchical',
-      },
-      filterOptions: ({ data }) => {
-        return {
-          course: {
-            equals: data?.course,
-          },
-        }
       },
     },
     {
@@ -171,6 +124,7 @@ const Lessons: CollectionConfig = {
       defaultValue: false,
       admin: {
         position: 'sidebar',
+        description: 'Whether this lesson is available as a preview without subscription',
       },
     },
     {
@@ -183,33 +137,6 @@ const Lessons: CollectionConfig = {
       },
     },
   ],
-  hooks: {
-    // beforeChange: [
-    //   async ({ data, req }) => {
-    //     // Calculate display order based on chapter hierarchy
-    //     if (data.chapter) {
-    //       const chapter = await req.payload.findByID({
-    //         collection: 'chapters',
-    //         id: data.chapter,
-    //       })
-    //       let prefix = String(data.order)
-    //       let currentChapter = chapter
-    //       while (currentChapter?.parentChapter) {
-    //         const parentChapter = await req.payload.findByID({
-    //           collection: 'chapters',
-    //           id: currentChapter.parentChapter,
-    //         })
-    //         prefix = `${parentChapter.order}.${prefix}`
-    //         currentChapter = parentChapter
-    //       }
-    //       data.displayOrder = prefix
-    //     } else {
-    //       data.displayOrder = String(data.order)
-    //     }
-    //     return data
-    //   },
-    // ],
-  },
   timestamps: true,
 } as const
 

@@ -5,7 +5,7 @@ import {
   COURSES_SLUG,
   ARTICLE_TAG_SLUG,
 } from '@/payload/collections/constants'
-import type { Article, Blueprint, Course, ArticleTag } from '@/payload-types'
+import type { Article, Blueprint, ArticleTag } from '@/payload-types'
 import type {
   GetResourcesParams,
   GetResourcesResult,
@@ -48,15 +48,12 @@ export async function getResources({
   }
 
   // Fetch data from all collections in parallel
-  const [articlesData, blueprintsData, coursesData] = await Promise.all([
+  const [articlesData, blueprintsData] = await Promise.all([
     targetTypes.includes('article')
       ? fetchArticles(payload, { search, tagIds, access })
       : Promise.resolve([]),
     targetTypes.includes('blueprint')
       ? fetchBlueprints(payload, { search, access })
-      : Promise.resolve([]),
-    targetTypes.includes('course')
-      ? fetchCourses(payload, { search, access })
       : Promise.resolve([]),
   ])
 
@@ -64,7 +61,6 @@ export async function getResources({
   const unifiedResources: Resource[] = [
     ...articlesData.map(transformArticle),
     ...blueprintsData.map(transformBlueprint),
-    ...coursesData.map(transformCourse),
   ]
 
   // Apply sorting
@@ -75,7 +71,6 @@ export async function getResources({
     total: unifiedResources.length,
     articles: articlesData.length,
     blueprints: blueprintsData.length,
-    courses: coursesData.length,
     free: unifiedResources.filter((r) => !r.isPaid).length,
     paid: unifiedResources.filter((r) => r.isPaid).length,
   }
@@ -151,35 +146,6 @@ async function fetchBlueprints(payload: any, { search, access }: any): Promise<B
   }
 }
 
-async function fetchCourses(payload: any, { search, access }: any): Promise<Course[]> {
-  const whereConditions: any[] = [{ status: { equals: 'published' } }]
-
-  if (search) {
-    whereConditions.push({
-      or: [{ title: { contains: search } }, { description: { contains: search } }],
-    })
-  }
-
-  if (access === 'free') {
-    whereConditions.push({ price: { equals: 0 } })
-  } else if (access === 'paid') {
-    whereConditions.push({ price: { greater_than: 0 } })
-  }
-
-  try {
-    const result = await payload.find({
-      collection: COURSES_SLUG,
-      where: { and: whereConditions },
-      depth: 2,
-      limit: 1000,
-    })
-    return result.docs
-  } catch (error) {
-    console.error('Error fetching courses:', error)
-    return []
-  }
-}
-
 function transformArticle(article: Article): Resource {
   return {
     id: article.id.toString(),
@@ -218,24 +184,6 @@ function transformBlueprint(blueprint: Blueprint): Resource {
     price: blueprint.price || 0,
     url: `/blueprints/${blueprint.slug}`,
     originalData: blueprint,
-  }
-}
-
-function transformCourse(course: Course): Resource {
-  return {
-    id: course.id.toString(),
-    type: 'course',
-    title: course.title,
-    description: course.description || '',
-    thumbnail: course.thumbnail || undefined,
-    slug: course.slug || '',
-    createdAt: course.createdAt,
-    updatedAt: course.updatedAt,
-    tags: [], // Courses don't have tags in current schema
-    isPaid: (course.price || 0) > 0,
-    price: course.price || 0,
-    url: `/courses/${course.slug}`,
-    originalData: course,
   }
 }
 
