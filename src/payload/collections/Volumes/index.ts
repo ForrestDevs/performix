@@ -102,7 +102,6 @@ export const Volumes: CollectionConfig = {
       name: 'module',
       type: 'relationship',
       relationTo: MODULES_SLUG,
-      required: true,
       admin: {
         position: 'sidebar',
       },
@@ -117,17 +116,7 @@ export const Volumes: CollectionConfig = {
         position: 'sidebar',
         description: 'Order within the module (0 = first)',
       },
-    },
-    {
-      name: 'totalLessons',
-      type: 'number',
-      defaultValue: 0,
-      admin: {
-        position: 'sidebar',
-        readOnly: true,
-        description: 'Total number of lessons in this volume (auto-calculated)',
-      },
-    },
+    }
   ],
   timestamps: true,
 }

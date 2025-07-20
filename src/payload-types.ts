@@ -91,6 +91,7 @@ export interface Config {
     videos: Video;
     modules: Module;
     volumes: Volume;
+    'lab-sections': LabSection;
     'payload-folders': FolderInterface;
     'payload-jobs': PayloadJob;
     'payload-locked-documents': PayloadLockedDocument;
@@ -134,6 +135,7 @@ export interface Config {
     videos: VideosSelect<false> | VideosSelect<true>;
     modules: ModulesSelect<false> | ModulesSelect<true>;
     volumes: VolumesSelect<false> | VolumesSelect<true>;
+    'lab-sections': LabSectionsSelect<false> | LabSectionsSelect<true>;
     'payload-folders': PayloadFoldersSelect<false> | PayloadFoldersSelect<true>;
     'payload-jobs': PayloadJobsSelect<false> | PayloadJobsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
@@ -440,16 +442,18 @@ export interface Lesson {
    * The order of the lesson within the volume
    */
   order: number;
-  module: number | Module;
-  volume: number | Volume;
+  /**
+   * The module this lesson belongs to. Autopopulated when volume is set.
+   */
+  module?: (number | null) | Module;
+  /**
+   * The volume this lesson belongs to. Autopopulated when module is set.
+   */
+  volume?: (number | null) | Volume;
   /**
    * Whether this lesson is available as a preview without subscription
    */
   isPreview?: boolean | null;
-  /**
-   * Estimated duration in minutes
-   */
-  estimatedDuration?: number | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -618,14 +622,6 @@ export interface Module {
    * Order in which this module appears (0 = first)
    */
   order: number;
-  /**
-   * Estimated completion time (e.g., "8 hours", "2 weeks")
-   */
-  estimatedTime?: string | null;
-  /**
-   * Total number of lessons in this module (auto-calculated)
-   */
-  totalLessons?: number | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -675,15 +671,11 @@ export interface Volume {
     hasNextPage?: boolean;
     totalDocs?: number;
   };
-  module: number | Module;
+  module?: (number | null) | Module;
   /**
    * Order within the module (0 = first)
    */
   order: number;
-  /**
-   * Total number of lessons in this volume (auto-calculated)
-   */
-  totalLessons?: number | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1234,6 +1226,45 @@ export interface Transaction {
   createdAt: string;
 }
 /**
+ * Organize lab content into flexible sections that can contain modules, volumes, or lessons directly.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "lab-sections".
+ */
+export interface LabSection {
+  id: number;
+  /**
+   * The title of this lab section (e.g., "Getting Started", "Advanced Techniques")
+   */
+  title: string;
+  /**
+   * Optional subtitle or description for this section
+   */
+  subtitle?: string | null;
+  /**
+   * Order in which this section appears on the lab page (0 = first)
+   */
+  order: number;
+  /**
+   * The type of content this section will display
+   */
+  contentType: 'modules' | 'volumes' | 'lessons' | 'mixed';
+  /**
+   * Select modules to include in this section
+   */
+  modules?: (number | Module)[] | null;
+  /**
+   * Select volumes to include in this section
+   */
+  volumes?: (number | Volume)[] | null;
+  /**
+   * Select lessons to include in this section
+   */
+  lessons?: (number | Lesson)[] | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-jobs".
  */
@@ -1429,6 +1460,10 @@ export interface PayloadLockedDocument {
         value: number | Volume;
       } | null)
     | ({
+        relationTo: 'lab-sections';
+        value: number | LabSection;
+      } | null)
+    | ({
         relationTo: 'payload-folders';
         value: number | FolderInterface;
       } | null)
@@ -1583,7 +1618,6 @@ export interface LessonsSelect<T extends boolean = true> {
   module?: T;
   volume?: T;
   isPreview?: T;
-  estimatedDuration?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -2002,8 +2036,6 @@ export interface ModulesSelect<T extends boolean = true> {
   volumes?: T;
   lessons?: T;
   order?: T;
-  estimatedTime?: T;
-  totalLessons?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -2028,7 +2060,21 @@ export interface VolumesSelect<T extends boolean = true> {
   lessons?: T;
   module?: T;
   order?: T;
-  totalLessons?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "lab-sections_select".
+ */
+export interface LabSectionsSelect<T extends boolean = true> {
+  title?: T;
+  subtitle?: T;
+  order?: T;
+  contentType?: T;
+  modules?: T;
+  volumes?: T;
+  lessons?: T;
   updatedAt?: T;
   createdAt?: T;
 }

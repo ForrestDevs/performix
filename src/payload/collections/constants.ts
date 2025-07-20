@@ -38,3 +38,4 @@ export const MODULES_SLUG = 'modules' as const
 export const VOLUMES_SLUG = 'volumes' as const
 export const LESSONS_SLUG = 'lessons' as const
 export const VIDEOS_SLUG = 'videos' as const
+export const LAB_SECTIONS_SLUG = 'lab-sections' as const

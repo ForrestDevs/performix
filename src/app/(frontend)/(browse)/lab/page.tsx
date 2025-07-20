@@ -1,7 +1,10 @@
 import React, { Suspense } from 'react'
 import { CheckCircle } from 'lucide-react'
-import { getModules } from '@/lib/data/lab'
+import { getModules, getLabSections } from '@/lib/data/lab'
+import { getCurrentUser } from '@/lib/data/auth'
+import { isEnrolledInAnyPlan } from '@/lib/data/plans'
 import { ModuleCard } from '@/components/lab/modules/module-card'
+import { LabSection } from '@/components/lab/sections/lab-section'
 import { SubscriptionCTA, SubscriptionCTALoadingSkeleton } from '@/components/lab/subscription-cta'
 import { ModulesLoadingSkeleton } from '@/components/lab/modules/modules-skeleton'
 import { LabStatsSection, StatsLoadingSkeleton } from '@/components/lab/lab-stats'
@@ -61,16 +64,8 @@ export default function PerformixLabPage() {
       </section>
 
       <section className="px-4 container mx-auto">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">Training Modules</h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Each module contains carefully structured volumes and lessons designed to progressively
-            build your skills and knowledge.
-          </p>
-        </div>
-
         <Suspense fallback={<ModulesLoadingSkeleton />}>
-          <ModulesSection />
+          <LabContentSection />
         </Suspense>
       </section>
 
@@ -81,16 +76,41 @@ export default function PerformixLabPage() {
   )
 }
 
-async function ModulesSection() {
-  const modules = await getModules()
+async function LabContentSection() {
+  const [sections, modules, user] = await Promise.all([
+    getLabSections(),
+    getModules(),
+    getCurrentUser(),
+  ])
 
-  const isLoggedIn = true // Mock value for demo
+  const hasAccess = user ? await isEnrolledInAnyPlan(user.id) : false
+
+  // If LabSections are configured, use them; otherwise fallback to traditional modules view
+  if (sections && sections.length > 0) {
+    return (
+      <div className="space-y-16 max-w-7xl mx-auto">
+        {sections.map((section) => (
+          <LabSection key={section.id} section={section} hasAccess={hasAccess} userId={user?.id} />
+        ))}
+      </div>
+    )
+  }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 max-w-7xl mx-auto">
-      {modules.map((module) => (
-        <ModuleCard key={module.id} module={module} hasPlan={isLoggedIn} userId={1} />
-      ))}
+    <div className="max-w-7xl mx-auto">
+      <div className="text-center mb-12">
+        <h2 className="text-3xl font-bold text-gray-900 mb-4">Training Modules</h2>
+        <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          Each module contains carefully structured volumes and lessons designed to progressively
+          build your skills and knowledge.
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+        {modules.map((module) => (
+          <ModuleCard key={module.id} module={module} hasPlan={hasAccess} userId={user?.id || 0} />
+        ))}
+      </div>
     </div>
   )
 }

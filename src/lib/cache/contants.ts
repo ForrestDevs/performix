@@ -16,4 +16,6 @@ export const CACHE_TAGS = {
   GET_LAB_MODULE_COMPLETION: 'getLabModuleCompletion',
   GET_LAB_PROGRESS: 'getLabProgress',
   GET_LAB_LESSONS_BY_ID: 'getLabLessonsById',
+  GET_LAB_SECTIONS: 'getLabSections',
+  GET_LESSON_COMPLETION: 'getLessonCompletion',
 } as const

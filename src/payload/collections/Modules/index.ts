@@ -114,26 +114,7 @@ export const Modules: CollectionConfig = {
         position: 'sidebar',
         description: 'Order in which this module appears (0 = first)',
       },
-    },
-    {
-      name: 'estimatedTime',
-      type: 'text',
-      admin: {
-        position: 'sidebar',
-        description: 'Estimated completion time (e.g., "8 hours", "2 weeks")',
-        placeholder: 'e.g., 8 hours',
-      },
-    },
-    {
-      name: 'totalLessons',
-      type: 'number',
-      defaultValue: 0,
-      admin: {
-        position: 'sidebar',
-        readOnly: true,
-        description: 'Total number of lessons in this module (auto-calculated)',
-      },
-    },
+    }
   ],
   timestamps: true,
 }

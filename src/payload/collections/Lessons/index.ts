@@ -96,26 +96,19 @@ const Lessons: CollectionConfig = {
       name: 'module',
       type: 'relationship',
       relationTo: MODULES_SLUG,
-      required: true,
       admin: {
         readOnly: true,
         position: 'sidebar',
-      },
-      validate: (value, { siblingData }) => {
-        if (siblingData?.volume) {
-          return true
-        }
-
-        return Boolean(value) || 'Module is required'
+        description: 'The module this lesson belongs to. Autopopulated when volume is set.',
       },
     },
     {
       name: 'volume',
       type: 'relationship',
       relationTo: VOLUMES_SLUG,
-      required: true,
       admin: {
         position: 'sidebar',
+        description: 'The volume this lesson belongs to. Autopopulated when module is set.',
       },
     },
     {
@@ -126,16 +119,7 @@ const Lessons: CollectionConfig = {
         position: 'sidebar',
         description: 'Whether this lesson is available as a preview without subscription',
       },
-    },
-    {
-      name: 'estimatedDuration',
-      type: 'number',
-      min: 0,
-      admin: {
-        position: 'sidebar',
-        description: 'Estimated duration in minutes',
-      },
-    },
+    }
   ],
   timestamps: true,
 } as const

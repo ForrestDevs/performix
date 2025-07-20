@@ -124,7 +124,7 @@ export async function ModuleCard({
 
       <CardFooter className="flex-grow">
         <Link
-          href={`/lab/${module.slug}`}
+          href={`/lab/module/${module.slug}`}
           className={cn(
             buttonVariants({ variant: 'default', size: 'lg' }),
             'w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white border-0 shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/30 transition-all duration-300 group',

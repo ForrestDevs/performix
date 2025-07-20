@@ -61,10 +61,9 @@ export async function isEnrolledInAnyPlan(userId: number | undefined) {
     return false
   }
 
-  const payload = await getPayload()
-
   const cacheFn = cache(
-    async () => {
+    async (userId: number) => {
+      const payload = await getPayload()
       const { docs } = await payload.find({
         collection: ENROLLMENTS_SLUG,
         where: { and: [{ user: { equals: userId } }, { type: { equals: 'plan' } }] },
@@ -75,10 +74,9 @@ export async function isEnrolledInAnyPlan(userId: number | undefined) {
     {
       tags: [CACHE_TAGS.IS_ENROLLED_IN_ANY_PLAN + userId.toString()],
     },
-    [userId.toString()],
   )
 
-  return cacheFn()
+  return cacheFn(userId)
 }
 
 export async function getEnrolledPlan(userId: number) {

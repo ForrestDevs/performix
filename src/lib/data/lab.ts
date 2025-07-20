@@ -1,14 +1,21 @@
-import { unstable_cache } from 'next/cache'
+'use server'
+
+import { revalidateTag, unstable_cache } from 'next/cache'
 import { getPayload } from '../utilities/getPayload'
 import { Module, Volume, Lesson, Video } from '@/payload-types'
 import { cache } from '../utilities/cache'
 import {
+  LAB_SECTIONS_SLUG,
   LESSONS_SLUG,
   MODULES_SLUG,
   PROGRESS_SLUG,
+  VIDEOS_SLUG,
   VOLUMES_SLUG,
 } from '@/payload/collections/constants'
 import { CACHE_TAGS } from '@/lib/cache/contants'
+import { isEnrolledInAnyPlan } from './plans'
+import { getCurrentUser } from './auth'
+import { hasLessonAccess } from '../utilities/hasLessonAccess'
 
 export interface LabStats {
   totalModules: number
@@ -157,7 +164,7 @@ export async function getVolumeCompletion({
 
       const totalLessons = lessons.length
 
-      const progressPercentage = (progressCount / totalLessons) * 100
+      const progressPercentage = Math.round((progressCount / totalLessons) * 100 * 100) / 100
 
       return {
         completedLessons: progressCount,
@@ -224,7 +231,7 @@ export async function getModuleBySlug(slug: string) {
  * Get a specific volume with its lessons (publicly accessible for structure, content access controlled)
  * Used for: Volume detail pages showing lesson list
  */
-export function getVolumeBySlug(moduleSlug: string, volumeSlug: string) {
+export async function getVolumeBySlug(moduleSlug: string, volumeSlug: string) {
   const cacheFn = cache(
     async (moduleSlug: string, volumeSlug: string) => {
       const payload = await getPayload()
@@ -240,11 +247,24 @@ export function getVolumeBySlug(moduleSlug: string, volumeSlug: string) {
       })
 
       if (volumes.docs.length === 0) return null
+
       const volume = volumes.docs[0]
+
+      if (!volume) return null
+
+      const lessons = await payload.find({
+        collection: LESSONS_SLUG,
+        where: {
+          volume: { equals: volume.id },
+        },
+        limit: 100,
+        sort: 'order',
+      })
 
       return {
         ...volume,
-        totalLessons: volume?.lessons?.totalDocs,
+        lessons: lessons.docs,
+        totalLessons: lessons.totalDocs,
       }
     },
     {
@@ -258,7 +278,7 @@ export function getVolumeBySlug(moduleSlug: string, volumeSlug: string) {
  * Get a specific lesson with full content (access controlled)
  * Used for: Lesson detail pages with video content
  */
-export function getLessonBySlug(
+export async function getLessonBySlug(
   moduleSlug: string,
   volumeSlug: string,
   lessonSlug: string,
@@ -296,7 +316,7 @@ export function getLessonBySlug(
       if (lesson.videos && Array.isArray(lesson.videos)) {
         const videoIds = lesson.videos.map((v) => (typeof v === 'object' ? v.id : v))
         const videosResult = await payload.find({
-          collection: 'videos',
+          collection: VIDEOS_SLUG,
           where: {
             id: { in: videoIds },
           },
@@ -344,7 +364,7 @@ export async function getLessonById(lessonId: number) {
  * Get lab statistics (publicly accessible)
  * Used for: Homepage stats display
  */
-export function getLabStats() {
+export async function getLabStats() {
   const cacheFn = cache(
     async () => {
       const payload = await getPayload()
@@ -375,51 +395,6 @@ export function getLabStats() {
 }
 
 /**
- * Search lessons across all modules (publicly accessible for structure, content access controlled)
- */
-export function searchLessons(query: string, hasPlan?: boolean) {
-  const cacheFn = cache(
-    async (query: string, hasPlan?: boolean) => {
-      const payload = await getPayload()
-
-      const lessons = await payload.find({
-        collection: 'lessons',
-        where: {
-          or: [{ title: { contains: query } }, { description: { contains: query } }],
-        },
-        sort: '-createdAt',
-        limit: 50,
-      })
-
-      // Process lessons with access control
-      return lessons.docs.map((lesson) => ({
-        ...lesson,
-        isAccessible: hasLessonAccess(lesson, hasPlan),
-      }))
-    },
-    {
-      tags: [CACHE_TAGS.GET_LAB_LESSONS],
-    },
-  )
-  return cacheFn(query, hasPlan)
-}
-
-// Helper functions
-
-/**
- * Check if user has access to a lesson based on their plan
- */
-export function hasLessonAccess(lesson: Lesson, hasPlan?: boolean): boolean {
-  // Always allow preview lessons
-  if (lesson.isPreview) return true
-
-  // No plan = no access to non-preview content
-  if (!hasPlan) return false
-
-  return true
-}
-
-/**
  * Calculate estimated completion time
  */
 function calculateEstimatedTime(totalLessons: number): string {
@@ -430,4 +405,196 @@ function calculateEstimatedTime(totalLessons: number): string {
   if (hours === 0) return `${minutes} minutes`
   if (minutes === 0) return `${hours} hour${hours > 1 ? 's' : ''}`
   return `${hours}h ${minutes}m`
+}
+
+/**
+ * Get a volume by slug directly (without requiring module context)
+ * Used for: Direct volume access via LabSections
+ */
+export async function getVolumeBySlugDirect(volumeSlug: string) {
+  const cacheFn = cache(
+    async () => {
+      const payload = await getPayload()
+
+      const volumes = await payload.find({
+        collection: VOLUMES_SLUG,
+        where: {
+          slug: {
+            equals: volumeSlug,
+          },
+        },
+        depth: 2, // Include module and lessons
+        limit: 1,
+      })
+
+      return volumes.docs[0] || null
+    },
+    {
+      tags: [CACHE_TAGS.GET_LAB_VOLUMES],
+    },
+  )
+
+  return cacheFn()
+}
+
+/**
+ * Get lesson by slug directly (without requiring module/volume context)
+ * Used for: Direct lesson access via LabSections
+ */
+export async function getLessonBySlugDirect(lessonSlug: string) {
+  const cacheFn = cache(
+    async () => {
+      const payload = await getPayload()
+
+      const lessons = await payload.find({
+        collection: LESSONS_SLUG,
+        where: {
+          slug: {
+            equals: lessonSlug,
+          },
+        },
+        depth: 2, // Include module and volume relationships
+        limit: 1,
+      })
+
+      return lessons.docs[0] || null
+    },
+    {
+      tags: [CACHE_TAGS.GET_LAB_LESSONS],
+    },
+  )
+
+  return cacheFn()
+}
+
+export async function getLessonCompletion(lessonId: number) {
+  const user = await getCurrentUser()
+
+  if (!user) return undefined
+
+  const cacheFn = cache(
+    async (lessonId: number, userId: number) => {
+      const payload = await getPayload()
+
+      const lesson = await payload.find({
+        collection: PROGRESS_SLUG,
+        where: {
+          and: [{ lesson: { equals: lessonId } }, { user: { equals: userId } }],
+        },
+        limit: 1,
+      })
+
+      return lesson.docs[0]
+    },
+    {
+      tags: [CACHE_TAGS.GET_LESSON_COMPLETION + lessonId + user.id],
+    },
+  )
+
+  return cacheFn(lessonId, user.id)
+}
+
+export async function markLessonComplete(lessonId: number, completed: boolean) {
+  const user = await getCurrentUser()
+
+  if (!user) return false
+
+  const payload = await getPayload()
+
+  const progress = await getLessonCompletion(lessonId)
+
+  if (progress) {
+    await payload.update({
+      collection: PROGRESS_SLUG,
+      id: progress.id,
+      data: { completed },
+    })
+  } else {
+    await payload.create({
+      collection: PROGRESS_SLUG,
+      data: {
+        lesson: lessonId,
+        user: user.id,
+        completed,
+      },
+    })
+  }
+
+  revalidateTag(CACHE_TAGS.GET_LESSON_COMPLETION + lessonId + user.id)
+
+  return true
+}
+
+/**
+ * Get all lab sections for organizing the lab page
+ */
+export async function getLabSections() {
+  const cacheFn = cache(
+    async () => {
+      const payload = await getPayload()
+
+      const sections = await payload.find({
+        collection: LAB_SECTIONS_SLUG,
+        sort: 'order',
+        depth: 2, // Include all related content
+        limit: 100,
+      })
+
+      return sections.docs
+    },
+    {
+      tags: [CACHE_TAGS.GET_LAB_SECTIONS],
+    },
+  )
+
+  return cacheFn()
+}
+
+/**
+ * Get content for a specific lab section with access control
+ */
+export async function getLabSectionContent(sectionId: number, userId?: number) {
+  const cacheFn = cache(
+    async (sectionId: number, userId?: number) => {
+      const payload = await getPayload()
+
+      const section = await payload.findByID({
+        collection: LAB_SECTIONS_SLUG,
+        id: sectionId,
+        depth: 2,
+      })
+
+      if (!section) return null
+
+      // Check user access for content filtering
+      const hasPlan = userId ? await isEnrolledInAnyPlan(userId) : false
+
+      // Process content based on type and access
+      const processedContent = {
+        ...section,
+        modules:
+          section.modules?.map((module: Module) => ({
+            ...module,
+            isAccessible: hasPlan,
+          })) || [],
+        volumes:
+          section.volumes?.map((volume: Volume) => ({
+            ...volume,
+            isAccessible: hasPlan,
+          })) || [],
+        lessons:
+          section.lessons?.map((lesson: Lesson) => ({
+            ...lesson,
+            isAccessible: hasLessonAccess(lesson, hasPlan),
+          })) || [],
+      }
+
+      return processedContent
+    },
+    {
+      tags: [CACHE_TAGS.GET_LAB_SECTIONS],
+    },
+  )
+
+  return cacheFn(sectionId, userId)
 }

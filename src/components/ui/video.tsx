@@ -117,96 +117,29 @@ export function YoutubeVideo({
 
 export function LoomVideo({ url, className }: { url: string; className?: string }) {
   const [isLoaded, setIsLoaded] = React.useState(false)
-  const [hasError, setHasError] = React.useState(false)
-  const videoRef = React.useRef<HTMLDivElement>(null)
-  const linkRef = React.useRef<HTMLAnchorElement | null>(null)
 
-  React.useEffect(() => {
-    let isMounted = true
-
-    const loadLoomEmbed = async () => {
-      if (!videoRef.current || !url || !isMounted) return
-
-      try {
-        setIsLoaded(false)
-        setHasError(false)
-
-        // Wait for the DOM to be ready
-        if (document.readyState !== 'complete') {
-          await new Promise<void>(resolve => {
-            const handleLoad = () => {
-              window.removeEventListener('load', handleLoad)
-              resolve()
-            }
-            window.addEventListener('load', handleLoad, { once: true })
-          })
-        }
-
-        // Check if component is still mounted after async operation
-        if (!isMounted || !videoRef.current) return
-
-        // Clean up previous link if it exists
-        if (linkRef.current && videoRef.current.contains(linkRef.current)) {
-          videoRef.current.removeChild(linkRef.current)
-          linkRef.current = null
-        }
-
-        // Create a new link element for Loom to replace
-        const linkElement = document.createElement('a')
-        linkElement.href = url + '&hideEmbedTopBar=true'
-        linkElement.className = 'loom-video'
-        linkElement.style.display = 'block'
-        linkElement.style.width = '100%'
-        linkElement.style.height = '100%'
-
-        // Store reference and append to container
-        linkRef.current = linkElement
-        videoRef.current.appendChild(linkElement)
-
-        // Check if loom is available and initialize
-        if (typeof window !== 'undefined' && loom && isMounted) {
-          // Use Loom's linkReplace function to convert the link to an embed
-          await loom.linkReplace('.loom-video', {
-            gifThumbnail: true,
-          })
-          
-          if (isMounted) {
-            setIsLoaded(true)
-          }
-        } else {
-          throw new Error('Loom SDK not available')
-        }
-      } catch (error) {
-        console.error('Error loading Loom video:', error)
-        if (isMounted) {
-          setHasError(true)
-        }
-      }
+  // Extract video ID from Loom URL
+  const getEmbedUrl = (loomUrl: string) => {
+    try {
+      const urlObj = new URL(loomUrl)
+      const pathParts = urlObj.pathname.split('/')
+      const videoId = pathParts[pathParts.length - 1]
+      return `https://www.loom.com/embed/${videoId}?hideEmbedTopBar=true`
+    } catch (error) {
+      console.error('Invalid Loom URL:', error)
+      return null
     }
+  }
 
-    loadLoomEmbed()
+  const embedUrl = getEmbedUrl(url)
 
-    // Cleanup function
-    return () => {
-      isMounted = false
-      if (linkRef.current && videoRef.current?.contains(linkRef.current)) {
-        try {
-          videoRef.current.removeChild(linkRef.current)
-        } catch (error) {
-          // Ignore errors during cleanup
-        }
-      }
-      linkRef.current = null
-    }
-  }, [url])
-
-  if (hasError) {
+  if (!embedUrl) {
     return (
-      <div className={cn('w-full rounded-lg bg-gray-100 flex items-center justify-center', className)}>
+      <div className={cn('w-full aspect-video rounded-lg bg-gray-100 flex items-center justify-center', className)}>
         <div className="text-center">
-          <p className="text-gray-600 mb-2">Failed to load video</p>
+          <p className="text-gray-600 mb-2">Invalid video URL</p>
           <a 
-            href={url + '?hideEmbedTopBar=true'} 
+            href={url} 
             target="_blank" 
             rel="noopener noreferrer"
             className="text-blue-600 hover:text-blue-800 underline"
@@ -219,15 +152,20 @@ export function LoomVideo({ url, className }: { url: string; className?: string 
   }
 
   return (
-    <div
-      ref={videoRef}
-      className={cn('w-full rounded-lg', className)}
-    >
+    <div className={cn('w-full aspect-video rounded-lg overflow-hidden bg-gray-100 relative', className)}>
       {!isLoaded && (
-        <div className="flex items-center justify-center h-full bg-gray-100">
+        <div className="absolute inset-0 flex items-center justify-center bg-gray-100 z-10">
           <p className="text-gray-600">Loading video...</p>
         </div>
       )}
+      <iframe
+        src={embedUrl}
+        className="w-full h-full border-0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowFullScreen
+        loading="lazy"
+        onLoad={() => setIsLoaded(true)}
+      />
     </div>
   )
 }

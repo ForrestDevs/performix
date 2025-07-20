@@ -19,6 +19,7 @@ import Plans from './Plans'
 import Videos from './Videos'
 import { Modules } from './Modules'
 import { Volumes } from './Volumes'
+import LabSections from './LabSections'
 
 export const collections = [
   Lessons,
@@ -39,4 +40,5 @@ export const collections = [
   Videos,
   Modules,
   Volumes,
+  LabSections,
 ]
