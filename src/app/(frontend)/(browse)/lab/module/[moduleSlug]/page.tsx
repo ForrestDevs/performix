@@ -40,8 +40,8 @@ export async function generateMetadata(props: DirectModulePageProps) {
   }
 
   return {
-    title: `${labModule.module?.title} | Performix Lab`,
-    description: labModule.module?.subtitle,
+    title: `${labModule?.title} | Performix Lab`,
+    description: labModule?.subtitle,
   }
 }
 
@@ -60,7 +60,7 @@ export default async function DirectModulePage(props: DirectModulePageProps) {
   const completion =
     user && hasAccess
       ? await getModuleCompletion({
-          moduleId: labModule.module?.id,
+          moduleId: labModule?.id,
           userId: user.id,
         })
       : null
@@ -68,8 +68,8 @@ export default async function DirectModulePage(props: DirectModulePageProps) {
   return (
     <div className="min-h-screen bg-gray-50">
       <LabBreadcrumb
-        title={labModule.module?.title || ''}
-        currentPage={{ type: 'module', slug: labModule.module?.slug || '' }}
+        title={labModule?.title || ''}
+        currentPage={{ type: 'module', slug: labModule?.slug || '' }}
       />
 
       <div className="bg-gradient-to-r from-purple-600 to-blue-600 text-white">
@@ -81,21 +81,15 @@ export default async function DirectModulePage(props: DirectModulePageProps) {
                 <Badge variant="secondary" className="bg-white/20 text-white border-white/30">
                   Module
                 </Badge>
-                {labModule.estimatedTime && (
-                  <Badge variant="secondary" className="bg-white/20 text-white border-white/30">
-                    <Clock className="h-4 w-4 mr-1" />
-                    {labModule.estimatedTime}
-                  </Badge>
-                )}
               </div>
-              <h1 className="text-4xl font-bold mb-4">{labModule.module?.title}</h1>
-              {labModule.module?.subtitle && (
-                <p className="text-xl text-blue-100 mb-6">{labModule.module?.subtitle}</p>
+              <h1 className="text-4xl font-bold mb-4">{labModule?.title}</h1>
+              {labModule?.subtitle && (
+                <p className="text-xl text-blue-100 mb-6">{labModule?.subtitle}</p>
               )}
 
-              {labModule.module?.topics && labModule.module?.topics.length > 0 && (
+              {labModule?.topics && labModule?.topics.length > 0 && (
                 <div className="flex flex-wrap gap-2 mb-6">
-                  {labModule.module?.topics.map((topic: any, index: number) => (
+                  {labModule?.topics.map((topic: any, index: number) => (
                     <Badge
                       key={index}
                       variant="outline"
@@ -137,11 +131,11 @@ export default async function DirectModulePage(props: DirectModulePageProps) {
               )}
             </div>
 
-            {labModule.module?.thumbnail && (
+            {labModule?.thumbnail && (
               <div className="relative aspect-video rounded-lg overflow-hidden">
                 <Image
-                  src={(labModule.module?.thumbnail as Media).url!}
-                  alt={labModule.module?.title || 'Module Thumbnail'}
+                  src={(labModule?.thumbnail as Media).url!}
+                  alt={labModule?.title || 'Module Thumbnail'}
                   fill
                   className="object-cover"
                 />
@@ -154,35 +148,35 @@ export default async function DirectModulePage(props: DirectModulePageProps) {
       <div className="container mx-auto px-4 py-16">
         <div className="grid gap-8 lg:grid-cols-3">
           <div className="lg:col-span-2 flex flex-col gap-8">
-            {labModule.module?.introVideo && (
+            {labModule?.introVideo && (
               <div>
                 <h2 className="text-2xl font-bold mb-4">Introduction</h2>
-                <IntroVideo video={labModule.module?.introVideo as Video} />
+                <IntroVideo video={labModule?.introVideo as Video} />
               </div>
             )}
 
-            {labModule.module?.richText && (
+            {labModule?.richText && (
               <Accordion type="single" collapsible defaultValue="item-1" className="mb-0">
                 <AccordionItem value="item-1">
                   <AccordionTrigger className="text-2xl font-bold py-0 mb-0">
                     Overview
                   </AccordionTrigger>
                   <AccordionContent>
-                    <RichText data={labModule.module?.richText} enableGutter={false} />
+                    <RichText data={labModule?.richText} enableGutter={false} />
                   </AccordionContent>
                 </AccordionItem>
               </Accordion>
             )}
 
-            {labModule.volumes && labModule.volumes.length > 0 && (
+            {labModule?.volumes?.docs && labModule?.volumes?.docs.length > 0 && (
               <div id="volumes">
                 <h2 className="text-2xl font-bold mb-6">Volumes</h2>
                 <div className="grid gap-6">
-                  {labModule.volumes.map((volume: Volume, index: number) => (
+                  {labModule?.volumes?.docs.map((volume: Volume, index: number) => (
                     <VolumeCard
                       key={volume.id}
                       volume={volume}
-                      moduleSlug={labModule.module?.slug || ''}
+                      moduleSlug={labModule?.slug || ''}
                       hasPlan={hasAccess}
                       userId={user?.id || 0}
                     />
@@ -200,11 +194,11 @@ export default async function DirectModulePage(props: DirectModulePageProps) {
               <CardContent className="space-y-4">
                 <div className="flex justify-between">
                   <span className="text-gray-600">Total Volumes</span>
-                  <span className="font-medium">{labModule.volumes?.length || 0}</span>
+                  <span className="font-medium">{labModule?.volumes?.docs?.length || 0}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">Total Lessons</span>
-                  <span className="font-medium">{labModule.totalLessons || 0}</span>
+                  <span className="font-medium">{labModule?.lessons?.docs?.length || 0}</span>
                 </div>
               </CardContent>
             </Card>

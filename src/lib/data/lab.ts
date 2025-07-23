@@ -185,46 +185,29 @@ export async function getVolumeCompletion({
  * Used for: Module detail pages showing volume structure
  */
 export async function getModuleBySlug(slug: string) {
-  const payload = await getPayload()
+  const cacheFn = cache(
+    async (slug: string) => {
+      const payload = await getPayload()
 
-  const modules = await payload.find({
-    collection: MODULES_SLUG,
-    where: {
-      slug: { equals: slug },
+      const modules = await payload.find({
+        collection: MODULES_SLUG,
+        where: {
+          slug: { equals: slug },
+        },
+        limit: 1,
+        depth: 3,
+      })
+
+      if (modules.docs.length === 0) return null
+
+      return modules.docs[0]
     },
-    limit: 1,
-    depth: 3,
-  })
-
-  if (modules.docs.length === 0) return null
-
-  const volumes = await payload.find({
-    collection: VOLUMES_SLUG,
-    where: {
-      module: { equals: modules.docs[0]?.id },
+    {
+      tags: [CACHE_TAGS.GET_LAB_MODULES_BY_SLUG + slug],
     },
-    limit: 100,
-    sort: 'order',
-  })
+  )
 
-  const totalLessons = modules.docs[0]?.lessons?.docs?.length || 0
-
-  return {
-    module: modules.docs[0],
-    volumes: volumes.docs,
-    totalLessons,
-    estimatedTime: calculateEstimatedTime(totalLessons),
-  }
-  // const cacheFn = cache(
-  //   async (slug: string) => {
-
-  //   },
-  //   {
-  //     tags: [CACHE_TAGS.GET_LAB_MODULES_BY_SLUG + slug],
-  //   },
-  // )
-
-  // return cacheFn(slug)
+  return cacheFn(slug)
 }
 
 /**
@@ -413,7 +396,7 @@ function calculateEstimatedTime(totalLessons: number): string {
  */
 export async function getVolumeBySlugDirect(volumeSlug: string) {
   const cacheFn = cache(
-    async () => {
+    async (volumeSlug: string) => {
       const payload = await getPayload()
 
       const volumes = await payload.find({
@@ -430,11 +413,11 @@ export async function getVolumeBySlugDirect(volumeSlug: string) {
       return volumes.docs[0] || null
     },
     {
-      tags: [CACHE_TAGS.GET_LAB_VOLUMES],
+      tags: [CACHE_TAGS.GET_LAB_VOLUMES_BY_SLUG + volumeSlug],
     },
   )
 
-  return cacheFn()
+  return cacheFn(volumeSlug)
 }
 
 /**
@@ -443,7 +426,7 @@ export async function getVolumeBySlugDirect(volumeSlug: string) {
  */
 export async function getLessonBySlugDirect(lessonSlug: string) {
   const cacheFn = cache(
-    async () => {
+    async (lessonSlug: string) => {
       const payload = await getPayload()
 
       const lessons = await payload.find({
@@ -464,7 +447,7 @@ export async function getLessonBySlugDirect(lessonSlug: string) {
     },
   )
 
-  return cacheFn()
+  return cacheFn(lessonSlug)
 }
 
 export async function getLessonCompletion(lessonId: number) {
