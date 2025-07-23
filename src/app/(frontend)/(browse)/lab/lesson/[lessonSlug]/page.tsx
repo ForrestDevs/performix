@@ -31,6 +31,7 @@ import { LabBreadcrumb } from '@/components/lab/lab-breadcrumb'
 import { VideoCard } from '@/components/lab/video-card'
 import { Media, Video } from '@/payload-types'
 import { DownloadCard } from '@/components/lab/download-card'
+import { RefreshRouteOnSave } from '@/components/live-preview'
 
 interface DirectLessonPageProps {
   params: Promise<{
@@ -73,6 +74,7 @@ export default async function DirectLessonPage(props: DirectLessonPageProps) {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <RefreshRouteOnSave />
       <LabBreadcrumb
         title={lesson.title}
         currentPage={{ type: 'lesson', slug: lesson.slug || '' }}

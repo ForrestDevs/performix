@@ -13,7 +13,12 @@ const Lessons: CollectionConfig = {
     defaultColumns: ['title', 'subtitle'],
     description: 'Lessons are the individual units of content within volumes.',
     preview: (data) => {
-      return `/lab/lesson/${data.slug}`
+      return `${process.env.NEXT_PUBLIC_SERVER_URL}/lab/lesson/${data.slug}`
+    },
+    livePreview: {
+      url: (data) => {
+        return `${process.env.NEXT_PUBLIC_SERVER_URL}/lab/lesson/${data.data.slug}`
+      },
     },
   },
   access: {

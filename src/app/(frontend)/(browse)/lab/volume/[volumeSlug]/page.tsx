@@ -21,6 +21,7 @@ import {
 } from '@/components/ui/accordion'
 import { LabBreadcrumb } from '@/components/lab/lab-breadcrumb'
 import { cn } from '@/lib/utilities/ui'
+import { RefreshRouteOnSave } from '@/components/live-preview'
 
 interface DirectVolumePageProps {
   params: Promise<{
@@ -69,6 +70,7 @@ export default async function DirectVolumePage(props: DirectVolumePageProps) {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <RefreshRouteOnSave />
       <LabBreadcrumb
         title={volume.title}
         currentPage={{ type: 'volume', slug: volume.slug || '' }}

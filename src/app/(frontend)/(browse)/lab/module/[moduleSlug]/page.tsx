@@ -23,6 +23,7 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion'
 import { VolumeLoadingCard } from '@/components/lab/volumes/loading-card'
+import { RefreshRouteOnSave } from '@/components/live-preview'
 
 interface DirectModulePageProps {
   params: Promise<{
@@ -68,6 +69,7 @@ export default async function DirectModulePage(props: DirectModulePageProps) {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <RefreshRouteOnSave />
       <LabBreadcrumb
         title={labModule?.title || ''}
         currentPage={{ type: 'module', slug: labModule?.slug || '' }}

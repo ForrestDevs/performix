@@ -9,6 +9,7 @@ import { SubscriptionCTA, SubscriptionCTALoadingSkeleton } from '@/components/la
 import { ModulesLoadingSkeleton } from '@/components/lab/modules/modules-skeleton'
 import { LabStatsSection, StatsLoadingSkeleton } from '@/components/lab/lab-stats'
 import { Metadata } from 'next'
+import { RefreshRouteOnSave } from '@/components/live-preview'
 
 export const metadata: Metadata = {
   title: 'The Performix Lab - Ultimate Performance Training Modules',
@@ -42,6 +43,7 @@ export const metadata: Metadata = {
 export default function PerformixLabPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 space-y-16 py-16">
+      <RefreshRouteOnSave />
       <section className="relative px-4">
         <div className="container mx-auto text-center">
           <div className="inline-flex items-center gap-2 bg-blue-50 text-blue-700 px-4 py-2 rounded-full text-sm font-medium mb-6">

@@ -16,7 +16,12 @@ export const Volumes: CollectionConfig = {
     defaultColumns: ['title', 'module', 'order'],
     description: 'Volumes are chapters within modules that group related lessons.',
     preview: (data) => {
-      return `/lab/volume/${data.slug}`
+      return `${process.env.NEXT_PUBLIC_SERVER_URL}/lab/volume/${data.slug}`
+    },
+    livePreview: {
+      url: (data) => {
+        return `${process.env.NEXT_PUBLIC_SERVER_URL}/lab/volume/${data.data.slug}`
+      },
     },
   },
   access: {

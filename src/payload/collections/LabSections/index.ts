@@ -11,6 +11,14 @@ const LabSections: CollectionConfig = {
     defaultColumns: ['title', 'order', 'contentType'],
     description:
       'Organize lab content into flexible sections that can contain modules, volumes, or lessons directly.',
+    preview: (data) => {
+      return `${process.env.NEXT_PUBLIC_SERVER_URL}/lab`
+    },
+    livePreview: {
+      url: (data) => {
+        return `${process.env.NEXT_PUBLIC_SERVER_URL}/lab`
+      },
+    },
   },
   access: {
     read: admin,

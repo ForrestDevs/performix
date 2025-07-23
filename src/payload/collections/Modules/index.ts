@@ -15,7 +15,12 @@ export const Modules: CollectionConfig = {
     group: 'Lab',
     defaultColumns: ['title', 'subtitle', 'topics'],
     preview: (data) => {
-      return `/lab/module/${data.slug}`
+      return `${process.env.NEXT_PUBLIC_SERVER_URL}/lab/module/${data.slug}`
+    },
+    livePreview: {
+      url: (data) => {
+        return `${process.env.NEXT_PUBLIC_SERVER_URL}/lab/module/${data.data.slug}`
+      },
     },
   },
   access: {
