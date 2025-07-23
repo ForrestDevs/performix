@@ -35,6 +35,13 @@ export const MobileMenu: React.FC = () => {
           </Link>
           <Link
             onClick={() => setIsOpen(false)}
+            href="/lab"
+            className="flex items-center px-4 py-3 rounded-lg text-base font-medium text-gray-700 hover:text-[#0891B2] hover:bg-gray-50 transition-all duration-200 active:bg-gray-100"
+          >
+            The Lab
+          </Link>
+          <Link
+            onClick={() => setIsOpen(false)}
             href="/plans"
             className="flex items-center px-4 py-3 rounded-lg text-base font-medium text-gray-700 hover:text-[#0891B2] hover:bg-gray-50 transition-all duration-200 active:bg-gray-100"
           >

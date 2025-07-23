@@ -519,7 +519,7 @@ export async function getLabSections() {
       const sections = await payload.find({
         collection: LAB_SECTIONS_SLUG,
         sort: 'order',
-        depth: 2, // Include all related content
+        depth: 3, // Include all related content
         limit: 100,
       })
 

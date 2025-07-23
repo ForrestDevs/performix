@@ -32,12 +32,9 @@ export default async function Header() {
               >
                 Resources
               </Link>
-              {/* <Link
-                href="/lab"
-                className="text-gray-600 hover:text-[#0891B2] transition-colors"
-              >
+              <Link href="/lab" className="text-gray-600 hover:text-[#0891B2] transition-colors">
                 The Lab
-              </Link> */}
+              </Link>
               <Link href="/plans" className="text-gray-600 hover:text-[#0891B2] transition-colors">
                 Plans
               </Link>

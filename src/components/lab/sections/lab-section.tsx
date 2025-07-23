@@ -19,20 +19,7 @@ interface LabSectionProps {
 }
 
 export function LabSection({ section, hasAccess, userId, className }: LabSectionProps) {
-  const getContentIcon = (contentType: string) => {
-    switch (contentType) {
-      case 'modules':
-        return <BookOpen className="h-5 w-5" />
-      case 'volumes':
-        return <Layers className="h-5 w-5" />
-      case 'lessons':
-        return <Play className="h-5 w-5" />
-      case 'mixed':
-        return <FileText className="h-5 w-5" />
-      default:
-        return <FileText className="h-5 w-5" />
-    }
-  }
+
 
   const getContentTypeLabel = (contentType: string) => {
     switch (contentType) {
@@ -63,7 +50,6 @@ export function LabSection({ section, hasAccess, userId, className }: LabSection
     <section className={cn('space-y-6', className)}>
       <div className="space-y-3">
         <div className="flex items-center gap-3">
-          {getContentIcon(section.contentType)}
           <div>
             <h2 className="text-2xl font-bold text-gray-900">{section.title}</h2>
             {section.subtitle && <p className="text-lg text-gray-600 mt-1">{section.subtitle}</p>}

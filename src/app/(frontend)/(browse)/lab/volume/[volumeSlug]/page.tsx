@@ -85,9 +85,8 @@ export default async function DirectVolumePage(props: DirectVolumePageProps) {
           <div className="grid gap-8 lg:grid-cols-2 items-center">
             <div>
               <div className="flex items-center gap-3 mb-4">
-                <Layers className="h-6 w-6" />
                 <Badge variant="secondary" className="bg-white/20 text-white border-white/30">
-                  Volume
+                  Volume {volume.order + 1}
                 </Badge>
                 {labModule && (
                   <Badge variant="secondary" className="bg-white/20 text-white border-white/30">
