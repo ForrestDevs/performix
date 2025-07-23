@@ -15,6 +15,9 @@ export const Volumes: CollectionConfig = {
     group: 'Lab',
     defaultColumns: ['title', 'module', 'order'],
     description: 'Volumes are chapters within modules that group related lessons.',
+    preview: (data) => {
+      return `/lab/volume/${data.slug}`
+    },
   },
   access: {
     read: anyone,
@@ -116,7 +119,7 @@ export const Volumes: CollectionConfig = {
         position: 'sidebar',
         description: 'Order within the module (0 = first)',
       },
-    }
+    },
   ],
   timestamps: true,
 }

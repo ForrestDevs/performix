@@ -14,6 +14,9 @@ export const Modules: CollectionConfig = {
     useAsTitle: 'title',
     group: 'Lab',
     defaultColumns: ['title', 'subtitle', 'topics'],
+    preview: (data) => {
+      return `/lab/module/${data.slug}`
+    },
   },
   access: {
     read: anyone,
@@ -24,6 +27,7 @@ export const Modules: CollectionConfig = {
   hooks: {
     afterChange: [revalidateLabModule],
   },
+
   fields: [
     ...slugField('title'),
     {
@@ -114,7 +118,7 @@ export const Modules: CollectionConfig = {
         position: 'sidebar',
         description: 'Order in which this module appears (0 = first)',
       },
-    }
+    },
   ],
   timestamps: true,
 }

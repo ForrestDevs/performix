@@ -12,6 +12,9 @@ const Lessons: CollectionConfig = {
     group: 'Lab',
     defaultColumns: ['title', 'subtitle'],
     description: 'Lessons are the individual units of content within volumes.',
+    preview: (data) => {
+      return `/lab/lesson/${data.slug}`
+    },
   },
   access: {
     read: admin,
@@ -119,7 +122,7 @@ const Lessons: CollectionConfig = {
         position: 'sidebar',
         description: 'Whether this lesson is available as a preview without subscription',
       },
-    }
+    },
   ],
   timestamps: true,
 } as const
