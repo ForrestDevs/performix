@@ -13,22 +13,26 @@ import { ArrowRight, BookOpen, Star } from 'lucide-react'
 import { cn } from '@/lib/utilities/ui'
 import { buttonVariants } from '@/components/ui/button'
 import Link from 'next/link'
-import { getVolumeCompletion } from '@/lib/data/lab'
+import { getVolumeBySlugDirect, getVolumeCompletion } from '@/lib/data/lab'
 import { Badge } from '@/components/ui/badge'
 
 export async function VolumeCard({
-  volume,
+  slug,
   hasPlan,
   userId,
   moduleSlug,
   useDirectRoute,
 }: {
-  volume: Volume
+  slug: string
   hasPlan: boolean
   userId: number
   moduleSlug?: string
   useDirectRoute?: boolean
 }) {
+  const volume = await getVolumeBySlugDirect(slug)
+
+  if (!volume) return null
+
   const progress = await getVolumeCompletion({ volumeId: volume.id, userId })
 
   return (

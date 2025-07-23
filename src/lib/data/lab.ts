@@ -195,7 +195,7 @@ export async function getModuleBySlug(slug: string) {
           slug: { equals: slug },
         },
         limit: 1,
-        depth: 3,
+        depth: 4,
       })
 
       if (modules.docs.length === 0) return null

@@ -22,6 +22,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion'
+import { VolumeLoadingCard } from '@/components/lab/volumes/loading-card'
 
 interface DirectModulePageProps {
   params: Promise<{
@@ -172,13 +173,15 @@ export default async function DirectModulePage(props: DirectModulePageProps) {
                 <h2 className="text-2xl font-bold mb-6">Volumes</h2>
                 <div className="grid gap-6">
                   {labModule?.volumes?.docs.map((volume: Volume, index: number) => (
-                    <VolumeCard
-                      key={volume.id}
-                      volume={volume}
-                      moduleSlug={labModule?.slug || ''}
-                      hasPlan={hasAccess}
-                      userId={user?.id || 0}
-                    />
+                    <Suspense key={volume.id} fallback={<VolumeLoadingCard />}>
+                      <VolumeCard
+                        key={volume.id}
+                        slug={volume.slug || ''}
+                        moduleSlug={labModule?.slug || ''}
+                        hasPlan={hasAccess}
+                        userId={user?.id || 0}
+                      />
+                    </Suspense>
                   ))}
                 </div>
               </div>

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import Link from 'next/link'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -10,6 +10,7 @@ import { ChevronRight, Play, BookOpen, Layers, FileText } from 'lucide-react'
 import { cn } from '@/lib/utilities/ui'
 import RichText from '@/components/RichText'
 import { LabSection as LabSectionType, Lesson, Module, Volume } from '@/payload-types'
+import { VolumeLoadingCard } from '../volumes/loading-card'
 
 interface LabSectionProps {
   section: LabSectionType // Lab section data
@@ -19,8 +20,6 @@ interface LabSectionProps {
 }
 
 export function LabSection({ section, hasAccess, userId, className }: LabSectionProps) {
-
-
   const getContentTypeLabel = (contentType: string) => {
     switch (contentType) {
       case 'modules':
@@ -92,13 +91,15 @@ export function LabSection({ section, hasAccess, userId, className }: LabSection
             )}
             <div className={cn('grid gap-6', 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3')}>
               {section.volumes.map((volume: Volume, index: number) => (
-                <VolumeCard
-                  key={volume.id}
-                  volume={volume}
-                  hasPlan={hasAccess}
-                  userId={userId || 0}
-                  useDirectRoute
-                />
+                <Suspense key={volume.id} fallback={<VolumeLoadingCard />}>
+                  <VolumeCard
+                    key={volume.id}
+                    slug={volume.slug || ''}
+                    hasPlan={hasAccess}
+                    userId={userId || 0}
+                    useDirectRoute
+                  />
+                </Suspense>
               ))}
             </div>
           </div>
@@ -114,11 +115,7 @@ export function LabSection({ section, hasAccess, userId, className }: LabSection
             )}
             <div className={cn('grid gap-4', 'grid-cols-1 md:grid-cols-2')}>
               {section.lessons.map((lesson: Lesson, index: number) => (
-                <LessonCard
-                  key={lesson.id}
-                  lessonId={lesson.id}
-                  hasPlan={hasAccess}
-                />
+                <LessonCard key={lesson.id} lessonId={lesson.id} hasPlan={hasAccess} />
               ))}
             </div>
           </div>
