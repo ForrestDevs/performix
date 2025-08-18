@@ -9,6 +9,7 @@ import { Media, Mentor, Testimonial } from '@/payload-types'
 import {
   ArrowRight,
   Award,
+  Calendar,
   CheckCircle,
   ChevronLeft,
   ChevronRight,
@@ -43,7 +44,7 @@ export function ValuePropSection() {
           }`}
         >
           <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-            Why Elite Players Choose Performix
+            Why Players Choose Performix
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             Join the platform that&apos;s advancing the next generation of serious hockey players.
@@ -53,26 +54,27 @@ export function ValuePropSection() {
         <div className="mt-12 grid md:grid-cols-4 gap-8">
           {[
             {
-              icon: GraduationCap,
-              title: 'D1 Mentors',
+              icon: Calendar,
+              title: 'Monthly Game Plan',
               description:
-                'Work directly with your own D1 mentor who knows exactly what it takes to succeed.',
+                'We help you find what will move you furthest — and build a strategy around it.',
+            },
+            {
+              icon: GraduationCap,
+              title: 'Real D1 Mentors',
+              description:
+                'Work directly with an active D1 player who knows what it takes to succeed.',
             },
             {
               icon: Trophy,
-              title: 'Proven Results',
-              description: '100% of Athletes Report Faster Progress in Their First Month. ',
-            },
-            {
-              icon: ClipboardList,
-              title: 'Custom Plans',
-              description: ' Tailored development for your position, goals, and playing style.',
+              title: 'Proven Progress',
+              description: '100% of athletes report faster improvement in their first month.',
             },
             {
               icon: TrendingUp,
               title: 'NHL-Grade Tools',
               description:
-                'Alongside your mentor, get NHL-grade tools for training, nutrition, mindset, and recruiting.',
+                'Elite training systems for speed, strength, hockey IQ, nutrition & recovery.',
             },
           ].map((item, index) => (
             <Card
@@ -257,9 +259,12 @@ export function HowItWorksSection() {
                 'bg-gradient-to-r from-[#0EA5E9] to-[#A78BFA] via-[#0891B2] hover:from-[#0E7490] hover:to-[#8B5CF6] text-white px-8 py-4 text-lg shadow-lg hover:shadow-xl transition-all duration-300',
               )}
             >
-              Start Your Journey Today
+              ✅ Apply for a Free Call
               <ArrowRight className="ml-2 h-5 w-5" />
             </Link>
+            <p className="text-gray-600 mt-4 text-base">
+              Get matched with your mentor and start building your plan.
+            </p>
           </div>
         </div>
       </div>
@@ -273,37 +278,45 @@ export function WhatYouGetEveryMonth() {
 
   const features = [
     {
+      title: 'The Complete Performix System',
+      description:
+        'A decade of elite development tools compressed into one system — from hockey IQ, mindset, skill development, speed, strength, development strategy, and more. Everything that works, all in one place.',
+    },
+    {
+      title: 'Monthly Strategy Session',
+      description:
+        'Work 1-on-1 with your mentor to build a clear game plan to make your biggest improvements each month',
+    },
+    {
       title: 'Private Video Analysis Sessions',
       description:
         'Private 1-on-1 game analysis with a D1+ mentor to improve hockey IQ and decision-making on the ice.',
     },
     {
-      title: 'The Performance Lab Course',
+      title: 'Identity Stack + Player Profile',
       description:
-        'A decade of elite development tools compressed into one course — covering training, nutrition, recovery, mental performance, hockey IQ, long term strategy and more. Built from D1 and pro-level systems, distilled into what actually works.',
+        'Build your personal player identity and development profile — so you know exactly what to focus on and why.',
     },
+    {
+      title: 'Smart Tracking + Calendar System',
+      description:
+        'Track progress, set goals, structure your week, and stay locked in with a personalized calendar and performance system.',
+    },
+    {
+      title: 'Custom Tools + Goal Roadmap',
+      description:
+        'Get tools and monthly goals made just for you — based on your game, position, and where you want to go.',
+    },
+
     {
       title: 'Expert Guests',
       description:
-        'Alongside D1 mentors, we bring in coaches and specialists to share key lessons in training, mindset, and development — giving you deeper insight and new tools to level up.',
+        'Learn from top coaches and specialists in training, mindset, and performance — brought in by our D1 mentor network.',
     },
     {
-      title: 'Daily D1 Mentor Access',
-      description: 'Direct messaging with your mentor for real-time guidance and support.',
-    },
-    {
-      title: 'Monthly Goal Setting',
+      title: 'Daily Mentor Access',
       description:
-        'Work with your D1 mentor to set clear, achievable goals and track your progress with personalized milestones.',
-    },
-    {
-      title: 'Biweekly D1 Zoom Sessions',
-      description: 'Live group sessions with D1 athletes and guest experts for hockey development.',
-    },
-    {
-      title: 'Private Community',
-      description:
-        'An exclusive community of elite athletes and experts sharing game-changing insights and strategies.',
+        'Message your mentor anytime for direct support, questions, and real-time adjustments.',
     },
   ]
 

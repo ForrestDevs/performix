@@ -34,12 +34,13 @@ export default function HomePage() {
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight font-['Space_Grotesk']">
                   The Fastest Way to{' '}
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0891B2] to-[#8B5CF6]">
-                    Get Better
+                    Go Further in Hockey
                   </span>
                 </h1>
                 <p className="text-xl text-gray-600 leading-relaxed max-w-2xl">
-                  Why waste time trying to figure it out alone? Get access to D1 hockey mentors,
-                  elite systems, and a proven plan to develop faster.
+                  <strong>Why waste time trying to figure it out alone?</strong> Get access to D1
+                  hockey mentors, elite systems, and a proven plan — built to take you further,
+                  faster.
                 </p>
               </div>
               <div className="flex flex-col sm:flex-row gap-4">
@@ -50,7 +51,7 @@ export default function HomePage() {
                     'bg-[#0891B2] hover:bg-[#0E7490] text-white px-8 py-4 text-lg hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl',
                   )}
                 >
-                  Get Started
+                  👉 Book Your Free Call
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
                 <Link
