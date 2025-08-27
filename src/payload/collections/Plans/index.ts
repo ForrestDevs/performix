@@ -13,6 +13,7 @@ const Plans: CollectionConfig = {
   admin: {
     group: 'Products',
     useAsTitle: 'title',
+    defaultColumns: ['title', 'price', 'period', 'grandfathered'],
   },
   access: {
     create: admins,
@@ -26,6 +27,7 @@ const Plans: CollectionConfig = {
     afterDelete: [deleteFromStripe],
     afterChange: [revalidatePlans],
   },
+
   fields: [
     ...slugField('title'),
     ...stripeLinkField('stripeProductId', 'products', false),
@@ -121,9 +123,50 @@ const Plans: CollectionConfig = {
       name: 'period',
       type: 'select',
       defaultValue: 'monthly',
-      options: ['monthly', 'yearly'],
+      options: ['monthly', 'yearly', 'one-time'],
       admin: {
         position: 'sidebar',
+      },
+    },
+    {
+      name: 'grandfathered',
+      type: 'checkbox',
+      defaultValue: false,
+      label: 'Grandfathered',
+      admin: {
+        position: 'sidebar',
+        description: 'Whether the plan is grandfathered (active but not shown to new customers)',
+      },
+    },
+    {
+      name: 'needsApplication',
+      type: 'checkbox',
+      defaultValue: false,
+      label: 'Needs Application',
+      admin: {
+        position: 'sidebar',
+        description:
+          'Whether the plan needs an application to be approved (this will point to the application form)',
+      },
+    },
+    {
+      name: 'applicationForm',
+      type: 'text',
+      label: 'Application Form URL',
+      admin: {
+        position: 'sidebar',
+        description: 'The URL of the application form for the plan',
+        condition: (data) => data.needsApplication,
+      },
+    },
+    {
+      name: 'isSpecial',
+      type: 'checkbox',
+      defaultValue: false,
+      label: 'Is Special',
+      admin: {
+        position: 'sidebar',
+        description: 'Special Plans are shown as a larger card under the regular plans grid',
       },
     },
   ],

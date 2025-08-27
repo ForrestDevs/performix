@@ -11,11 +11,9 @@ import { cn } from '@/lib/utilities/ui'
 interface LessonCardProps {
   lessonId: number
   hasPlan: boolean
-  moduleSlug?: string
-  volumeSlug?: string
 }
 
-export async function LessonCard({ lessonId, hasPlan, moduleSlug, volumeSlug }: LessonCardProps) {
+export async function LessonCard({ lessonId, hasPlan }: LessonCardProps) {
   const lesson = await getLessonById(lessonId)
   const lessonProgress = await getLessonCompletion(lessonId)
 

@@ -79,40 +79,16 @@ export default function PerformixLabPage() {
 }
 
 async function LabContentSection() {
-  const [sections, modules, user] = await Promise.all([
-    getLabSections(),
-    getModules(),
-    getCurrentUser(),
-  ])
+  const labSections = await getLabSections()
+  const user = await getCurrentUser()
 
   const hasAccess = user ? await isEnrolledInAnyPlan(user.id) : false
 
-  // If LabSections are configured, use them; otherwise fallback to traditional modules view
-  if (sections && sections.length > 0) {
-    return (
-      <div className="space-y-16 max-w-7xl mx-auto">
-        {sections.map((section) => (
-          <LabSection key={section.id} section={section} hasAccess={hasAccess} userId={user?.id} />
-        ))}
-      </div>
-    )
-  }
-
   return (
-    <div className="max-w-7xl mx-auto">
-      <div className="text-center mb-12">
-        <h2 className="text-3xl font-bold text-gray-900 mb-4">Training Modules</h2>
-        <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-          Each module contains carefully structured volumes and lessons designed to progressively
-          build your skills and knowledge.
-        </p>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
-        {modules.map((module) => (
-          <ModuleCard key={module.id} module={module} hasPlan={hasAccess} userId={user?.id || 0} />
-        ))}
-      </div>
+    <div className="space-y-16 max-w-7xl mx-auto">
+      {labSections?.map((section) => (
+        <LabSection key={section.id} section={section} hasAccess={hasAccess} userId={user?.id} />
+      ))}
     </div>
   )
 }

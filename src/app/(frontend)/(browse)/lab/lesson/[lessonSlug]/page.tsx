@@ -1,28 +1,11 @@
-import React, { Suspense } from 'react'
+import React from 'react'
 import Link from 'next/link'
-import { notFound, redirect } from 'next/navigation'
-import {
-  ArrowLeft,
-  BookOpen,
-  Play,
-  Lock,
-  Download,
-  Clock,
-  ChevronRight,
-  CheckCircle,
-  Users,
-} from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { notFound } from 'next/navigation'
+import { Lock, Download } from 'lucide-react'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Skeleton } from '@/components/ui/skeleton'
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import {
-  getLessonBySlug,
-  getLessonBySlugDirect,
-  getLessonCompletion,
-  getVolumeBySlug,
-} from '@/lib/data/lab'
+import { getLessonBySlugDirect, getLessonCompletion } from '@/lib/data/lab'
 import { isEnrolledInAnyPlan } from '@/lib/data/plans'
 import { getCurrentUser } from '@/lib/data/auth'
 import RichText from '@/components/RichText2'
@@ -55,7 +38,7 @@ export async function generateMetadata(props: DirectLessonPageProps) {
   }
 }
 
-export default async function DirectLessonPage(props: DirectLessonPageProps) {
+export default async function LessonPage(props: DirectLessonPageProps) {
   const params = await props.params
   const [lesson, user] = await Promise.all([
     getLessonBySlugDirect(params.lessonSlug),

@@ -37,6 +37,11 @@ export const createNewInStripe: CollectionBeforeValidateHook = async (args) => {
               name: dataRef?.title || 'N/A',
               description: dataRef?.description || '',
               active: true,
+              metadata: {
+                needsApplication: dataRef?.needsApplication ? 'true' : 'false',
+                applicationForm: dataRef?.applicationForm || '',
+                grandfathered: dataRef?.grandfathered ? 'true' : 'false',
+              },
               marketing_features: [
                 {
                   name: (dataRef?.bestFor as string).slice(0, 79) || '',
@@ -45,10 +50,14 @@ export const createNewInStripe: CollectionBeforeValidateHook = async (args) => {
               default_price_data: {
                 currency: 'USD',
                 unit_amount: (dataRef?.price || 0) * 100,
-                recurring: {
-                  interval: dataRef?.period === 'monthly' ? 'month' : 'year',
-                  interval_count: 1,
-                },
+                ...(dataRef?.period === 'one-time'
+                  ? {}
+                  : {
+                      recurring: {
+                        interval: dataRef?.period === 'monthly' ? 'month' : 'year',
+                        interval_count: 1,
+                      },
+                    }),
               },
             })
 
@@ -83,6 +92,11 @@ export const createNewInStripe: CollectionBeforeValidateHook = async (args) => {
             name: dataRef?.title || 'N/A',
             description: dataRef?.description || '',
             active: true,
+            metadata: {
+              needsApplication: dataRef?.needsApplication ? 'true' : 'false',
+              applicationForm: dataRef?.applicationForm || '',
+              grandfathered: dataRef?.grandfathered ? 'true' : 'false',
+            },
             marketing_features: [
               {
                 name: (dataRef?.bestFor as string).slice(0, 79) || '',
@@ -91,10 +105,14 @@ export const createNewInStripe: CollectionBeforeValidateHook = async (args) => {
             default_price_data: {
               currency: 'USD',
               unit_amount: (dataRef?.price || 0) * 100,
-              recurring: {
-                interval: dataRef?.period === 'monthly' ? 'month' : 'year',
-                interval_count: 1,
-              },
+              ...(dataRef?.period === 'one-time'
+                ? {}
+                : {
+                    recurring: {
+                      interval: dataRef?.period === 'monthly' ? 'month' : 'year',
+                      interval_count: 1,
+                    },
+                  }),
             },
           })
 

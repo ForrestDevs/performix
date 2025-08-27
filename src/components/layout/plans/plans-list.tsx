@@ -6,13 +6,28 @@ import { getCurrentUser } from '@/lib/data/auth'
 export async function PlansList() {
   const plans = await getPlans()
   const user = await getCurrentUser()
- 
+
+  const specialPlans = plans.filter((plan) => plan.isSpecial)
+  const regularPlans = plans.filter((plan) => !plan.isSpecial)
 
   return (
     <section className="py-16 -mt-8">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 lg:gap-8 max-w-7xl mx-auto">
-          {plans.map((plan, index) => {
+          {regularPlans.map((plan, index) => {
+            return (
+              <PlanCard
+                key={index}
+                plan={plan}
+                index={index}
+                isAuthenticated={!!user}
+                userId={user?.id}
+              />
+            )
+          })}
+        </div>
+        <div className="grid grid-cols-1 max-w-7xl mx-auto py-16">
+          {specialPlans.map((plan, index) => {
             return (
               <PlanCard
                 key={index}

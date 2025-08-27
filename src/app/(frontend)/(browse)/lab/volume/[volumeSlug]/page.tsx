@@ -185,13 +185,7 @@ export default async function DirectVolumePage(props: DirectVolumePageProps) {
                 <h2 className="text-2xl font-bold mb-6">Lessons</h2>
                 <div className="grid gap-4">
                   {volume.lessons.docs.map((lesson: Lesson, index: number) => (
-                    <LessonCard
-                      key={lesson.id}
-                      lessonId={lesson.id}
-                      moduleSlug={labModule?.slug || 'direct'}
-                      volumeSlug={volume.slug!}
-                      hasPlan={hasAccess}
-                    />
+                    <LessonCard key={lesson.id} lessonId={lesson.id} hasPlan={hasAccess} />
                   ))}
                 </div>
               </div>

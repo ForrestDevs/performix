@@ -11,15 +11,20 @@ import { cn } from '@/lib/utilities/ui'
 import RichText from '@/components/RichText'
 import { LabSection as LabSectionType, Lesson, Module, Volume } from '@/payload-types'
 import { VolumeLoadingCard } from '../volumes/loading-card'
+import { getLabSectionContent } from '@/lib/data/lab'
 
 interface LabSectionProps {
-  section: LabSectionType // Lab section data
+  section: Pick<LabSectionType, 'id' | 'title' | 'subtitle'> // Lab section data
   hasAccess: boolean
   userId?: number
   className?: string
 }
 
-export function LabSection({ section, hasAccess, userId, className }: LabSectionProps) {
+export async function LabSection({ section, hasAccess, userId, className }: LabSectionProps) {
+  const content = await getLabSectionContent(section.id)
+
+  if (!content) return null
+
   const getContentTypeLabel = (contentType: string) => {
     switch (contentType) {
       case 'modules':
@@ -37,9 +42,9 @@ export function LabSection({ section, hasAccess, userId, className }: LabSection
 
   const hasContent = () => {
     return (
-      (section.modules && section.modules.length > 0) ||
-      (section.volumes && section.volumes.length > 0) ||
-      (section.lessons && section.lessons.length > 0)
+      (content.modules && content.modules.length > 0) ||
+      (content.volumes && content.volumes.length > 0) ||
+      (content.lessons && content.lessons.length > 0)
     )
   }
 
@@ -54,22 +59,22 @@ export function LabSection({ section, hasAccess, userId, className }: LabSection
             {section.subtitle && <p className="text-lg text-gray-600 mt-1">{section.subtitle}</p>}
           </div>
           <Badge variant="outline" className="ml-auto">
-            {getContentTypeLabel(section.contentType)}
+            {getContentTypeLabel(content.contentType)}
           </Badge>
         </div>
       </div>
 
       <div className="space-y-8">
-        {section.modules && section.modules.length > 0 && (
+        {content.modules && content.modules.length > 0 && (
           <div>
-            {section.contentType === 'mixed' && (
+            {content.contentType === 'mixed' && (
               <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
                 <BookOpen className="h-5 w-5" />
                 Modules
               </h3>
             )}
             <div className={cn('grid gap-6', 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3')}>
-              {section.modules.map((module: Module, index: number) => (
+              {content.modules.map((module: Module, index: number) => (
                 <ModuleCard
                   key={module.id}
                   module={module}
@@ -81,16 +86,16 @@ export function LabSection({ section, hasAccess, userId, className }: LabSection
           </div>
         )}
 
-        {section.volumes && section.volumes.length > 0 && (
+        {content.volumes && content.volumes.length > 0 && (
           <div>
-            {section.contentType === 'mixed' && (
+            {content.contentType === 'mixed' && (
               <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
                 <Layers className="h-5 w-5" />
                 Volumes
               </h3>
             )}
             <div className={cn('grid gap-6', 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3')}>
-              {section.volumes.map((volume: Volume, index: number) => (
+              {content.volumes.map((volume: Volume, index: number) => (
                 <Suspense key={volume.id} fallback={<VolumeLoadingCard />}>
                   <VolumeCard
                     key={volume.id}
@@ -105,17 +110,19 @@ export function LabSection({ section, hasAccess, userId, className }: LabSection
           </div>
         )}
 
-        {section.lessons && section.lessons.length > 0 && (
+        {content.lessons && content.lessons.length > 0 && (
           <div>
-            {section.contentType === 'mixed' && (
+            {content.contentType === 'mixed' && (
               <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
                 <Play className="h-5 w-5" />
                 Lessons
               </h3>
             )}
             <div className={cn('grid gap-4', 'grid-cols-1 md:grid-cols-2')}>
-              {section.lessons.map((lesson: Lesson, index: number) => (
-                <LessonCard key={lesson.id} lessonId={lesson.id} hasPlan={hasAccess} />
+              {content.lessons.map((lesson: Lesson, index: number) => (
+                <div key={index}>
+                  <LessonCard key={lesson.id} lessonId={lesson.id} hasPlan={hasAccess} />
+                </div>
               ))}
             </div>
           </div>

@@ -26,6 +26,11 @@ export const syncExistingWithStripe: CollectionBeforeChangeHook = async (args) =
             name: data.title || 'N/A',
             description: data.description || '',
             active: true,
+            metadata: {
+              needsApplication: data.needsApplication ? 'true' : 'false',
+              applicationForm: data.applicationForm || '',
+              grandfathered: data.grandfathered ? 'true' : 'false',
+            },
             marketing_features: [
               {
                 name: (data.bestFor as string).slice(0, 79) || '',
@@ -33,15 +38,19 @@ export const syncExistingWithStripe: CollectionBeforeChangeHook = async (args) =
             ],
           })
 
-          if (data.price !== originalDoc.price) {
+          if (data.price !== originalDoc.price || data.period !== originalDoc.period) {
             const newPrice = await stripeClient.prices.create({
               product: originalDoc.stripeProductId,
               currency: 'USD',
               unit_amount: (data.price || 0) * 100,
-              recurring: {
-                interval: data.period === 'monthly' ? 'month' : 'year',
-                interval_count: 1,
-              },
+              ...(data.period === 'one-time'
+                ? {}
+                : {
+                    recurring: {
+                      interval: data.period === 'monthly' ? 'month' : 'year',
+                      interval_count: 1,
+                    },
+                  }),
             })
 
             await stripeClient.products.update(originalDoc.stripeProductId, {

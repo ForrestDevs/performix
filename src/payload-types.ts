@@ -793,7 +793,23 @@ export interface Plan {
   stripeProductId?: string | null;
   stripePriceId?: string | null;
   price?: number | null;
-  period?: ('monthly' | 'yearly') | null;
+  period?: ('monthly' | 'yearly' | 'one-time') | null;
+  /**
+   * Whether the plan is grandfathered (active but not shown to new customers)
+   */
+  grandfathered?: boolean | null;
+  /**
+   * Whether the plan needs an application to be approved (this will point to the application form)
+   */
+  needsApplication?: boolean | null;
+  /**
+   * The URL of the application form for the plan
+   */
+  applicationForm?: string | null;
+  /**
+   * Special Plans are shown as a larger card under the regular plans grid
+   */
+  isSpecial?: boolean | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1982,6 +1998,10 @@ export interface PlansSelect<T extends boolean = true> {
   stripePriceId?: T;
   price?: T;
   period?: T;
+  grandfathered?: T;
+  needsApplication?: T;
+  applicationForm?: T;
+  isSpecial?: T;
   updatedAt?: T;
   createdAt?: T;
 }

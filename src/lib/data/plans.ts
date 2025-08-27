@@ -20,6 +20,13 @@ export async function getPlans() {
           bestFor: true,
           price: true,
           mostPopular: true,
+          isSpecial: true,
+          grandfathered: true,
+          needsApplication: true,
+          applicationForm: true,
+        },
+        where: {
+          grandfathered: { equals: false },
         },
         limit: 100,
       })

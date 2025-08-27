@@ -11,7 +11,19 @@ import { useEffect, useState } from 'react'
 import { isEnrolled } from '@/lib/data/plans'
 
 interface PlanCardProps {
-  plan: Pick<Plan, 'id' | 'title' | 'description' | 'includes' | 'bestFor' | 'price' | 'mostPopular'>
+  plan: Pick<
+    Plan,
+    | 'id'
+    | 'title'
+    | 'description'
+    | 'includes'
+    | 'bestFor'
+    | 'price'
+    | 'mostPopular'
+    | 'isSpecial'
+    | 'needsApplication'
+    | 'applicationForm'
+  >
   index: number
   isAuthenticated: boolean
   userId: number | undefined
@@ -41,27 +53,34 @@ const getColorVariant = (index: number) => colorMap[(index % 4) as keyof typeof 
 export function PlanCard({ plan, index, isAuthenticated, userId }: PlanCardProps) {
   const visibleElements = useScrollAnimation()
   const isVisible = (id: string) => visibleElements.has(id)
-  const { color, textColor } = getColorVariant(index)
+  const { color, textColor } = plan.isSpecial ? colorMap[3] : getColorVariant(index)
 
   const [enrolled, setEnrolled] = useState(false)
 
   useEffect(() => {
     if (!userId) return
     const checkEnrollment = async () => {
-
       const isEnrolledInPlan = await isEnrolled(userId, plan.id)
-    
+
       setEnrolled(isEnrolledInPlan)
     }
     checkEnrollment()
   }, [])
 
-  const buttonText = isAuthenticated ? (enrolled ? 'Enrolled' : 'Subscribe') : 'Get Started'
-  const buttonLink = isAuthenticated
-    ? enrolled
-      ? '/student'
-      : `/checkout?t=plan&pid=${plan.id}`
-    : '/get-started'
+  const buttonText = plan.needsApplication
+    ? 'Apply'
+    : isAuthenticated
+      ? enrolled
+        ? 'Enrolled'
+        : 'Subscribe'
+      : 'Get Started'
+  const buttonLink = plan.needsApplication
+    ? `${plan.applicationForm}`
+    : isAuthenticated
+      ? enrolled
+        ? '/student'
+        : `/checkout?t=plan&pid=${plan.id}`
+      : '/get-started'
 
   return (
     <div
@@ -88,12 +107,12 @@ export function PlanCard({ plan, index, isAuthenticated, userId }: PlanCardProps
           </div>
         )}
         <CardHeader className="text-center pt-6 sm:pt-8 pb-4 sm:pb-6 px-4 sm:px-6 space-y-2">
-          <h3 className={`text-lg sm:text-xl lg:text-2xl font-bold leading-tight tracking-wider uppercase ${textColor}`}>
+          <h3
+            className={`text-lg sm:text-xl lg:text-2xl font-bold leading-tight tracking-wider uppercase ${textColor}`}
+          >
             {plan.title}
           </h3>
-          <p className="text-gray-600 text-sm sm:text-base lg:text-base mt-2">
-            {plan.description}
-          </p>
+          <p className="text-gray-600 text-sm sm:text-base lg:text-base mt-2">{plan.description}</p>
           <div className="my-2">
             <span className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 tracking-tighter">
               ${plan.price}
@@ -126,12 +145,13 @@ export function PlanCard({ plan, index, isAuthenticated, userId }: PlanCardProps
             )}
           </div>
         </CardContent>
-        <CardFooter className="pt-4 pb-8">
+        <CardFooter className="pt-4 pb-8 flex justify-center">
           <Link
             href={buttonLink}
             className={cn(
               buttonVariants(),
               'w-full text-white',
+              plan.isSpecial && 'max-w-md',
               plan.mostPopular
                 ? 'bg-[#0891B2] hover:bg-[#0E7490]'
                 : 'bg-blue-500 hover:bg-blue-600',

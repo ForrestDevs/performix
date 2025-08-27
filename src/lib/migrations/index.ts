@@ -30,6 +30,7 @@ import * as migration_20250716_191632_videoFolders from './20250716_191632_video
 import * as migration_20250716_202328_labv2 from './20250716_202328_labv2';
 import * as migration_20250717_155248_progress from './20250717_155248_progress';
 import * as migration_20250720_153822_labSections from './20250720_153822_labSections';
+import * as migration_20250827_174649_plans2 from './20250827_174649_plans2';
 
 export const migrations = [
   {
@@ -190,6 +191,11 @@ export const migrations = [
   {
     up: migration_20250720_153822_labSections.up,
     down: migration_20250720_153822_labSections.down,
-    name: '20250720_153822_labSections'
+    name: '20250720_153822_labSections',
+  },
+  {
+    up: migration_20250827_174649_plans2.up,
+    down: migration_20250827_174649_plans2.down,
+    name: '20250827_174649_plans2'
   },
 ];

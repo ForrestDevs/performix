@@ -203,20 +203,41 @@ export async function getModuleBySlug(slug: string) {
       return modules.docs[0]
     },
     {
-      tags: [CACHE_TAGS.GET_LAB_MODULES_BY_SLUG + slug],
+      tags: (slug: string) => [CACHE_TAGS.GET_LAB_MODULES_BY_SLUG + slug],
     },
   )
 
   return cacheFn(slug)
 }
 
+export async function getModulesByIds(moduleIds: number[]) {
+  if (moduleIds.length === 0) return []
+  const cacheFn = cache(
+    async (moduleIds: number[]) => {
+      const payload = await getPayload()
+
+      const modules = await payload.find({
+        collection: MODULES_SLUG,
+        where: { id: { in: moduleIds } },
+        limit: 100,
+      })
+
+      return modules.docs
+    },
+    {
+      tags: (moduleIds: number[]) => moduleIds.map((id) => CACHE_TAGS.GET_LAB_MODULES_BY_ID + id),
+    },
+  )
+
+  return cacheFn(moduleIds)
+}
 /**
  * Get a specific volume with its lessons (publicly accessible for structure, content access controlled)
  * Used for: Volume detail pages showing lesson list
  */
-export async function getVolumeBySlug(moduleSlug: string, volumeSlug: string) {
+export async function getVolumeBySlug(volumeSlug: string) {
   const cacheFn = cache(
-    async (moduleSlug: string, volumeSlug: string) => {
+    async (volumeSlug: string) => {
       const payload = await getPayload()
 
       // Get the volume
@@ -251,24 +272,41 @@ export async function getVolumeBySlug(moduleSlug: string, volumeSlug: string) {
       }
     },
     {
-      tags: [CACHE_TAGS.GET_LAB_VOLUMES_BY_SLUG + volumeSlug],
+      tags: (volumeSlug: string) => [CACHE_TAGS.GET_LAB_VOLUMES_BY_SLUG + volumeSlug],
     },
   )
-  return cacheFn(moduleSlug, volumeSlug)
+  return cacheFn(volumeSlug)
+}
+
+export async function getVolumesByIds(volumeIds: number[]) {
+  if (volumeIds.length === 0) return []
+  const cacheFn = cache(
+    async (volumeIds: number[]) => {
+      const payload = await getPayload()
+
+      const volumes = await payload.find({
+        collection: VOLUMES_SLUG,
+        where: { id: { in: volumeIds } },
+        limit: 100,
+      })
+
+      return volumes.docs
+    },
+    {
+      tags: (volumeIds: number[]) => volumeIds.map((id) => CACHE_TAGS.GET_LAB_VOLUMES_BY_ID + id),
+    },
+  )
+
+  return cacheFn(volumeIds)
 }
 
 /**
  * Get a specific lesson with full content (access controlled)
  * Used for: Lesson detail pages with video content
  */
-export async function getLessonBySlug(
-  moduleSlug: string,
-  volumeSlug: string,
-  lessonSlug: string,
-  hasPlan?: boolean,
-) {
+export async function getLessonBySlug(lessonSlug: string, hasPlan?: boolean) {
   const cacheFn = cache(
-    async (moduleSlug: string, volumeSlug: string, lessonSlug: string, hasPlan?: boolean) => {
+    async (lessonSlug: string, hasPlan?: boolean) => {
       const payload = await getPayload()
 
       // Get the lesson
@@ -315,11 +353,11 @@ export async function getLessonBySlug(
       }
     },
     {
-      tags: [CACHE_TAGS.GET_LAB_LESSONS_BY_SLUG + lessonSlug],
+      tags: (lessonSlug: string) => [CACHE_TAGS.GET_LAB_LESSONS_BY_SLUG + lessonSlug],
     },
   )
 
-  return cacheFn(moduleSlug, volumeSlug, lessonSlug, hasPlan)
+  return cacheFn(lessonSlug, hasPlan)
 }
 
 export async function getLessonById(lessonId: number) {
@@ -336,11 +374,33 @@ export async function getLessonById(lessonId: number) {
       return lesson.docs[0]
     },
     {
-      tags: [CACHE_TAGS.GET_LAB_LESSONS_BY_ID + lessonId],
+      tags: (lessonId: number) => [CACHE_TAGS.GET_LAB_LESSONS_BY_ID + lessonId],
     },
   )
 
   return cacheFn(lessonId)
+}
+
+export async function getLessonsByIds(lessonIds: number[]) {
+  if (lessonIds.length === 0) return []
+  const cacheFn = cache(
+    async (lessonIds: number[]) => {
+      const payload = await getPayload()
+
+      const lessons = await payload.find({
+        collection: LESSONS_SLUG,
+        where: { id: { in: lessonIds } },
+        limit: 100,
+      })
+
+      return lessons.docs
+    },
+    {
+      tags: (lessonIds: number[]) => lessonIds.map((id) => CACHE_TAGS.GET_LAB_LESSONS_BY_ID + id),
+    },
+  )
+
+  return cacheFn(lessonIds)
 }
 
 /**
@@ -378,19 +438,6 @@ export async function getLabStats() {
 }
 
 /**
- * Calculate estimated completion time
- */
-function calculateEstimatedTime(totalLessons: number): string {
-  const estimatedMinutes = totalLessons * 15 // 15 minutes per lesson
-  const hours = Math.floor(estimatedMinutes / 60)
-  const minutes = estimatedMinutes % 60
-
-  if (hours === 0) return `${minutes} minutes`
-  if (minutes === 0) return `${hours} hour${hours > 1 ? 's' : ''}`
-  return `${hours}h ${minutes}m`
-}
-
-/**
  * Get a volume by slug directly (without requiring module context)
  * Used for: Direct volume access via LabSections
  */
@@ -413,7 +460,7 @@ export async function getVolumeBySlugDirect(volumeSlug: string) {
       return volumes.docs[0] || null
     },
     {
-      tags: [CACHE_TAGS.GET_LAB_VOLUMES_BY_SLUG + volumeSlug],
+      tags: (volumeSlug: string) => [CACHE_TAGS.GET_LAB_VOLUMES_BY_SLUG + volumeSlug],
     },
   )
 
@@ -443,7 +490,7 @@ export async function getLessonBySlugDirect(lessonSlug: string) {
       return lessons.docs[0] || null
     },
     {
-      tags: [CACHE_TAGS.GET_LAB_LESSONS],
+      tags: (lessonSlug: string) => [CACHE_TAGS.GET_LAB_LESSONS_BY_SLUG + lessonSlug],
     },
   )
 
@@ -519,7 +566,12 @@ export async function getLabSections() {
       const sections = await payload.find({
         collection: LAB_SECTIONS_SLUG,
         sort: 'order',
-        depth: 3, // Include all related content
+        depth: 1, // Include all related content
+        select: {
+          title: true,
+          subtitle: true,
+          order: true,
+        },
         limit: 100,
       })
 
@@ -533,51 +585,84 @@ export async function getLabSections() {
   return cacheFn()
 }
 
-/**
- * Get content for a specific lab section with access control
- */
-export async function getLabSectionContent(sectionId: number, userId?: number) {
+export async function getLabSection(sectionId: number) {
   const cacheFn = cache(
-    async (sectionId: number, userId?: number) => {
+    async (sectionId: number) => {
       const payload = await getPayload()
 
       const section = await payload.findByID({
         collection: LAB_SECTIONS_SLUG,
         id: sectionId,
-        depth: 2,
+        depth: 1,
       })
 
-      if (!section) return null
-
-      // Check user access for content filtering
-      const hasPlan = userId ? await isEnrolledInAnyPlan(userId) : false
-
-      // Process content based on type and access
-      const processedContent = {
-        ...section,
-        modules:
-          section.modules?.map((module: Module) => ({
-            ...module,
-            isAccessible: hasPlan,
-          })) || [],
-        volumes:
-          section.volumes?.map((volume: Volume) => ({
-            ...volume,
-            isAccessible: hasPlan,
-          })) || [],
-        lessons:
-          section.lessons?.map((lesson: Lesson) => ({
-            ...lesson,
-            isAccessible: hasLessonAccess(lesson, hasPlan),
-          })) || [],
-      }
-
-      return processedContent
+      return section
     },
     {
-      tags: [CACHE_TAGS.GET_LAB_SECTIONS],
+      tags: (sectionId: number) => [CACHE_TAGS.GET_LAB_SECTION + sectionId],
     },
   )
 
-  return cacheFn(sectionId, userId)
+  return cacheFn(sectionId)
+}
+
+/**
+ * Get content for a specific lab section with access control
+ */
+export async function getLabSectionContent(sectionId: number) {
+  const cacheFn = cache(
+    async (sectionId: number) => {
+      const section = await getLabSection(sectionId)
+      if (!section) return null
+
+      const moduleIds =
+        section.modules?.map((module) => (typeof module === 'object' ? module.id : module)) || []
+      const volumeIds =
+        section.volumes?.map((volume) => (typeof volume === 'object' ? volume.id : volume)) || []
+      const lessonIds =
+        section.lessons?.map((lesson) => (typeof lesson === 'object' ? lesson.id : lesson)) || []
+
+      let modules: Module[] = []
+      let volumes: Volume[] = []
+      let lessons: Lesson[] = []
+
+      switch (section.contentType) {
+        case 'modules':
+          if (section.modules?.length === 0) break
+          modules = await getModulesByIds(moduleIds)
+        case 'volumes':
+          if (section.volumes?.length === 0) break
+          volumes = await getVolumesByIds(volumeIds)
+        case 'lessons':
+          if (section.lessons?.length === 0) break
+          lessons = await getLessonsByIds(lessonIds)
+        case 'mixed':
+          if (section.modules?.length === 0) break
+          if (section.volumes?.length === 0) break
+          if (section.lessons?.length === 0) break
+          const res: [Module[], Volume[], Lesson[]] = await Promise.all([
+            getModulesByIds(moduleIds),
+            getVolumesByIds(volumeIds),
+            getLessonsByIds(lessonIds),
+          ])
+          modules = res[0]
+          volumes = res[1]
+          lessons = res[2]
+      }
+
+      const content = {
+        ...section,
+        modules,
+        volumes,
+        lessons,
+      }
+
+      return content
+    },
+    {
+      tags: (sectionId: number) => [CACHE_TAGS.GET_LAB_SECTION_CONTENT + sectionId],
+    },
+  )
+
+  return cacheFn(sectionId)
 }
