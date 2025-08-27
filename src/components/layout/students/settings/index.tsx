@@ -4,14 +4,7 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
+import { Card, CardContent, CardFooter } from '@/components/ui/card'
 import { Checkbox } from '@/components/ui/checkbox'
 import {
   Dialog,
@@ -35,12 +28,11 @@ import {
 } from '@/components/ui/table'
 import { X } from 'lucide-react'
 import Image from 'next/image'
-import { authClient, authClient as client } from '@/lib/auth/client'
-import { useBetterAuth } from '@/lib/auth/context'
+import { authClient } from '@/lib/auth/client'
 import { MobileIcon } from '@radix-ui/react-icons'
 import { Edit, Laptop, Loader2, LogOut, ShieldCheck, ShieldOff } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import { use, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import { UAParser } from 'ua-parser-js'
 
@@ -137,7 +129,7 @@ export function UserCard() {
                 className="w-full sm:w-auto"
                 disabled={emailVerificationPending}
                 onClick={async () => {
-                  await client.sendVerificationEmail(
+                  await authClient.sendVerificationEmail(
                     {
                       email: currentUser?.email || '',
                     },
@@ -222,7 +214,7 @@ export function UserCard() {
                                 disabled={isTerminating === sessionData.id}
                                 onClick={async () => {
                                   setIsTerminating(sessionData.id)
-                                  const res = await client.revokeSession({
+                                  const res = await authClient.revokeSession({
                                     token: sessionData.token,
                                   })
 
@@ -264,7 +256,7 @@ export function UserCard() {
             disabled={isSignOut}
             onClick={async () => {
               setIsSignOut(true)
-              await client.signOut({
+              await authClient.signOut({
                 fetchOptions: {
                   onSuccess() {
                     router.push('/')
@@ -374,7 +366,7 @@ function ChangePassword() {
                 return
               }
               setLoading(true)
-              const res = await client.changePassword({
+              const res = await authClient.changePassword({
                 newPassword: newPassword,
                 currentPassword: currentPassword,
                 revokeOtherSessions: signOutDevices,
@@ -481,7 +473,7 @@ function EditUserDialog() {
             disabled={isLoading}
             onClick={async () => {
               setIsLoading(true)
-              await client
+              await authClient
                 .updateUser({
                   image: image ? await convertImageToBase64(image) : undefined,
                   name: name ? name : undefined,

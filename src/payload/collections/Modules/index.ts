@@ -4,7 +4,7 @@ import { slugField } from '@/payload/fields/slug'
 import { admin, anyone, isAdminOrProducer } from '@/payload/access'
 import { revalidateLabModule } from './hooks/revalidate'
 
-export const Modules: CollectionConfig = {
+const Modules: CollectionConfig = {
   slug: MODULES_SLUG,
   labels: {
     singular: 'Module',
@@ -126,4 +126,6 @@ export const Modules: CollectionConfig = {
     },
   ],
   timestamps: true,
-}
+} as const
+
+export default Modules

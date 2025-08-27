@@ -92,8 +92,8 @@ export interface Config {
     modules: Module;
     volumes: Volume;
     'lab-sections': LabSection;
-    'payload-folders': FolderInterface;
     'payload-jobs': PayloadJob;
+    'payload-folders': FolderInterface;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -136,8 +136,8 @@ export interface Config {
     modules: ModulesSelect<false> | ModulesSelect<true>;
     volumes: VolumesSelect<false> | VolumesSelect<true>;
     'lab-sections': LabSectionsSelect<false> | LabSectionsSelect<true>;
-    'payload-folders': PayloadFoldersSelect<false> | PayloadFoldersSelect<true>;
     'payload-jobs': PayloadJobsSelect<false> | PayloadJobsSelect<true>;
+    'payload-folders': PayloadFoldersSelect<false> | PayloadFoldersSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -529,6 +529,7 @@ export interface FolderInterface {
     hasNextPage?: boolean;
     totalDocs?: number;
   };
+  folderType?: ('media' | 'videos')[] | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1262,21 +1263,24 @@ export interface LabSection {
    */
   order: number;
   /**
-   * The type of content this section will display
+   * The content of this section
    */
-  contentType: 'modules' | 'volumes' | 'lessons' | 'mixed';
-  /**
-   * Select modules to include in this section
-   */
-  modules?: (number | Module)[] | null;
-  /**
-   * Select volumes to include in this section
-   */
-  volumes?: (number | Volume)[] | null;
-  /**
-   * Select lessons to include in this section
-   */
-  lessons?: (number | Lesson)[] | null;
+  content?:
+    | (
+        | {
+            relationTo: 'modules';
+            value: number | Module;
+          }
+        | {
+            relationTo: 'volumes';
+            value: number | Volume;
+          }
+        | {
+            relationTo: 'lessons';
+            value: number | Lesson;
+          }
+      )[]
+    | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1480,12 +1484,12 @@ export interface PayloadLockedDocument {
         value: number | LabSection;
       } | null)
     | ({
-        relationTo: 'payload-folders';
-        value: number | FolderInterface;
-      } | null)
-    | ({
         relationTo: 'payload-jobs';
         value: number | PayloadJob;
+      } | null)
+    | ({
+        relationTo: 'payload-folders';
+        value: number | FolderInterface;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -2091,21 +2095,7 @@ export interface LabSectionsSelect<T extends boolean = true> {
   title?: T;
   subtitle?: T;
   order?: T;
-  contentType?: T;
-  modules?: T;
-  volumes?: T;
-  lessons?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "payload-folders_select".
- */
-export interface PayloadFoldersSelect<T extends boolean = true> {
-  name?: T;
-  folder?: T;
-  documentsAndFolders?: T;
+  content?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -2137,6 +2127,18 @@ export interface PayloadJobsSelect<T extends boolean = true> {
   queue?: T;
   waitUntil?: T;
   processing?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payload-folders_select".
+ */
+export interface PayloadFoldersSelect<T extends boolean = true> {
+  name?: T;
+  folder?: T;
+  documentsAndFolders?: T;
+  folderType?: T;
   updatedAt?: T;
   createdAt?: T;
 }

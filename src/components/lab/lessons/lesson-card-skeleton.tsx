@@ -2,7 +2,7 @@ import React from 'react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 
-export function LessonCardLoadingSkeleton() {
+export function LessonLoadingCard() {
   return (
     <Card className="overflow-hidden">
       <CardContent className="p-6">

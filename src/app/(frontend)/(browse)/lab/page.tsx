@@ -81,13 +81,12 @@ export default function PerformixLabPage() {
 async function LabContentSection() {
   const labSections = await getLabSections()
   const user = await getCurrentUser()
-
   const hasAccess = user ? await isEnrolledInAnyPlan(user.id) : false
 
   return (
     <div className="space-y-16 max-w-7xl mx-auto">
       {labSections?.map((section) => (
-        <LabSection key={section.id} section={section} hasAccess={hasAccess} userId={user?.id} />
+        <LabSection key={section.id} section={section} hasAccess={hasAccess} />
       ))}
     </div>
   )

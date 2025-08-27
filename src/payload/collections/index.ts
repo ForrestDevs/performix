@@ -1,7 +1,7 @@
-import { Progress } from './Progress'
-import { Reviews } from './Reviews'
-import { Media } from './Media'
-import { Pages } from './Pages'
+import Progress from './Progress'
+import Reviews from './Reviews'
+import Media from './Media'
+import Pages from './Pages'
 
 import Lessons from './Lessons'
 import Blueprints from './Blueprints'
@@ -17,8 +17,8 @@ import Schools from './Schools'
 import Transactions from './Transactions'
 import Plans from './Plans'
 import Videos from './Videos'
-import { Modules } from './Modules'
-import { Volumes } from './Volumes'
+import Modules from './Modules'
+import Volumes from './Volumes'
 import LabSections from './LabSections'
 
 export const collections = [

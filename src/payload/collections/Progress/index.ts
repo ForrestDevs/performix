@@ -4,7 +4,7 @@ import { USER_SLUG } from '../constants'
 import { admin } from '@/payload/access'
 import { revalidateLabProgress } from './hooks/revalidate'
 
-export const Progress: CollectionConfig = {
+const Progress: CollectionConfig = {
   slug: PROGRESS_SLUG,
   admin: {
     useAsTitle: 'id',
@@ -59,4 +59,6 @@ export const Progress: CollectionConfig = {
     },
   ],
   timestamps: true,
-}
+} as const
+
+export default Progress

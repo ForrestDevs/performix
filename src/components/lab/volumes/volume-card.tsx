@@ -13,27 +13,15 @@ import { ArrowRight, BookOpen, Star } from 'lucide-react'
 import { cn } from '@/lib/utilities/ui'
 import { buttonVariants } from '@/components/ui/button'
 import Link from 'next/link'
-import { getVolumeBySlugDirect, getVolumeCompletion } from '@/lib/data/lab'
+import { getVolumeById, getVolumeCompletion } from '@/lib/data/lab'
 import { Badge } from '@/components/ui/badge'
 
-export async function VolumeCard({
-  slug,
-  hasPlan,
-  userId,
-  moduleSlug,
-  useDirectRoute,
-}: {
-  slug: string
-  hasPlan: boolean
-  userId: number
-  moduleSlug?: string
-  useDirectRoute?: boolean
-}) {
-  const volume = await getVolumeBySlugDirect(slug)
+export async function VolumeCard({ volumeId, hasPlan }: { volumeId: number; hasPlan: boolean }) {
+  const volume = await getVolumeById(volumeId)
 
   if (!volume) return null
 
-  const progress = await getVolumeCompletion({ volumeId: volume.id, userId })
+  const progress = await getVolumeCompletion(volume.id)
 
   return (
     <Card className="group relative overflow-hidden bg-white hover:shadow-xl hover:shadow-blue-500/10 transition-all duration-500 hover:-translate-y-1 border-0 shadow-lg flex flex-col">

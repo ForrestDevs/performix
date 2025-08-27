@@ -59,13 +59,7 @@ export default async function DirectModulePage(props: DirectModulePageProps) {
   }
 
   const hasAccess = user ? await isEnrolledInAnyPlan(user.id) : false
-  const completion =
-    user && hasAccess
-      ? await getModuleCompletion({
-          moduleId: labModule?.id,
-          userId: user.id,
-        })
-      : null
+  const completion = user && hasAccess ? await getModuleCompletion(labModule?.id) : null
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -175,14 +169,8 @@ export default async function DirectModulePage(props: DirectModulePageProps) {
                 <h2 className="text-2xl font-bold mb-6">Volumes</h2>
                 <div className="grid gap-6">
                   {labModule?.volumes?.docs.map((volume: Volume, index: number) => (
-                    <Suspense key={volume.id} fallback={<VolumeLoadingCard />}>
-                      <VolumeCard
-                        key={volume.id}
-                        slug={volume.slug || ''}
-                        moduleSlug={labModule?.slug || ''}
-                        hasPlan={hasAccess}
-                        userId={user?.id || 0}
-                      />
+                    <Suspense key={index} fallback={<VolumeLoadingCard />}>
+                      <VolumeCard volumeId={volume.id} hasPlan={hasAccess} />
                     </Suspense>
                   ))}
                 </div>

@@ -1,17 +1,15 @@
 import type { CollectionConfig } from 'payload'
-
 import { authenticated } from '@/payload/access'
 import { authenticatedOrPublished } from '@/payload/access'
-// import { Archive } from '@/payload/blocks/ArchiveBlock/config'
 import { CallToAction } from '@/payload/blocks/CallToAction/config'
 import { Content } from '@/payload/blocks/Content/config'
-// import { FormBlock } from '@/payload/blocks/Form/config'
 import { MediaBlock } from '@/payload/blocks/MediaBlock/config'
 import { hero } from '@/payload/heros/config'
 import { slugField } from '@/payload/fields/slug'
 import { populatePublishedAt } from '@/payload/hooks/populatePublishedAt'
 import { generatePreviewPath } from '@/lib/utilities/generatePreviewPath'
 import { revalidateDelete, revalidatePage } from './hooks/revalidatePage'
+import { PAGE_SLUG } from '../constants'
 
 import {
   MetaDescriptionField,
@@ -21,8 +19,8 @@ import {
   PreviewField,
 } from '@payloadcms/plugin-seo/fields'
 
-export const Pages: CollectionConfig<'pages'> = {
-  slug: 'pages',
+const Pages: CollectionConfig<'pages'> = {
+  slug: PAGE_SLUG,
   access: {
     create: authenticated,
     delete: authenticated,
@@ -137,4 +135,6 @@ export const Pages: CollectionConfig<'pages'> = {
     },
     maxPerDoc: 50,
   },
-}
+} as const
+
+export default Pages

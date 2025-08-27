@@ -4,7 +4,7 @@ import { slugField } from '@/payload/fields/slug'
 import { anyone, isAdminOrProducer } from '@/payload/access'
 import { revalidateLabVolume } from './hooks/revalidate'
 
-export const Volumes: CollectionConfig = {
+const Volumes: CollectionConfig = {
   slug: VOLUMES_SLUG,
   labels: {
     singular: 'Volume',
@@ -127,4 +127,6 @@ export const Volumes: CollectionConfig = {
     },
   ],
   timestamps: true,
-}
+} as const
+
+export default Volumes

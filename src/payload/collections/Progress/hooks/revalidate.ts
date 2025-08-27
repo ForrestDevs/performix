@@ -1,8 +1,6 @@
 import type { CollectionAfterChangeHook } from 'payload'
-
 import { revalidateTag } from 'next/cache'
-
-import type { Lesson, Progress } from '@/payload-types'
+import type { Progress } from '@/payload-types'
 import { CACHE_TAGS } from '@/lib/cache/contants'
 
 export const revalidateLabProgress: CollectionAfterChangeHook<Progress> = ({ doc }) => {

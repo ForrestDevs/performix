@@ -34,7 +34,7 @@ export default async function Post({ params }: { params: Params }) {
     collection: ARTICLE_SLUG,
     where: { slug: { equals: slug } },
     depth: 3,
-    limit: 2,
+    limit: 1,
   })
 
   const post = docs[0]

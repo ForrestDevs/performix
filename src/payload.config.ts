@@ -9,13 +9,37 @@ import { collections } from './payload/collections'
 import { vercelPostgresAdapter } from '@payloadcms/db-vercel-postgres'
 import { allowedOrigins, serverURL } from './payload/allowed-origins'
 import { nodemailerAdapter } from '@payloadcms/email-nodemailer'
-import nodemailer from 'nodemailer'
 import { muxWebhooksHandler } from './payload/endpoints/mux-webhook'
 import { createMuxUploadHandler, getMuxUploadHandler } from './payload/endpoints/mux-upload'
 import mux from './lib/mux'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
+
+export const emailAdapter = () => {
+  if (process.env.NODE_ENV === 'development') {
+    return () => ({
+      name: 'dev',
+      defaultFromAddress: 'hello@performix.ca',
+      defaultFromName: 'Performix',
+      sendEmail: async (message) => {
+        console.log('Sending email', message)
+      },
+    })
+  }
+  return nodemailerAdapter({
+    defaultFromAddress: 'hello@performix.ca',
+    defaultFromName: 'Performix',
+    transportOptions: {
+      host: process.env.EMAIL_HOST || '',
+      port: Number(process.env.EMAIL_PORT) || 587,
+      auth: {
+        user: process.env.EMAIL_USER || '',
+        pass: process.env.EMAIL_PASSWORD || '',
+      },
+    },
+  })
+}
 
 export default buildConfig({
   serverURL: serverURL,
@@ -55,22 +79,7 @@ export default buildConfig({
       ],
     },
   },
-  ...(process.env.NODE_ENV === 'production'
-    ? {
-        email: nodemailerAdapter({
-          defaultFromAddress: 'hello@performix.ca',
-          defaultFromName: 'Performix',
-          transportOptions: {
-            host: process.env.EMAIL_HOST || '',
-            port: Number(process.env.EMAIL_PORT) || 587,
-            auth: {
-              user: process.env.EMAIL_USER || '',
-              pass: process.env.EMAIL_PASSWORD || '',
-            },
-          },
-        }),
-      }
-    : {}),
+  email: emailAdapter(),
   editor: defaultLexical,
   db: vercelPostgresAdapter({
     pool: {

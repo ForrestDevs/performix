@@ -58,59 +58,68 @@ const LabSections: CollectionConfig = {
       },
     },
     {
-      name: 'contentType',
-      type: 'select',
-      required: true,
-      options: [
-        { label: 'Modules', value: 'modules' },
-        { label: 'Volumes', value: 'volumes' },
-        { label: 'Lessons', value: 'lessons' },
-        { label: 'Mixed Content', value: 'mixed' },
-      ],
+      name: 'content',
+      type: 'relationship',
+      relationTo: [MODULES_SLUG, VOLUMES_SLUG, LESSONS_SLUG],
+      hasMany: true,
       admin: {
-        description: 'The type of content this section will display',
+        description: 'The content of this section',
       },
     },
-    {
-      type: 'tabs',
-      tabs: [
-        {
-          label: 'Content',
-          fields: [
-            {
-              name: 'modules',
-              type: 'relationship',
-              relationTo: MODULES_SLUG,
-              hasMany: true,
-              admin: {
-                condition: (data) => data.contentType === 'modules' || data.contentType === 'mixed',
-                description: 'Select modules to include in this section',
-              },
-            },
-            {
-              name: 'volumes',
-              type: 'relationship',
-              relationTo: VOLUMES_SLUG,
-              hasMany: true,
-              admin: {
-                condition: (data) => data.contentType === 'volumes' || data.contentType === 'mixed',
-                description: 'Select volumes to include in this section',
-              },
-            },
-            {
-              name: 'lessons',
-              type: 'relationship',
-              relationTo: LESSONS_SLUG,
-              hasMany: true,
-              admin: {
-                condition: (data) => data.contentType === 'lessons' || data.contentType === 'mixed',
-                description: 'Select lessons to include in this section',
-              },
-            },
-          ],
-        },
-      ],
-    },
+    // {
+    //   name: 'contentType',
+    //   type: 'select',
+    //   required: true,
+    //   options: [
+    //     { label: 'Modules', value: 'modules' },
+    //     { label: 'Volumes', value: 'volumes' },
+    //     { label: 'Lessons', value: 'lessons' },
+    //     { label: 'Mixed Content', value: 'mixed' },
+    //   ],
+    //   admin: {
+    //     description: 'The type of content this section will display',
+    //   },
+    // },
+    // {
+    //   type: 'tabs',
+    //   tabs: [
+    //     {
+    //       label: 'Content',
+    //       fields: [
+    //         {
+    //           name: 'modules',
+    //           type: 'relationship',
+    //           relationTo: MODULES_SLUG,
+    //           hasMany: true,
+    //           admin: {
+    //             condition: (data) => data.contentType === 'modules' || data.contentType === 'mixed',
+    //             description: 'Select modules to include in this section',
+    //           },
+    //         },
+    //         {
+    //           name: 'volumes',
+    //           type: 'relationship',
+    //           relationTo: VOLUMES_SLUG,
+    //           hasMany: true,
+    //           admin: {
+    //             condition: (data) => data.contentType === 'volumes' || data.contentType === 'mixed',
+    //             description: 'Select volumes to include in this section',
+    //           },
+    //         },
+    //         {
+    //           name: 'lessons',
+    //           type: 'relationship',
+    //           relationTo: LESSONS_SLUG,
+    //           hasMany: true,
+    //           admin: {
+    //             condition: (data) => data.contentType === 'lessons' || data.contentType === 'mixed',
+    //             description: 'Select lessons to include in this section',
+    //           },
+    //         },
+    //       ],
+    //     },
+    //   ],
+    // },
   ],
   timestamps: true,
 } as const

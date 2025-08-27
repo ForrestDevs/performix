@@ -6,7 +6,6 @@ import { Button, buttonVariants } from '@/components/ui/button'
 import { CreditCard, Calendar, DollarSign, Package } from 'lucide-react'
 import Link from 'next/link'
 import { cn } from '@/lib/utilities/ui'
-import { authClient } from '@/lib/auth/client'
 import { useEffect, useState } from 'react'
 
 // Mock data - replace with actual subscription data

@@ -1,8 +1,8 @@
 'use server'
 
-import { revalidateTag, unstable_cache } from 'next/cache'
+import { revalidateTag } from 'next/cache'
 import { getPayload } from '../utilities/getPayload'
-import { Module, Volume, Lesson, Video } from '@/payload-types'
+import { Video } from '@/payload-types'
 import { cache } from '../utilities/cache'
 import {
   LAB_SECTIONS_SLUG,
@@ -13,9 +13,9 @@ import {
   VOLUMES_SLUG,
 } from '@/payload/collections/constants'
 import { CACHE_TAGS } from '@/lib/cache/contants'
-import { isEnrolledInAnyPlan } from './plans'
 import { getCurrentUser } from './auth'
 import { hasLessonAccess } from '../utilities/hasLessonAccess'
+import { getMediaById } from './media'
 
 export interface LabStats {
   totalModules: number
@@ -51,33 +51,22 @@ export async function getModules() {
   return cacheFn()
 }
 
-export async function getModuleCompletion({
-  moduleId,
-  userId,
-}: {
-  moduleId: number | undefined
-  userId: number | undefined
-}) {
-  if (!moduleId || !userId) return null
+export async function getModuleCompletion(moduleId: number) {
+  const user = await getCurrentUser()
+
+  if (!user) return undefined
+
+  const labModule = await getModuleById(moduleId)
+
+  if (!labModule) return undefined
+
+  const lessons = labModule.lessons?.docs ?? []
+
+  const lessonIds = lessons.map((lesson) => (typeof lesson === 'object' ? lesson.id : lesson))
 
   const cacheFn = cache(
-    async (moduleId: number, userId: number) => {
+    async (userId: number) => {
       const payload = await getPayload()
-
-      const labModule = await payload.find({
-        collection: MODULES_SLUG,
-        where: {
-          id: { equals: moduleId },
-        },
-        limit: 1,
-        depth: 2,
-      })
-
-      if (labModule.docs.length === 0) return null
-
-      const lessons = labModule.docs[0]?.lessons?.docs ?? []
-
-      const lessonIds = lessons.map((lesson) => (typeof lesson === 'object' ? lesson.id : lesson))
 
       const progressCount = await payload
         .count({
@@ -109,39 +98,29 @@ export async function getModuleCompletion({
       }
     },
     {
-      tags: [CACHE_TAGS.GET_LAB_PROGRESS + userId],
+      tags: (userId: number) => [CACHE_TAGS.GET_LAB_PROGRESS + userId],
     },
   )
 
-  return cacheFn(moduleId, userId)
+  return cacheFn(user.id)
 }
 
-export async function getVolumeCompletion({
-  volumeId,
-  userId,
-}: {
-  volumeId: number | undefined
-  userId: number | undefined
-}) {
-  if (!volumeId || !userId) return null
+export async function getVolumeCompletion(volumeId: number) {
+  const user = await getCurrentUser()
+
+  if (!user) return undefined
+
+  const volume = await getVolumeById(volumeId)
+
+  if (!volume) return undefined
+
+  const lessons = volume.lessons?.docs ?? []
+
+  const lessonIds = lessons.map((lesson) => (typeof lesson === 'object' ? lesson.id : lesson))
 
   const cacheFn = cache(
-    async (volumeId: number, userId: number) => {
+    async (userId: number) => {
       const payload = await getPayload()
-
-      const volume = await payload.find({
-        collection: VOLUMES_SLUG,
-        where: {
-          id: { equals: volumeId },
-        },
-        limit: 1,
-      })
-
-      if (volume.docs.length === 0) return null
-
-      const lessons = volume.docs[0]?.lessons?.docs ?? []
-
-      const lessonIds = lessons.map((lesson) => (typeof lesson === 'object' ? lesson.id : lesson))
 
       const progressCount = await payload
         .count({
@@ -173,11 +152,39 @@ export async function getVolumeCompletion({
       }
     },
     {
-      tags: [CACHE_TAGS.GET_LAB_PROGRESS + volumeId],
+      tags: (userId: number) => [CACHE_TAGS.GET_LAB_PROGRESS + userId],
+    },
+    [lessonIds.join(',')],
+  )
+
+  return cacheFn(user.id)
+}
+
+export async function getLessonCompletion(lessonId: number) {
+  const user = await getCurrentUser()
+
+  if (!user) return undefined
+
+  const cacheFn = cache(
+    async (lessonId: number, userId: number) => {
+      const payload = await getPayload()
+
+      const lesson = await payload.find({
+        collection: PROGRESS_SLUG,
+        where: {
+          and: [{ lesson: { equals: lessonId } }, { user: { equals: userId } }],
+        },
+        limit: 1,
+      })
+
+      return lesson.docs[0]
+    },
+    {
+      tags: [CACHE_TAGS.GET_LAB_LESSON_COMPLETION + lessonId + user.id],
     },
   )
 
-  return cacheFn(volumeId, userId)
+  return cacheFn(lessonId, user.id)
 }
 
 /**
@@ -203,34 +210,58 @@ export async function getModuleBySlug(slug: string) {
       return modules.docs[0]
     },
     {
-      tags: (slug: string) => [CACHE_TAGS.GET_LAB_MODULES_BY_SLUG + slug],
+      tags: (slug: string) => [CACHE_TAGS.GET_LAB_MODULE_BY_SLUG + slug],
     },
   )
 
   return cacheFn(slug)
 }
 
-export async function getModulesByIds(moduleIds: number[]) {
-  if (moduleIds.length === 0) return []
-  const cacheFn = cache(
-    async (moduleIds: number[]) => {
+export async function getModuleById(moduleId: number) {
+  const moduleCache = cache(
+    async (moduleId: number) => {
       const payload = await getPayload()
 
       const modules = await payload.find({
         collection: MODULES_SLUG,
-        where: { id: { in: moduleIds } },
-        limit: 100,
+        where: { id: { equals: moduleId } },
+        select: {
+          slug: true,
+          title: true,
+          subtitle: true,
+          thumbnail: true,
+          order: true,
+          topics: true,
+          volumes: true,
+          lessons: true,
+        },
+        sort: 'order',
+        depth: 0,
+        limit: 1,
       })
 
-      return modules.docs
+      return modules.docs[0]
     },
     {
-      tags: (moduleIds: number[]) => moduleIds.map((id) => CACHE_TAGS.GET_LAB_MODULES_BY_ID + id),
+      tags: (moduleId: number) => [CACHE_TAGS.GET_LAB_MODULE_BY_ID + moduleId],
     },
   )
 
-  return cacheFn(moduleIds)
+  const labModule = await moduleCache(moduleId)
+
+  if (!labModule) return undefined
+
+  const labModuleThumbnailId =
+    typeof labModule.thumbnail === 'object' ? labModule.thumbnail?.id : labModule.thumbnail
+
+  const labModuleThumbnail = await getMediaById(labModuleThumbnailId)
+
+  return {
+    ...labModule,
+    thumbnail: labModuleThumbnail,
+  }
 }
+
 /**
  * Get a specific volume with its lessons (publicly accessible for structure, content access controlled)
  * Used for: Volume detail pages showing lesson list
@@ -272,32 +303,54 @@ export async function getVolumeBySlug(volumeSlug: string) {
       }
     },
     {
-      tags: (volumeSlug: string) => [CACHE_TAGS.GET_LAB_VOLUMES_BY_SLUG + volumeSlug],
+      tags: (volumeSlug: string) => [CACHE_TAGS.GET_LAB_VOLUME_BY_SLUG + volumeSlug],
     },
   )
   return cacheFn(volumeSlug)
 }
 
-export async function getVolumesByIds(volumeIds: number[]) {
-  if (volumeIds.length === 0) return []
-  const cacheFn = cache(
-    async (volumeIds: number[]) => {
+export async function getVolumeById(volumeId: number) {
+  const volumeCache = cache(
+    async (volumeId: number) => {
       const payload = await getPayload()
 
-      const volumes = await payload.find({
+      const volume = await payload.find({
         collection: VOLUMES_SLUG,
-        where: { id: { in: volumeIds } },
-        limit: 100,
+        where: { id: { equals: volumeId } },
+        select: {
+          slug: true,
+          title: true,
+          subtitle: true,
+          thumbnail: true,
+          order: true,
+          lessons: true,
+          topics: true,
+        },
+        sort: 'order',
+        depth: 0,
+        limit: 1,
       })
 
-      return volumes.docs
+      return volume.docs[0]
     },
     {
-      tags: (volumeIds: number[]) => volumeIds.map((id) => CACHE_TAGS.GET_LAB_VOLUMES_BY_ID + id),
+      tags: (volumeId: number) => [CACHE_TAGS.GET_LAB_VOLUME_BY_ID + volumeId],
     },
   )
 
-  return cacheFn(volumeIds)
+  const labVolume = await volumeCache(volumeId)
+
+  if (!labVolume) return undefined
+
+  const labVolumeThumbnailId =
+    typeof labVolume.thumbnail === 'object' ? labVolume.thumbnail?.id : labVolume.thumbnail
+
+  const labVolumeThumbnail = await getMediaById(labVolumeThumbnailId)
+
+  return {
+    ...labVolume,
+    thumbnail: labVolumeThumbnail,
+  }
 }
 
 /**
@@ -353,7 +406,7 @@ export async function getLessonBySlug(lessonSlug: string, hasPlan?: boolean) {
       }
     },
     {
-      tags: (lessonSlug: string) => [CACHE_TAGS.GET_LAB_LESSONS_BY_SLUG + lessonSlug],
+      tags: (lessonSlug: string) => [CACHE_TAGS.GET_LAB_LESSON_BY_SLUG + lessonSlug],
     },
   )
 
@@ -368,39 +421,28 @@ export async function getLessonById(lessonId: number) {
       const lesson = await payload.find({
         collection: LESSONS_SLUG,
         where: { id: { equals: lessonId } },
+        select: {
+          slug: true,
+          title: true,
+          subtitle: true,
+          order: true,
+          videos: true,
+          downloads: true,
+          isPreview: true,
+        },
+        depth: 0,
+        sort: 'order',
         limit: 1,
       })
 
       return lesson.docs[0]
     },
     {
-      tags: (lessonId: number) => [CACHE_TAGS.GET_LAB_LESSONS_BY_ID + lessonId],
+      tags: (lessonId: number) => [CACHE_TAGS.GET_LAB_LESSON_BY_ID + lessonId],
     },
   )
 
   return cacheFn(lessonId)
-}
-
-export async function getLessonsByIds(lessonIds: number[]) {
-  if (lessonIds.length === 0) return []
-  const cacheFn = cache(
-    async (lessonIds: number[]) => {
-      const payload = await getPayload()
-
-      const lessons = await payload.find({
-        collection: LESSONS_SLUG,
-        where: { id: { in: lessonIds } },
-        limit: 100,
-      })
-
-      return lessons.docs
-    },
-    {
-      tags: (lessonIds: number[]) => lessonIds.map((id) => CACHE_TAGS.GET_LAB_LESSONS_BY_ID + id),
-    },
-  )
-
-  return cacheFn(lessonIds)
 }
 
 /**
@@ -413,10 +455,10 @@ export async function getLabStats() {
       const payload = await getPayload()
 
       const [modules, volumes, lessons, videos] = await Promise.all([
-        payload.find({ collection: 'modules', limit: 0 }),
-        payload.find({ collection: 'volumes', limit: 0 }),
-        payload.find({ collection: 'lessons', limit: 0 }),
-        payload.find({ collection: 'videos', limit: 0 }),
+        payload.count({ collection: 'modules' }),
+        payload.count({ collection: 'volumes' }),
+        payload.count({ collection: 'lessons' }),
+        payload.count({ collection: 'videos' }),
       ])
 
       // Calculate estimated hours (rough estimate: 15 minutes per lesson)
@@ -435,93 +477,6 @@ export async function getLabStats() {
     },
   )
   return cacheFn()
-}
-
-/**
- * Get a volume by slug directly (without requiring module context)
- * Used for: Direct volume access via LabSections
- */
-export async function getVolumeBySlugDirect(volumeSlug: string) {
-  const cacheFn = cache(
-    async (volumeSlug: string) => {
-      const payload = await getPayload()
-
-      const volumes = await payload.find({
-        collection: VOLUMES_SLUG,
-        where: {
-          slug: {
-            equals: volumeSlug,
-          },
-        },
-        depth: 2, // Include module and lessons
-        limit: 1,
-      })
-
-      return volumes.docs[0] || null
-    },
-    {
-      tags: (volumeSlug: string) => [CACHE_TAGS.GET_LAB_VOLUMES_BY_SLUG + volumeSlug],
-    },
-  )
-
-  return cacheFn(volumeSlug)
-}
-
-/**
- * Get lesson by slug directly (without requiring module/volume context)
- * Used for: Direct lesson access via LabSections
- */
-export async function getLessonBySlugDirect(lessonSlug: string) {
-  const cacheFn = cache(
-    async (lessonSlug: string) => {
-      const payload = await getPayload()
-
-      const lessons = await payload.find({
-        collection: LESSONS_SLUG,
-        where: {
-          slug: {
-            equals: lessonSlug,
-          },
-        },
-        depth: 2, // Include module and volume relationships
-        limit: 1,
-      })
-
-      return lessons.docs[0] || null
-    },
-    {
-      tags: (lessonSlug: string) => [CACHE_TAGS.GET_LAB_LESSONS_BY_SLUG + lessonSlug],
-    },
-  )
-
-  return cacheFn(lessonSlug)
-}
-
-export async function getLessonCompletion(lessonId: number) {
-  const user = await getCurrentUser()
-
-  if (!user) return undefined
-
-  const cacheFn = cache(
-    async (lessonId: number, userId: number) => {
-      const payload = await getPayload()
-
-      const lesson = await payload.find({
-        collection: PROGRESS_SLUG,
-        where: {
-          and: [{ lesson: { equals: lessonId } }, { user: { equals: userId } }],
-        },
-        limit: 1,
-      })
-
-      return lesson.docs[0]
-    },
-    {
-      tags: [CACHE_TAGS.GET_LESSON_COMPLETION + lessonId + user.id],
-    },
-  )
-
-  return cacheFn(lessonId, user.id)
 }
 
 export async function markLessonComplete(lessonId: number, completed: boolean) {
@@ -550,7 +505,7 @@ export async function markLessonComplete(lessonId: number, completed: boolean) {
     })
   }
 
-  revalidateTag(CACHE_TAGS.GET_LESSON_COMPLETION + lessonId + user.id)
+  revalidateTag(CACHE_TAGS.GET_LAB_LESSON_COMPLETION + lessonId + user.id)
 
   return true
 }
@@ -566,12 +521,7 @@ export async function getLabSections() {
       const sections = await payload.find({
         collection: LAB_SECTIONS_SLUG,
         sort: 'order',
-        depth: 1, // Include all related content
-        select: {
-          title: true,
-          subtitle: true,
-          order: true,
-        },
+        depth: 0,
         limit: 100,
       })
 
@@ -599,68 +549,7 @@ export async function getLabSection(sectionId: number) {
       return section
     },
     {
-      tags: (sectionId: number) => [CACHE_TAGS.GET_LAB_SECTION + sectionId],
-    },
-  )
-
-  return cacheFn(sectionId)
-}
-
-/**
- * Get content for a specific lab section with access control
- */
-export async function getLabSectionContent(sectionId: number) {
-  const cacheFn = cache(
-    async (sectionId: number) => {
-      const section = await getLabSection(sectionId)
-      if (!section) return null
-
-      const moduleIds =
-        section.modules?.map((module) => (typeof module === 'object' ? module.id : module)) || []
-      const volumeIds =
-        section.volumes?.map((volume) => (typeof volume === 'object' ? volume.id : volume)) || []
-      const lessonIds =
-        section.lessons?.map((lesson) => (typeof lesson === 'object' ? lesson.id : lesson)) || []
-
-      let modules: Module[] = []
-      let volumes: Volume[] = []
-      let lessons: Lesson[] = []
-
-      switch (section.contentType) {
-        case 'modules':
-          if (section.modules?.length === 0) break
-          modules = await getModulesByIds(moduleIds)
-        case 'volumes':
-          if (section.volumes?.length === 0) break
-          volumes = await getVolumesByIds(volumeIds)
-        case 'lessons':
-          if (section.lessons?.length === 0) break
-          lessons = await getLessonsByIds(lessonIds)
-        case 'mixed':
-          if (section.modules?.length === 0) break
-          if (section.volumes?.length === 0) break
-          if (section.lessons?.length === 0) break
-          const res: [Module[], Volume[], Lesson[]] = await Promise.all([
-            getModulesByIds(moduleIds),
-            getVolumesByIds(volumeIds),
-            getLessonsByIds(lessonIds),
-          ])
-          modules = res[0]
-          volumes = res[1]
-          lessons = res[2]
-      }
-
-      const content = {
-        ...section,
-        modules,
-        volumes,
-        lessons,
-      }
-
-      return content
-    },
-    {
-      tags: (sectionId: number) => [CACHE_TAGS.GET_LAB_SECTION_CONTENT + sectionId],
+      tags: (sectionId: number) => [CACHE_TAGS.GET_LAB_SECTION_BY_ID + sectionId],
     },
   )
 

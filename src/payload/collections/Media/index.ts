@@ -1,5 +1,4 @@
 import type { CollectionConfig } from 'payload'
-
 import {
   FixedToolbarFeature,
   InlineToolbarFeature,
@@ -7,14 +6,13 @@ import {
 } from '@payloadcms/richtext-lexical'
 import path from 'path'
 import { fileURLToPath } from 'url'
-import { anyone } from '@/payload/access'
-import { authenticated } from '@/payload/access'
 import { MEDIA_SLUG } from '../constants'
+import { revalidateMedia } from './hooks/revalidate'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
-export const Media: CollectionConfig = {
+const Media: CollectionConfig = {
   slug: MEDIA_SLUG,
   folders: {
     browseByFolder: true,
@@ -44,6 +42,9 @@ export const Media: CollectionConfig = {
       }),
     },
   ],
+  hooks: {
+    afterChange: [revalidateMedia],
+  },
   upload: {
     ...(process.env.NODE_ENV === 'development' && {
       staticDir: path.resolve(dirname, '../../../../public/media'),
@@ -100,4 +101,6 @@ export const Media: CollectionConfig = {
       ],
     },
   },
-}
+} as const
+
+export default Media

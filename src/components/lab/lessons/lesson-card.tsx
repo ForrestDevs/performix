@@ -1,12 +1,9 @@
 import React from 'react'
 import Link from 'next/link'
-import { Play, Lock, Clock, ChevronRight, Download, Video, ArrowRight, Check } from 'lucide-react'
-import { Button, buttonVariants } from '@/components/ui/button'
+import { Play, Lock, Download, Video, Check } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
-import { Lesson } from '@/payload-types'
 import { getLessonById, getLessonCompletion } from '@/lib/data/lab'
 import { Badge } from '@/components/ui/badge'
-import { cn } from '@/lib/utilities/ui'
 
 interface LessonCardProps {
   lessonId: number

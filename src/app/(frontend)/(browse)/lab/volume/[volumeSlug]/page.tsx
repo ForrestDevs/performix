@@ -5,7 +5,7 @@ import { ArrowLeft, BookOpen, Layers } from 'lucide-react'
 import { buttonVariants } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { getVolumeBySlugDirect, getVolumeCompletion } from '@/lib/data/lab'
+import { getVolumeBySlug, getVolumeCompletion } from '@/lib/data/lab'
 import { getCurrentUser } from '@/lib/data/auth'
 import { isEnrolledInAnyPlan } from '@/lib/data/plans'
 import Image from 'next/image'
@@ -31,7 +31,7 @@ interface DirectVolumePageProps {
 
 export async function generateMetadata(props: DirectVolumePageProps) {
   const params = await props.params
-  const volume = await getVolumeBySlugDirect(params.volumeSlug)
+  const volume = await getVolumeBySlug(params.volumeSlug)
 
   if (!volume) {
     return {
@@ -47,10 +47,7 @@ export async function generateMetadata(props: DirectVolumePageProps) {
 
 export default async function DirectVolumePage(props: DirectVolumePageProps) {
   const params = await props.params
-  const [volume, user] = await Promise.all([
-    getVolumeBySlugDirect(params.volumeSlug),
-    getCurrentUser(),
-  ])
+  const [volume, user] = await Promise.all([getVolumeBySlug(params.volumeSlug), getCurrentUser()])
 
   if (!volume) {
     notFound()
@@ -58,13 +55,7 @@ export default async function DirectVolumePage(props: DirectVolumePageProps) {
 
   const hasAccess = user ? await isEnrolledInAnyPlan(user.id) : false
 
-  const completion =
-    user && hasAccess
-      ? await getVolumeCompletion({
-          volumeId: volume.id,
-          userId: user.id,
-        })
-      : null
+  const completion = user && hasAccess ? await getVolumeCompletion(volume.id) : null
 
   const labModule = volume.module && typeof volume.module === 'object' ? volume.module : null
 
@@ -180,11 +171,11 @@ export default async function DirectVolumePage(props: DirectVolumePageProps) {
               </Accordion>
             )}
 
-            {volume.lessons && volume.lessons.docs && volume.lessons.docs.length > 0 && (
+            {volume.lessons && volume.lessons.length > 0 && (
               <div>
                 <h2 className="text-2xl font-bold mb-6">Lessons</h2>
                 <div className="grid gap-4">
-                  {volume.lessons.docs.map((lesson: Lesson, index: number) => (
+                  {volume.lessons.map((lesson: Lesson, index: number) => (
                     <LessonCard key={lesson.id} lessonId={lesson.id} hasPlan={hasAccess} />
                   ))}
                 </div>
@@ -221,7 +212,7 @@ export default async function DirectVolumePage(props: DirectVolumePageProps) {
               <CardContent className="space-y-4">
                 <div className="flex justify-between">
                   <span className="text-gray-600">Total Lessons</span>
-                  <span className="font-medium">{volume.lessons?.docs?.length || 0}</span>
+                  <span className="font-medium">{volume.lessons?.length || 0}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">Order</span>

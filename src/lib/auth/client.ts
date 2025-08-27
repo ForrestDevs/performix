@@ -1,7 +1,6 @@
 'use client'
 
 import { createAuthClient } from 'better-auth/react'
-// import { toast } from 'sonner'
 import { stripeClient } from '@better-auth/stripe/client'
 
 export const authClient = createAuthClient({
@@ -17,7 +16,5 @@ export const authClient = createAuthClient({
       }
     },
   },
-  plugins: [
-    stripeClient()
-  ]
+  plugins: [stripeClient()],
 })

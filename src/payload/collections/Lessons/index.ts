@@ -1,4 +1,4 @@
-import { admin, anyone, isAdminOrProducer } from '@/payload/access'
+import { admin } from '@/payload/access'
 import { slugField } from '@/payload/fields/slug'
 import { CollectionConfig } from 'payload'
 import { MEDIA_SLUG, MODULES_SLUG, VOLUMES_SLUG, VIDEOS_SLUG } from '../constants'

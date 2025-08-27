@@ -7,8 +7,8 @@ import { CACHE_TAGS } from '@/lib/cache/contants'
 
 export const revalidateLabLesson: CollectionAfterChangeHook<Lesson> = ({ doc, operation }) => {
   revalidateTag(CACHE_TAGS.GET_LAB_LESSONS)
-  revalidateTag(CACHE_TAGS.GET_LAB_LESSONS_BY_SLUG + doc.slug)
-  revalidateTag(CACHE_TAGS.GET_LAB_LESSONS_BY_ID + doc.id)
+  revalidateTag(CACHE_TAGS.GET_LAB_LESSON_BY_SLUG + doc.slug)
+  revalidateTag(CACHE_TAGS.GET_LAB_LESSON_BY_ID + doc.id)
   revalidateTag(CACHE_TAGS.GET_LAB_STATS)
 
   return doc
