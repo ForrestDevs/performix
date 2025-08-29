@@ -19,6 +19,7 @@ export async function getPlans() {
           includes: true,
           bestFor: true,
           price: true,
+          period: true,
           mostPopular: true,
           isSpecial: true,
           grandfathered: true,

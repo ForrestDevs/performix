@@ -7,29 +7,15 @@ import { getServerSideURL } from '@/lib/utilities/getURL'
 import { stripePlugin } from '@payloadcms/plugin-stripe'
 import { stripe } from '@better-auth/stripe'
 import { BetterAuthOptions, betterAuthPlugin } from 'payload-auth/better-auth'
-import {
-  admin,
-  anonymous,
-  apiKey,
-  BetterAuthPlugin,
-  emailOTP,
-  magicLink,
-  multiSession,
-  openAPI,
-  organization,
-  phoneNumber,
-  twoFactor,
-  username,
-} from 'better-auth/plugins'
+import { admin, BetterAuthPlugin } from 'better-auth/plugins'
 import { passkey } from 'better-auth/plugins/passkey'
 import { emailHarmony } from 'better-auth-harmony'
 import { nextCookies } from 'better-auth/next-js'
 import { allowedOrigins } from '@/payload/allowed-origins'
-import { sendEmail } from '@/lib/data/email'
 import { renderVerificationEmail } from '@/lib/email/templates/verification-email'
-import { BLUEPRINTS_SLUG, USER_SLUG } from '../collections/constants'
 import { stripeClient } from '@/lib/stripe'
 import { handleWebhooks } from '@/lib/stripe/handle-webhooks'
+// import { handleWebhooks } from '@/lib/stripe/handle-webhooks'
 
 const generateTitle: GenerateTitle<Page> = ({ doc }) => {
   return doc?.title ? `${doc.title} | Payload Website Template` : 'Payload Website Template'
@@ -74,25 +60,47 @@ export const betterAuthOptions: BetterAuthOptions = {
       console.log('Send reset password for user: ', user.id, 'at url', url)
 
       try {
-        await sendEmail({
-          to: process.env.NODE_ENV === 'development' ? 'luke.gannon@me.com' : user.email,
-          subject: 'Reset Your Performix Password',
-          html: `
-            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-              <h1 style="color: #0891B2;">Reset Your Performix Password</h1>
-              <p>Hi ${user.name || 'Player'},</p>
-              <p>You requested to reset your password. Click the button below to create a new password:</p>
-              <div style="text-align: center; margin: 32px 0;">
-                <a href="${url}" style="background-color: #0891B2; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block;">
-                  Reset Password
-                </a>
+        await fetch('/api/email/send', {
+          method: 'POST',
+          body: JSON.stringify({
+            to: process.env.NODE_ENV === 'development' ? 'luke.gannon@me.com' : user.email,
+            subject: 'Reset Your Performix Password',
+            html: `
+              <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+               <h1 style="color: #0891B2;">Reset Your Performix Password</h1>
+               <p>Hi ${user.name || 'Player'},</p>
+                <p>You requested to reset your password. Click the button below to create a new password:</p>
+                <div style="text-align: center; margin: 32px 0;">
+                  <a href="${url}" style="background-color: #0891B2; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block;">
+                    Reset Password
+                  </a>
+                </div>
+                <p>If you didn't request this, please ignore this email.</p>
+                <p>This link will expire in 24 hours.</p>
               </div>
-              <p>If you didn't request this, please ignore this email.</p>
-              <p>This link will expire in 24 hours.</p>
-            </div>
-          `,
-          text: `Reset your Performix password by visiting: ${url}`,
+            `,
+            text: `Reset your Performix password by visiting: ${url}`,
+          }),
         })
+        // await sendEmail({
+        //   to: process.env.NODE_ENV === 'development' ? 'luke.gannon@me.com' : user.email,
+        //   subject: 'Reset Your Performix Password',
+        //   html: `
+        //     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+        //       <h1 style="color: #0891B2;">Reset Your Performix Password</h1>
+        //       <p>Hi ${user.name || 'Player'},</p>
+        //       <p>You requested to reset your password. Click the button below to create a new password:</p>
+        //       <div style="text-align: center; margin: 32px 0;">
+        //         <a href="${url}" style="background-color: #0891B2; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block;">
+        //           Reset Password
+        //         </a>
+        //       </div>
+        //       <p>If you didn't request this, please ignore this email.</p>
+        //       <p>This link will expire in 24 hours.</p>
+        //     </div>
+        //   `,
+        //   text: `Reset your Performix password by visiting: ${url}`,
+        // })
         console.log('Password reset email sent successfully to:', user.email)
       } catch (error) {
         console.error('Failed to send password reset email:', error)
@@ -118,12 +126,21 @@ export const betterAuthOptions: BetterAuthOptions = {
       })
 
       try {
-        await sendEmail({
-          to: process.env.NODE_ENV === 'development' ? 'luke.gannon@me.com' : user.email,
-          subject: 'Verify Your Performix Account - Start Your Journey!',
-          html: emailHtml,
-          text: `Welcome to Performix! Please verify your email address by visiting: ${url}`,
+        await fetch('/api/email/send', {
+          method: 'POST',
+          body: JSON.stringify({
+            to: process.env.NODE_ENV === 'development' ? 'luke.gannon@me.com' : user.email,
+            subject: 'Verify Your Performix Account - Start Your Journey!',
+            html: emailHtml,
+            text: `Welcome to Performix! Please verify your email address by visiting: ${url}`,
+          }),
         })
+        // await sendEmail({
+        //   to: process.env.NODE_ENV === 'development' ? 'luke.gannon@me.com' : user.email,
+        //   subject: 'Verify Your Performix Account - Start Your Journey!',
+        //   html: emailHtml,
+        //   text: `Welcome to Performix! Please verify your email address by visiting: ${url}`,
+        // })
         console.log('Verification email sent successfully to:', user.email)
       } catch (error) {
         console.error('Failed to send verification email:', error)
@@ -224,7 +241,12 @@ export const plugins: Plugin[] = [
     stripeSecretKey: process.env.STRIPE_SECRET_KEY,
     stripeWebhooksEndpointSecret: process.env.STRIPE_WEBHOOK_SECRET,
     webhooks: async ({ event, stripe, config, payload, req }) => {
-      await handleWebhooks(event, stripe, config, payload, req)
+      await fetch('/api/webhooks/stripe', {
+        method: 'POST',
+        body: JSON.stringify({ event }),
+      })
+
+      // await handleWebhooks(event, stripe, config, payload, req)
     },
   }),
 ]

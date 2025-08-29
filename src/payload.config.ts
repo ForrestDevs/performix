@@ -28,6 +28,7 @@ export const emailAdapter = () => {
     })
   }
   return nodemailerAdapter({
+    skipVerify: true,
     defaultFromAddress: 'hello@performix.ca',
     defaultFromName: 'Performix',
     transportOptions: {

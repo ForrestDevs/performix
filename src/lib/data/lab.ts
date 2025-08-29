@@ -16,6 +16,7 @@ import { CACHE_TAGS } from '@/lib/cache/contants'
 import { getCurrentUser } from './auth'
 import { hasLessonAccess } from '../utilities/hasLessonAccess'
 import { getMediaById } from './media'
+import { isEnrolledInAnyPlan } from './plans'
 
 export interface LabStats {
   totalModules: number
@@ -357,10 +358,13 @@ export async function getVolumeById(volumeId: number) {
  * Get a specific lesson with full content (access controlled)
  * Used for: Lesson detail pages with video content
  */
-export async function getLessonBySlug(lessonSlug: string, hasPlan?: boolean) {
+export async function getLessonBySlug(lessonSlug: string) {
   const cacheFn = cache(
-    async (lessonSlug: string, hasPlan?: boolean) => {
+    async (lessonSlug: string) => {
       const payload = await getPayload()
+      const user = await getCurrentUser()
+
+      const hasPlan = user ? await isEnrolledInAnyPlan(user.id) : false
 
       // Get the lesson
       const lessons = await payload.find({
@@ -410,7 +414,7 @@ export async function getLessonBySlug(lessonSlug: string, hasPlan?: boolean) {
     },
   )
 
-  return cacheFn(lessonSlug, hasPlan)
+  return cacheFn(lessonSlug)
 }
 
 export async function getLessonById(lessonId: number) {

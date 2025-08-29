@@ -19,6 +19,7 @@ interface PlanCardProps {
     | 'includes'
     | 'bestFor'
     | 'price'
+    | 'period'
     | 'mostPopular'
     | 'isSpecial'
     | 'needsApplication'
@@ -49,6 +50,12 @@ const colorMap = {
 } as const
 
 const getColorVariant = (index: number) => colorMap[(index % 4) as keyof typeof colorMap]
+
+const getPeriodText = (period: 'monthly' | 'yearly' | 'one-time') => {
+  if (period === 'monthly') return 'month'
+  if (period === 'yearly') return 'year'
+  return 'time'
+}
 
 export function PlanCard({ plan, index, isAuthenticated, userId }: PlanCardProps) {
   const visibleElements = useScrollAnimation()
@@ -118,7 +125,7 @@ export function PlanCard({ plan, index, isAuthenticated, userId }: PlanCardProps
               ${plan.price}
             </span>
             <span className="text-gray-600 text-sm sm:text-base ml-1 block sm:inline">
-              USD/month
+              USD/{getPeriodText(plan.period ?? 'monthly')}
             </span>
           </div>
         </CardHeader>
