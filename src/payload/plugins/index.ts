@@ -126,7 +126,7 @@ export const betterAuthOptions: BetterAuthOptions = {
       })
 
       try {
-        await fetch('/api/email/send', {
+        await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/email/send`, {
           method: 'POST',
           body: JSON.stringify({
             to: process.env.NODE_ENV === 'development' ? 'luke.gannon@me.com' : user.email,
@@ -241,7 +241,7 @@ export const plugins: Plugin[] = [
     stripeSecretKey: process.env.STRIPE_SECRET_KEY,
     stripeWebhooksEndpointSecret: process.env.STRIPE_WEBHOOK_SECRET,
     webhooks: async ({ event, stripe, config, payload, req }) => {
-      await fetch('/api/webhooks/stripe', {
+      await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/webhooks/stripe`, {
         method: 'POST',
         body: JSON.stringify({ event }),
       })
