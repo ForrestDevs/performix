@@ -5,7 +5,7 @@ import { Lock, Download } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import { getLessonBySlug, getLessonCompletion } from '@/lib/data/lab'
+import { getLessonBySlug, getLessonCompletion, getLessonMetadataBySlug } from '@/lib/data/lab'
 import { isEnrolledInAnyPlan } from '@/lib/data/plans'
 import { getCurrentUser } from '@/lib/data/auth'
 import RichText from '@/components/RichText2'
@@ -24,7 +24,7 @@ interface DirectLessonPageProps {
 
 export async function generateMetadata(props: DirectLessonPageProps) {
   const params = await props.params
-  const lesson = await getLessonBySlug(params.lessonSlug)
+  const lesson = await getLessonMetadataBySlug(params.lessonSlug)
 
   if (!lesson) {
     return {
@@ -40,7 +40,9 @@ export async function generateMetadata(props: DirectLessonPageProps) {
 
 export default async function LessonPage(props: DirectLessonPageProps) {
   const params = await props.params
-  const [lesson, user] = await Promise.all([getLessonBySlug(params.lessonSlug), getCurrentUser()])
+
+  const user = await getCurrentUser()
+  const lesson = await getLessonBySlug(params.lessonSlug, user?.id)
 
   if (!lesson) {
     notFound()

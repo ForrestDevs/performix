@@ -358,13 +358,12 @@ export async function getVolumeById(volumeId: number) {
  * Get a specific lesson with full content (access controlled)
  * Used for: Lesson detail pages with video content
  */
-export async function getLessonBySlug(lessonSlug: string) {
+export async function getLessonBySlug(lessonSlug: string, userId?: number) {
   const cacheFn = cache(
-    async (lessonSlug: string) => {
+    async (lessonSlug: string, userId?: number) => {
       const payload = await getPayload()
-      const user = await getCurrentUser()
 
-      const hasPlan = user ? await isEnrolledInAnyPlan(user.id) : false
+      const hasPlan = userId ? await isEnrolledInAnyPlan(userId) : false
 
       // Get the lesson
       const lessons = await payload.find({
@@ -380,6 +379,7 @@ export async function getLessonBySlug(lessonSlug: string) {
 
       // Check access
       if (!hasLessonAccess(lesson, hasPlan) && !lesson.isPreview) {
+        console.log('lesson not accessible becuase of insufficient access: ', lesson.slug)
         return {
           ...lesson,
           isAccessible: false,
@@ -408,6 +408,34 @@ export async function getLessonBySlug(lessonSlug: string) {
         videos,
         isAccessible: true,
       }
+    },
+    {
+      tags: (lessonSlug: string, userId?: number) => [
+        CACHE_TAGS.GET_LAB_LESSON_BY_SLUG + lessonSlug + userId,
+      ],
+    },
+  )
+
+  return cacheFn(lessonSlug, userId)
+}
+
+export async function getLessonMetadataBySlug(lessonSlug: string) {
+  const cacheFn = cache(
+    async (lessonSlug: string) => {
+      const payload = await getPayload()
+
+      const lesson = await payload.find({
+        collection: LESSONS_SLUG,
+        where: { slug: { equals: lessonSlug } },
+        select: {
+          title: true,
+          subtitle: true,
+          isPreview: true,
+        },
+        limit: 1,
+      })
+
+      return lesson.docs[0]
     },
     {
       tags: (lessonSlug: string) => [CACHE_TAGS.GET_LAB_LESSON_BY_SLUG + lessonSlug],
