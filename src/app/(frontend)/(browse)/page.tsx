@@ -51,7 +51,7 @@ export default function HomePage() {
                     'bg-[#0891B2] hover:bg-[#0E7490] text-white px-8 py-4 text-lg hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl',
                   )}
                 >
-                  👉 Book Your Free Call
+                  Book Your Free Call
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
                 <Link

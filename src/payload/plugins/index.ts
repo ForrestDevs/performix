@@ -14,8 +14,6 @@ import { nextCookies } from 'better-auth/next-js'
 import { allowedOrigins } from '@/payload/allowed-origins'
 import { renderVerificationEmail } from '@/lib/email/templates/verification-email'
 import { stripeClient } from '@/lib/stripe'
-import { handleWebhooks } from '@/lib/stripe/handle-webhooks'
-// import { handleWebhooks } from '@/lib/stripe/handle-webhooks'
 
 const generateTitle: GenerateTitle<Page> = ({ doc }) => {
   return doc?.title ? `${doc.title} | Payload Website Template` : 'Payload Website Template'

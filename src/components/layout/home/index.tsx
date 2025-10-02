@@ -259,7 +259,7 @@ export function HowItWorksSection() {
                 'bg-gradient-to-r from-[#0EA5E9] to-[#A78BFA] via-[#0891B2] hover:from-[#0E7490] hover:to-[#8B5CF6] text-white px-8 py-4 text-lg shadow-lg hover:shadow-xl transition-all duration-300',
               )}
             >
-              ✅ Apply for a Free Call
+              Apply for a Free Call
               <ArrowRight className="ml-2 h-5 w-5" />
             </Link>
             <p className="text-gray-600 mt-4 text-base">
