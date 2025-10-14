@@ -142,7 +142,7 @@ export default function DownloadableFiles({
                     onClick={() => handleDownload(file)}
                     variant={isAuthenticated && !isLocked ? 'default' : 'outline'}
                     size="sm"
-                    disabled={!isAuthenticated || isLocked}
+                    // disabled={!isAuthenticated || isLocked}
                     className={`${
                       isAuthenticated && !isLocked
                         ? 'bg-[#0891B2] hover:bg-[#0E7490] text-white'

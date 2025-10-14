@@ -1,7 +1,7 @@
 import React from 'react'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { Lock, Download } from 'lucide-react'
+import { Lock, Download, CheckCircle } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Alert, AlertDescription } from '@/components/ui/alert'
@@ -15,6 +15,8 @@ import { VideoCard } from '@/components/lab/video-card'
 import { Media, Video } from '@/payload-types'
 import { DownloadCard } from '@/components/lab/download-card'
 import { RefreshRouteOnSave } from '@/components/live-preview'
+import { LessonContentClient } from '@/components/lab/lessons/lesson-content-client'
+import { AccessAlerts, AccessState } from '@/components/lab/lessons/access-alerts'
 
 interface DirectLessonPageProps {
   params: Promise<{
@@ -40,19 +42,39 @@ export async function generateMetadata(props: DirectLessonPageProps) {
 
 export default async function LessonPage(props: DirectLessonPageProps) {
   const params = await props.params
-
   const user = await getCurrentUser()
+  const hasAccess = user ? await isEnrolledInAnyPlan(user.id) : false
   const lesson = await getLessonBySlug(params.lessonSlug, user?.id)
 
   if (!lesson) {
     notFound()
   }
-
   const lessonProgress = await getLessonCompletion(lesson.id)
-  const hasAccess = user ? await isEnrolledInAnyPlan(user.id) : false
-  const canViewLesson = hasAccess || lesson.isPreview
+  const downloads =
+    lesson.downloads && lesson.downloads.every((v) => typeof v === 'object')
+      ? lesson.downloads
+      : null
   const volume = lesson.volume && typeof lesson.volume === 'object' ? lesson.volume : null
   const labModule = lesson.module && typeof lesson.module === 'object' ? lesson.module : null
+
+  const getAccessState = (): AccessState => {
+    let state: AccessState
+    if (lesson.isPreview) {
+      state = user ? 'previewLoggedIn' : 'previewLoggedOut'
+    } else {
+      state = user
+        ? hasAccess
+          ? 'paidLoggedInHasAccess'
+          : 'paidLoggedInNoAccess'
+        : 'paidLoggedOut'
+    }
+    return state
+  }
+
+  const accessState: AccessState = getAccessState()
+  const canViewContent = accessState == 'previewLoggedIn' || accessState == 'paidLoggedInHasAccess'
+
+  console.log(accessState)
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -88,51 +110,19 @@ export default async function LessonPage(props: DirectLessonPageProps) {
                 {lesson.subtitle && <p className="text-lg text-gray-600">{lesson.subtitle}</p>}
               </div>
 
-              {!canViewLesson && (
-                <Alert>
-                  <Lock className="h-4 w-4" />
-                  <AlertDescription>
-                    This lesson requires a premium subscription.
-                    <Link href="/plans" className="ml-1 underline">
-                      View plans
-                    </Link>
-                  </AlertDescription>
-                </Alert>
-              )}
+              <AccessAlerts state={accessState} />
 
-              {lesson.richText && canViewLesson && (
+              {lesson.richText && (
                 <div className="prose prose-gray max-w-none">
                   <RichText data={lesson.richText} enableGutter={false} />
                 </div>
               )}
 
-              {lesson.videos && lesson.videos.length > 0 && canViewLesson && (
-                <div className="space-y-4">
-                  <h2 className="text-xl font-semibold">Videos</h2>
-                  <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
-                    {lesson.videos.map((video: Video, index: number) => (
-                      <div key={index} className="aspect-video w-full">
-                        <p className="text-sm text-gray-500 mb-2">{video.title}</p>
-                        <VideoCard video={video} />
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {lesson.downloads && lesson.downloads.length > 0 && canViewLesson && (
-                <div className="space-y-4">
-                  <h2 className="text-xl font-semibold flex items-center gap-2">
-                    <Download className="h-5 w-5" />
-                    Downloads
-                  </h2>
-                  <div className="grid gap-3">
-                    {lesson.downloads.map((download: Media, index: number) => (
-                      <DownloadCard key={index} file={download} />
-                    ))}
-                  </div>
-                </div>
-              )}
+              <LessonContentClient
+                canViewContent={canViewContent}
+                downloads={downloads}
+                videos={lesson.videos}
+              />
             </div>
           </div>
 
@@ -169,7 +159,7 @@ export default async function LessonPage(props: DirectLessonPageProps) {
               </Card>
             )}
 
-            {canViewLesson && (
+            {canViewContent && (
               <Card>
                 <CardHeader>
                   <CardTitle className="text-lg">Progress</CardTitle>

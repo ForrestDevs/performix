@@ -1,3 +1,5 @@
+'use client'
+
 import { Media } from '@/payload-types'
 import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -6,7 +8,15 @@ import Link from 'next/link'
 import { cn } from '@/lib/utilities/ui'
 import { buttonVariants } from '../ui/button'
 
-export function DownloadCard({ file }: { file: Media }) {
+export function DownloadCard({
+  file,
+  canDownload,
+  onAccessRequired,
+}: {
+  file: Media
+  canDownload: boolean
+  onAccessRequired: () => void
+}) {
   const getFileIcon = (mimeType?: string) => {
     if (!mimeType) return File
 
@@ -47,6 +57,17 @@ export function DownloadCard({ file }: { file: Media }) {
     return type
   }
 
+  const handleDownload = (file: Media) => {
+    if (!canDownload) {
+      onAccessRequired()
+      return
+    }
+
+    if (file.url) {
+      window.open(file.url, '_blank')
+    }
+  }
+
   const FileIcon = getFileIcon(file.mimeType || '')
   const colorClass = 'bg-blue-100 text-blue-600'
 
@@ -78,7 +99,27 @@ export function DownloadCard({ file }: { file: Media }) {
         </div>
 
         <div className="flex-shrink-0">
-          <Link
+          <Button
+            onClick={() => handleDownload(file)}
+            variant={canDownload ? 'default' : 'outline'}
+            size="sm"
+            disabled={!canDownload}
+            className={`${
+              canDownload
+                ? 'bg-[#0891B2] hover:bg-[#0E7490] text-white'
+                : 'border-gray-300 text-gray-500 cursor-not-allowed'
+            }`}
+          >
+            {canDownload ? (
+              <Download className="h-4 w-4" />
+            ) : (
+              <>
+                <Lock className="h-4 w-4 mr-2" />
+                Locked
+              </>
+            )}
+          </Button>
+          {/* <Link
             className={cn(
               buttonVariants({ variant: 'outline', size: 'icon' }),
               'bg-[#0891B2] hover:bg-[#0E7490] text-white hover:text-gray-200',
@@ -87,7 +128,7 @@ export function DownloadCard({ file }: { file: Media }) {
             target="_blank"
           >
             <Download className="h-4 w-4" />
-          </Link>
+          </Link> */}
         </div>
       </div>
     </Card>
