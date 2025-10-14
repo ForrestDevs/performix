@@ -377,17 +377,14 @@ export async function getLessonBySlug(lessonSlug: string, userId?: number) {
       if (lessons.docs.length === 0) return null
       const lesson = lessons.docs[0]!
 
-      // Check access
-      if (!hasLessonAccess(lesson, hasPlan) && !lesson.isPreview) {
-        console.log('lesson not accessible becuase of insufficient access: ', lesson.slug)
-        return {
-          ...lesson,
-          isAccessible: false,
-          richText: undefined, // Hide content
-          downloads: undefined, // Hide downloads
-          videos: undefined, // Hide videos
-        }
-      }
+      // // Check access
+      // if (!hasLessonAccess(lesson, hasPlan) && !lesson.isPreview) {
+      //   console.log('lesson not accessible becuase of insufficient access: ', lesson.slug)
+      //   return {
+      //     ...lesson,
+      //     isAccessible: false,
+      //   }
+      // }
 
       // Get associated videos if accessible
       let videos: Video[] = []
