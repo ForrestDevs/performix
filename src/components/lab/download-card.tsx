@@ -103,7 +103,6 @@ export function DownloadCard({
             onClick={() => handleDownload(file)}
             variant={canDownload ? 'default' : 'outline'}
             size="sm"
-            disabled={!canDownload}
             className={`${
               canDownload
                 ? 'bg-[#0891B2] hover:bg-[#0E7490] text-white'
@@ -119,16 +118,6 @@ export function DownloadCard({
               </>
             )}
           </Button>
-          {/* <Link
-            className={cn(
-              buttonVariants({ variant: 'outline', size: 'icon' }),
-              'bg-[#0891B2] hover:bg-[#0E7490] text-white hover:text-gray-200',
-            )}
-            href={file.url || ''}
-            target="_blank"
-          >
-            <Download className="h-4 w-4" />
-          </Link> */}
         </div>
       </div>
     </Card>
