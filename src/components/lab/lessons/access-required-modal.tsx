@@ -5,14 +5,29 @@ import { Button } from '@/components/ui/button'
 import { motion } from 'motion/react'
 import { Lock, Users, Star, ArrowRight } from 'lucide-react'
 import Link from 'next/link'
+import { AccessState } from './access-alerts'
 
 interface AccessRequiredModal {
   isOpen: boolean
   onClose: () => void
-  isPreview: boolean
+  accessState: AccessState
 }
 
-export default function AccessRequiredModal({ isOpen, onClose, isPreview }: AccessRequiredModal) {
+export default function AccessRequiredModal({ isOpen, onClose, accessState }: AccessRequiredModal) {
+  const title =
+    accessState === 'previewLoggedOut' ? 'Unlock Free Preview Content' : 'Unlock Premium Content'
+  const description =
+    accessState === 'previewLoggedOut'
+      ? 'Sign in to access the full lesson and download all resources'
+      : accessState === 'paidLoggedInNoAccess'
+        ? 'Upgrade to a premium subscription to access the full lesson and download all resources'
+        : accessState === 'paidLoggedOut'
+          ? 'Get started for free or sign into an account with a premium subscription to access the full lesson and download all resources'
+          : 'This lesson requires a premium subscription. You can get started with a free account.'
+
+  const showSignUp = accessState === 'previewLoggedOut' || accessState === 'paidLoggedOut'
+  const showEnroll = accessState === 'paidLoggedInNoAccess'
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md border-0 bg-white shadow-2xl">
@@ -30,12 +45,8 @@ export default function AccessRequiredModal({ isOpen, onClose, isPreview }: Acce
             >
               <Lock className="h-8 w-8 text-white" />
             </motion.div>
-            <DialogTitle className="text-2xl font-bold text-gray-900">
-              Unlock {isPreview ? 'FreePreview' : 'Premium'} Content
-            </DialogTitle>
-            <p className="text-gray-600 mt-2">
-              Sign in to access the full lesson and download all resources
-            </p>
+            <DialogTitle className="text-2xl font-bold text-gray-900">{title}</DialogTitle>
+            <p className="text-gray-600 mt-2">{description}</p>
           </DialogHeader>
 
           <motion.div
@@ -70,32 +81,46 @@ export default function AccessRequiredModal({ isOpen, onClose, isPreview }: Acce
               </ul>
             </div>
 
-            {/* Action Buttons */}
-            <div className="space-y-3">
-              <Link href="/sign-in" className="block">
-                <Button
-                  className="w-full bg-gradient-to-r from-[#0891B2] to-[#0E7490] hover:from-[#0E7490] hover:to-[#164E63] text-white font-semibold py-3 rounded-xl transition-all duration-300 transform hover:scale-105"
-                  size="lg"
-                >
-                  Sign In to Continue
-                </Button>
-              </Link>
+            {showEnroll && (
+              <div className="space-y-3">
+                <Link href="/plans" className="block">
+                  <Button
+                    className="w-full bg-gradient-to-r from-[#0891B2] to-[#0E7490] hover:from-[#0E7490] hover:to-[#164E63] text-white font-semibold py-3 rounded-xl transition-all duration-300 transform hover:scale-105"
+                    size="lg"
+                  >
+                    Enroll in Plan
+                  </Button>
+                </Link>
+              </div>
+            )}
 
-              <Link href="/get-started" className="block">
-                <Button
-                  variant="outline"
-                  className="w-full border-2 border-gray-200 hover:border-[#0891B2] hover:bg-blue-50 font-medium py-3 rounded-xl transition-all duration-300"
-                  size="lg"
-                >
-                  Create Free Account
-                </Button>
-              </Link>
-            </div>
+            {showSignUp && (
+              <div className="space-y-3">
+                <Link href="/sign-in" className="block">
+                  <Button
+                    className="w-full bg-gradient-to-r from-[#0891B2] to-[#0E7490] hover:from-[#0E7490] hover:to-[#164E63] text-white font-semibold py-3 rounded-xl transition-all duration-300 transform hover:scale-105"
+                    size="lg"
+                  >
+                    Sign In to Continue
+                  </Button>
+                </Link>
+                <Link href="/get-started" className="block">
+                  <Button
+                    variant="outline"
+                    className="w-full border-2 border-gray-200 hover:border-[#0891B2] hover:bg-blue-50 font-medium py-3 rounded-xl transition-all duration-300"
+                    size="lg"
+                  >
+                    Create Free Account
+                  </Button>
+                </Link>
+              </div>
+            )}
 
-            {/* Trust Indicators */}
-            <div className="text-center text-xs text-gray-500 pt-2">
-              <p>✓ Free to join • ✓ No credit card required</p>
-            </div>
+            {showSignUp && (
+              <div className="text-center text-xs text-gray-500 pt-2">
+                <p>✓ Free to join • ✓ No credit card required</p>
+              </div>
+            )}
           </motion.div>
         </motion.div>
       </DialogContent>

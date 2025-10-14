@@ -6,16 +6,17 @@ import { VideoCard } from '../video-card'
 import { DownloadCard } from '../download-card'
 import { useState } from 'react'
 import AccessRequiredModal from './access-required-modal'
+import { AccessState } from './access-alerts'
 
 interface LessonContentClientProps {
   canViewContent: boolean
   downloads: Media[] | null
   videos: Video[] | undefined
-  isPreview: boolean
+  accessState: AccessState
 }
 
 export function LessonContentClient(props: LessonContentClientProps) {
-  const { canViewContent, downloads, videos, isPreview } = props
+  const { canViewContent, downloads, videos, accessState } = props
 
   const [accessModelOpen, setAccessModelOpen] = useState(false)
 
@@ -65,7 +66,7 @@ export function LessonContentClient(props: LessonContentClientProps) {
       <AccessRequiredModal
         onClose={() => setAccessModelOpen(false)}
         isOpen={accessModelOpen}
-        isPreview={isPreview}
+        accessState={accessState}
       />
     </>
   )

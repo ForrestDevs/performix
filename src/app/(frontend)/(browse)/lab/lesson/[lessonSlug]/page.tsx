@@ -74,8 +74,6 @@ export default async function LessonPage(props: DirectLessonPageProps) {
   const accessState: AccessState = getAccessState()
   const canViewContent = accessState == 'previewLoggedIn' || accessState == 'paidLoggedInHasAccess'
 
-  console.log(accessState)
-
   return (
     <div className="min-h-screen bg-gray-50">
       <RefreshRouteOnSave />
@@ -122,7 +120,7 @@ export default async function LessonPage(props: DirectLessonPageProps) {
                 canViewContent={canViewContent}
                 downloads={downloads}
                 videos={lesson.videos}
-                isPreview={lesson.isPreview || false}
+                accessState={accessState}
               />
             </div>
           </div>
