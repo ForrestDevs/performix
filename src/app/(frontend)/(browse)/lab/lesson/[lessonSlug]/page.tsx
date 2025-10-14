@@ -122,6 +122,7 @@ export default async function LessonPage(props: DirectLessonPageProps) {
                 canViewContent={canViewContent}
                 downloads={downloads}
                 videos={lesson.videos}
+                isPreview={lesson.isPreview || false}
               />
             </div>
           </div>

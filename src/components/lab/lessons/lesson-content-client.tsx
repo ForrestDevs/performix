@@ -11,10 +11,11 @@ interface LessonContentClientProps {
   canViewContent: boolean
   downloads: Media[] | null
   videos: Video[] | undefined
+  isPreview: boolean
 }
 
 export function LessonContentClient(props: LessonContentClientProps) {
-  const { canViewContent, downloads, videos } = props
+  const { canViewContent, downloads, videos, isPreview } = props
 
   const [accessModelOpen, setAccessModelOpen] = useState(false)
 
@@ -64,7 +65,7 @@ export function LessonContentClient(props: LessonContentClientProps) {
       <AccessRequiredModal
         onClose={() => setAccessModelOpen(false)}
         isOpen={accessModelOpen}
-        title="test"
+        isPreview={isPreview}
       />
     </>
   )

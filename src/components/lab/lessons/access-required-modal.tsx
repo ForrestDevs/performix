@@ -9,14 +9,10 @@ import Link from 'next/link'
 interface AccessRequiredModal {
   isOpen: boolean
   onClose: () => void
-  title: string
+  isPreview: boolean
 }
 
-export default function AccessRequiredModal({
-  isOpen,
-  onClose,
-  title: string,
-}: AccessRequiredModal) {
+export default function AccessRequiredModal({ isOpen, onClose, isPreview }: AccessRequiredModal) {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md border-0 bg-white shadow-2xl">
@@ -35,7 +31,7 @@ export default function AccessRequiredModal({
               <Lock className="h-8 w-8 text-white" />
             </motion.div>
             <DialogTitle className="text-2xl font-bold text-gray-900">
-              Unlock Premium Content
+              Unlock {isPreview ? 'FreePreview' : 'Premium'} Content
             </DialogTitle>
             <p className="text-gray-600 mt-2">
               Sign in to access the full lesson and download all resources

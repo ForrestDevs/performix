@@ -24,19 +24,9 @@ export function LockedVideoCard({
   return (
     <div className="group bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-all duration-300">
       <div className="relative aspect-video bg-gradient-to-br from-purple-100 to-blue-100 flex items-center justify-center">
-        {video.thumbnailUrl ? (
-          <Image
-            src={video.thumbnailUrl}
-            alt={video.title}
-            className="w-full h-full object-cover"
-            width={100}
-            height={100}
-          />
-        ) : (
-          <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
-            <Play className="h-8 w-8 text-purple-600" />
-          </div>
-        )}
+        <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
+          <Play className="h-8 w-8 text-purple-600" />
+        </div>
 
         {/* Play Overlay */}
         <div className="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -44,14 +34,6 @@ export function LockedVideoCard({
             <Play className="h-6 w-6 text-purple-600 ml-1" onClick={onAccessRequired} />
           </div>
         </div>
-
-        {/* Duration Badge */}
-        {video.duration && (
-          <div className="absolute bottom-2 right-2 px-2 py-1 bg-black/70 text-white text-xs rounded flex items-center gap-1">
-            <Clock className="h-3 w-3" />
-            {video.duration}
-          </div>
-        )}
       </div>
 
       {/* Video Info */}
