@@ -53,9 +53,11 @@ export default async function DirectVolumePage(props: DirectVolumePageProps) {
     notFound()
   }
 
+  const allLessonsPreview = volume.lessons.every((lesson) => lesson.isPreview)
   const hasAccess = user ? await isEnrolledInAnyPlan(user.id) : false
 
-  const completion = user && hasAccess ? await getVolumeCompletion(volume.id) : null
+  const needsUnlock = !allLessonsPreview || !hasAccess
+  const completion = user ? await getVolumeCompletion(volume.id) : null
 
   const labModule = volume.module && typeof volume.module === 'object' ? volume.module : null
 
@@ -121,7 +123,7 @@ export default async function DirectVolumePage(props: DirectVolumePageProps) {
                 </div>
               )}
 
-              {!hasAccess && (
+              {needsUnlock && (
                 <Link
                   href="/plans"
                   className={cn(

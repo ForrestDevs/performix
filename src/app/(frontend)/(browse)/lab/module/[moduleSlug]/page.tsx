@@ -59,7 +59,7 @@ export default async function DirectModulePage(props: DirectModulePageProps) {
   }
 
   const hasAccess = user ? await isEnrolledInAnyPlan(user.id) : false
-  const completion = user && hasAccess ? await getModuleCompletion(labModule?.id) : null
+  const completion = user ? await getModuleCompletion(labModule?.id) : null
 
   return (
     <div className="min-h-screen bg-gray-50">
