@@ -112,7 +112,7 @@ export default async function LessonPage(props: DirectLessonPageProps) {
 
               <AccessAlerts state={accessState} />
 
-              {lesson.richText && (
+              {lesson.richText && canViewContent && (
                 <div className="prose prose-gray max-w-none">
                   <RichText data={lesson.richText} enableGutter={false} />
                 </div>
