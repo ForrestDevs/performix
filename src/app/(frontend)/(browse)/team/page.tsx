@@ -15,7 +15,7 @@ import { cn } from '@/lib/utilities/ui'
 import { ArrowRight } from 'lucide-react'
 import { FeaturedMentors } from '@/components/layout/team/featured-mentors'
 
-export const specialists: Specialist[] = [
+const specialists: Specialist[] = [
   {
     id: '1',
     name: 'Sarah Mitchell',
@@ -87,73 +87,6 @@ export const specialists: Specialist[] = [
     availability: 'Active',
     modalities: ['Async', 'Virtual'],
     bookings: 33,
-  },
-]
-
-export interface Mentor {
-  id: string
-  name: string
-  school: string
-  position: string
-  strengths: string[]
-}
-
-export const mentors: Mentor[] = [
-  {
-    id: '1',
-    name: 'Tyler Johnson',
-    school: 'Boston University',
-    position: 'Forward',
-    strengths: ['Recruiting', 'Training', 'Academics'],
-  },
-  {
-    id: '2',
-    name: 'Emma Davis',
-    school: 'University of Wisconsin',
-    position: 'Defense',
-    strengths: ['D1 Transition', 'Time Management'],
-  },
-  {
-    id: '3',
-    name: 'Ryan Martinez',
-    school: 'University of Michigan',
-    position: 'Goalie',
-    strengths: ['Mental Game', 'Position-specific'],
-  },
-  {
-    id: '4',
-    name: 'Sophie Anderson',
-    school: 'University of Minnesota',
-    position: 'Forward',
-    strengths: ['Leadership', 'Nutrition'],
-  },
-]
-
-const faqs = [
-  {
-    question: 'How does pricing work?',
-    answer:
-      'Pricing varies by specialist and service type. Async breakdowns start at $75, live sessions at $150, and custom modules are quoted individually. Team packages available.',
-  },
-  {
-    question: 'How quickly can I get started?',
-    answer:
-      'Most specialists respond within 24 hours. Active specialists can typically schedule within 3-5 days. Async deliverables are usually completed within 48-72 hours.',
-  },
-  {
-    question: "What's the difference between async and live sessions?",
-    answer:
-      'Async sessions involve video analysis and written feedback delivered on your schedule. Live sessions are real-time video calls for interactive coaching and Q&A.',
-  },
-  {
-    question: 'Are specialists independent contractors?',
-    answer:
-      'Yes. All specialists operate independently and retain IP on their methods unless otherwise agreed. Affiliations shown may be historical unless marked Active.',
-  },
-  {
-    question: 'How do referrals work?',
-    answer:
-      'Refer a player or team and receive 10% credit toward future sessions. Specialists also earn referral bonuses for successful matches.',
   },
 ]
 
