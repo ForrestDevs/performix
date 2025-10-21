@@ -21,6 +21,8 @@ import Modules from './Modules'
 import Volumes from './Volumes'
 import LabSections from './LabSections'
 
+import TeamMembers from './TeamMembers'
+
 export const collections = [
   Lessons,
   Enrollments,
@@ -41,4 +43,5 @@ export const collections = [
   Modules,
   Volumes,
   LabSections,
+  TeamMembers,
 ]

@@ -10,7 +10,7 @@ export const revalidatePost: CollectionAfterChangeHook<Article> = ({
   req: { payload },
 }) => {
   if (doc._status === 'published') {
-    const path = `/posts/${doc.slug}`
+    const path = `/articles/${doc.slug}`
 
     payload.logger.info(`Revalidating post at path: ${path}`)
 
@@ -20,7 +20,7 @@ export const revalidatePost: CollectionAfterChangeHook<Article> = ({
 
   // If the post was previously published, we need to revalidate the old path
   if (previousDoc._status === 'published' && doc._status !== 'published') {
-    const oldPath = `/posts/${previousDoc.slug}`
+    const oldPath = `/articles/${previousDoc.slug}`
 
     payload.logger.info(`Revalidating old post at path: ${oldPath}`)
 

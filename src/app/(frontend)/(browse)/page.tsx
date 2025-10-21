@@ -8,8 +8,6 @@ import {
   ValuePropSection,
   HowItWorksSection,
   WhatYouGetEveryMonth,
-  ExtraValueSection,
-  TrustSection,
   FAQSection,
 } from '@/components/layout/home'
 import { FeaturedMentorsSection } from '@/components/layout/home/featured-mentors'
@@ -32,26 +30,27 @@ export default function HomePage() {
                   Elite Mentorship Platform
                 </Badge>
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight font-['Space_Grotesk']">
-                  The Fastest Way to{' '}
+                  The Future of{' '}
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0891B2] to-[#8B5CF6]">
-                    Go Further in Hockey
+                    Hockey Development
                   </span>
                 </h1>
                 <p className="text-xl text-gray-600 leading-relaxed max-w-2xl">
-                  <strong>Why waste time trying to figure it out alone?</strong> Get access to D1
-                  hockey mentors, elite systems, and a proven plan — built to take you further,
-                  faster.
+                  <strong>Why take the chance of doing it alone? </strong>Work directly with D1
+                  hockey mentors, use elite tools across every part of the game, and follow a
+                  personalized system built around you — so you can finally become the player you
+                  know you&apos;re capable of being.
                 </p>
               </div>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link
-                  href="https://calendly.com/mateodixon/d1-mentorship-call"
+                  href="game-plan"
                   className={cn(
                     buttonVariants({ size: 'lg' }),
                     'bg-[#0891B2] hover:bg-[#0E7490] text-white px-8 py-4 text-lg hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl',
                   )}
                 >
-                  Book Your Free Call
+                  Start your game plan
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
                 <Link
@@ -62,7 +61,7 @@ export default function HomePage() {
                   )}
                 >
                   <Users className="mr-2 h-5 w-5" />
-                  Browse all mentors
+                  Explore our team
                 </Link>
               </div>
               <div className="flex items-center space-x-6 text-sm text-gray-500">
@@ -102,12 +101,10 @@ export default function HomePage() {
         </div>
       </section>
       <ValuePropSection />
-      <HowItWorksSection />
       <WhatYouGetEveryMonth />
-      <ExtraValueSection />
+      <HowItWorksSection />
       <FeaturedMentorsSection />
       <TestimonialsSection />
-      <TrustSection />
       <FAQSection />
       <section className="py-20 bg-gradient-to-r from-[#0891B2] to-[#0E7490]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -124,7 +121,7 @@ export default function HomePage() {
                   'bg-[#0891B2] hover:bg-[#0E7490] text-white px-8 py-4 text-lg hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl',
                 )}
               >
-                Get Started
+                Book Your Free Call
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
             </div>

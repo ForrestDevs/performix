@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react'
+import React from 'react'
 import { PerformixLogoClear } from '@/components/logo'
 import Link from 'next/link'
 import { MobileMenu, MobileMenuButton } from './mobile-menu'
@@ -35,9 +35,18 @@ export default async function Header() {
               <Link href="/lab" className="text-gray-600 hover:text-[#0891B2] transition-colors">
                 The Lab
               </Link>
+              {/* <Link href="/team" className="text-gray-600 hover:text-[#0891B2] transition-colors">
+                The Team
+              </Link> */}
               <Link href="/plans" className="text-gray-600 hover:text-[#0891B2] transition-colors">
                 Plans
               </Link>
+              {/* <Link
+                href="/reviews"
+                className="text-gray-600 hover:text-[#0891B2] transition-colors"
+              >
+                Reviews
+              </Link> */}
               <AuthButtons />
             </nav>
           </div>

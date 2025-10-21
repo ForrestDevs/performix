@@ -26,6 +26,7 @@ const eslintConfig = [
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/no-wrapper-object-types': 'off',
       '@typescript-eslint/no-unused-expressions': 'off',
+      'react/no-children-prop': 'off',
     },
     ignores: [
       'src/payload-types.ts',

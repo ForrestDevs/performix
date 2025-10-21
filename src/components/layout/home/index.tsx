@@ -21,12 +21,42 @@ import {
   Target,
   TrendingUp,
   Trophy,
+  User,
   Users,
 } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { describe } from 'node:test'
-import { useState } from 'react'
+
+const valuePropItems = [
+  {
+    icon: GraduationCap,
+    title: 'Real D1 Mentors',
+    strong: "You're not left alone to figure it out.",
+    description:
+      "Work 1-on-1 with an active Division I player who's already where you want to be — guiding your mindset, habits, and development every step.",
+  },
+  {
+    icon: TrendingUp,
+    title: 'All-Around Development',
+    strong: "We don't just focus on one part of the game.",
+    description:
+      'High-level support and tools across every side of performance — training, nutrition, mindset, and hockey IQ — all built to work together in one complete system.',
+  },
+  {
+    icon: User,
+    title: 'Personalized To You',
+    strong: "This isn't a one-size-fits-all program.",
+    description:
+      'Everything is built around your game and goals. We figure out what will get you the best results and build a personalized plan designed around you.',
+  },
+  {
+    icon: Trophy,
+    title: 'Network of Experts',
+    strong: 'A team of specialists behind every player.',
+    description:
+      'Our system blends insights from D1 strength coaches, NHL-level skill coaches, sports scientists, and performance experts — all working together to achieve your hockey goals.',
+  },
+]
 
 export function ValuePropSection() {
   const visibleElements = useScrollAnimation()
@@ -44,39 +74,15 @@ export function ValuePropSection() {
           }`}
         >
           <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-            Why Players Choose Performix
+            THE PERFORMIX ADVANTAGE
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Join the platform that&apos;s advancing the next generation of serious hockey players.
+            The new standard for developing serious hockey players.
           </p>
         </div>
 
-        <div className="mt-12 grid md:grid-cols-4 gap-8">
-          {[
-            {
-              icon: Calendar,
-              title: 'Monthly Game Plan',
-              description:
-                'We help you find what will move you furthest — and build a strategy around it.',
-            },
-            {
-              icon: GraduationCap,
-              title: 'Real D1 Mentors',
-              description:
-                'Work directly with an active D1 player who knows what it takes to succeed.',
-            },
-            {
-              icon: Trophy,
-              title: 'Proven Progress',
-              description: '100% of athletes report faster improvement in their first month.',
-            },
-            {
-              icon: TrendingUp,
-              title: 'NHL-Grade Tools',
-              description:
-                'Elite training systems for speed, strength, hockey IQ, nutrition & recovery.',
-            },
-          ].map((item, index) => (
+        <div className="my-12 grid md:grid-cols-4 gap-8">
+          {valuePropItems.map((item, index) => (
             <Card
               key={index}
               id={`value-card-${index}`}
@@ -95,10 +101,51 @@ export function ValuePropSection() {
                 <h3 className="text-xl font-bold text-gray-900 mb-4 group-hover:text-[#0891B2] transition-colors duration-300">
                   {item.title}
                 </h3>
-                <p className="text-gray-500 leading-relaxed text-sm">{item.description}</p>
+                <p className="text-gray-500 leading-relaxed text-sm">
+                  <strong>{item.strong}</strong> {item.description}
+                </p>
               </CardContent>
             </Card>
           ))}
+        </div>
+
+        <div
+          data-scroll-animate
+          className={`text-center transition-all duration-1000 ${
+            isVisible(`value-prop-header`)
+              ? 'opacity-100 translate-y-0'
+              : 'opacity-0 translate-y-12'
+          }`}
+        >
+          <div className="w-16 h-16 bg-[#0891B2]/10 rounded-full flex items-center justify-center mx-auto mb-6">
+            <Award className="h-8 w-8 text-[#0891B2]" />
+          </div>
+          <h3 className="text-xl font-bold text-gray-900 mb-4">Risk-Free Guarantee</h3>
+          <p className="text-gray-600 leading-relaxed">
+            100% satisfaction guarantee or your money back. We&apos;re committed to your success.
+          </p>
+        </div>
+
+        <div
+          id="journey-cta"
+          data-scroll-animate
+          className={`text-center mt-16 transition-all duration-1000 ${
+            isVisible('journey-cta') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+          }`}
+        >
+          <Link
+            href="https://calendly.com/mateodixon/d1-mentorship-call"
+            className={cn(
+              buttonVariants({ size: 'lg' }),
+              'bg-gradient-to-r from-[#0EA5E9] to-[#A78BFA] via-[#0891B2] hover:from-[#0E7490] hover:to-[#8B5CF6] text-white px-8 py-4 text-lg shadow-lg hover:shadow-xl transition-all duration-300',
+            )}
+          >
+            Start your journey
+            <ArrowRight className="ml-2 h-5 w-5" />
+          </Link>
+          <p className="text-gray-600 mt-4 text-base">
+            Get matched with your mentor and start building your plan.
+          </p>
         </div>
       </div>
     </section>
@@ -109,6 +156,36 @@ export function HowItWorksSection() {
   const visibleElements = useScrollAnimation()
 
   const isVisible = (id: string) => visibleElements.has(id)
+
+  const steps = [
+    {
+      step: 1,
+      title: 'Free Strategy Call',
+      description: "Tell us where you're at, what you've tried, and what goals you're chasing.",
+      icon: Users,
+      details: ['Goal-Based Matching', 'Personality Fit', 'Position-Specific Pairing'],
+    },
+    {
+      step: 2,
+      title: 'Your Game Plan',
+      description:
+        "We'll build your player profile, set clear priorities, and pair you with the right D1 mentor for your path.",
+      icon: Target,
+      details: [
+        '1-on-1 Private Mentorship',
+        'Performance-Driven Resources',
+        'Consistent Progress Tracking',
+      ],
+    },
+    {
+      step: 3,
+      title: 'Start Producing Results',
+      description:
+        "Unlock new opportunities, climb levels faster, and do it with guidance from people who've already made it there.",
+      icon: Award,
+      details: ['Apply D1 Strategy', 'Use What Works', 'Turn Knowledge Into Results'],
+    },
+  ]
 
   return (
     <section id="how-it-works" className="py-20 bg-gray-50 overflow-hidden">
@@ -122,9 +199,7 @@ export function HowItWorksSection() {
               : 'opacity-0 translate-y-8'
           }`}
         >
-          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-            Get Ahead in 3 Steps
-          </h2>
+          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">Your Next 3 Moves</h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             A proven shortcut used by driven players to develop faster.
           </p>
@@ -151,36 +226,7 @@ export function HowItWorksSection() {
               }`}
             ></div>
 
-            {[
-              {
-                step: 1,
-                title: 'Mentor Match',
-                description:
-                  'Start with a free Zoom call where we learn about your goals, experience, and journey—to match you with the right mentor.',
-                icon: Users,
-                details: ['Goal-Based Matching', 'Personality Fit', 'Position-Specific Pairing'],
-              },
-              {
-                step: 2,
-                title: 'Improve',
-                description:
-                  'Benefit from the mentor, tools, and full system built to accelerate your development',
-                icon: Target,
-                details: [
-                  '1-on-1 Private Mentorship',
-                  'Performance-Driven Resources',
-                  'Consistent Progress Tracking',
-                ],
-              },
-              {
-                step: 3,
-                title: 'Achieve',
-                description:
-                  "Open doors to new opportunities, climb levels faster, and do it with people who've already been there.",
-                icon: Award,
-                details: ['Apply D1 Strategy', 'Use What Works', 'Turn Knowledge Into Results'],
-              },
-            ].map((item, index) => (
+            {steps.map((item, index) => (
               <div
                 key={index}
                 id={`step-${index}`}
@@ -253,7 +299,7 @@ export function HowItWorksSection() {
             }`}
           >
             <Link
-              href="/get-started"
+              href="https://calendly.com/mateodixon/d1-mentorship-call"
               className={cn(
                 buttonVariants({ size: 'lg' }),
                 'bg-gradient-to-r from-[#0EA5E9] to-[#A78BFA] via-[#0891B2] hover:from-[#0E7490] hover:to-[#8B5CF6] text-white px-8 py-4 text-lg shadow-lg hover:shadow-xl transition-all duration-300',
@@ -306,18 +352,7 @@ export function WhatYouGetEveryMonth() {
       title: 'Custom Tools + Goal Roadmap',
       description:
         'Get tools and monthly goals made just for you — based on your game, position, and where you want to go.',
-    },
-
-    {
-      title: 'Expert Guests',
-      description:
-        'Learn from top coaches and specialists in training, mindset, and performance — brought in by our D1 mentor network.',
-    },
-    {
-      title: 'Daily Mentor Access',
-      description:
-        'Message your mentor anytime for direct support, questions, and real-time adjustments.',
-    },
+    }
   ]
 
   return (

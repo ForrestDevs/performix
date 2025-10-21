@@ -55,17 +55,29 @@ export async function LabSection({ section, hasAccess, className }: LabSectionPr
   }
 
   return (
-    <section className={cn('space-y-6', className)}>
-      <div className="space-y-3">
-        <div className="flex items-center gap-3">
-          <div>
-            <h2 className="text-2xl font-bold text-gray-900">{section.title}</h2>
-            {section.subtitle && <p className="text-lg text-gray-600 mt-1">{section.subtitle}</p>}
-          </div>
-          <Badge variant="outline" className="ml-auto">
-            {getContentTypeLabel()}
-          </Badge>
+    <section
+      className={cn(
+        "relative group rounded-3xl border border-gray-200 bg-white/90 shadow-[0_2px_16px_0_rgba(69,126,235,0.06)] px-6 sm:px-10 py-10 sm:py-14 mb-3 transition-all duration-400 hover:shadow-[0_8px_32px_0_rgba(52,120,245,0.07)]",
+        className
+      )}
+    >
+      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-6 mb-6 pb-4 border-b border-gray-100">
+        <div className="flex-1">
+          <h2 className="text-[2rem] sm:text-4xl font-extrabold tracking-tight text-gray-900 mb-2 drop-shadow-sm select-none leading-tight">
+            {section.title}
+          </h2>
+          {section.subtitle && (
+            <p className="text-lg sm:text-xl text-gray-500 font-medium mt-0.5 mb-1">
+              {section.subtitle}
+            </p>
+          )}
         </div>
+        <Badge
+          variant="secondary"
+          className="ml-0 sm:ml-auto px-4 py-1.5 rounded-full text-base font-semibold bg-gradient-to-r from-blue-50 via-blue-100 to-blue-50 text-blue-700 border-0 shadow-sm shadow-blue-100/50"
+        >
+          {getContentTypeLabel()}
+        </Badge>
       </div>
 
       <div className="space-y-8">

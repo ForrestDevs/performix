@@ -39,3 +39,4 @@ export const VOLUMES_SLUG = 'volumes' as const
 export const LESSONS_SLUG = 'lessons' as const
 export const VIDEOS_SLUG = 'videos' as const
 export const LAB_SECTIONS_SLUG = 'lab-sections' as const
+export const TEAM_MEMBERS_SLUG = 'team-members' as const

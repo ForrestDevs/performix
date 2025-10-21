@@ -88,7 +88,7 @@ export function MentorHero() {
                 'bg-[#0891B2] hover:bg-[#0E7490] text-white',
               )}
             >
-              Book a Session
+              Learn More
               <Calendar className="ml-2 h-5 w-5" />
             </Link>
             <Button

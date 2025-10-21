@@ -31,4 +31,6 @@ export const CACHE_TAGS = {
   GET_LAB_MODULE_COMPLETION: 'getLabModuleCompletion',
   GET_LAB_VOLUME_COMPLETION: 'getLabVolumeCompletion',
   GET_LAB_LESSON_COMPLETION: 'getLabLessonCompletion',
+
+  GET_TEAM_MEMBERS: 'getTeamMembers',
 } as const

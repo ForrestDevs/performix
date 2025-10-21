@@ -8,6 +8,8 @@ import {
   InlineToolbarFeature,
   lexicalEditor,
   TreeViewFeature,
+  UnorderedListFeature,
+  OrderedListFeature,
 } from '@payloadcms/richtext-lexical'
 import { authenticated, authenticatedOrPublished } from '@/payload/access'
 import { MediaBlock } from '@/payload/blocks/MediaBlock/config'
@@ -22,6 +24,7 @@ import {
   PreviewField,
 } from '@payloadcms/plugin-seo/fields'
 import { ARTICLE_SLUG, ARTICLE_TAG_SLUG, USER_SLUG } from '../constants'
+import { defaultLexical } from '@/payload/fields/defaultLexical'
 
 const Articles: CollectionConfig = {
   slug: ARTICLE_SLUG,
@@ -64,6 +67,8 @@ const Articles: CollectionConfig = {
                     FixedToolbarFeature(),
                     InlineToolbarFeature(),
                     HorizontalRuleFeature(),
+                    UnorderedListFeature(),
+                    OrderedListFeature(),
                     LinkFeature(),
                   ]
                 },

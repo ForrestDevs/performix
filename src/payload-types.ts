@@ -92,6 +92,7 @@ export interface Config {
     modules: Module;
     volumes: Volume;
     'lab-sections': LabSection;
+    'team-members': TeamMember;
     'payload-jobs': PayloadJob;
     'payload-folders': FolderInterface;
     'payload-locked-documents': PayloadLockedDocument;
@@ -136,6 +137,7 @@ export interface Config {
     modules: ModulesSelect<false> | ModulesSelect<true>;
     volumes: VolumesSelect<false> | VolumesSelect<true>;
     'lab-sections': LabSectionsSelect<false> | LabSectionsSelect<true>;
+    'team-members': TeamMembersSelect<false> | TeamMembersSelect<true>;
     'payload-jobs': PayloadJobsSelect<false> | PayloadJobsSelect<true>;
     'payload-folders': PayloadFoldersSelect<false> | PayloadFoldersSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
@@ -211,7 +213,7 @@ export interface User {
   /**
    * The role of the user
    */
-  role?: ('admin' | 'student' | 'mentor') | null;
+  role?: string | null;
   /**
    * Whether the user is banned from the platform
    */
@@ -262,7 +264,7 @@ export interface Session {
   /**
    * The admin who is impersonating this session
    */
-  impersonatedBy?: (number | null) | User;
+  impersonatedBy?: string | null;
 }
 /**
  * Accounts are used to store user accounts for authentication providers
@@ -419,7 +421,7 @@ export interface Lesson {
     root: {
       type: string;
       children: {
-        type: string;
+        type: any;
         version: number;
         [k: string]: unknown;
       }[];
@@ -468,7 +470,7 @@ export interface Media {
     root: {
       type: string;
       children: {
-        type: string;
+        type: any;
         version: number;
         [k: string]: unknown;
       }[];
@@ -598,7 +600,7 @@ export interface Module {
     root: {
       type: string;
       children: {
-        type: string;
+        type: any;
         version: number;
         [k: string]: unknown;
       }[];
@@ -656,7 +658,7 @@ export interface Volume {
     root: {
       type: string;
       children: {
-        type: string;
+        type: any;
         version: number;
         [k: string]: unknown;
       }[];
@@ -720,7 +722,7 @@ export interface Blueprint {
     root: {
       type: string;
       children: {
-        type: string;
+        type: any;
         version: number;
         [k: string]: unknown;
       }[];
@@ -852,7 +854,7 @@ export interface Page {
       root: {
         type: string;
         children: {
-          type: string;
+          type: any;
           version: number;
           [k: string]: unknown;
         }[];
@@ -909,7 +911,7 @@ export interface CallToActionBlock {
     root: {
       type: string;
       children: {
-        type: string;
+        type: any;
         version: number;
         [k: string]: unknown;
       }[];
@@ -955,7 +957,7 @@ export interface ContentBlock {
           root: {
             type: string;
             children: {
-              type: string;
+              type: any;
               version: number;
               [k: string]: unknown;
             }[];
@@ -1149,7 +1151,7 @@ export interface Article {
     root: {
       type: string;
       children: {
-        type: string;
+        type: any;
         version: number;
         [k: string]: unknown;
       }[];
@@ -1280,6 +1282,30 @@ export interface LabSection {
             value: number | Lesson;
           }
       )[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Team members are the people who are part of the team.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "team-members".
+ */
+export interface TeamMember {
+  id: number;
+  name: string;
+  avatar: number | Media;
+  title: string;
+  credentials: string;
+  approach?: string | null;
+  focusAreas?: string | null;
+  whoBenefits?: string | null;
+  exampleDeliverables?:
+    | {
+        deliverable?: string | null;
+        id?: string | null;
+      }[]
     | null;
   updatedAt: string;
   createdAt: string;
@@ -1482,6 +1508,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'lab-sections';
         value: number | LabSection;
+      } | null)
+    | ({
+        relationTo: 'team-members';
+        value: number | TeamMember;
       } | null)
     | ({
         relationTo: 'payload-jobs';
@@ -2096,6 +2126,27 @@ export interface LabSectionsSelect<T extends boolean = true> {
   subtitle?: T;
   order?: T;
   content?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "team-members_select".
+ */
+export interface TeamMembersSelect<T extends boolean = true> {
+  name?: T;
+  avatar?: T;
+  title?: T;
+  credentials?: T;
+  approach?: T;
+  focusAreas?: T;
+  whoBenefits?: T;
+  exampleDeliverables?:
+    | T
+    | {
+        deliverable?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }

@@ -1,9 +1,6 @@
 'use client'
 
-import { motion } from 'motion/react'
-import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { CheckCircle } from 'lucide-react'
 import { useMentor } from './mentor-context'
 import { useScrollAnimation } from '@/lib/hooks/useScrollAnimation'
 import { prettifySkill } from '@/lib/utilities/prettify'

@@ -33,6 +33,8 @@ import * as migration_20250720_153822_labSections from './20250720_153822_labSec
 import * as migration_20250827_174649_plans2 from './20250827_174649_plans2';
 import * as migration_20250827_220346_labSectionPoly from './20250827_220346_labSectionPoly';
 import * as migration_20250827_233319_foldersUpdate from './20250827_233319_foldersUpdate';
+import * as migration_20251018_211253_updatePayload from './20251018_211253_updatePayload';
+import * as migration_20251021_181416_teamMembers from './20251021_181416_teamMembers';
 
 export const migrations = [
   {
@@ -208,6 +210,16 @@ export const migrations = [
   {
     up: migration_20250827_233319_foldersUpdate.up,
     down: migration_20250827_233319_foldersUpdate.down,
-    name: '20250827_233319_foldersUpdate'
+    name: '20250827_233319_foldersUpdate',
+  },
+  {
+    up: migration_20251018_211253_updatePayload.up,
+    down: migration_20251018_211253_updatePayload.down,
+    name: '20251018_211253_updatePayload',
+  },
+  {
+    up: migration_20251021_181416_teamMembers.up,
+    down: migration_20251021_181416_teamMembers.down,
+    name: '20251021_181416_teamMembers'
   },
 ];

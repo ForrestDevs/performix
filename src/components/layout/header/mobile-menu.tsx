@@ -6,9 +6,8 @@ import { Button } from '@/components/ui/button'
 import { useMobileMenu } from './context'
 import { AuthButtons } from './auth-buttons'
 import { type MouseEvent } from 'react'
-import { User } from '@/lib/auth/types'
 
-export const MobileMenu: React.FC = () => {
+export function MobileMenu() {
   const { isOpen, setIsOpen } = useMobileMenu()
 
   return (
@@ -17,7 +16,6 @@ export const MobileMenu: React.FC = () => {
       className={`${isOpen ? 'block' : 'hidden'} lg:hidden border-t border-gray-100 bg-white shadow-lg`}
     >
       <div className="mx-auto px-4 py-6 space-y-1">
-        {/* Navigation Links */}
         <nav className="space-y-2" role="navigation" aria-label="Mobile navigation">
           <Link
             onClick={() => setIsOpen(false)}
@@ -40,6 +38,13 @@ export const MobileMenu: React.FC = () => {
           >
             The Lab
           </Link>
+          {/* <Link
+            onClick={() => setIsOpen(false)}
+            href="/team"
+            className="flex items-center px-4 py-3 rounded-lg text-base font-medium text-gray-700 hover:text-[#0891B2] hover:bg-gray-50 transition-all duration-200 active:bg-gray-100"
+          >
+            The Team
+          </Link> */}
           <Link
             onClick={() => setIsOpen(false)}
             href="/plans"
@@ -47,12 +52,17 @@ export const MobileMenu: React.FC = () => {
           >
             Plans
           </Link>
+          {/* <Link
+            onClick={() => setIsOpen(false)}
+            href="/reviews"
+            className="flex items-center px-4 py-3 rounded-lg text-base font-medium text-gray-700 hover:text-[#0891B2] hover:bg-gray-50 transition-all duration-200 active:bg-gray-100"
+          >
+            Reviews
+          </Link> */}
         </nav>
 
-        {/* Divider */}
         <div className="my-6 border-t border-gray-200" />
 
-        {/* Authentication Section */}
         <div className="space-y-3">
           <AuthButtons />
         </div>

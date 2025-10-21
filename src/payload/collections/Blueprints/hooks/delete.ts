@@ -2,8 +2,9 @@ import type { CollectionAfterDeleteHook, CollectionConfig } from 'payload'
 
 import { APIError } from 'payload'
 import { stripeClient } from '@/lib/stripe'
+import type { Blueprint } from '@/payload-types'
 
-export const deleteFromStripe: CollectionAfterDeleteHook = async (args) => {
+export const deleteFromStripe: CollectionAfterDeleteHook<Blueprint> = async (args) => {
   const { collection, doc, req } = args
 
   const { payload } = req
@@ -13,7 +14,12 @@ export const deleteFromStripe: CollectionAfterDeleteHook = async (args) => {
     `Document with ID: '${doc?.id}' in collection: '${collectionSlug}' has been deleted, deleting from Stripe...`,
   )
 
-  if (process.env.NODE_ENV !== 'test') {
+  if (
+    process.env.NODE_ENV !== 'test' &&
+    doc.isPaid === true &&
+    doc.stripeProductId &&
+    doc.stripePriceId
+  ) {
     payload.logger.info(`- Deleting Stripe document with ID: '${doc.stripeProductId}'...`)
 
     try {

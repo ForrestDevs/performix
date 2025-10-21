@@ -1,7 +1,20 @@
 import React, { Suspense } from 'react'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { Play, Lock, Clock, ChevronRight, ArrowLeft, BookOpen } from 'lucide-react'
+import {
+  Play,
+  Lock,
+  Clock,
+  ChevronRight,
+  ArrowLeft,
+  BookOpen,
+  Trophy,
+  Target,
+  Zap,
+  Star,
+  CheckCircle2,
+  BookOpenText,
+} from 'lucide-react'
 import { Button, buttonVariants } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -62,35 +75,58 @@ export default async function DirectModulePage(props: DirectModulePageProps) {
   const completion = user ? await getModuleCompletion(labModule?.id) : null
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
       <RefreshRouteOnSave />
       <LabBreadcrumb
         title={labModule?.title || ''}
         currentPage={{ type: 'module', slug: labModule?.slug || '' }}
       />
 
-      <div className="bg-gradient-to-r from-purple-600 to-blue-600 text-white">
-        <div className="container mx-auto px-4 py-16">
+      <div className="relative overflow-hidden bg-gradient-to-br from-[#0891B2] via-[#0891B2] to-[#8B5CF6] text-white">
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute -top-40 -right-40 w-96 h-96 bg-white/10 rounded-full blur-3xl animate-pulse"></div>
+          <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-[#8B5CF6]/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
+        </div>
+
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-20 relative z-10">
           <div className="grid gap-8 lg:grid-cols-2 items-center">
-            <div>
-              <div className="flex items-center gap-3 mb-4">
-                <Badge variant="secondary" className="bg-white/20 text-white border-white/30">
+            <div className="space-y-6 animate-fade-in-up">
+              <div className="flex flex-wrap items-center gap-3">
+                <Badge
+                  variant="secondary"
+                  className="bg-white/20 backdrop-blur-sm text-white border-white/30 px-4 py-1.5 text-sm font-semibold shadow-lg"
+                >
+                  <Target className="w-3.5 h-3.5 mr-1.5" />
                   Module {labModule?.order + 1}
                 </Badge>
+                {completion && completion.completionPercentage === 100 && (
+                  <Badge className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white border-0 px-4 py-1.5 text-sm font-semibold shadow-lg">
+                    <Trophy className="w-3.5 h-3.5 mr-1.5" />
+                    Completed
+                  </Badge>
+                )}
               </div>
-              <h1 className="text-4xl font-bold mb-4">{labModule?.title}</h1>
-              {labModule?.subtitle && (
-                <p className="text-xl text-blue-100 mb-6">{labModule?.subtitle}</p>
-              )}
+
+              <div className="space-y-3">
+                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight">
+                  {labModule?.title}
+                </h1>
+                {labModule?.subtitle && (
+                  <p className="text-lg sm:text-xl text-blue-100 leading-relaxed max-w-xl">
+                    {labModule?.subtitle}
+                  </p>
+                )}
+              </div>
 
               {labModule?.topics && labModule?.topics.length > 0 && (
-                <div className="flex flex-wrap gap-2 mb-6">
+                <div className="flex flex-wrap gap-2">
                   {labModule?.topics.map((topic: any, index: number) => (
                     <Badge
                       key={index}
                       variant="outline"
-                      className="bg-white/10 text-white border-white/30"
+                      className="bg-white/10 backdrop-blur-sm text-white border-white/30 hover:bg-white/20 transition-colors px-3 py-1"
                     >
+                      <Zap className="w-3 h-3 mr-1" />
                       {topic.topic}
                     </Badge>
                   ))}
@@ -98,20 +134,37 @@ export default async function DirectModulePage(props: DirectModulePageProps) {
               )}
 
               {completion && (
-                <div className="mb-6">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm">Progress</span>
-                    <span className="text-sm">
-                      {completion.completedLessons}/{completion.totalLessons} lessons
-                    </span>
-                  </div>
-                  <div className="w-full bg-white/20 rounded-full h-2">
-                    <div
-                      className="bg-white rounded-full h-2 transition-all duration-300"
-                      style={{ width: `${completion.completionPercentage}%` }}
-                    />
-                  </div>
-                </div>
+                <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white shadow-xl">
+                  <CardContent className="p-6">
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="flex items-center gap-2">
+                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center">
+                          <Trophy className="w-5 h-5 text-white" />
+                        </div>
+                        <div>
+                          <p className="text-sm font-medium text-white/80">Your Progress</p>
+                          <p className="text-2xl font-bold">
+                            {Math.round(completion.completionPercentage)}%
+                          </p>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-sm text-white/80">Lessons Completed</p>
+                        <p className="text-xl font-bold">
+                          {completion.completedLessons}/{completion.totalLessons}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="relative w-full bg-white/20 rounded-full h-3 overflow-hidden">
+                      <div
+                        className="absolute top-0 left-0 h-full bg-gradient-to-r from-yellow-400 via-orange-500 to-yellow-400 rounded-full transition-all duration-500 shadow-lg"
+                        style={{ width: `${completion.completionPercentage}%` }}
+                      >
+                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer"></div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
               )}
 
               {!hasAccess && (
@@ -119,96 +172,199 @@ export default async function DirectModulePage(props: DirectModulePageProps) {
                   href="/plans"
                   className={cn(
                     buttonVariants({ variant: 'default', size: 'lg' }),
-                    'bg-white text-blue-600 hover:bg-gray-100',
+                    'bg-white text-[#0891B2] hover:bg-gray-100 hover:scale-105 transition-all duration-300 shadow-xl px-8 py-6 text-lg font-semibold',
                   )}
                 >
-                  Unlock all content
+                  <Lock className="w-5 h-5 mr-2" />
+                  Unlock All Content
+                  <ChevronRight className="w-5 h-5 ml-2" />
                 </Link>
               )}
             </div>
 
             {labModule?.thumbnail && (
-              <div className="relative aspect-video rounded-lg overflow-hidden">
-                <Image
-                  src={(labModule?.thumbnail as Media).url!}
-                  alt={labModule?.title || 'Module Thumbnail'}
-                  fill
-                  className="object-cover"
-                />
+              <div className="relative animate-fade-in-right">
+                <div className="relative aspect-video rounded-2xl overflow-hidden shadow-2xl border-4 border-white/20 hover:scale-105 transition-transform duration-500">
+                  <Image
+                    src={(labModule?.thumbnail as Media).url!}
+                    alt={labModule?.title || 'Module Thumbnail'}
+                    fill
+                    className="object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+                </div>
               </div>
             )}
           </div>
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-16">
-        <div className="grid gap-8 lg:grid-cols-3">
-          <div className="lg:col-span-2 flex flex-col gap-8">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-20">
+        <div className="grid gap-10 lg:grid-cols-3">
+          <div className="lg:col-span-2 space-y-8">
             {labModule?.introVideo && (
-              <div>
-                <h2 className="text-2xl font-bold mb-4">Introduction</h2>
-                <IntroVideo video={labModule?.introVideo as Video} />
-              </div>
+              <Card className="overflow-hidden border shadow-sm bg-white">
+                <CardHeader className="bg-white border-b">
+                  <CardTitle className="text-xl font-semibold text-neutral-900">
+                    Module Introduction
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="p-6">
+                  <IntroVideo video={labModule?.introVideo as Video} />
+                </CardContent>
+              </Card>
             )}
 
             {labModule?.richText && (
-              <Accordion type="single" collapsible defaultValue="item-1" className="mb-0">
-                <AccordionItem value="item-1">
-                  <AccordionTrigger className="text-2xl font-bold py-0 mb-0">
-                    Overview
-                  </AccordionTrigger>
-                  <AccordionContent>
-                    <RichText data={labModule?.richText} enableGutter={false} />
-                  </AccordionContent>
-                </AccordionItem>
-              </Accordion>
+              <Card className="overflow-hidden border shadow-sm bg-white">
+                <Accordion type="single" collapsible defaultValue="item-1">
+                  <AccordionItem value="item-1" className="border-0">
+                    <AccordionTrigger className="px-6 pt-6 pb-4 hover:no-underline group">
+                      <span className="text-xl font-semibold text-neutral-900">
+                        Module Overview
+                      </span>
+                    </AccordionTrigger>
+                    <AccordionContent className="px-6 pb-6">
+                      <RichText data={labModule?.richText} enableGutter={false} />
+                    </AccordionContent>
+                  </AccordionItem>
+                </Accordion>
+              </Card>
             )}
 
             {labModule?.volumes?.docs && labModule?.volumes?.docs.length > 0 && (
-              <div id="volumes">
-                <h2 className="text-2xl font-bold mb-6">Volumes</h2>
-                <div className="grid gap-6">
-                  {labModule?.volumes?.docs.map((volume: Volume, index: number) => (
-                    <Suspense key={index} fallback={<VolumeLoadingCard />}>
-                      <VolumeCard volumeId={volume.id} hasPlan={hasAccess} />
-                    </Suspense>
-                  ))}
+              <div id="volumes" className="space-y-6 px-2">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2">
+                  <div>
+                    <h2 className="text-2xl font-semibold text-neutral-900">Course Volumes</h2>
+                    <p className="text-neutral-500 text-base">
+                      {labModule?.volumes?.docs?.length} volumes available
+                    </p>
+                  </div>
+                </div>
+
+                <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-5">
+                  {labModule?.volumes?.docs
+                    .sort((a: Volume, b: Volume) => a.order - b.order)
+                    .map((volume: Volume, index: number) => (
+                      <Suspense key={index} fallback={<VolumeLoadingCard />}>
+                        <VolumeCard volumeId={volume.id} hasPlan={hasAccess} />
+                      </Suspense>
+                    ))}
                 </div>
               </div>
             )}
           </div>
 
           <div className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Module Stats</CardTitle>
+            <Card className="overflow-hidden border-0 shadow-xl bg-gradient-to-br from-white to-blue-50/30">
+              <CardHeader className="bg-gradient-to-r from-[#0891B2]/10 to-[#8B5CF6]/10 border-b pb-4">
+                <CardTitle className="flex items-center gap-2 text-xl">
+                  <Target className="w-5 h-5 text-[#0891B2]" />
+                  Quick Stats
+                </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Total Volumes</span>
-                  <span className="font-medium">{labModule?.volumes?.docs?.length || 0}</span>
+              <CardContent className="p-6 space-y-4">
+                <div className="flex items-center justify-between p-4 bg-white rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center">
+                      <BookOpen className="w-5 h-5 text-white" />
+                    </div>
+                    <span className="text-gray-700 font-medium">Volumes</span>
+                  </div>
+                  <span className="text-2xl font-bold text-gray-900">
+                    {labModule?.volumes?.docs?.length || 0}
+                  </span>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Total Lessons</span>
-                  <span className="font-medium">{labModule?.lessons?.docs?.length || 0}</span>
+
+                <div className="flex items-center justify-between p-4 bg-white rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center">
+                      <Play className="w-5 h-5 text-white" />
+                    </div>
+                    <span className="text-gray-700 font-medium">Lessons</span>
+                  </div>
+                  <span className="text-2xl font-bold text-gray-900">
+                    {labModule?.lessons?.docs?.length || 0}
+                  </span>
                 </div>
+
+                {completion && (
+                  <div className="flex items-center justify-between p-4 bg-gradient-to-br from-yellow-50 to-orange-50 rounded-xl shadow-sm border border-yellow-200 hover:shadow-md transition-shadow">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center">
+                        <CheckCircle2 className="w-5 h-5 text-white" />
+                      </div>
+                      <span className="text-gray-700 font-medium">Completed</span>
+                    </div>
+                    <span className="text-2xl font-bold text-gray-900">
+                      {Math.round(completion.completionPercentage)}%
+                    </span>
+                  </div>
+                )}
               </CardContent>
             </Card>
 
-            <Card>
-              <CardHeader>
-                <CardTitle>Navigation</CardTitle>
+            <Card className="overflow-hidden border-0 shadow-xl bg-gradient-to-br from-white to-purple-50/30">
+              <CardHeader className="bg-gradient-to-r from-[#8B5CF6]/10 to-[#0891B2]/10 border-b pb-4">
+                <CardTitle className="flex items-center gap-2 text-xl">
+                  <Zap className="w-5 h-5 text-[#8B5CF6]" />
+                  Quick Navigation
+                </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-2">
+              <CardContent className="p-6 space-y-3">
                 <Link
                   href="/lab"
-                  className={cn(buttonVariants({ variant: 'outline' }), 'w-full justify-start')}
+                  className={cn(
+                    buttonVariants({ variant: 'outline' }),
+                    'w-full justify-start hover:bg-[#0891B2]/10 hover:border-[#0891B2] hover:text-[#0891B2] transition-all duration-300 h-12',
+                  )}
                 >
                   <ArrowLeft className="h-4 w-4 mr-2" />
                   Back to Lab
                 </Link>
+                {hasAccess && labModule?.volumes?.docs && labModule?.volumes?.docs.length > 0 && (
+                  <Link
+                    href={`#volumes`}
+                    className={cn(
+                      buttonVariants({ variant: 'default' }),
+                      'w-full justify-start bg-gradient-to-r from-[#0891B2] to-[#8B5CF6] hover:from-[#0E7490] hover:to-[#7C3AED] transition-all duration-300 h-12',
+                    )}
+                  >
+                    <Star className="h-4 w-4 mr-2" />
+                    Start Learning
+                    <ChevronRight className="h-4 w-4 ml-auto" />
+                  </Link>
+                )}
               </CardContent>
             </Card>
+
+            {/* Unlock CTA for non-subscribers */}
+            {!hasAccess && (
+              <Card className="overflow-hidden border-0 shadow-xl bg-gradient-to-br from-[#0891B2] to-[#8B5CF6] text-white">
+                <CardContent className="p-6 space-y-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                      <Lock className="w-6 h-6 text-white" />
+                    </div>
+                    <div>
+                      <h3 className="font-bold text-lg">Unlock Full Access</h3>
+                      <p className="text-sm text-blue-100">Get unlimited access to all modules</p>
+                    </div>
+                  </div>
+                  <Link
+                    href="/plans"
+                    className={cn(
+                      buttonVariants({ variant: 'secondary', size: 'lg' }),
+                      'w-full bg-white text-[#0891B2] hover:bg-gray-100 hover:scale-105 transition-all duration-300 font-semibold',
+                    )}
+                  >
+                    View Plans
+                    <ChevronRight className="h-5 w-5 ml-2" />
+                  </Link>
+                </CardContent>
+              </Card>
+            )}
           </div>
         </div>
       </div>
