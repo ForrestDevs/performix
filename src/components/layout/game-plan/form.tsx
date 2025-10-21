@@ -102,7 +102,6 @@ export function GamePlanForm() {
       ) : (
         <form
           onSubmit={(e) => {
-            console.log('submitted')
             e.preventDefault()
             form.handleSubmit()
           }}

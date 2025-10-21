@@ -255,7 +255,7 @@ export default async function DirectVolumePage(props: DirectVolumePageProps) {
                   </div>
                 </div>
                 <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-5">
-                  {volume.lessons.map((lesson: Lesson) => (
+                  {volume.lessons.sort((a: Lesson, b: Lesson) => a.order - b.order).map((lesson: Lesson) => (
                     <LessonCard key={lesson.id} lessonId={lesson.id} hasPlan={hasAccess} />
                   ))}
                 </div>

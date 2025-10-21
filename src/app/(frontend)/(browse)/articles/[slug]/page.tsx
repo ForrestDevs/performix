@@ -70,7 +70,7 @@ export default async function Post({ params }: { params: Params }) {
   if (!post) return <PayloadRedirects url={url} />
 
   return (
-    <article className="min-h-screen bg-white">
+    <article className="min-h-screen bg-white pb-16">
       <header className="container py-8 md:py-12 flex flex-col gap-4">
         <div className="flex flex-wrap items-center gap-2 mb-2">
           {post.tags?.map((tag, index) => {
