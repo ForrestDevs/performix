@@ -2,12 +2,11 @@
 
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
-import { cn } from '@/lib/utilities/ui'
-import type { Specialist } from './specialist-grid'
 import { useState } from 'react'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import { TeamMember } from '@/payload-types'
 
-export function SpecialistCard({ specialist }: { specialist: Specialist }) {
+export function SpecialistCard({ teamMember }: { teamMember: TeamMember }) {
   const [modalOpen, setModalOpen] = useState(false)
 
   return (
@@ -22,7 +21,7 @@ export function SpecialistCard({ specialist }: { specialist: Specialist }) {
           <div className="relative w-44 h-44 rounded-full bg-gradient-to-br from-primary via-accent to-amber p-1 shadow-2xl ring-4 ring-background/80 transition-all duration-500 group-hover:scale-110 group-hover:ring-8 group-hover:ring-primary/20 group-hover:shadow-[0_0_40px_rgba(30,107,255,0.4)]">
             <div className="w-full h-full rounded-full bg-background flex items-center justify-center">
               <span className="text-5xl font-bold bg-gradient-to-br from-primary via-accent to-amber bg-clip-text text-transparent">
-                {specialist.name
+                {teamMember.name
                   .split(' ')
                   .map((n) => n[0])
                   .join('')}
@@ -34,14 +33,14 @@ export function SpecialistCard({ specialist }: { specialist: Specialist }) {
         <div className="relative p-8 space-y-5">
           <div className="text-center space-y-2">
             <h3 className="text-2xl font-bold text-foreground tracking-tight group-hover:text-primary transition-colors duration-300">
-              {specialist.name}
+              {teamMember.name}
             </h3>
-            <p className="text-base font-semibold text-primary">{specialist.role}</p>
-            <p className="text-sm text-muted-foreground font-medium">{specialist.affiliation}</p>
+            <p className="text-base font-semibold text-primary">{teamMember.title}</p>
+            <p className="text-sm text-muted-foreground font-medium">{teamMember.credentials}</p>
           </div>
 
           <p className="text-sm text-muted-foreground leading-relaxed text-center line-clamp-3 px-2">
-            {specialist.approach}
+            {teamMember.approach}
           </p>
 
           <div className="pt-3">
@@ -64,7 +63,7 @@ export function SpecialistCard({ specialist }: { specialist: Specialist }) {
                 <div className="w-20 h-20 rounded-full bg-gradient-to-br from-primary via-accent to-amber p-1 shadow-lg">
                   <div className="w-full h-full rounded-full bg-background flex items-center justify-center">
                     <span className="text-2xl font-bold bg-gradient-to-br from-primary via-accent to-amber bg-clip-text text-transparent">
-                      {specialist.name
+                      {teamMember.name
                         .split(' ')
                         .map((n) => n[0])
                         .join('')}
@@ -72,8 +71,8 @@ export function SpecialistCard({ specialist }: { specialist: Specialist }) {
                   </div>
                 </div>
                 <div>
-                  <h2 className="text-3xl font-bold text-foreground">{specialist.name}</h2>
-                  <p className="text-base text-primary font-semibold mt-1">{specialist.role}</p>
+                  <h2 className="text-3xl font-bold text-foreground">{teamMember.name}</h2>
+                  <p className="text-base text-primary font-semibold mt-1">{teamMember.title}</p>
                 </div>
               </div>
             </DialogTitle>
@@ -84,48 +83,30 @@ export function SpecialistCard({ specialist }: { specialist: Specialist }) {
               <div>
                 <h3 className="text-base font-bold text-foreground mb-3">Credentials</h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">
-                  {specialist.affiliation}
+                  {teamMember.credentials}
                 </p>
               </div>
 
               <div>
                 <h3 className="text-base font-bold text-foreground mb-3">Approach</h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">
-                  {specialist.approach}
+                  {teamMember.approach}
                 </p>
               </div>
 
               <div>
                 <h3 className="text-base font-bold text-foreground mb-3">Focus Areas</h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">
-                  Specialized training in {specialist.domainTags.join(', ').toLowerCase()} with
-                  emphasis on athlete development and performance optimization.
+                  {teamMember.focusAreas}
                 </p>
               </div>
 
               <div>
                 <h3 className="text-base font-bold text-foreground mb-3">Who Benefits</h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">
-                  Athletes ages 14-17 looking to enhance their{' '}
-                  {specialist.domainTags[0]?.toLowerCase()} capabilities through structured,
-                  evidence-based training.
+                  {teamMember.whoBenefits}
                 </p>
               </div>
-
-              <div>
-                <h3 className="text-base font-bold text-foreground mb-3">Example Deliverables</h3>
-                <ul className="text-sm text-muted-foreground space-y-2 list-disc list-inside leading-relaxed">
-                  <li>Async game breakdown and analysis</li>
-                  <li>Custom micro-module training programs</li>
-                  <li>One-on-one consultation sessions</li>
-                </ul>
-              </div>
-            </div>
-
-            <div className="p-5 bg-muted/50 rounded-xl border border-border/50">
-              <p className="text-xs text-muted-foreground leading-relaxed">
-                Independent contractor. Affiliation shown may be historical unless marked Active.
-              </p>
             </div>
           </div>
         </DialogContent>

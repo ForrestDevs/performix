@@ -160,6 +160,37 @@ function CarouselItem({ className, ...props }: React.ComponentProps<'div'>) {
   )
 }
 
+export function CarouselDots({ className }: { className?: string }) {
+  const { api } = useCarousel()
+  const slidesCount = api?.slideNodes().length ?? 0
+  const selectedIndex = api?.selectedScrollSnap() ?? 0
+
+  if (!slidesCount || slidesCount <= 1) {
+    return null
+  }
+
+  return (
+    <div
+      className={cn('flex gap-2 mt-4 justify-center items-center', className)}
+      data-slot="carousel-dots"
+    >
+      {Array.from({ length: slidesCount }).map((_, idx) => (
+        <button
+          key={idx}
+          type="button"
+          aria-label={`Go to slide ${idx + 1}`}
+          aria-current={selectedIndex === idx ? 'true' : 'false'}
+          className={cn(
+            'w-2.5 h-2.5 rounded-full focus:outline-none transition-colors',
+            selectedIndex === idx ? 'bg-primary' : 'bg-gray-400/60 hover:bg-gray-400',
+          )}
+          onClick={() => api?.scrollTo(idx)}
+        />
+      ))}
+    </div>
+  )
+}
+
 function CarouselPrevious({
   className,
   variant = 'outline',

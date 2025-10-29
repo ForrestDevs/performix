@@ -22,6 +22,7 @@ import Volumes from './Volumes'
 import LabSections from './LabSections'
 
 import TeamMembers from './TeamMembers'
+import FormResponses from './FormResponses'
 
 export const collections = [
   Lessons,
@@ -44,4 +45,5 @@ export const collections = [
   Volumes,
   LabSections,
   TeamMembers,
+  FormResponses,
 ]

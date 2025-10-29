@@ -74,20 +74,23 @@ export function PlanCard({ plan, index, isAuthenticated, userId }: PlanCardProps
     checkEnrollment()
   }, [])
 
-  const buttonText = plan.needsApplication
-    ? 'Apply'
-    : isAuthenticated
-      ? enrolled
-        ? 'Enrolled'
-        : 'Subscribe'
-      : 'Get Started'
-  const buttonLink = plan.needsApplication
-    ? `${plan.applicationForm}`
-    : isAuthenticated
-      ? enrolled
-        ? '/student'
-        : `/checkout?t=plan&pid=${plan.id}`
-      : '/get-started'
+  const buttonText = enrolled ? 'Enrolled' : 'Apply'
+  const buttonLink = enrolled ? '/student' : `https://calendly.com/mateodixon/d1-mentorship-call`
+
+  // const buttonText = plan.needsApplication
+  //   ? 'Apply'
+  //   : isAuthenticated
+  //     ? enrolled
+  //       ? 'Enrolled'
+  //       : 'Subscribe'
+  //     : 'Get Started'
+  // const buttonLink = plan.needsApplication
+  //   ? `${plan.applicationForm}`
+  //   : isAuthenticated
+  //     ? enrolled
+  //       ? '/student'
+  //       : `/checkout?t=plan&pid=${plan.id}`
+  //     : '/get-started'
 
   return (
     <div
@@ -120,14 +123,14 @@ export function PlanCard({ plan, index, isAuthenticated, userId }: PlanCardProps
             {plan.title}
           </h3>
           <p className="text-gray-600 text-sm sm:text-base lg:text-base mt-2">{plan.description}</p>
-          <div className="my-2">
+          {/* <div className="my-2">
             <span className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 tracking-tighter">
               ${plan.price}
             </span>
             <span className="text-gray-600 text-sm sm:text-base ml-1 block sm:inline">
               USD/{getPeriodText(plan.period ?? 'monthly')}
             </span>
-          </div>
+          </div> */}
         </CardHeader>
         <CardContent className="flex-grow px-4 sm:px-6 pb-6">
           <div className="space-y-4">

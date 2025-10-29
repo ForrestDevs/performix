@@ -1,6 +1,7 @@
 import type { CollectionConfig } from 'payload'
 import { MEDIA_SLUG, TEAM_MEMBERS_SLUG } from '../constants'
 import { admin, anyone } from '@/payload/access'
+import { revalidateTeamMembers } from './hooks/revalidate'
 
 const TeamMembers: CollectionConfig = {
   slug: TEAM_MEMBERS_SLUG,
@@ -15,7 +16,9 @@ const TeamMembers: CollectionConfig = {
     update: admin,
     delete: admin,
   },
-  hooks: {},
+  hooks: {
+    afterChange: [revalidateTeamMembers],
+  },
   fields: [
     {
       name: 'name',

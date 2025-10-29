@@ -33,4 +33,10 @@ export const CACHE_TAGS = {
   GET_LAB_LESSON_COMPLETION: 'getLabLessonCompletion',
 
   GET_TEAM_MEMBERS: 'getTeamMembers',
+
+  GET_VIDEO_REVIEWS: 'getVideoReviews',
+  GET_SCREENSHOT_REVIEWS: 'getScreenshotReviews',
+  GET_PARENT_REVIEWS: 'getParentReviews',
+  GET_STANDARD_REVIEWS: 'getStandardReviews',
+  GET_FEATURED_TESTIMONIALS: 'getFeaturedTestimonials',
 } as const

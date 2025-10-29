@@ -36,10 +36,10 @@ export default function HomePage() {
                   </span>
                 </h1>
                 <p className="text-xl text-gray-600 leading-relaxed max-w-2xl">
-                  <strong>Why take the chance of doing it alone? </strong>Work directly with D1
-                  hockey mentors, use elite tools across every part of the game, and follow a
-                  personalized system built around you — so you can finally become the player you
-                  know you&apos;re capable of being.
+                  <strong>Why not go further, faster? </strong>Work directly with D1 hockey mentors,
+                  use elite tools across every part of the game, and follow a personalized system
+                  built around you — so you can finally become the player you know you&apos;re
+                  capable of being.
                 </p>
               </div>
               <div className="flex flex-col sm:flex-row gap-4">
@@ -100,11 +100,43 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      <section className="py-8">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center">
+          <div className="w-full max-w-5xl">
+            <div className="relative aspect-video rounded-xl overflow-hidden bg-white">
+              <iframe
+                src="https://www.youtube.com/embed/fJsgFnU3XRg"
+                title="Performix - Elite Hockey Mentorship"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                className="absolute inset-0 w-full h-full"
+              />
+            </div>
+          </div>
+          <div className="flex justify-center mt-10">
+            <Link
+              href="https://calendly.com/mateodixon/d1-mentorship-call"
+              className={cn(
+                buttonVariants({ size: 'lg' }),
+                'bg-[#0891B2] hover:bg-[#0E7490] text-white px-8 py-4 text-lg hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl'
+              )}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Book a Free Call
+              <ArrowRight className="ml-2 h-5 w-5" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
       <ValuePropSection />
+      <TestimonialsSection />
       <WhatYouGetEveryMonth />
       <HowItWorksSection />
       <FeaturedMentorsSection />
-      <TestimonialsSection />
+
       <FAQSection />
       <section className="py-20 bg-gradient-to-r from-[#0891B2] to-[#0E7490]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">

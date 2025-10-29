@@ -54,9 +54,9 @@ export default function PerformixLabPage() {
             The Performix <span className="text-blue-600">Lab</span>
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
-            Master elite performance through our comprehensive training modules. From speed
-            development to mental performance, unlock your potential with expert guidance and proven
-            methodologies.
+            Master the art of performance. Where D1 athletes and performance experts decode what
+            drives elite hockey development and share the most effective tools across every part of
+            the game.
           </p>
 
           <Suspense fallback={<StatsLoadingSkeleton />}>

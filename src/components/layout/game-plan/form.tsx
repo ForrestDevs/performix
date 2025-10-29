@@ -21,6 +21,8 @@ import { Button } from '@/components/ui/button'
 import { useState } from 'react'
 import { sendEmail } from '@/lib/data/email'
 import { submitGamePlan } from '@/lib/data/game-plan'
+import { useRouter } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 
 const formSchema = z.object({
   firstName: z.string().min(1, 'First name is required'),
@@ -41,6 +43,7 @@ const formSchema = z.object({
 
 export function GamePlanForm() {
   const [hasSubmitted, setHasSubmitted] = useState(false)
+  const router = useRouter()
 
   const form = useForm({
     defaultValues: {
@@ -63,20 +66,7 @@ export function GamePlanForm() {
     onSubmit: async ({ value }) => {
       setHasSubmitted(true)
       await submitGamePlan(value)
-      toast('You submitted the following values:', {
-        description: (
-          <pre className="bg-code text-code-foreground mt-2 w-[320px] overflow-x-auto rounded-md p-4">
-            <code>{JSON.stringify(value, null, 2)}</code>
-          </pre>
-        ),
-        position: 'bottom-right',
-        classNames: {
-          content: 'flex flex-col gap-2',
-        },
-        style: {
-          '--border-radius': 'calc(var(--radius)  + 4px)',
-        } as React.CSSProperties,
-      })
+      router.push('/game-plan/complete')
     },
   })
 

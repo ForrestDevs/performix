@@ -110,23 +110,6 @@ export function ValuePropSection() {
         </div>
 
         <div
-          data-scroll-animate
-          className={`text-center transition-all duration-1000 ${
-            isVisible(`value-prop-header`)
-              ? 'opacity-100 translate-y-0'
-              : 'opacity-0 translate-y-12'
-          }`}
-        >
-          <div className="w-16 h-16 bg-[#0891B2]/10 rounded-full flex items-center justify-center mx-auto mb-6">
-            <Award className="h-8 w-8 text-[#0891B2]" />
-          </div>
-          <h3 className="text-xl font-bold text-gray-900 mb-4">Risk-Free Guarantee</h3>
-          <p className="text-gray-600 leading-relaxed">
-            100% satisfaction guarantee or your money back. We&apos;re committed to your success.
-          </p>
-        </div>
-
-        <div
           id="journey-cta"
           data-scroll-animate
           className={`text-center mt-16 transition-all duration-1000 ${
@@ -134,18 +117,15 @@ export function ValuePropSection() {
           }`}
         >
           <Link
-            href="https://calendly.com/mateodixon/d1-mentorship-call"
+            href="/game-plan"
             className={cn(
               buttonVariants({ size: 'lg' }),
               'bg-gradient-to-r from-[#0EA5E9] to-[#A78BFA] via-[#0891B2] hover:from-[#0E7490] hover:to-[#8B5CF6] text-white px-8 py-4 text-lg shadow-lg hover:shadow-xl transition-all duration-300',
             )}
           >
-            Start your journey
+            Start your game plan
             <ArrowRight className="ml-2 h-5 w-5" />
           </Link>
-          <p className="text-gray-600 mt-4 text-base">
-            Get matched with your mentor and start building your plan.
-          </p>
         </div>
       </div>
     </section>
@@ -299,18 +279,15 @@ export function HowItWorksSection() {
             }`}
           >
             <Link
-              href="https://calendly.com/mateodixon/d1-mentorship-call"
+              href="/game-plan"
               className={cn(
                 buttonVariants({ size: 'lg' }),
                 'bg-gradient-to-r from-[#0EA5E9] to-[#A78BFA] via-[#0891B2] hover:from-[#0E7490] hover:to-[#8B5CF6] text-white px-8 py-4 text-lg shadow-lg hover:shadow-xl transition-all duration-300',
               )}
             >
-              Apply for a Free Call
+              Start your game plan
               <ArrowRight className="ml-2 h-5 w-5" />
             </Link>
-            <p className="text-gray-600 mt-4 text-base">
-              Get matched with your mentor and start building your plan.
-            </p>
           </div>
         </div>
       </div>
@@ -352,7 +329,7 @@ export function WhatYouGetEveryMonth() {
       title: 'Custom Tools + Goal Roadmap',
       description:
         'Get tools and monthly goals made just for you — based on your game, position, and where you want to go.',
-    }
+    },
   ]
 
   return (
@@ -423,6 +400,7 @@ export function WhatYouGetEveryMonth() {
                 className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
               />
             </div>
+
             <div className="absolute -bottom-6 -right-6 bg-white rounded-xl p-6 shadow-lg border">
               <div className="text-center">
                 <p className="text-3xl font-bold text-[#0891B2] mb-1">30+</p>
@@ -440,7 +418,7 @@ export function WhatYouGetEveryMonth() {
           }`}
         >
           <Link
-            href="/get-started"
+            href="/game-plan"
             className={cn(
               buttonVariants({ size: 'lg' }),
               'bg-gradient-to-r from-[#0EA5E9] to-[#A78BFA] via-[#0891B2] hover:from-[#0E7490] hover:to-[#8B5CF6] text-white px-8 py-4 text-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105',

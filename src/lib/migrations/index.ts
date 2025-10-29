@@ -35,6 +35,8 @@ import * as migration_20250827_220346_labSectionPoly from './20250827_220346_lab
 import * as migration_20250827_233319_foldersUpdate from './20250827_233319_foldersUpdate';
 import * as migration_20251018_211253_updatePayload from './20251018_211253_updatePayload';
 import * as migration_20251021_181416_teamMembers from './20251021_181416_teamMembers';
+import * as migration_20251028_185233_formResponses from './20251028_185233_formResponses';
+import * as migration_20251028_232436_testimonialsV2 from './20251028_232436_testimonialsV2';
 
 export const migrations = [
   {
@@ -220,6 +222,16 @@ export const migrations = [
   {
     up: migration_20251021_181416_teamMembers.up,
     down: migration_20251021_181416_teamMembers.down,
-    name: '20251021_181416_teamMembers'
+    name: '20251021_181416_teamMembers',
+  },
+  {
+    up: migration_20251028_185233_formResponses.up,
+    down: migration_20251028_185233_formResponses.down,
+    name: '20251028_185233_formResponses',
+  },
+  {
+    up: migration_20251028_232436_testimonialsV2.up,
+    down: migration_20251028_232436_testimonialsV2.down,
+    name: '20251028_232436_testimonialsV2'
   },
 ];

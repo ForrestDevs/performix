@@ -1,12 +1,4 @@
-import { type Specialist, SpecialistGrid } from '@/components/layout/team/specialist-grid'
-import { Card } from '@/components/ui/card'
-import { Button, buttonVariants } from '@/components/ui/button'
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@/components/ui/accordion'
+import { buttonVariants } from '@/components/ui/button'
 import { getTeamMembers } from '@/lib/data/team-members'
 import { SpecialistCard } from '@/components/layout/team/specialist-card'
 import { FAQSection } from '@/components/layout/home'
@@ -15,83 +7,8 @@ import { cn } from '@/lib/utilities/ui'
 import { ArrowRight } from 'lucide-react'
 import { FeaturedMentors } from '@/components/layout/team/featured-mentors'
 
-const specialists: Specialist[] = [
-  {
-    id: '1',
-    name: 'Sarah Mitchell',
-    role: 'Skill Development Coach',
-    domainTags: ['Skill', 'HockeyIQ'],
-    approach:
-      'Video-first breakdown with micro-adjustments. Focus on edge work and puck protection under pressure.',
-    affiliation: 'Former NCAA D1 Coach',
-    availability: 'Active',
-    modalities: ['Async', 'Virtual', 'In-person'],
-    bookings: 45,
-  },
-  {
-    id: '2',
-    name: 'Marcus Chen',
-    role: 'Strength & Conditioning',
-    domainTags: ['Strength', 'Sport Science'],
-    approach:
-      'Periodized training blocks tailored to hockey demands. Emphasis on explosive power and injury prevention.',
-    affiliation: 'CSCS, NSCA',
-    availability: 'Active',
-    modalities: ['Virtual', 'In-person'],
-    bookings: 38,
-  },
-  {
-    id: '3',
-    name: 'Dr. Emily Rodriguez',
-    role: 'Sport Nutritionist',
-    domainTags: ['Nutrition', 'Sport Science'],
-    approach:
-      'Evidence-based meal planning for performance and recovery. Individualized macros and timing strategies.',
-    affiliation: 'PhD Sport Nutrition',
-    availability: 'Active',
-    modalities: ['Async', 'Virtual'],
-    bookings: 52,
-  },
-  {
-    id: '4',
-    name: 'James Patterson',
-    role: 'Mental Performance Coach',
-    domainTags: ['Mental', 'HockeyIQ'],
-    approach:
-      'Cognitive training for decision-making under pressure. Visualization and pre-game routines.',
-    affiliation: 'CMPC Certified',
-    availability: 'Waitlist',
-    modalities: ['Virtual'],
-    bookings: 29,
-  },
-  {
-    id: '5',
-    name: 'Alex Thompson',
-    role: 'HockeyIQ Specialist',
-    domainTags: ['HockeyIQ', 'Skill'],
-    approach:
-      'Game situation analysis and pattern recognition. Teaches reading plays before they develop.',
-    affiliation: 'Pro Scout',
-    availability: 'Active',
-    modalities: ['Async', 'Virtual'],
-    bookings: 41,
-  },
-  {
-    id: '6',
-    name: 'Dr. Kevin Walsh',
-    role: 'Sport Scientist',
-    domainTags: ['Sport Science', 'Strength'],
-    approach:
-      'Data-driven performance optimization. GPS tracking, heart rate variability, and load management.',
-    affiliation: 'PhD Exercise Physiology',
-    availability: 'Active',
-    modalities: ['Async', 'Virtual'],
-    bookings: 33,
-  },
-]
-
 export default async function TeamPage() {
-  // const teamMembers = await getTeamMembers()
+  const teamMembers = await getTeamMembers()
 
   return (
     <div>
@@ -105,24 +22,6 @@ export default async function TeamPage() {
               An integrated group of specialists across skill, HockeyIQ, strength, sport science,
               nutrition, and mental performance.
             </p>
-
-            <div className="flex flex-wrap items-center justify-center gap-6 pt-4">
-              <div className="flex items-center gap-3">
-                <div className="flex -space-x-2">
-                  {[1, 2, 3, 4].map((i) => (
-                    <div
-                      key={i}
-                      className="w-8 h-8 rounded-full bg-muted border-2 border-background flex items-center justify-center"
-                    >
-                      <div className="w-4 h-4 bg-primary/20 rounded-full" />
-                    </div>
-                  ))}
-                </div>
-                <span className="text-sm text-muted-foreground">
-                  Independent specialists. Clear roles. Athlete-first.
-                </span>
-              </div>
-            </div>
           </div>
         </div>
       </section>
@@ -130,8 +29,8 @@ export default async function TeamPage() {
       <section id="specialists" className="py-16 px-4">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
-            {specialists.map((specialist) => (
-              <SpecialistCard key={specialist.id} specialist={specialist} />
+            {teamMembers.map((teamMember) => (
+              <SpecialistCard key={teamMember.id} teamMember={teamMember} />
             ))}
           </div>
         </div>
@@ -180,19 +79,10 @@ export default async function TeamPage() {
               href="https://calendly.com/mateodixon/d1-team-demo"
               className={cn(
                 buttonVariants({ size: 'lg' }),
-                'bg-white text-primary hover:bg-primary-foreground hover:text-white border-2 border-white shadow-lg transition-all duration-200 w-full sm:w-auto',
+                'bg-white text-primary hover:bg-primary-foreground border-2 border-white shadow-lg transition-all duration-200 w-full sm:w-auto',
               )}
             >
               Request a Team Session
-            </Link>
-            <Link
-              href="mailto:hello@d1skills.com?subject=Team%20Development%20Player%20Rosters"
-              className={cn(
-                buttonVariants({ size: 'lg', variant: 'outline' }),
-                'border-white text-white hover:bg-white hover:text-primary transition-all duration-200 w-full sm:w-auto',
-              )}
-            >
-              Share Player Details
             </Link>
           </div>
         </div>

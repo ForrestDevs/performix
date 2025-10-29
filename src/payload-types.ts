@@ -93,6 +93,7 @@ export interface Config {
     volumes: Volume;
     'lab-sections': LabSection;
     'team-members': TeamMember;
+    'form-responses': FormResponse;
     'payload-jobs': PayloadJob;
     'payload-folders': FolderInterface;
     'payload-locked-documents': PayloadLockedDocument;
@@ -138,6 +139,7 @@ export interface Config {
     volumes: VolumesSelect<false> | VolumesSelect<true>;
     'lab-sections': LabSectionsSelect<false> | LabSectionsSelect<true>;
     'team-members': TeamMembersSelect<false> | TeamMembersSelect<true>;
+    'form-responses': FormResponsesSelect<false> | FormResponsesSelect<true>;
     'payload-jobs': PayloadJobsSelect<false> | PayloadJobsSelect<true>;
     'payload-folders': PayloadFoldersSelect<false> | PayloadFoldersSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
@@ -1129,7 +1131,11 @@ export interface Student {
  */
 export interface Testimonial {
   id: number;
+  type: 'standard' | 'parent' | 'video' | 'screenshot';
+  video?: (number | null) | Video;
   name?: string | null;
+  progression?: string | null;
+  parentOf?: string | null;
   message?: string | null;
   image?: (number | null) | Media;
   team?: string | null;
@@ -1306,6 +1312,42 @@ export interface TeamMember {
         deliverable?: string | null;
         id?: string | null;
       }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Website form submissions.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "form-responses".
+ */
+export interface FormResponse {
+  id: number;
+  /**
+   * The name of the form this response came from.
+   */
+  formName: string;
+  /**
+   * The name of the user who submitted the form.
+   */
+  userName?: string | null;
+  /**
+   * The phone number of the user who submitted the form.
+   */
+  userPhone?: string | null;
+  /**
+   * The email of the user who submitted the form.
+   */
+  userEmail?: string | null;
+  response?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
     | null;
   updatedAt: string;
   createdAt: string;
@@ -1512,6 +1554,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'team-members';
         value: number | TeamMember;
+      } | null)
+    | ({
+        relationTo: 'form-responses';
+        value: number | FormResponse;
       } | null)
     | ({
         relationTo: 'payload-jobs';
@@ -1904,7 +1950,11 @@ export interface StudentsSelect<T extends boolean = true> {
  * via the `definition` "testimonials_select".
  */
 export interface TestimonialsSelect<T extends boolean = true> {
+  type?: T;
+  video?: T;
   name?: T;
+  progression?: T;
+  parentOf?: T;
   message?: T;
   image?: T;
   team?: T;
@@ -2147,6 +2197,19 @@ export interface TeamMembersSelect<T extends boolean = true> {
         deliverable?: T;
         id?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "form-responses_select".
+ */
+export interface FormResponsesSelect<T extends boolean = true> {
+  formName?: T;
+  userName?: T;
+  userPhone?: T;
+  userEmail?: T;
+  response?: T;
   updatedAt?: T;
   createdAt?: T;
 }

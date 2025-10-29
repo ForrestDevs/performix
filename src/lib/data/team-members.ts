@@ -1,9 +1,11 @@
+'use server'
+
 import { TEAM_MEMBERS_SLUG } from '@/payload/collections/constants'
 import { cache } from '../utilities/cache'
 import { getPayload } from '../utilities/getPayload'
 import { CACHE_TAGS } from '../cache/contants'
 
-export function getTeamMembers() {
+export async function getTeamMembers() {
   const cacheFn = cache(
     async () => {
       const payload = await getPayload()

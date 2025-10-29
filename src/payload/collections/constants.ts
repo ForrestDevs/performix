@@ -40,3 +40,4 @@ export const LESSONS_SLUG = 'lessons' as const
 export const VIDEOS_SLUG = 'videos' as const
 export const LAB_SECTIONS_SLUG = 'lab-sections' as const
 export const TEAM_MEMBERS_SLUG = 'team-members' as const
+export const FORM_RESPONSES_SLUG = 'form-responses' as const
