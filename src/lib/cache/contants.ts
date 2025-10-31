@@ -21,6 +21,7 @@ export const CACHE_TAGS = {
   GET_LAB_LESSONS: 'getLabLessons',
   GET_LAB_LESSON_BY_ID: 'getLabLessonById',
   GET_LAB_LESSON_BY_SLUG: 'getLabLessonBySlug',
+  GET_LAB_LESSONS_BY_VOLUME: 'getLabLessonsByVolume',
 
   GET_LAB_SECTIONS: 'getLabSections',
   GET_LAB_SECTION_BY_ID: 'getLabSectionById',
@@ -31,6 +32,7 @@ export const CACHE_TAGS = {
   GET_LAB_MODULE_COMPLETION: 'getLabModuleCompletion',
   GET_LAB_VOLUME_COMPLETION: 'getLabVolumeCompletion',
   GET_LAB_LESSON_COMPLETION: 'getLabLessonCompletion',
+
 
   GET_TEAM_MEMBERS: 'getTeamMembers',
 

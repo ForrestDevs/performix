@@ -11,5 +11,10 @@ export const revalidateLabLesson: CollectionAfterChangeHook<Lesson> = ({ doc, op
   revalidateTag(CACHE_TAGS.GET_LAB_LESSON_BY_ID + doc.id)
   revalidateTag(CACHE_TAGS.GET_LAB_STATS)
 
+  if (doc.volume) {
+    const volumeId = typeof doc.volume === 'object' ? doc.volume.id : (doc.volume as number)
+    revalidateTag(CACHE_TAGS.GET_LAB_LESSONS_BY_VOLUME + volumeId.toString())
+  }
+
   return doc
 }

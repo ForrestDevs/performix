@@ -288,19 +288,12 @@ export async function getVolumeBySlug(volumeSlug: string) {
 
       if (!volume) return null
 
-      const lessons = await payload.find({
-        collection: LESSONS_SLUG,
-        where: {
-          volume: { equals: volume.id },
-        },
-        limit: 100,
-        sort: 'order',
-      })
+      const lessons = await getLessonsByVolumeId(volume.id)
 
       return {
         ...volume,
-        lessons: lessons.docs,
-        totalLessons: lessons.totalDocs,
+        lessons,
+        totalLessons: lessons.length,
       }
     },
     {
@@ -308,6 +301,25 @@ export async function getVolumeBySlug(volumeSlug: string) {
     },
   )
   return cacheFn(volumeSlug)
+}
+
+export async function getLessonsByVolumeId(volumeId: number) {
+  const cacheFn = cache(
+    async (volumeId: number) => {
+      const payload = await getPayload()
+      const lessons = await payload.find({
+        collection: LESSONS_SLUG,
+        where: { volume: { equals: volumeId } },
+        limit: 100,
+        sort: 'order',
+      })
+      return lessons.docs
+    },
+    {
+      tags: (volumeId: number) => [CACHE_TAGS.GET_LAB_LESSONS_BY_VOLUME + volumeId.toString()],
+    },
+  )
+  return cacheFn(volumeId)
 }
 
 export async function getVolumeById(volumeId: number) {
@@ -407,9 +419,7 @@ export async function getLessonBySlug(lessonSlug: string, userId?: number) {
       }
     },
     {
-      tags: (lessonSlug: string) => [
-        CACHE_TAGS.GET_LAB_LESSON_BY_SLUG + lessonSlug,
-      ],
+      tags: (lessonSlug: string) => [CACHE_TAGS.GET_LAB_LESSON_BY_SLUG + lessonSlug],
     },
   )
 
