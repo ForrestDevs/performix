@@ -360,7 +360,7 @@ export async function getVolumeById(volumeId: number) {
  */
 export async function getLessonBySlug(lessonSlug: string, userId?: number) {
   const cacheFn = cache(
-    async (lessonSlug: string, userId?: number) => {
+    async (lessonSlug: string) => {
       const payload = await getPayload()
 
       const hasPlan = userId ? await isEnrolledInAnyPlan(userId) : false
@@ -407,13 +407,13 @@ export async function getLessonBySlug(lessonSlug: string, userId?: number) {
       }
     },
     {
-      tags: (lessonSlug: string, userId?: number) => [
-        CACHE_TAGS.GET_LAB_LESSON_BY_SLUG + lessonSlug + userId,
+      tags: (lessonSlug: string) => [
+        CACHE_TAGS.GET_LAB_LESSON_BY_SLUG + lessonSlug,
       ],
     },
   )
 
-  return cacheFn(lessonSlug, userId)
+  return cacheFn(lessonSlug)
 }
 
 export async function getLessonMetadataBySlug(lessonSlug: string) {
