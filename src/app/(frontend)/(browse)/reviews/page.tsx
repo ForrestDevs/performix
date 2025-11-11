@@ -17,30 +17,7 @@ export default async function ReviewsPage() {
   const videoReviews = await getVideoReviews()
   const screenshotReviews = await getScreenshotReviews()
   const parentReviews = await getParentReviews()
-  const standardReviews = await getStandardReviews()
 
-  const textA = [
-    'I feel that I have grown my confidence so much more and greatly developed my hockey iq, now feeling like a completely new player.',
-    "I've seen big jumps in my confidence and my consistency on the ice.",
-    "It's NHL top tier and first game back this season I already scored four goals in my first game",
-    "I'm more confident. I'm getting more ice time. They made my game excel to a level I didn't really know I had.",
-    'Was honestly a huge boost in my confidence and got a shutout in my first game.',
-    'I have grown my confidence so much more and greatly developed my hockey iq feeling like a completely new player.',
-  ]
-  const videoReviews1: Testimonial[] = Array.from({ length: 6 }, (_, index) => ({
-    id: index,
-    type: 'video',
-    video: 1,
-    name: `A + ${index}`,
-    message: textA[index],
-    progression: `A + ${index}`,
-    // image?: number | Media | null;
-    // team?: string | null;
-    // position?: string | null;
-    // featured?: boolean | null;
-    updatedAt: new Date().toISOString(),
-    createdAt: new Date().toISOString(),
-  }))
   return (
     <div>
       <section className="py-16 relative flex items-center justify-center overflow-hidden bg-gradient-to-b from-white via-blue-50/30 to-white">
