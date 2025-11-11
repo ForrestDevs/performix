@@ -10,7 +10,7 @@ import {
   getStandardReviews,
   getVideoReviews,
 } from '@/lib/data/testimonials'
-import { Video } from '@/payload-types'
+import { Testimonial, Video } from '@/payload-types'
 import { VideoReview } from '@/components/layout/reviews/video-reviews'
 
 export default async function ReviewsPage() {
@@ -19,6 +19,28 @@ export default async function ReviewsPage() {
   const parentReviews = await getParentReviews()
   const standardReviews = await getStandardReviews()
 
+  const textA = [
+    'I feel that I have grown my confidence so much more and greatly developed my hockey iq, now feeling like a completely new player.',
+    "I've seen big jumps in my confidence and my consistency on the ice.",
+    "It's NHL top tier and first game back this season I already scored four goals in my first game",
+    "I'm more confident. I'm getting more ice time. They made my game excel to a level I didn't really know I had.",
+    'Was honestly a huge boost in my confidence and got a shutout in my first game.',
+    'I have grown my confidence so much more and greatly developed my hockey iq feeling like a completely new player.',
+  ]
+  const videoReviews1: Testimonial[] = Array.from({ length: 6 }, (_, index) => ({
+    id: index,
+    type: 'video',
+    video: 1,
+    name: `A + ${index}`,
+    message: textA[index],
+    progression: `A + ${index}`,
+    // image?: number | Media | null;
+    // team?: string | null;
+    // position?: string | null;
+    // featured?: boolean | null;
+    updatedAt: new Date().toISOString(),
+    createdAt: new Date().toISOString(),
+  }))
   return (
     <div>
       <section className="py-16 relative flex items-center justify-center overflow-hidden bg-gradient-to-b from-white via-blue-50/30 to-white">
@@ -63,28 +85,30 @@ export default async function ReviewsPage() {
             {videoReviews.map((testimonial, index) => (
               <Card
                 key={index}
-                className="group relative overflow-hidden bg-card border border-border hover:border-primary transition-all duration-300 flex flex-col shadow-lg rounded-xl"
+                className="group relative overflow-hidden bg-card border border-border hover:border-primary transition-all duration-300 flex flex-col shadow-lg rounded-xl h-full"
               >
-                <div className="relative w-full min-h-[220px] aspect-video flex items-center justify-center bg-gray-100">
-                  <div className="w-full h-full max-h-[285px] flex items-center justify-center">
-                    <VideoReview video={testimonial.video as Video} />
-                  </div>
+                <div className="relative w-full  aspect-video flex items-center justify-center bg-gray-100 rounded-t-xl overflow-hidden">
+                  <VideoReview video={testimonial.video as Video} />
                 </div>
 
-                <div className="flex-1 flex flex-col justify-between bg-white">
-                  <div className="p-5 pb-0 flex flex-col items-start min-h-[74px]">
-                    <h3 className="font-bold text-xl text-foreground leading-tight mb-1">
+                <div className="flex-1 flex flex-col bg-white">
+                  <div className="flex flex-row items-center justify-between px-6 pt-6 pb-0 min-h-[56px]">
+                    <h3 className="font-bold text-xl text-foreground leading-tight mb-1 flex-shrink-0">
                       {testimonial.name}
                     </h3>
-                    <p className="text-sm text-primary mb-1">{testimonial.progression}</p>
+                    <p className="text-sm text-primary mb-1 ml-4 text-right flex-grow truncate">
+                      {testimonial.progression}
+                    </p>
                   </div>
-                  {testimonial.message && (
-                    <div className="px-5 pb-5 pt-3">
-                      <blockquote className="text-base md:text-lg text-muted-foreground italic border-l-4 border-primary/80 pl-4 bg-muted/50 rounded-lg py-2">
-                        &quot;{testimonial.message}&quot;
-                      </blockquote>
-                    </div>
-                  )}
+                  <div className="flex-1 flex flex-col justify-start">
+                    {testimonial.message && (
+                      <div className="px-6 pt-3 pb-6 flex flex-col justify-start flex-1">
+                        <blockquote className="text-base md:text-lg text-muted-foreground italic border-l-4 border-primary/80 pl-4 bg-muted/50 rounded-lg py-3 h-full">
+                          &quot;{testimonial.message}&quot;
+                        </blockquote>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </Card>
             ))}
@@ -102,14 +126,18 @@ export default async function ReviewsPage() {
             {parentReviews.map((testimonial, index) => (
               <div
                 key={index}
-                className="bg-white border border-border rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow"
+                className="bg-white border border-border rounded-2xl p-8 flex flex-col justify-center shadow-md hover:shadow-xl transition-shadow text-center min-h-[360px]"
               >
-                <Quote className="w-8 h-8 text-primary mb-4" />
-                <p className="text-foreground leading-relaxed mb-4 text-balance">
-                  &quot;{testimonial.message}&quot;
-                </p>
-                <div className="border-t border-border pt-4">
-                  <p className="font-semibold text-foreground">{testimonial.name}</p>
+                <div className="flex items-start w-full mb-4">
+                  <Quote className="w-6 h-6 text-primary mr-2" />
+                </div>
+                <div className="flex-1 flex flex-col justify-center w-full">
+                  <p className="text-foreground font-semibold text-lg md:text-xl leading-relaxed mb-6 text-balance text-center">
+                    &quot;<span className="font-extrabold">{testimonial.message}</span>&quot;
+                  </p>
+                </div>
+                <div className="border-t border-border pt-5 w-full flex flex-col items-center mt-auto">
+                  <p className="font-bold text-primary text-base">{testimonial.name}</p>
                   <p className="text-sm text-muted-foreground">{testimonial.parentOf}</p>
                 </div>
               </div>

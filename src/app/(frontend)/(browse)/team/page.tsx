@@ -12,20 +12,18 @@ export default async function TeamPage() {
 
   return (
     <div>
-      <section id="overview">
-        <div className="py-16 px-4 bg-gradient-to-b from-muted to-background">
-          <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6 text-balance">
-              The Performix Team
-            </h1>
-            <p className="text-lg md:text-xl text-muted-foreground mb-8 text-pretty leading-relaxed">
-              An integrated group of specialists across skill, HockeyIQ, strength, sport science,
-              nutrition, and mental performance.
-            </p>
-          </div>
+      <section id="overview" className="py-20 bg-gradient-to-b from-muted to-background">
+        <div className="max-w-4xl mx-auto px-6 sm:px-8 text-center flex flex-col items-center">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-foreground drop-shadow-sm mb-8 tracking-tight leading-tight font-['Space_Grotesk']">
+            The Performix Team
+          </h1>
+          <div className="w-16 h-1 bg-[#0891B2] rounded-full mx-auto mb-8 opacity-70" />
+          <p className="text-lg md:text-xl text-muted-foreground mb-6 max-w-2xl leading-relaxed mx-auto text-balance">
+            An integrated group of specialists across skill, HockeyIQ,<br className="hidden md:inline" />
+            strength, sport science, nutrition, and mental performance.
+          </p>
         </div>
       </section>
-
       <section id="specialists" className="py-16 px-4">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
@@ -35,7 +33,6 @@ export default async function TeamPage() {
           </div>
         </div>
       </section>
-
       <section id="mentors" className="py-16 px-4 bg-muted">
         <div className="max-w-7xl mx-auto">
           <div className="mb-8">
@@ -61,7 +58,6 @@ export default async function TeamPage() {
           </div>
         </div>
       </section>
-
       <section className="py-20 px-4 bg-gradient-to-b from-[#0891B2] to-[#0E7490]">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-10 md:gap-14">
           <div className="mb-8 md:mb-0">
@@ -87,7 +83,6 @@ export default async function TeamPage() {
           </div>
         </div>
       </section>
-
       <FAQSection />
     </div>
   )

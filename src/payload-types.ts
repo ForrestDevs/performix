@@ -1304,15 +1304,7 @@ export interface TeamMember {
   avatar: number | Media;
   title: string;
   credentials: string;
-  approach?: string | null;
-  focusAreas?: string | null;
-  whoBenefits?: string | null;
-  exampleDeliverables?:
-    | {
-        deliverable?: string | null;
-        id?: string | null;
-      }[]
-    | null;
+  bio?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -2188,15 +2180,7 @@ export interface TeamMembersSelect<T extends boolean = true> {
   avatar?: T;
   title?: T;
   credentials?: T;
-  approach?: T;
-  focusAreas?: T;
-  whoBenefits?: T;
-  exampleDeliverables?:
-    | T
-    | {
-        deliverable?: T;
-        id?: T;
-      };
+  bio?: T;
   updatedAt?: T;
   createdAt?: T;
 }

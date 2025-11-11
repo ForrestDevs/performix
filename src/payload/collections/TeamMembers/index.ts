@@ -42,26 +42,8 @@ const TeamMembers: CollectionConfig = {
       required: true,
     },
     {
-      name: 'approach',
+      name: 'bio',
       type: 'text',
-    },
-    {
-      name: 'focusAreas',
-      type: 'text',
-    },
-    {
-      name: 'whoBenefits',
-      type: 'text',
-    },
-    {
-      name: 'exampleDeliverables',
-      type: 'array',
-      fields: [
-        {
-          name: 'deliverable',
-          type: 'text',
-        },
-      ],
     },
   ],
 } as const

@@ -37,6 +37,7 @@ import * as migration_20251018_211253_updatePayload from './20251018_211253_upda
 import * as migration_20251021_181416_teamMembers from './20251021_181416_teamMembers';
 import * as migration_20251028_185233_formResponses from './20251028_185233_formResponses';
 import * as migration_20251028_232436_testimonialsV2 from './20251028_232436_testimonialsV2';
+import * as migration_20251110_235109_teamMembersv2 from './20251110_235109_teamMembersv2';
 
 export const migrations = [
   {
@@ -232,6 +233,11 @@ export const migrations = [
   {
     up: migration_20251028_232436_testimonialsV2.up,
     down: migration_20251028_232436_testimonialsV2.down,
-    name: '20251028_232436_testimonialsV2'
+    name: '20251028_232436_testimonialsV2',
+  },
+  {
+    up: migration_20251110_235109_teamMembersv2.up,
+    down: migration_20251110_235109_teamMembersv2.down,
+    name: '20251110_235109_teamMembersv2'
   },
 ];

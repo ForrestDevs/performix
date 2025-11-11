@@ -19,7 +19,6 @@ export function MessageReviews({ messages }: { messages: Testimonial[] }) {
       opts={{
         align: 'center',
       }}
-      // className="w-full max-w-sm"
     >
       <CarouselContent>
         {messages
@@ -31,21 +30,30 @@ export function MessageReviews({ messages }: { messages: Testimonial[] }) {
             <CarouselItem key={index} className="basis-full md:basis-1/3 lg:basis-1/4">
               <div
                 className="flex items-center justify-center w-full"
-                style={{ maxWidth: '400px', margin: '0 auto' }}
+                style={{ maxWidth: '340px', margin: '0 auto' }}
               >
-                <div className="relative w-64 h-96 bg-gray-100 rounded-xl overflow-hidden shadow-lg">
+                <div className="relative aspect-[3/4] w-72 bg-gray-100 rounded-xl overflow-hidden shadow-lg border border-border">
                   <Image
                     src={(message.image as Media).url ?? '/placeholder.svg'}
                     alt={message.name ?? 'Testimonial'}
-                    className="object-cover w-full h-full"
                     fill
+                    className="object-cover w-full h-full"
+                    sizes="(max-width: 768px) 80vw, 288px"
+                    priority={index < 3}
                   />
                 </div>
               </div>
             </CarouselItem>
           ))}
       </CarouselContent>
-      <CarouselDots />
+      <div className="hidden md:block">
+        <CarouselPrevious />
+        <CarouselNext />
+      </div>
+      <div className="flex md:hidden justify-between mt-4">
+        <CarouselPrevious className="relative static -translate-y-0 left-0" />
+        <CarouselNext className="relative static -translate-y-0 right-0" />
+      </div>
     </Carousel>
   )
 }

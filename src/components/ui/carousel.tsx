@@ -163,7 +163,20 @@ function CarouselItem({ className, ...props }: React.ComponentProps<'div'>) {
 export function CarouselDots({ className }: { className?: string }) {
   const { api } = useCarousel()
   const slidesCount = api?.slideNodes().length ?? 0
-  const selectedIndex = api?.selectedScrollSnap() ?? 0
+  // const selectedIndex = api?.selectedScrollSnap() ?? 0
+
+  if (!api) return null
+
+  // Calculate number of pages
+  // slidesInView() returns an array of visible slide indices (length = slides per page)
+  // slideNodes().length => total slides
+  const slidesInViewArr = api.slidesInView()
+  const slidesToScroll =
+    Array.isArray(slidesInViewArr) && slidesInViewArr.length > 0 ? slidesInViewArr.length : 1
+  const totalSlides = api.slideNodes().length
+  const totalPages = Math.ceil(totalSlides / slidesToScroll)
+  const selectedIndex = api.selectedScrollSnap ? api.selectedScrollSnap() : 0
+  const selectedPage = Math.floor(selectedIndex / slidesToScroll)
 
   if (!slidesCount || slidesCount <= 1) {
     return null
@@ -174,17 +187,23 @@ export function CarouselDots({ className }: { className?: string }) {
       className={cn('flex gap-2 mt-4 justify-center items-center', className)}
       data-slot="carousel-dots"
     >
-      {Array.from({ length: slidesCount }).map((_, idx) => (
+      {Array.from({ length: totalPages }).map((_, idx) => (
         <button
           key={idx}
           type="button"
-          aria-label={`Go to slide ${idx + 1}`}
-          aria-current={selectedIndex === idx ? 'true' : 'false'}
+          aria-label={`Go to page ${idx + 1}`}
+          aria-current={selectedPage === idx ? 'true' : 'false'}
           className={cn(
             'w-2.5 h-2.5 rounded-full focus:outline-none transition-colors',
-            selectedIndex === idx ? 'bg-primary' : 'bg-gray-400/60 hover:bg-gray-400',
+            selectedPage === idx ? 'bg-primary' : 'bg-gray-400/60 hover:bg-gray-400',
           )}
-          onClick={() => api?.scrollTo(idx)}
+          onClick={() => {
+            if (api) {
+              // Snap index for this page
+              const snapIdx = idx * slidesToScroll
+              api.scrollTo(snapIdx, true)
+            }
+          }}
         />
       ))}
     </div>
