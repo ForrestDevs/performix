@@ -75,27 +75,40 @@ export function SpecialistCard({ teamMember }: { teamMember: TeamMember }) {
           </div>
         </div>
 
-        <div className="flex flex-col flex-1 relative p-8 space-y-5">
-          <div className="text-center space-y-2">
-            <h3 className="text-2xl font-bold text-foreground tracking-tight group-hover:text-primary transition-colors duration-300">
-              {teamMember.name}
-            </h3>
-            <p className="text-base font-semibold text-primary">{teamMember.title}</p>
-            {Array.isArray(teamMember.credentials) && teamMember.credentials.length > 0 && (
-              <ul className="text-sm text-muted-foreground font-medium flex flex-col items-start gap-1 mt-2 mx-auto w-fit">
-                {teamMember.credentials.map((cred, idx) =>
-                  cred ? (
-                    <li key={idx} className="flex items-start gap-2 w-full">
-                      <span className="inline-block mt-1 mr-1 text-primary text-xs">•</span>
-                      <span>{cred.credential}</span>
-                    </li>
-                  ) : null,
-                )}
-              </ul>
-            )}
+        <div className="flex flex-col flex-1 relative p-8">
+          {/* Name, Title & Credentials in a column, but with bio always starting at the same spot */}
+          <div className="flex flex-col flex-none">
+            <div className="text-center space-y-2">
+              <h3 className="text-2xl font-bold text-foreground tracking-tight group-hover:text-primary transition-colors duration-300">
+                {teamMember.name}
+              </h3>
+              <p className="text-base font-semibold text-primary">{teamMember.title}</p>
+            </div>
+            {/* Grow the credentials list to fill vertical space and align the content below evenly */}
+            <div className="flex flex-col">
+              {Array.isArray(teamMember.credentials) && teamMember.credentials.length > 0 ? (
+                <ul className="text-sm text-muted-foreground font-medium flex flex-col items-start gap-1 mt-2 mx-auto w-fit">
+                  {teamMember.credentials.map((cred, idx) =>
+                    cred ? (
+                      <li key={idx} className="flex items-start gap-2 w-full">
+                        <span className="inline-block mt-1 mr-1 text-primary text-xs">•</span>
+                        <span>{cred.credential}</span>
+                      </li>
+                    ) : null,
+                  )}
+                </ul>
+              ) : (
+                // Even if no credentials, render an empty div to reserve min space for visual alignment
+                <div style={{ minHeight: '1.75rem' }} />
+              )}
+            </div>
           </div>
 
-          <div className="flex-1 flex flex-col items-center justify-center">
+          {/* Spacer that takes all remaining space to push the bio down */}
+          <div className="flex-1" />
+
+          {/* Bio */}
+          <div className="flex flex-col items-center justify-center">
             {bio ? (
               <div className="w-full">
                 <p
@@ -109,7 +122,6 @@ export function SpecialistCard({ teamMember }: { teamMember: TeamMember }) {
                 >
                   {getTruncatedBio(bio)}
                 </p>
-                {/* Show the "Read full bio" button only if more content exists */}
                 {(bio.split('\n').length > 2 || bio.length > 180) && (
                   <div className="mt-2 flex justify-center">
                     <Button
