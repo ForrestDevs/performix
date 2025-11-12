@@ -38,8 +38,14 @@ const TeamMembers: CollectionConfig = {
     },
     {
       name: 'credentials',
-      type: 'text',
-      required: true,
+      type: 'array',
+      fields: [
+        {
+          name: 'credential',
+          type: 'text',
+        },
+      ],
+      minRows: 1,
     },
     {
       name: 'bio',

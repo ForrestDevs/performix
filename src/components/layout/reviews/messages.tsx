@@ -36,8 +36,7 @@ export function MessageReviews({ messages }: { messages: Testimonial[] }) {
                   <Image
                     src={(message.image as Media).url ?? '/placeholder.svg'}
                     alt={message.name ?? 'Testimonial'}
-                    fill
-                    className="object-cover w-full h-full"
+                    className="w-full h-full object-contain"
                     sizes="(max-width: 768px) 80vw, 288px"
                     priority={index < 3}
                   />

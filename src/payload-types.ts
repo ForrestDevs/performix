@@ -1303,7 +1303,12 @@ export interface TeamMember {
   name: string;
   avatar: number | Media;
   title: string;
-  credentials: string;
+  credentials?:
+    | {
+        credential?: string | null;
+        id?: string | null;
+      }[]
+    | null;
   bio?: string | null;
   updatedAt: string;
   createdAt: string;
@@ -2179,7 +2184,12 @@ export interface TeamMembersSelect<T extends boolean = true> {
   name?: T;
   avatar?: T;
   title?: T;
-  credentials?: T;
+  credentials?:
+    | T
+    | {
+        credential?: T;
+        id?: T;
+      };
   bio?: T;
   updatedAt?: T;
   createdAt?: T;

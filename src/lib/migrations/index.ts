@@ -38,6 +38,7 @@ import * as migration_20251021_181416_teamMembers from './20251021_181416_teamMe
 import * as migration_20251028_185233_formResponses from './20251028_185233_formResponses';
 import * as migration_20251028_232436_testimonialsV2 from './20251028_232436_testimonialsV2';
 import * as migration_20251110_235109_teamMembersv2 from './20251110_235109_teamMembersv2';
+import * as migration_20251112_200556_credentails from './20251112_200556_credentails';
 
 export const migrations = [
   {
@@ -238,6 +239,11 @@ export const migrations = [
   {
     up: migration_20251110_235109_teamMembersv2.up,
     down: migration_20251110_235109_teamMembersv2.down,
-    name: '20251110_235109_teamMembersv2'
+    name: '20251110_235109_teamMembersv2',
+  },
+  {
+    up: migration_20251112_200556_credentails.up,
+    down: migration_20251112_200556_credentails.down,
+    name: '20251112_200556_credentails'
   },
 ];
