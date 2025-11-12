@@ -82,10 +82,10 @@ export function SpecialistCard({ teamMember }: { teamMember: TeamMember }) {
             </h3>
             <p className="text-base font-semibold text-primary">{teamMember.title}</p>
             {Array.isArray(teamMember.credentials) && teamMember.credentials.length > 0 && (
-              <ul className="text-sm text-muted-foreground font-medium flex flex-col items-center gap-1 mt-2">
+              <ul className="text-sm text-muted-foreground font-medium flex flex-col items-start gap-1 mt-2 mx-auto w-fit">
                 {teamMember.credentials.map((cred, idx) =>
                   cred ? (
-                    <li key={idx} className="flex items-start gap-2 w-full justify-center">
+                    <li key={idx} className="flex items-start gap-2 w-full">
                       <span className="inline-block mt-1 mr-1 text-primary text-xs">•</span>
                       <span>{cred.credential}</span>
                     </li>
