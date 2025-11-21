@@ -34,6 +34,8 @@ export function MessageReviews({ messages }: { messages: Testimonial[] }) {
               >
                 <div className="relative aspect-[3/4] w-72 bg-gray-100 rounded-xl overflow-hidden shadow-lg border border-border">
                   <Image
+                    width={340}
+                    height={440}
                     src={(message.image as Media).url ?? '/placeholder.svg'}
                     alt={message.name ?? 'Testimonial'}
                     className="w-full h-full object-contain"

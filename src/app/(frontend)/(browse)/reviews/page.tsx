@@ -20,7 +20,7 @@ export default async function ReviewsPage() {
 
   return (
     <div>
-      <section className="py-16 relative flex items-center justify-center overflow-hidden bg-gradient-to-b from-white via-blue-50/30 to-white">
+      <section className="py-20 sm:py-32 relative flex items-center justify-center overflow-hidden bg-gradient-to-b from-white via-blue-50/30 to-white">
         <div className="absolute inset-0 z-0 opacity-[0.03]">
           <div className="h-full w-full bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:64px_64px]" />
         </div>
@@ -99,26 +99,28 @@ export default async function ReviewsPage() {
             What <span className="text-primary">Parents</span> Are Saying
           </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
-            {parentReviews.map((testimonial, index) => (
-              <div
-                key={index}
-                className="bg-white border border-border rounded-2xl p-8 flex flex-col justify-center shadow-md hover:shadow-xl transition-shadow text-center min-h-[360px]"
-              >
-                <div className="flex items-start w-full mb-4">
-                  <Quote className="w-6 h-6 text-primary mr-2" />
+          <div className="flex justify-center">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl w-full justify-items-center">
+              {parentReviews.map((testimonial, index) => (
+                <div
+                  key={index}
+                  className="bg-white border border-border rounded-2xl p-8 flex flex-col justify-center shadow-md hover:shadow-xl transition-shadow text-center min-h-[360px] w-full max-w-sm mx-auto"
+                >
+                  <div className="flex items-start w-full mb-4 justify-center">
+                    <Quote className="w-6 h-6 text-primary mr-2" />
+                  </div>
+                  <div className="flex-1 flex flex-col justify-center w-full">
+                    <p className="text-foreground font-semibold text-lg md:text-xl leading-relaxed mb-6 text-balance text-center">
+                      &quot;<span className="font-extrabold">{testimonial.message}</span>&quot;
+                    </p>
+                  </div>
+                  <div className="border-t border-border pt-5 w-full flex flex-col items-center mt-auto">
+                    <p className="font-bold text-primary text-base">{testimonial.name}</p>
+                    <p className="text-sm text-muted-foreground">{testimonial.parentOf}</p>
+                  </div>
                 </div>
-                <div className="flex-1 flex flex-col justify-center w-full">
-                  <p className="text-foreground font-semibold text-lg md:text-xl leading-relaxed mb-6 text-balance text-center">
-                    &quot;<span className="font-extrabold">{testimonial.message}</span>&quot;
-                  </p>
-                </div>
-                <div className="border-t border-border pt-5 w-full flex flex-col items-center mt-auto">
-                  <p className="font-bold text-primary text-base">{testimonial.name}</p>
-                  <p className="text-sm text-muted-foreground">{testimonial.parentOf}</p>
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </section>

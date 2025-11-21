@@ -33,20 +33,20 @@ export default async function Header() {
                 Resources
               </Link>
               <Link href="/lab" className="text-gray-600 hover:text-[#0891B2] transition-colors">
-                The Lab
+                Lab
               </Link>
-              {/* <Link href="/team" className="text-gray-600 hover:text-[#0891B2] transition-colors">
-                The Team
-              </Link> */}
+              <Link href="/team" className="text-gray-600 hover:text-[#0891B2] transition-colors">
+                Team
+              </Link>
               <Link href="/plans" className="text-gray-600 hover:text-[#0891B2] transition-colors">
                 Plans
               </Link>
-              {/* <Link
+              <Link
                 href="/reviews"
                 className="text-gray-600 hover:text-[#0891B2] transition-colors"
               >
                 Reviews
-              </Link> */}
+              </Link>
               <AuthButtons />
             </nav>
           </div>

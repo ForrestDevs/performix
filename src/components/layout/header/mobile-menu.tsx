@@ -38,13 +38,13 @@ export function MobileMenu() {
           >
             The Lab
           </Link>
-          {/* <Link
+          <Link
             onClick={() => setIsOpen(false)}
             href="/team"
             className="flex items-center px-4 py-3 rounded-lg text-base font-medium text-gray-700 hover:text-[#0891B2] hover:bg-gray-50 transition-all duration-200 active:bg-gray-100"
           >
             The Team
-          </Link> */}
+          </Link>
           <Link
             onClick={() => setIsOpen(false)}
             href="/plans"
@@ -52,13 +52,13 @@ export function MobileMenu() {
           >
             Plans
           </Link>
-          {/* <Link
+          <Link
             onClick={() => setIsOpen(false)}
             href="/reviews"
             className="flex items-center px-4 py-3 rounded-lg text-base font-medium text-gray-700 hover:text-[#0891B2] hover:bg-gray-50 transition-all duration-200 active:bg-gray-100"
           >
             Reviews
-          </Link> */}
+          </Link>
         </nav>
 
         <div className="my-6 border-t border-gray-200" />

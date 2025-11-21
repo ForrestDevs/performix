@@ -72,7 +72,7 @@ export default async function TeamPage() {
           </div>
           <div className="flex flex-col sm:flex-row gap-4 w-full md:w-auto">
             <Link
-              href="https://calendly.com/mateodixon/d1-team-demo"
+              href="https://calendly.com/mateodixon/d1-mentorship-call"
               className={cn(
                 buttonVariants({ size: 'lg' }),
                 'bg-white text-primary hover:bg-primary-foreground border-2 border-white shadow-lg transition-all duration-200 w-full sm:w-auto',
