@@ -58,7 +58,7 @@ export const betterAuthOptions: BetterAuthOptions = {
       console.log('Send reset password for user: ', user.id, 'at url', url)
 
       try {
-        await fetch('/api/email/send', {
+        await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/email/send`, {
           method: 'POST',
           body: JSON.stringify({
             to: process.env.NODE_ENV === 'development' ? 'luke.gannon@me.com' : user.email,
