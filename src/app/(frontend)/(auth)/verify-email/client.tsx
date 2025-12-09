@@ -57,41 +57,18 @@ export default function VerifyEmailClient({ email }: VerifyEmailClientProps) {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white border-b border-gray-100">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <Link href="/">
-              <PerformixLogo />
-            </Link>
-            <Link href="/sign-in">
-              <Button
-                variant="outline"
-                className="border-[#0891B2] text-[#0891B2] hover:bg-[#0891B2] hover:text-white"
-              >
-                Sign In
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </header>
-
-      {/* Main Content */}
       <div className="flex items-center justify-center min-h-[calc(100vh-4rem)] py-12">
         <div className="max-w-md w-full mx-4">
           <Card className="border-0 shadow-2xl">
             <CardContent className="p-8 text-center">
-              {/* Success Icon */}
               <div className="w-16 h-16 bg-[#0891B2]/10 rounded-full flex items-center justify-center mx-auto mb-6">
                 <Mail className="w-8 h-8 text-[#0891B2]" />
               </div>
 
-              {/* Title */}
               <h1 className="text-2xl font-bold text-gray-900 mb-2 font-['Space_Grotesk']">
                 Check Your Email
               </h1>
 
-              {/* Subtitle */}
               <p className="text-gray-600 mb-6">
                 We&apos;ve sent a verification link to{' '}
                 {email ? (
@@ -101,7 +78,6 @@ export default function VerifyEmailClient({ email }: VerifyEmailClientProps) {
                 )}
               </p>
 
-              {/* Instructions */}
               <div className="bg-blue-50 rounded-lg p-4 mb-6 text-left">
                 <h3 className="font-medium text-blue-900 mb-2 flex items-center">
                   <CheckCircle className="w-4 h-4 mr-2" />
@@ -115,7 +91,6 @@ export default function VerifyEmailClient({ email }: VerifyEmailClientProps) {
                 </ol>
               </div>
 
-              {/* Resend Button */}
               <div className="space-y-4">
                 <Button
                   onClick={handleResendVerification}
@@ -152,7 +127,6 @@ export default function VerifyEmailClient({ email }: VerifyEmailClientProps) {
                 </div>
               </div>
 
-              {/* Help Text */}
               <div className="mt-8 pt-6 border-t border-gray-200">
                 <p className="text-xs text-gray-500">
                   Having trouble? Check your spam folder or{' '}
