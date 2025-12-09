@@ -9,7 +9,7 @@ export async function Testimonials() {
   return (
     <section className="w-full px-4">
       <div className="mx-auto text-center mb-10">
-        <h2 className="text-3xl md:text-4xl font-extrabold mb-2 text-foreground">
+        <h2 className="text-3xl md:text-4xl font-extrabold mb-2 text-transparent bg-clip-text bg-gradient-to-r from-[#0891B2] to-[#8B5CF6]">
           What Parents and Players Are Saying
         </h2>
         <p className="text-base md:text-lg text-muted-foreground mx-auto max-w-xl">
@@ -29,8 +29,8 @@ export async function Testimonials() {
 
       <Suspense fallback={<TestimonialLoading />}>
         <div className="flex justify-center mt-10">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl w-full justify-items-center">
-            {parentReviews.map((testimonial, index) => (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto w-full justify-items-center">
+            {parentReviews.slice(0, 3).map((testimonial, index) => (
               <div
                 key={index}
                 className="bg-white border border-border rounded-2xl p-8 flex flex-col justify-center shadow-md hover:shadow-xl transition-shadow text-center min-h-[360px] w-full max-w-sm mx-auto"

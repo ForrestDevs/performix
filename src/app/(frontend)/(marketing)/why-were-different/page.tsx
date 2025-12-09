@@ -41,17 +41,13 @@ export default function DiscoverTheSystem() {
                 </span>
               </div>
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight font-['Space_Grotesk'] mb-4">
-                Performix Hockey:{' '}
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0891B2] to-[#8B5CF6]">
-                  Why We&apos;re Different
+                  Book Your Free Session
                 </span>{' '}
               </h1>
               <p className="text-xl text-gray-600 leading-relaxed max-w-4xl mx-auto">
-                <strong>Before your session:</strong> Watch this video to see exactly what to expect
-                and how our D1 players and experts will help you take your game to the next level.
-              </p>
-              <p className="text-sm text-gray-500 max-w-md mx-auto">
-                We&apos;ll be in touch soon with your next steps!
+                Choose a time below. This is the first step whether you're doing a 1-on-1 call with
+                a D1 player or a video analysis session.
               </p>
             </div>
           </div>
@@ -59,9 +55,31 @@ export default function DiscoverTheSystem() {
       </section>
 
       <section className="w-full px-4">
-        <div className="max-w-5xl mx-auto">
+        <div className="max-w-6xl mx-auto min-w-[320px] h-[800px]">
+          <iframe
+            src="https://calendly.com/mateodixon/d1-mentorship-call"
+            width="100%"
+            height="700px"
+            data-resize="true"
+            title="Book Your Free Session"
+            className="w-full min-w-[320px]"
+          />
+        </div>
+      </section>
+
+      <section className="w-full px-4">
+        <div className="max-w-5xl mx-auto space-y-8">
+          <h1 className="text-center text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight font-['Space_Grotesk'] mb-4">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0891B2] to-[#8B5CF6]">
+              Why We&apos;re Different
+            </span>
+          </h1>
+          <p className="text-xl text-gray-600 leading-relaxed mx-auto text-center">
+            <strong>Before your session:</strong> Watch this video to see exactly what to expect and
+            how our D1 players and experts will help you take your game to the next level.
+          </p>
           <p className="text-xs uppercase tracking-widest text-muted-foreground text-center mb-8 font-semibold">
-            Step 1: Watch Now
+            Step 2: Watch Now
           </p>
           <div className="w-full bg-black/90 rounded-xl overflow-hidden aspect-video flex items-center justify-center shadow-lg border border-border">
             <iframe
