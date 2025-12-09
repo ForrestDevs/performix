@@ -43,11 +43,11 @@ export default function DiscoverTheSystem() {
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight font-['Space_Grotesk'] mb-4">
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0891B2] to-[#8B5CF6]">
                   Book Your Free Session
-                </span>{' '}
+                </span>
               </h1>
               <p className="text-xl text-gray-600 leading-relaxed max-w-4xl mx-auto">
-                Choose a time below. This is the first step whether you're doing a 1-on-1 call with
-                a D1 player or a video analysis session.
+                Choose a time below. This is the first step whether you&apos;re doing a 1-on-1 call
+                with a D1 player or a video analysis session.
               </p>
             </div>
           </div>
