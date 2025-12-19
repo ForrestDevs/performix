@@ -13,6 +13,7 @@ import DownloadableFiles from './downloadable-files'
 import VideosList from './videos-list'
 import AuthModal from './auth-modal'
 import PurchaseButton from './purchase-button'
+import PurchaseModal from './purchase-modal'
 
 interface Video {
   title: string
@@ -49,9 +50,14 @@ export default function BlueprintPageClient({
   isEnrolled,
 }: BlueprintPageClientProps) {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false)
+  const [isPurchaseModalOpen, setIsPurchaseModalOpen] = useState(false)
 
   const handleAuthRequired = () => {
     setIsAuthModalOpen(true)
+  }
+
+  const handlePurchaseRequired = () => {
+    setIsPurchaseModalOpen(true)
   }
 
   const isLocked = blueprint.isPaid && !isEnrolled
@@ -99,6 +105,7 @@ export default function BlueprintPageClient({
                   files={blueprint.files}
                   isAuthenticated={isAuthenticated}
                   onAuthRequired={handleAuthRequired}
+                  onPurchaseRequired={handlePurchaseRequired}
                   isLocked={isLocked}
                 />
               )}
@@ -120,6 +127,14 @@ export default function BlueprintPageClient({
         isOpen={isAuthModalOpen}
         onClose={() => setIsAuthModalOpen(false)}
         blueprintTitle={blueprint.title}
+      />
+      <PurchaseModal
+        isOpen={isPurchaseModalOpen}
+        onClose={() => setIsPurchaseModalOpen(false)}
+        blueprintTitle={blueprint.title}
+        blueprintId={blueprint.id}
+        price={blueprint.price}
+        isAuthenticated={isAuthenticated}
       />
     </div>
   )

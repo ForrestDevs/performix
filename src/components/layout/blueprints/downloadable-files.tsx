@@ -4,11 +4,13 @@ import { motion } from 'motion/react'
 import { Button } from '@/components/ui/button'
 import { Download, FileText, Image, Film, Archive, File, Lock } from 'lucide-react'
 import { Media } from '@/payload-types'
+import { toast } from 'sonner'
 
 interface DownloadableFilesProps {
   files: Media[]
   isAuthenticated: boolean
   onAuthRequired: () => void
+  onPurchaseRequired: () => void
   isLocked: boolean
 }
 
@@ -16,6 +18,7 @@ export default function DownloadableFiles({
   files,
   isAuthenticated,
   onAuthRequired,
+  onPurchaseRequired,
   isLocked,
 }: DownloadableFilesProps) {
   if (!files || files.length === 0) return null
@@ -73,6 +76,11 @@ export default function DownloadableFiles({
   const handleDownload = (file: Media) => {
     if (!isAuthenticated) {
       onAuthRequired()
+      return
+    }
+
+    if (isLocked) {
+      onPurchaseRequired()
       return
     }
 
