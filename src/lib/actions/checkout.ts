@@ -34,8 +34,17 @@ export async function handleSuccessfulPayment(sessionId: string) {
       throw new Error('Transaction not found')
     }
 
+    // Extract only plain data from the Stripe session (class instances can't be serialized)
+    const sessionData = {
+      id: session.id,
+      amountTotal: session.amount_total,
+      currency: session.currency,
+      customerEmail: session.customer_details?.email,
+      paymentStatus: session.payment_status,
+    }
+
     if (transaction.status === 'completed') {
-      return { success: true, session: session }
+      return { success: true, session: sessionData }
     } else if (transaction.status === 'pending') {
       await completeTransaction(transaction.id, (session.amount_total || 0) / 100)
       let type: string = ''
@@ -71,7 +80,7 @@ export async function handleSuccessfulPayment(sessionId: string) {
           status: 'active',
         },
       })
-      return { success: true, session: session }
+      return { success: true, session: sessionData }
     }
   } catch (error) {
     console.error('Error handling successful payment:', error)

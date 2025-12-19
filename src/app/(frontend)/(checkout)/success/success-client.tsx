@@ -17,16 +17,23 @@ import {
 import { handleSuccessfulPayment } from '@/lib/actions/checkout'
 import { User } from '@/payload-types'
 import Link from 'next/link'
-import { toast } from 'sonner'
-import Stripe from 'stripe'
+
+interface SessionData {
+  id: string
+  amountTotal: number | null
+  currency: string | null
+  customerEmail: string | null | undefined
+  paymentStatus: string
+}
 
 interface SuccessPageClientProps {
   sessionId: string
 }
+
 type ProcessedPayment =
   | {
       success: true
-      session: Stripe.Response<Stripe.Checkout.Session>
+      session: SessionData
       error?: string
     }
   | {

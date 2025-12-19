@@ -14,8 +14,6 @@ export default async function SuccessPage({ searchParams }: { searchParams: Para
   const params = await searchParams
   const { session_id } = params as unknown as SearchParams
 
-  console.log(session_id)
-
   // Validate required parameters
   if (!session_id) {
     redirect('/')
