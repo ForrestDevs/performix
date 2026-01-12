@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import { Suspense } from 'react'
 import Link from 'next/link'
 import { Search, BookOpen, Star, Eye, Users, TrendingUp, Filter } from 'lucide-react'
@@ -9,6 +10,48 @@ import { getResources, getResourcesTags } from '@/lib/data/resources'
 import EnhancedResourcesSearch from '@/components/layout/resources/enhanced-resources-search'
 import EnhancedResourcesFilters from '@/components/layout/resources/enhanced-resources-filters'
 import { ResourcesPagination, ResourcesClientWrapper } from '@/components/layout/resources'
+import { JsonLdScript, getCollectionPageSchema, getBreadcrumbSchema } from '@/lib/seo/jsonld'
+
+export const metadata: Metadata = {
+  title: 'Hockey Resources - Articles, Blueprints & Training Guides',
+  description:
+    'Access premium hockey resources: articles, training blueprints, and development guides from D1+ mentors. Free and premium content for serious players.',
+  keywords: [
+    'hockey resources',
+    'hockey articles',
+    'hockey training guides',
+    'hockey blueprints',
+    'hockey development',
+    'hockey drills',
+    'hockey tips',
+    'D1 hockey training',
+  ],
+  openGraph: {
+    title: 'Hockey Resources & Training Guides | Performix',
+    description:
+      'Access premium hockey resources: articles, training blueprints, and development guides from D1+ mentors.',
+    type: 'website',
+    url: 'https://www.performix.ca/resources',
+    siteName: 'Performix',
+    images: [
+      {
+        url: 'https://www.performix.ca/opengraph-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'Performix Hockey Resources',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Hockey Resources & Training Guides | Performix',
+    description: 'Premium hockey resources from D1+ mentors. Articles, blueprints, and guides.',
+    images: ['https://www.performix.ca/opengraph-image.png'],
+  },
+  alternates: {
+    canonical: 'https://www.performix.ca/resources',
+  },
+}
 
 interface ResourcesPageProps {
   searchParams: Promise<Record<string, string | string[] | undefined>>
@@ -33,8 +76,30 @@ export default async function ResourcesPage({ searchParams }: ResourcesPageProps
 
   const { resources, totalCount, totalPages, currentPage, pageSize, counts } = resourcesResult
 
+  const collectionPageJsonLd = {
+    '@context': 'https://schema.org',
+    ...getCollectionPageSchema({
+      name: 'Hockey Resources',
+      description:
+        'Premium hockey resources including articles, training blueprints, and development guides.',
+      url: 'https://www.performix.ca/resources',
+      numberOfItems: totalCount,
+    }),
+  }
+
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    ...getBreadcrumbSchema([
+      { name: 'Home', url: 'https://www.performix.ca' },
+      { name: 'Resources', url: 'https://www.performix.ca/resources' },
+    ]),
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
+      <JsonLdScript data={collectionPageJsonLd} />
+      <JsonLdScript data={breadcrumbJsonLd} />
+
       <section className="relative bg-white py-16 lg:py-20 overflow-hidden">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center mb-12">

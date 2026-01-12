@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import { buttonVariants } from '@/components/ui/button'
 import { getTeamMembers } from '@/lib/data/team-members'
 import { SpecialistCard } from '@/components/layout/team/specialist-card'
@@ -6,12 +7,91 @@ import Link from 'next/link'
 import { cn } from '@/lib/utilities/ui'
 import { ArrowRight } from 'lucide-react'
 import { FeaturedMentors } from '@/components/layout/team/featured-mentors'
+import { JsonLdScript, getBreadcrumbSchema } from '@/lib/seo/jsonld'
+
+export const metadata: Metadata = {
+  title: 'Our Team - Meet the Performix Specialists & Mentors',
+  description:
+    'Meet our team of elite specialists and D1 hockey mentors. Experts in skill development, HockeyIQ, strength training, nutrition, and mental performance.',
+  keywords: [
+    'performix team',
+    'hockey specialists',
+    'hockey coaches',
+    'D1 hockey mentors',
+    'hockey trainers',
+    'sports performance experts',
+    'hockey development team',
+  ],
+  openGraph: {
+    title: 'Meet Our Team | Performix',
+    description:
+      'Meet our team of elite specialists and D1 hockey mentors. Experts across all aspects of hockey development.',
+    type: 'website',
+    url: 'https://www.performix.ca/team',
+    siteName: 'Performix',
+    images: [
+      {
+        url: 'https://www.performix.ca/opengraph-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'Performix Team',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Meet Our Team | Performix',
+    description: 'Elite specialists and D1 hockey mentors at Performix.',
+    images: ['https://www.performix.ca/opengraph-image.png'],
+  },
+  alternates: {
+    canonical: 'https://www.performix.ca/team',
+  },
+}
 
 export default async function TeamPage() {
   const teamMembers = await getTeamMembers()
 
+  const organizationJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    '@id': 'https://www.performix.ca/#organization',
+    name: 'Performix',
+    url: 'https://www.performix.ca',
+    logo: 'https://www.performix.ca/performix-logo.png',
+    description: 'Elite hockey mentorship platform connecting aspiring players with D1+ mentors.',
+    employee: teamMembers.map((member) => ({
+      '@type': 'Person',
+      name: member.name,
+      jobTitle: member.title,
+    })),
+  }
+
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    ...getBreadcrumbSchema([
+      { name: 'Home', url: 'https://www.performix.ca' },
+      { name: 'Team', url: 'https://www.performix.ca/team' },
+    ]),
+  }
+
+  const aboutPageJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'AboutPage',
+    '@id': 'https://www.performix.ca/team#aboutpage',
+    name: 'The Performix Team',
+    description:
+      'Meet our integrated group of specialists across skill, HockeyIQ, strength, sport science, nutrition, and mental performance.',
+    url: 'https://www.performix.ca/team',
+    isPartOf: { '@id': 'https://www.performix.ca/#website' },
+  }
+
   return (
     <div>
+      <JsonLdScript data={organizationJsonLd} />
+      <JsonLdScript data={breadcrumbJsonLd} />
+      <JsonLdScript data={aboutPageJsonLd} />
+
       <section id="overview" className="py-20 bg-gradient-to-b from-muted to-background">
         <div className="max-w-4xl mx-auto px-6 sm:px-8 text-center flex flex-col items-center">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-foreground drop-shadow-sm mb-8 tracking-tight leading-tight font-['Space_Grotesk']">

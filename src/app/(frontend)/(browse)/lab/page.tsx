@@ -1,15 +1,15 @@
-import React, { Suspense } from 'react'
-import { CheckCircle } from 'lucide-react'
-import { getModules, getLabSections } from '@/lib/data/lab'
-import { getCurrentUser } from '@/lib/data/auth'
-import { isEnrolledInAnyPlan } from '@/lib/data/plans'
-import { ModuleCard } from '@/components/lab/modules/module-card'
+import { LabStatsSection, StatsLoadingSkeleton } from '@/components/lab/lab-stats'
+import { ModulesLoadingSkeleton } from '@/components/lab/modules/modules-skeleton'
 import { LabSection } from '@/components/lab/sections/lab-section'
 import { SubscriptionCTA, SubscriptionCTALoadingSkeleton } from '@/components/lab/subscription-cta'
-import { ModulesLoadingSkeleton } from '@/components/lab/modules/modules-skeleton'
-import { LabStatsSection, StatsLoadingSkeleton } from '@/components/lab/lab-stats'
-import { Metadata } from 'next'
 import { RefreshRouteOnSave } from '@/components/live-preview'
+import { getCurrentUser } from '@/lib/data/auth'
+import { getLabSections } from '@/lib/data/lab'
+import { isEnrolledInAnyPlan } from '@/lib/data/plans'
+import { JsonLdScript, getBreadcrumbSchema, getCourseSchema } from '@/lib/seo/jsonld'
+import { CheckCircle } from 'lucide-react'
+import type { Metadata } from 'next'
+import { Suspense } from 'react'
 
 export const metadata: Metadata = {
   title: 'The Performix Lab - Ultimate Performance Training Modules',
@@ -24,6 +24,7 @@ export const metadata: Metadata = {
     'mental performance',
     'elite athlete training',
     'performance coaching',
+    'hockey training lab',
   ],
   openGraph: {
     title: 'The Performix Lab - Ultimate Performance Training',
@@ -31,18 +32,51 @@ export const metadata: Metadata = {
       'Master elite performance through our comprehensive training modules. From speed development to mental performance, unlock your potential with expert guidance.',
     type: 'website',
     siteName: 'Performix',
+    url: 'https://www.performix.ca/lab',
+    images: [
+      {
+        url: 'https://www.performix.ca/opengraph-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'The Performix Lab',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'The Performix Lab - Ultimate Performance Training',
     description:
       'Master elite performance through our comprehensive training modules. From speed development to mental performance, unlock your potential.',
+    images: ['https://www.performix.ca/opengraph-image.png'],
+  },
+  alternates: {
+    canonical: 'https://www.performix.ca/lab',
   },
 }
 
 export default function PerformixLabPage() {
+  const courseJsonLd = {
+    '@context': 'https://schema.org',
+    ...getCourseSchema({
+      name: 'The Performix Lab',
+      description:
+        'Master elite performance through our comprehensive training modules. From speed development to mental performance, unlock your potential with expert guidance.',
+      url: 'https://www.performix.ca/lab',
+    }),
+  }
+
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    ...getBreadcrumbSchema([
+      { name: 'Home', url: 'https://www.performix.ca' },
+      { name: 'Lab', url: 'https://www.performix.ca/lab' },
+    ]),
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 space-y-16 py-16">
+      <JsonLdScript data={courseJsonLd} />
+      <JsonLdScript data={breadcrumbJsonLd} />
       <RefreshRouteOnSave />
       <section className="relative px-4">
         <div className="container mx-auto text-center">

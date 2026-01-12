@@ -194,6 +194,9 @@ importers:
       recharts:
         specifier: ^2.15.1
         version: 2.15.4(react-dom@19.1.2(react@19.1.2))(react@19.1.2)
+      schema-dts:
+        specifier: ^1.1.5
+        version: 1.1.5
       server-only:
         specifier: ^0.0.1
         version: 0.0.1
@@ -4992,6 +4995,9 @@ packages:
 
   scheduler@0.26.0:
     resolution: {integrity: sha512-NlHwttCI/l5gCPR3D1nNXtWABUmBwvZpEQiD4IXSbIDq8BzLIK/7Ir5gTFSGZDUu37K5cMNp0hFtzO38sC7gWA==}
+
+  schema-dts@1.1.5:
+    resolution: {integrity: sha512-RJr9EaCmsLzBX2NDiO5Z3ux2BVosNZN5jo0gWgsyKvxKIUL5R3swNvoorulAeL9kLB0iTSX7V6aokhla2m7xbg==}
 
   scmp@2.1.0:
     resolution: {integrity: sha512-o/mRQGk9Rcer/jEEw/yw4mwo3EU/NvYvp577/Btqrym9Qy5/MdWGBqipbALgd2lrdWTJ5/gqDusxfnQBxOxT2Q==}
@@ -10728,6 +10734,8 @@ snapshots:
   scheduler@0.25.0: {}
 
   scheduler@0.26.0: {}
+
+  schema-dts@1.1.5: {}
 
   scmp@2.1.0: {}
 

@@ -1,42 +1,41 @@
-import React, { Suspense } from 'react'
-import Link from 'next/link'
-import { notFound } from 'next/navigation'
-import {
-  Play,
-  Lock,
-  Clock,
-  ChevronRight,
-  ArrowLeft,
-  BookOpen,
-  Trophy,
-  Target,
-  Zap,
-  Star,
-  CheckCircle2,
-  BookOpenText,
-} from 'lucide-react'
-import { Button, buttonVariants } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
-import { getModuleBySlug, getModuleCompletion } from '@/lib/data/lab'
-import { getCurrentUser } from '@/lib/data/auth'
-import { isEnrolledInAnyPlan } from '@/lib/data/plans'
-import Image from 'next/image'
 import { IntroVideo } from '@/components/lab/intro-video'
-import RichText from '@/components/RichText'
-import { cn } from '@/lib/utilities/ui'
-import { VolumeCard } from '@/components/lab/volumes/volume-card'
-import { LessonCard } from '@/components/lab/lessons/lesson-card'
-import { Media, Video, Volume } from '@/payload-types'
 import { LabBreadcrumb } from '@/components/lab/lab-breadcrumb'
+import { VolumeLoadingCard } from '@/components/lab/volumes/loading-card'
+import { VolumeCard } from '@/components/lab/volumes/volume-card'
+import { RefreshRouteOnSave } from '@/components/live-preview'
+import RichText from '@/components/RichText'
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion'
-import { VolumeLoadingCard } from '@/components/lab/volumes/loading-card'
-import { RefreshRouteOnSave } from '@/components/live-preview'
+import { Badge } from '@/components/ui/badge'
+import { buttonVariants } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { getCurrentUser } from '@/lib/data/auth'
+import { getModuleBySlug, getModuleCompletion } from '@/lib/data/lab'
+import { isEnrolledInAnyPlan } from '@/lib/data/plans'
+import { JsonLdScript, getBreadcrumbSchema, getCourseSchema } from '@/lib/seo/jsonld'
+import { cn } from '@/lib/utilities/ui'
+import { Media, Video, Volume } from '@/payload-types'
+import {
+  ArrowLeft,
+  BookOpen,
+  CheckCircle2,
+  ChevronRight,
+  Lock,
+  Play,
+  Star,
+  Target,
+  Trophy,
+  Zap
+} from 'lucide-react'
+import type { Metadata } from 'next'
+import Image from 'next/image'
+import Link from 'next/link'
+import { notFound } from 'next/navigation'
+import { Suspense } from 'react'
 
 interface DirectModulePageProps {
   params: Promise<{
@@ -44,7 +43,7 @@ interface DirectModulePageProps {
   }>
 }
 
-export async function generateMetadata(props: DirectModulePageProps) {
+export async function generateMetadata(props: DirectModulePageProps): Promise<Metadata> {
   const params = await props.params
   const labModule = await getModuleBySlug(params.moduleSlug)
 
@@ -54,9 +53,53 @@ export async function generateMetadata(props: DirectModulePageProps) {
     }
   }
 
+  const thumbnailUrl =
+    labModule.thumbnail && typeof labModule.thumbnail === 'object'
+      ? (labModule.thumbnail as Media).url
+      : undefined
+  const fullThumbnailUrl = thumbnailUrl?.startsWith('http')
+    ? thumbnailUrl
+    : thumbnailUrl
+      ? `https://www.performix.ca${thumbnailUrl}`
+      : 'https://www.performix.ca/opengraph-image.png'
+
   return {
     title: `${labModule?.title} | Performix Lab`,
-    description: labModule?.subtitle,
+    description:
+      labModule?.subtitle ||
+      `Master ${labModule?.title} with our comprehensive training module. Expert guidance and proven methodologies.`,
+    keywords: [
+      labModule?.title || '',
+      'hockey training',
+      'performance module',
+      'hockey development',
+      'elite training',
+      ...(labModule?.topics?.map((t: { topic?: string }) => t.topic || '') || []),
+    ].filter(Boolean),
+    openGraph: {
+      title: `${labModule?.title} | Performix Lab`,
+      description:
+        labModule?.subtitle || `Master ${labModule?.title} with expert guidance.`,
+      type: 'website',
+      url: `https://www.performix.ca/lab/module/${params.moduleSlug}`,
+      images: [
+        {
+          url: fullThumbnailUrl,
+          width: 1200,
+          height: 630,
+          alt: labModule?.title || 'Performix Lab Module',
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${labModule?.title} | Performix Lab`,
+      description: labModule?.subtitle || `Master ${labModule?.title} with expert guidance.`,
+      images: [fullThumbnailUrl],
+    },
+    alternates: {
+      canonical: `https://www.performix.ca/lab/module/${params.moduleSlug}`,
+    },
   }
 }
 
@@ -74,8 +117,43 @@ export default async function DirectModulePage(props: DirectModulePageProps) {
   const hasAccess = user ? await isEnrolledInAnyPlan(user.id) : false
   const completion = user ? await getModuleCompletion(labModule?.id) : null
 
+  const thumbnailUrl =
+    labModule.thumbnail && typeof labModule.thumbnail === 'object'
+      ? (labModule.thumbnail as Media).url
+      : undefined
+  const fullThumbnailUrl = thumbnailUrl?.startsWith('http')
+    ? thumbnailUrl
+    : thumbnailUrl
+      ? `https://www.performix.ca${thumbnailUrl}`
+      : undefined
+
+  const courseJsonLd = {
+    '@context': 'https://schema.org',
+    ...getCourseSchema({
+      name: labModule?.title || 'Performance Module',
+      description: labModule?.subtitle || '',
+      url: `https://www.performix.ca/lab/module/${params.moduleSlug}`,
+      image: fullThumbnailUrl,
+      numberOfLessons: labModule?.lessons?.docs?.length || 0,
+    }),
+  }
+
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    ...getBreadcrumbSchema([
+      { name: 'Home', url: 'https://www.performix.ca' },
+      { name: 'Lab', url: 'https://www.performix.ca/lab' },
+      {
+        name: labModule?.title || 'Module',
+        url: `https://www.performix.ca/lab/module/${params.moduleSlug}`,
+      },
+    ]),
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+      <JsonLdScript data={courseJsonLd} />
+      <JsonLdScript data={breadcrumbJsonLd} />
       <RefreshRouteOnSave />
       <LabBreadcrumb
         title={labModule?.title || ''}

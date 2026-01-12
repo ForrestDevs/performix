@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import { Suspense } from 'react'
 import { buttonVariants } from '@/components/ui/button'
 import Link from 'next/link'
@@ -11,6 +12,49 @@ import { MentorsFilters } from '@/components/layout/mentors/browse/mentors-filte
 import { MentorsControls } from '@/components/layout/mentors/browse/mentors-controls'
 import { MentorsGrid } from '@/components/layout/mentors/browse/mentors-grid'
 import { MentorViewModeProvider } from '@/components/layout/mentors/browse/view-mode-context'
+import { JsonLdScript, getCollectionPageSchema, getBreadcrumbSchema } from '@/lib/seo/jsonld'
+
+export const metadata: Metadata = {
+  title: 'Browse Hockey Mentors - Find Your Perfect D1+ Mentor',
+  description:
+    'Explore 30+ elite D1+ hockey mentors. Filter by position, skill level, and expertise to find your perfect mentor match. Forwards, defence, and goalies available.',
+  keywords: [
+    'hockey mentors',
+    'D1 hockey coaches',
+    'hockey training',
+    'find hockey mentor',
+    'hockey player development',
+    'college hockey mentors',
+    'hockey forwards',
+    'hockey defence',
+    'hockey goalies',
+  ],
+  openGraph: {
+    title: 'Browse Elite Hockey Mentors | Performix',
+    description:
+      'Explore 30+ elite D1+ hockey mentors. Find your perfect mentor match based on position and skills.',
+    type: 'website',
+    url: 'https://www.performix.ca/mentors',
+    siteName: 'Performix',
+    images: [
+      {
+        url: 'https://www.performix.ca/opengraph-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'Performix Hockey Mentors',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Browse Elite Hockey Mentors | Performix',
+    description: 'Explore 30+ elite D1+ hockey mentors. Find your perfect mentor match.',
+    images: ['https://www.performix.ca/opengraph-image.png'],
+  },
+  alternates: {
+    canonical: 'https://www.performix.ca/mentors',
+  },
+}
 
 interface BrowseMentorsPageProps {
   searchParams: Promise<Record<string, string | string[] | undefined>>
@@ -34,8 +78,30 @@ export default async function BrowseMentorsPage({ searchParams }: BrowseMentorsP
     limit: 1000,
   })
 
+  const collectionPageJsonLd = {
+    '@context': 'https://schema.org',
+    ...getCollectionPageSchema({
+      name: 'Hockey Mentors',
+      description:
+        'Browse elite D1+ hockey mentors. Filter by position, skills, and experience to find your perfect mentor.',
+      url: 'https://www.performix.ca/mentors',
+      numberOfItems: mentorsData.totalCount,
+    }),
+  }
+
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    ...getBreadcrumbSchema([
+      { name: 'Home', url: 'https://www.performix.ca' },
+      { name: 'Mentors', url: 'https://www.performix.ca/mentors' },
+    ]),
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
+      <JsonLdScript data={collectionPageJsonLd} />
+      <JsonLdScript data={breadcrumbJsonLd} />
+
       <section className="relative bg-white py-16 lg:py-20 overflow-hidden">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center mb-12">

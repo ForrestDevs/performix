@@ -1,36 +1,39 @@
-'use client'
-
+import type { Metadata } from 'next'
 import { Card, CardContent } from '@/components/ui/card'
-import { useScrollAnimation } from '@/lib/hooks/useScrollAnimation'
+
+export const metadata: Metadata = {
+  title: 'Privacy Policy - Performix',
+  description:
+    'Read the Performix privacy policy. Learn how we collect, use, and protect your personal information on our hockey mentorship platform.',
+  robots: {
+    index: true,
+    follow: true,
+  },
+  openGraph: {
+    title: 'Privacy Policy | Performix',
+    description: 'Learn how Performix collects, uses, and protects your personal information.',
+    type: 'website',
+    url: 'https://www.performix.ca/privacy',
+    siteName: 'Performix',
+  },
+  alternates: {
+    canonical: 'https://www.performix.ca/privacy',
+  },
+}
 
 export default function PrivacyPage() {
-  const visibleElements = useScrollAnimation()
-  const isVisible = (id: string) => visibleElements.has(id)
-
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div
-          id="privacy-header"
-          data-scroll-animate
-          className={`text-center mb-16 transition-all duration-1000 ${
-            isVisible('privacy-header') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-          }`}
-        >
+        <div className="text-center mb-16">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">Privacy Policy</h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Last updated: {new Date().toLocaleDateString()}
+            Last updated: January 2026
           </p>
         </div>
 
         <div className="max-w-4xl mx-auto space-y-8">
-          <Card
-            id="introduction"
-            data-scroll-animate
-            className={`transition-all duration-1000 ${
-              isVisible('introduction') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-            }`}
-          >
+          <Card>
             <CardContent className="p-8">
               <h2 className="text-2xl font-bold text-gray-900 mb-4">Introduction</h2>
               <p className="text-gray-600 leading-relaxed">
@@ -42,15 +45,7 @@ export default function PrivacyPage() {
             </CardContent>
           </Card>
 
-          <Card
-            id="information-collection"
-            data-scroll-animate
-            className={`transition-all duration-1000 ${
-              isVisible('information-collection')
-                ? 'opacity-100 translate-y-0'
-                : 'opacity-0 translate-y-8'
-            }`}
-          >
+          <Card>
             <CardContent className="p-8">
               <h2 className="text-2xl font-bold text-gray-900 mb-4">Information We Collect</h2>
               <div className="space-y-4">
@@ -84,15 +79,7 @@ export default function PrivacyPage() {
             </CardContent>
           </Card>
 
-          <Card
-            id="information-usage"
-            data-scroll-animate
-            className={`transition-all duration-1000 ${
-              isVisible('information-usage')
-                ? 'opacity-100 translate-y-0'
-                : 'opacity-0 translate-y-8'
-            }`}
-          >
+          <Card>
             <CardContent className="p-8">
               <h2 className="text-2xl font-bold text-gray-900 mb-4">How We Use Your Information</h2>
               <p className="text-gray-600 leading-relaxed mb-4">
@@ -109,15 +96,7 @@ export default function PrivacyPage() {
             </CardContent>
           </Card>
 
-          <Card
-            id="information-sharing"
-            data-scroll-animate
-            className={`transition-all duration-1000 ${
-              isVisible('information-sharing')
-                ? 'opacity-100 translate-y-0'
-                : 'opacity-0 translate-y-8'
-            }`}
-          >
+          <Card>
             <CardContent className="p-8">
               <h2 className="text-2xl font-bold text-gray-900 mb-4">
                 Information Sharing and Disclosure
@@ -134,13 +113,7 @@ export default function PrivacyPage() {
             </CardContent>
           </Card>
 
-          <Card
-            id="data-security"
-            data-scroll-animate
-            className={`transition-all duration-1000 ${
-              isVisible('data-security') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-            }`}
-          >
+          <Card>
             <CardContent className="p-8">
               <h2 className="text-2xl font-bold text-gray-900 mb-4">Data Security</h2>
               <p className="text-gray-600 leading-relaxed">
@@ -152,13 +125,7 @@ export default function PrivacyPage() {
             </CardContent>
           </Card>
 
-          <Card
-            id="your-rights"
-            data-scroll-animate
-            className={`transition-all duration-1000 ${
-              isVisible('your-rights') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-            }`}
-          >
+          <Card>
             <CardContent className="p-8">
               <h2 className="text-2xl font-bold text-gray-900 mb-4">Your Rights</h2>
               <p className="text-gray-600 leading-relaxed mb-4">You have the right to:</p>
@@ -173,13 +140,7 @@ export default function PrivacyPage() {
             </CardContent>
           </Card>
 
-          <Card
-            id="contact"
-            data-scroll-animate
-            className={`transition-all duration-1000 ${
-              isVisible('contact') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-            }`}
-          >
+          <Card>
             <CardContent className="p-8">
               <h2 className="text-2xl font-bold text-gray-900 mb-4">Contact Us</h2>
               <p className="text-gray-600 leading-relaxed">
@@ -187,8 +148,7 @@ export default function PrivacyPage() {
               </p>
               <div className="mt-4 p-4 bg-gray-50 rounded-lg">
                 <p className="text-gray-900 font-medium">Performix Support</p>
-                <p className="text-gray-600">Email: privacy@performix.com</p>
-                <p className="text-gray-600">Phone: (555) 123-4567</p>
+                <p className="text-gray-600">Email: privacy@performix.ca</p>
               </div>
             </CardContent>
           </Card>

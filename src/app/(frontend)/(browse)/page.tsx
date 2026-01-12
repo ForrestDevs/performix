@@ -1,21 +1,132 @@
-import { buttonVariants } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
-import { ArrowRight, CheckCircle, Users, TrendingUp } from 'lucide-react'
-import Image from 'next/image'
-import Link from 'next/link'
-import { cn } from '@/lib/utilities/ui'
 import {
-  ValuePropSection,
-  HowItWorksSection,
-  WhatYouGetEveryMonth,
   FAQSection,
+  HowItWorksSection,
+  NextStepsSection,
+  ValuePropSection,
+  WhatYouGetEveryMonth,
 } from '@/components/layout/home'
 import { FeaturedMentorsSection } from '@/components/layout/home/featured-mentors'
 import { TestimonialsSection } from '@/components/layout/home/testimonials'
+import { Badge } from '@/components/ui/badge'
+import { buttonVariants } from '@/components/ui/button'
+import { JsonLdScript } from '@/lib/seo/jsonld'
+import { cn } from '@/lib/utilities/ui'
+import { ArrowRight, CheckCircle, TrendingUp, Users } from 'lucide-react'
+import type { Metadata } from 'next'
+import Image from 'next/image'
+import Link from 'next/link'
+
+export const metadata: Metadata = {
+  title: 'Performix - Elite Hockey Mentorship | Your Path To Excellence',
+  description:
+    'Connect with 30+ elite D1+ hockey mentors. Get personalized guidance, proven training systems, and expert coaching to elevate your game and achieve your hockey dreams.',
+  keywords: [
+    'hockey mentorship',
+    'D1 hockey',
+    'hockey training',
+    'hockey coaching',
+    'elite hockey development',
+    'hockey player development',
+    'hockey mentors',
+    'hockey skills training',
+    'college hockey',
+    'hockey performance',
+  ],
+  openGraph: {
+    title: 'Performix - Elite Hockey Mentorship Platform',
+    description:
+      'Connect with 30+ elite D1+ hockey mentors. Personalized guidance to elevate your game and achieve your hockey dreams.',
+    type: 'website',
+    url: 'https://www.performix.ca',
+    siteName: 'Performix',
+    images: [
+      {
+        url: 'https://www.performix.ca/opengraph-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'Performix - Elite Hockey Mentorship',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Performix - Elite Hockey Mentorship Platform',
+    description:
+      'Connect with 30+ elite D1+ hockey mentors. Personalized guidance to elevate your game.',
+    images: ['https://www.performix.ca/opengraph-image.png'],
+  },
+  alternates: {
+    canonical: 'https://www.performix.ca',
+  },
+}
+
+// FAQ data for structured data
+const faqs = [
+  {
+    question: 'What is Performix?',
+    answer:
+      'Performix is a high-performance development platform built by D1/pro athletes and top experts—performance coaches, specialists, and experienced team coaches. You get paired with your own personal D1 mentor and gain access to elite tools: custom training, nutrition, mindset strategies, video breakdowns, recruiting support, and a proven system designed to accelerate your development.',
+  },
+  {
+    question: 'Who is Performix for?',
+    answer:
+      'Performix is for driven hockey players (typically ages 13-18) looking to develop faster, train smarter, and reach the next level—whether that is prep, juniors, or Division 1.',
+  },
+  {
+    question: 'What do I get with Performix?',
+    answer:
+      'Depending on your package, you get matched with a personal mentor and unlock full access to the Performix system—including custom development plans, biweekly Zoom calls, goal-setting support, private video feedback, and unlimited mentor access. You will also get the full course, nutrition tools, mindset strategies, and recruiting guidance tailored to your game.',
+  },
+  {
+    question: 'How do I get started?',
+    answer:
+      'Book a free Zoom call so we can learn about your goals and pair you with the right mentor. From there, you\'ll unlock your tools, schedule your sessions, and start making real progress.',
+  },
+  {
+    question: "What's coming next on Performix?",
+    answer:
+      'We are bringing in new NHL-level experts, launching exclusive high-level content, and expanding our free Resource Hub—packed with free valuable tools, breakdowns, and insight players can use right away. We are also building new offerings across skill development, rehab and more.',
+  },
+]
 
 export default function HomePage() {
+  const organizationJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    '@id': 'https://www.performix.ca/#organization',
+    name: 'Performix',
+    url: 'https://www.performix.ca',
+    logo: 'https://www.performix.ca/performix-logo.png',
+    sameAs: [
+      'https://www.instagram.com/performix',
+      'https://www.youtube.com/@performix',
+    ],
+    description: 'Elite hockey mentorship platform connecting aspiring players with D1+ mentors.',
+    contactPoint: {
+      '@type': 'ContactPoint',
+      contactType: 'customer service',
+      email: 'support@performix.ca',
+    },
+  }
+
+  const faqJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map((faq) => ({
+      '@type': 'Question',
+      name: faq.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: faq.answer,
+      },
+    })),
+  }
+
   return (
     <div className="min-h-screen bg-white">
+      <JsonLdScript data={organizationJsonLd} />
+      <JsonLdScript data={faqJsonLd} />
+
       <section className="relative overflow-hidden bg-gradient-to-b from-gray-50 to-white py-20 sm:py-32">
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute -top-40 -right-40 w-80 h-80 bg-[#0891B2]/5 rounded-full blur-3xl animate-pulse"></div>
@@ -75,7 +186,7 @@ export default function HomePage() {
               <div className="rounded-2xl overflow-hidden bg-gradient-to-br from-[#0891B2]/20 to-[#8B5CF6]/20 hover:scale-105 transition-transform duration-500">
                 <Image
                   src="/hero2.webp"
-                  alt="Hockey player in action"
+                  alt="Hockey player in action demonstrating elite skills"
                   width={800}
                   height={600}
                   className="w-full h-full object-contain"
@@ -133,8 +244,9 @@ export default function HomePage() {
 
       <ValuePropSection />
       <TestimonialsSection />
-      <WhatYouGetEveryMonth />
       <HowItWorksSection />
+      <WhatYouGetEveryMonth />
+      <NextStepsSection />
       <FeaturedMentorsSection />
 
       <FAQSection />

@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import { buttonVariants } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { ArrowDown, ArrowRight, Play, Quote } from 'lucide-react'
@@ -12,14 +13,92 @@ import {
 } from '@/lib/data/testimonials'
 import { Testimonial, Video } from '@/payload-types'
 import { VideoReview } from '@/components/layout/reviews/video-reviews'
+import { JsonLdScript, getBreadcrumbSchema } from '@/lib/seo/jsonld'
+
+export const metadata: Metadata = {
+  title: 'Reviews & Testimonials - The Performix Effect',
+  description:
+    'Read real testimonials from players and parents. See the transformation stories and results from our D1 hockey mentorship program.',
+  keywords: [
+    'performix reviews',
+    'hockey mentorship testimonials',
+    'player testimonials',
+    'hockey training results',
+    'D1 hockey success stories',
+    'parent reviews',
+    'hockey development results',
+  ],
+  openGraph: {
+    title: 'Reviews & Testimonials | Performix',
+    description:
+      'Real testimonials from players and parents. See the transformation stories from our D1 hockey mentorship.',
+    type: 'website',
+    url: 'https://www.performix.ca/reviews',
+    siteName: 'Performix',
+    images: [
+      {
+        url: 'https://www.performix.ca/opengraph-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'Performix Reviews',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Reviews & Testimonials | Performix',
+    description: 'Real testimonials from players and parents.',
+    images: ['https://www.performix.ca/opengraph-image.png'],
+  },
+  alternates: {
+    canonical: 'https://www.performix.ca/reviews',
+  },
+}
 
 export default async function ReviewsPage() {
   const videoReviews = await getVideoReviews()
   const screenshotReviews = await getScreenshotReviews()
   const parentReviews = await getParentReviews()
 
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    ...getBreadcrumbSchema([
+      { name: 'Home', url: 'https://www.performix.ca' },
+      { name: 'Reviews', url: 'https://www.performix.ca/reviews' },
+    ]),
+  }
+
+  const webPageJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    '@id': 'https://www.performix.ca/reviews#webpage',
+    name: 'Reviews & Testimonials - The Performix Effect',
+    description:
+      'Real testimonials from players and parents. See the transformation stories and results from our D1 hockey mentorship program.',
+    url: 'https://www.performix.ca/reviews',
+    isPartOf: { '@id': 'https://www.performix.ca/#website' },
+  }
+
+  // Create aggregate rating from reviews
+  const aggregateRatingJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    '@id': 'https://www.performix.ca/#organization',
+    name: 'Performix',
+    aggregateRating: {
+      '@type': 'AggregateRating',
+      ratingValue: 5,
+      bestRating: 5,
+      ratingCount: videoReviews.length + parentReviews.length + screenshotReviews.length,
+    },
+  }
+
   return (
     <div>
+      <JsonLdScript data={breadcrumbJsonLd} />
+      <JsonLdScript data={webPageJsonLd} />
+      <JsonLdScript data={aggregateRatingJsonLd} />
+
       <section className="py-20 sm:py-32 relative flex items-center justify-center overflow-hidden bg-gradient-to-b from-white via-blue-50/30 to-white">
         <div className="absolute inset-0 z-0 opacity-[0.03]">
           <div className="h-full w-full bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:64px_64px]" />

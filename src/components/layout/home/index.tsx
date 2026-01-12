@@ -69,9 +69,8 @@ export function ValuePropSection() {
         <div
           id="value-prop-header"
           data-scroll-animate
-          className={`text-center mb-16 transition-all duration-1000 ${
-            isVisible('value-prop-header') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-          }`}
+          className={`text-center mb-16 transition-all duration-1000 ${isVisible('value-prop-header') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+            }`}
         >
           <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
             THE PERFORMIX ADVANTAGE
@@ -87,11 +86,10 @@ export function ValuePropSection() {
               key={index}
               id={`value-card-${index}`}
               data-scroll-animate
-              className={`border-0 shadow-lg hover:shadow-xl transition-all duration-700 hover:-translate-y-2 group bg-gradient-to-br from-white via-[#0891B2]/10 to-[#8B5CF6]/10 ${
-                isVisible(`value-card-${index}`)
-                  ? 'opacity-100 translate-y-0'
-                  : 'opacity-0 translate-y-12'
-              }`}
+              className={`border-0 shadow-lg hover:shadow-xl transition-all duration-700 hover:-translate-y-2 group bg-gradient-to-br from-white via-[#0891B2]/10 to-[#8B5CF6]/10 ${isVisible(`value-card-${index}`)
+                ? 'opacity-100 translate-y-0'
+                : 'opacity-0 translate-y-12'
+                }`}
               style={{ transitionDelay: `${index * 200}ms` }}
             >
               <CardContent className="p-8 text-center">
@@ -112,9 +110,8 @@ export function ValuePropSection() {
         <div
           id="journey-cta"
           data-scroll-animate
-          className={`text-center mt-16 transition-all duration-1000 ${
-            isVisible('journey-cta') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-          }`}
+          className={`text-center mt-16 transition-all duration-1000 ${isVisible('journey-cta') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+            }`}
         >
           <Link
             href="/game-plan"
@@ -132,7 +129,7 @@ export function ValuePropSection() {
   )
 }
 
-export function HowItWorksSection() {
+export function NextStepsSection() {
   const visibleElements = useScrollAnimation()
 
   const isVisible = (id: string) => visibleElements.has(id)
@@ -173,11 +170,10 @@ export function HowItWorksSection() {
         <div
           id="how-it-works-header"
           data-scroll-animate
-          className={`text-center mb-16 transition-all duration-1000 ${
-            isVisible('how-it-works-header')
-              ? 'opacity-100 translate-y-0'
-              : 'opacity-0 translate-y-8'
-          }`}
+          className={`text-center mb-16 transition-all duration-1000 ${isVisible('how-it-works-header')
+            ? 'opacity-100 translate-y-0'
+            : 'opacity-0 translate-y-8'
+            }`}
         >
           <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">Your Next 3 Moves</h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
@@ -189,9 +185,8 @@ export function HowItWorksSection() {
           <div
             id="background-d1"
             data-scroll-animate
-            className={`absolute inset-0 flex items-center justify-center opacity-5 transition-all duration-2000 ${
-              isVisible('background-d1') ? 'opacity-5 scale-100' : 'opacity-0 scale-75'
-            }`}
+            className={`absolute inset-0 flex items-center justify-center opacity-5 transition-all duration-2000 ${isVisible('background-d1') ? 'opacity-5 scale-100' : 'opacity-0 scale-75'
+              }`}
           >
             <div className="text-[20rem] font-bold text-[#0891B2] select-none">D1</div>
           </div>
@@ -201,9 +196,8 @@ export function HowItWorksSection() {
             <div
               id="connecting-line"
               data-scroll-animate
-              className={`hidden lg:block absolute top-20 left-1/3 right-1/3 h-0.5 bg-gradient-to-r from-[#0891B2] via-[#0891B2] to-[#8B5CF6] transition-all duration-1500 ${
-                isVisible('connecting-line') ? 'opacity-100 scale-x-100' : 'opacity-0 scale-x-0'
-              }`}
+              className={`hidden lg:block absolute top-20 left-1/3 right-1/3 h-0.5 bg-gradient-to-r from-[#0891B2] via-[#0891B2] to-[#8B5CF6] transition-all duration-1500 ${isVisible('connecting-line') ? 'opacity-100 scale-x-100' : 'opacity-0 scale-x-0'
+                }`}
             ></div>
 
             {steps.map((item, index) => (
@@ -211,11 +205,10 @@ export function HowItWorksSection() {
                 key={index}
                 id={`step-${index}`}
                 data-scroll-animate
-                className={`text-center relative group transition-all duration-1000 ${
-                  isVisible(`step-${index}`)
-                    ? 'opacity-100 translate-y-0'
-                    : 'opacity-0 translate-y-16'
-                }`}
+                className={`text-center relative group transition-all duration-1000 ${isVisible(`step-${index}`)
+                  ? 'opacity-100 translate-y-0'
+                  : 'opacity-0 translate-y-16'
+                  }`}
                 style={{ transitionDelay: `${index * 300}ms` }}
               >
                 {/* Step card */}
@@ -274,9 +267,8 @@ export function HowItWorksSection() {
           <div
             id="journey-cta"
             data-scroll-animate
-            className={`text-center mt-16 transition-all duration-1000 ${
-              isVisible('journey-cta') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-            }`}
+            className={`text-center mt-16 transition-all duration-1000 ${isVisible('journey-cta') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+              }`}
           >
             <Link
               href="/game-plan"
@@ -338,11 +330,10 @@ export function WhatYouGetEveryMonth() {
         <div
           id="monthly-features-header"
           data-scroll-animate
-          className={`text-center mb-16 transition-all duration-1000 ${
-            isVisible('monthly-features-header')
-              ? 'opacity-100 translate-y-0'
-              : 'opacity-0 translate-y-8'
-          }`}
+          className={`text-center mb-16 transition-all duration-1000 ${isVisible('monthly-features-header')
+            ? 'opacity-100 translate-y-0'
+            : 'opacity-0 translate-y-8'
+            }`}
         >
           <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
             What you get every month...
@@ -353,22 +344,20 @@ export function WhatYouGetEveryMonth() {
           <div
             id="monthly-features-list"
             data-scroll-animate
-            className={`space-y-6 transition-all duration-1000 ${
-              isVisible('monthly-features-list')
-                ? 'opacity-100 translate-x-0'
-                : 'opacity-0 -translate-x-8'
-            }`}
+            className={`space-y-6 transition-all duration-1000 ${isVisible('monthly-features-list')
+              ? 'opacity-100 translate-x-0'
+              : 'opacity-0 -translate-x-8'
+              }`}
           >
             {features.map((feature, index) => (
               <div
                 key={index}
                 id={`feature-${index}`}
                 data-scroll-animate
-                className={`flex items-start space-x-4 transition-all duration-700 ${
-                  isVisible(`feature-${index}`)
-                    ? 'opacity-100 translate-x-0'
-                    : 'opacity-0 translate-x-4'
-                }`}
+                className={`flex items-start space-x-4 transition-all duration-700 ${isVisible(`feature-${index}`)
+                  ? 'opacity-100 translate-x-0'
+                  : 'opacity-0 translate-x-4'
+                  }`}
                 style={{ transitionDelay: `${index * 100}ms` }}
               >
                 <div className="flex-shrink-0 w-6 h-6 bg-[#0891B2] rounded-full flex items-center justify-center mt-1">
@@ -385,11 +374,10 @@ export function WhatYouGetEveryMonth() {
           <div
             id="monthly-features-image"
             data-scroll-animate
-            className={`relative transition-all duration-1000 ${
-              isVisible('monthly-features-image')
-                ? 'opacity-100 translate-x-0 scale-100'
-                : 'opacity-0 translate-x-8 scale-95'
-            }`}
+            className={`relative transition-all duration-1000 ${isVisible('monthly-features-image')
+              ? 'opacity-100 translate-x-0 scale-100'
+              : 'opacity-0 translate-x-8 scale-95'
+              }`}
           >
             <div className="aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl">
               <Image
@@ -413,9 +401,8 @@ export function WhatYouGetEveryMonth() {
         <div
           id="monthly-cta"
           data-scroll-animate
-          className={`text-center mt-12 transition-all duration-1000 ${
-            isVisible('monthly-cta') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-          }`}
+          className={`text-center mt-12 transition-all duration-1000 ${isVisible('monthly-cta') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+            }`}
         >
           <Link
             href="/game-plan"
@@ -459,11 +446,10 @@ export function ExtraValueSection() {
               key={index}
               id={`benefit-${index}`}
               data-scroll-animate
-              className={`text-center transition-all duration-1000 ${
-                isVisible(`benefit-${index}`)
-                  ? 'opacity-100 translate-y-0'
-                  : 'opacity-0 translate-y-8'
-              }`}
+              className={`text-center transition-all duration-1000 ${isVisible(`benefit-${index}`)
+                ? 'opacity-100 translate-y-0'
+                : 'opacity-0 translate-y-8'
+                }`}
               style={{ transitionDelay: `${index * 200}ms` }}
             >
               <div className="w-14 h-14 mx-auto mb-4 text-[#0891B2] hover:scale-110 transition-transform duration-300">
@@ -490,9 +476,8 @@ export function TrustSection() {
         <div
           id="trust-header"
           data-scroll-animate
-          className={`text-center mb-16 transition-all duration-1000 ${
-            isVisible('trust-header') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-          }`}
+          className={`text-center mb-16 transition-all duration-1000 ${isVisible('trust-header') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+            }`}
         >
           <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
             Trusted by Families. Built for Serious Players.
@@ -526,11 +511,10 @@ export function TrustSection() {
               key={index}
               id={`trust-item-${index}`}
               data-scroll-animate
-              className={`text-center transition-all duration-1000 ${
-                isVisible(`trust-item-${index}`)
-                  ? 'opacity-100 translate-y-0'
-                  : 'opacity-0 translate-y-12'
-              }`}
+              className={`text-center transition-all duration-1000 ${isVisible(`trust-item-${index}`)
+                ? 'opacity-100 translate-y-0'
+                : 'opacity-0 translate-y-12'
+                }`}
               style={{ transitionDelay: `${index * 200}ms` }}
             >
               <div className="w-16 h-16 bg-[#0891B2]/10 rounded-full flex items-center justify-center mx-auto mb-6">
@@ -550,15 +534,42 @@ export function FAQSection() {
   const visibleElements = useScrollAnimation()
   const isVisible = (id: string) => visibleElements.has(id)
 
+  const faqs = [
+    {
+      question: 'What is Performix?',
+      answer:
+        'Performix is a high-performance development platform built by D1/pro athletes and top experts—performance coaches, specialists, and experienced team coaches. You get paired with your own personal D1 mentor and gain access to elite tools: custom training, nutrition, mindset strategies, video breakdowns, recruiting support, and a proven system designed to accelerate your development.',
+    },
+    {
+      question: 'Who is Performix for?',
+      answer:
+        'Performix is for driven hockey players (typically ages 13-18) looking to develop faster, train smarter, and reach the next level—whether that is prep, juniors, or Division 1.',
+    },
+    {
+      question: 'What do I get with Performix?',
+      answer:
+        'Depending on your package, you get matched with a personal mentor and unlock full access to the Performix system—including custom development plans, biweekly Zoom calls, goal-setting support, private video feedback, and unlimited mentor access. You will also get the full course, nutrition tools, mindset strategies, and recruiting guidance tailored to your game.',
+    },
+    {
+      question: 'How do I get started?',
+      answer:
+        'Book a free Zoom call so we can learn about your goals and pair you with the right mentor. From there, you\'ll unlock your tools, schedule your sessions, and start making real progress.',
+    },
+    {
+      question: "What's coming next on Performix?",
+      answer:
+        'We are bringing in new NHL-level experts, launching exclusive high-level content, and expanding our free Resource Hub—packed with free valuable tools, breakdowns, and insight players can use right away. We are also building new offerings across skill development, rehab and more.',
+    },
+  ]
+
   return (
     <section className="py-20 bg-white">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div
           id="faq-header"
           data-scroll-animate
-          className={`text-center mb-16 transition-all duration-1000 ${
-            isVisible('faq-header') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-          }`}
+          className={`text-center mb-16 transition-all duration-1000 ${isVisible('faq-header') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+            }`}
         >
           <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
             Frequently Asked Questions
@@ -569,42 +580,15 @@ export function FAQSection() {
         </div>
         <div className="max-w-3xl mx-auto">
           <div className="space-y-4">
-            {[
-              {
-                question: 'What is Performix?',
-                answer:
-                  'Performix is a high-performance development platform built by D1/pro athletes and top experts—performance coaches, specialists, and experienced team coaches. You get paired with your own personal D1 mentor and gain access to elite tools: custom training, nutrition, mindset strategies, video breakdowns, recruiting support, and a proven system designed to accelerate your development.',
-              },
-              {
-                question: 'Who is Performix for?',
-                answer:
-                  'Performix is for driven hockey players (typically ages 13-18) looking to develop faster, train smarter, and reach the next level—whether that is prep, juniors, or Division 1.',
-              },
-              {
-                question: 'What do I get with Performix?',
-                answer:
-                  'Depending on your package, you get matched with a personal mentor and unlock full access to the Performix system—including custom development plans, biweekly Zoom calls, goal-setting support, private video feedback, and unlimited mentor access. You will also get the full course, nutrition tools, mindset strategies, and recruiting guidance tailored to your game.',
-              },
-              {
-                question: 'How do I get started?',
-                answer:
-                  'Book a free Zoom call so we can learn about your goals and pair you with the right mentor. From there, you’ll unlock your tools, schedule your sessions, and start making real progress.',
-              },
-              {
-                question: "What's coming next on Performix?",
-                answer:
-                  'We are bringing in new NHL-level experts, launching exclusive high-level content, and expanding our free Resource Hub—packed with free valuable tools, breakdowns, and insight players can use right away. We are also building new offerings across skill development, rehab and more.',
-              },
-            ].map((faq, index) => (
+            {faqs.map((faq, index) => (
               <div
                 key={index}
                 id={`faq-item-${index}`}
                 data-scroll-animate
-                className={`border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition-all duration-700 ${
-                  isVisible(`faq-item-${index}`)
-                    ? 'opacity-100 translate-x-0'
-                    : 'opacity-0 translate-x-4'
-                }`}
+                className={`border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition-all duration-700 ${isVisible(`faq-item-${index}`)
+                  ? 'opacity-100 translate-x-0'
+                  : 'opacity-0 translate-x-4'
+                  }`}
                 style={{ transitionDelay: `${index * 100}ms` }}
               >
                 <details className="group">
@@ -619,6 +603,69 @@ export function FAQSection() {
               </div>
             ))}
           </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+export function HowItWorksSection() {
+  const steps = [
+    {
+      number: "01",
+      title: "We map out your game",
+      description:
+        "We look at the full picture — strengths, weaknesses, on-ice decisions, play style, and goals — to understand what will take your game the furthest.",
+    },
+    {
+      number: "02",
+      title: "High-impact improvement sessions",
+      description:
+        "Through 1-on-1 video analysis and focused mental and development sessions, D1 mentors show you what's holding your game back and what to do to create more impact on the ice",
+    },
+    {
+      number: "03",
+      title: "Build a clear development plan",
+      description:
+        "Based on what we find, we choose the few specific things that will make the biggest difference in your game and turn them into a clear, simple plan you know how to follow.",
+    },
+    {
+      number: "04",
+      title: "Execute and repeat",
+      description:
+        "You follow the plan. We track progress, make adjustments when needed, support you along the way, and repeat the process so improvements stack month after month.",
+    },
+  ]
+
+  return (
+    <section className="w-full bg-white py-16 md:py-24">
+      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+
+        <div className="mx-auto max-w-2xl text-center mb-12 md:mb-16">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-gray-900 mb-3 md:mb-4 text-balance">
+            How It Works
+          </h2>
+          <p className="text-base md:text-lg leading-relaxed text-gray-600">
+            A proven process to help you get more out of your game
+          </p>
+        </div>
+
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 lg:gap-6 xl:gap-8">
+          {steps.map((step) => (
+            <div key={step.number} className="flex flex-col h-full">
+              <div className="mb-4 sm:mb-6">
+                <span className="inline-block text-2xl sm:text-3xl lg:text-2xl xl:text-3xl font-bold text-[#50b5d4] tracking-tight">
+                  {step.number}
+                </span>
+              </div>
+
+              <div className="flex-1 flex flex-col">
+                <h3 className="text-lg sm:text-xl lg:text-lg xl:text-xl font-semibold text-gray-900 mb-3 sm:mb-4 leading-snug min-h-[3.5rem] sm:min-h-[4rem] lg:min-h-[4.5rem] flex items-start">{step.title}</h3>
+                <p className="text-sm sm:text-base lg:text-sm xl:text-base leading-relaxed text-gray-600 flex-1">{step.description}</p>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </section>
