@@ -17,9 +17,9 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'Performix - Elite Hockey Mentorship | Your Path To Excellence',
+  title: 'Hockey Development System | Performix',
   description:
-    'Connect with 30+ elite D1+ hockey mentors. Get personalized guidance, proven training systems, and expert coaching to elevate your game and achieve your hockey dreams.',
+    'With our elite D1+ hockey mentors, you get personalized guidance, proven training systems, and expert coaching to elevate your game and crush your hockey goals.',
   keywords: [
     'hockey mentorship',
     'D1 hockey',
@@ -33,9 +33,9 @@ export const metadata: Metadata = {
     'hockey performance',
   ],
   openGraph: {
-    title: 'Performix - Elite Hockey Mentorship Platform',
+    title: 'Hockey Development System | Performix',
     description:
-      'Connect with 30+ elite D1+ hockey mentors. Personalized guidance to elevate your game and achieve your hockey dreams.',
+      'With our elite D1+ hockey mentors, you get personalized guidance, proven training systems, and expert coaching to elevate your game and crush your hockey goals.',
     type: 'website',
     url: 'https://www.performix.ca',
     siteName: 'Performix',
@@ -50,9 +50,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Performix - Elite Hockey Mentorship Platform',
+    title: 'Hockey Development System | Performix',
     description:
-      'Connect with 30+ elite D1+ hockey mentors. Personalized guidance to elevate your game.',
+      'With our elite D1+ hockey mentors, you get personalized guidance, proven training systems, and expert coaching to elevate your game and crush your hockey goals.',
     images: ['https://www.performix.ca/opengraph-image.png'],
   },
   alternates: {
