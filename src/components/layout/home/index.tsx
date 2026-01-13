@@ -293,34 +293,29 @@ export function WhatYouGetEveryMonth() {
 
   const features = [
     {
-      title: 'The Complete Performix System',
-      description:
-        'A decade of elite development tools compressed into one system — from hockey IQ, mindset, skill development, speed, strength, development strategy, and more. Everything that works, all in one place.',
-    },
-    {
-      title: 'Monthly Strategy Session',
-      description:
-        'Work 1-on-1 with your mentor to build a clear game plan to make your biggest improvements each month',
-    },
-    {
       title: 'Private Video Analysis Sessions',
       description:
         'Private 1-on-1 game analysis with a D1+ mentor to improve hockey IQ and decision-making on the ice.',
     },
     {
-      title: 'Identity Stack + Player Profile',
+      title: 'Mental & Strategy Sessions',
       description:
-        'Build your personal player identity and development profile — so you know exactly what to focus on and why.',
+        'Work 1-on-1 with your mentor on the mental side of the game to build confidence and guide overall development strategy.',
     },
     {
-      title: 'Smart Tracking + Calendar System',
+      title: 'Personalized Development Plans',
+      description:
+        'Get a customized game plan focused on making your biggest improvements each month',
+    },
+    {
+      title: 'The Complete Performix System',
+      description:
+        'A decade of elite development tools compressed into one system — from hockey IQ, mindset, skill development, speed, strength, development strategy, and more.',
+    },
+    {
+      title: 'Smart Calendar System',
       description:
         'Track progress, set goals, structure your week, and stay locked in with a personalized calendar and performance system.',
-    },
-    {
-      title: 'Custom Tools + Goal Roadmap',
-      description:
-        'Get tools and monthly goals made just for you — based on your game, position, and where you want to go.',
     },
   ]
 
