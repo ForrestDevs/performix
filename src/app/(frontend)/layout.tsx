@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     template: '%s | Performix',
   },
   description:
-    'Connect with elite D1+ hockey mentors. Personalized guidance to elevate your game and smash your goals.',
+    'Your own D1 hockey mentor, custom development plans, and improvement across every area of your game.',
   keywords: [
     'hockey mentorship',
     'D1 hockey',
@@ -50,24 +50,24 @@ export const metadata: Metadata = {
     locale: 'en_CA',
     url: 'https://www.performix.ca',
     siteName: 'Performix',
-    title: 'Performix - Elite Hockey Mentorship',
+    title: 'Hockey Development System',
     description:
-      'Connect with elite D1+ hockey mentors. Personalized guidance to elevate your game.',
+      'Your own D1 hockey mentor, custom development plans, and improvement across every area of your game.',
     images: [
       {
-        url: '/opengraph-image.png',
+        url: '/performix-hockey-banner.png',
         width: 1200,
         height: 630,
-        alt: 'Performix - Elite Hockey Mentorship',
+        alt: 'Hockey Development System',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Performix - Elite Hockey Mentorship',
+    title: 'Hockey Development System',
     description:
-      'Connect with elite D1+ hockey mentors. Personalized guidance to elevate your game.',
-    images: ['/opengraph-image.png'],
+      'Your own D1 hockey mentor, custom development plans, and improvement across every area of your game.',
+    images: ['/performix-hockey-banner.png'],
   },
   robots: {
     index: true,

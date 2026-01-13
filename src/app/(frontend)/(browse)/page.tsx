@@ -19,7 +19,7 @@ import Link from 'next/link'
 export const metadata: Metadata = {
   title: 'Hockey Development System',
   description:
-    'With our elite D1+ hockey mentors, you get personalized guidance, proven training systems, and expert coaching to elevate your game and crush your hockey goals.',
+    'Your own D1 hockey mentor, custom development plans, and improvement across every area of your game.',
   keywords: [
     'hockey mentorship',
     'D1 hockey',
@@ -35,16 +35,16 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Hockey Development System',
     description:
-      'With our elite D1+ hockey mentors, you get personalized guidance, proven training systems, and expert coaching to elevate your game and crush your hockey goals.',
+      'Your own D1 hockey mentor, custom development plans, and improvement across every area of your game.',
     type: 'website',
     url: 'https://www.performix.ca',
     siteName: 'Performix',
     images: [
       {
-        url: 'https://www.performix.ca/opengraph-image.png',
+        url: 'https://www.performix.ca/performix-hockey-banner.png',
         width: 1200,
         height: 630,
-        alt: 'Performix - Elite Hockey Mentorship',
+        alt: 'Hockey Development System',
       },
     ],
   },
@@ -52,8 +52,8 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Hockey Development System',
     description:
-      'With our elite D1+ hockey mentors, you get personalized guidance, proven training systems, and expert coaching to elevate your game and crush your hockey goals.',
-    images: ['https://www.performix.ca/opengraph-image.png'],
+      'Your own D1 hockey mentor, custom development plans, and improvement across every area of your game.',
+    images: ['https://www.performix.ca/performix-hockey-banner.png'],
   },
   alternates: {
     canonical: 'https://www.performix.ca',
