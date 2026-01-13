@@ -24,7 +24,7 @@ const spaceGrotesk = Space_Grotesk({
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.performix.ca'),
   title: {
-    default: 'Performix - Elite Hockey Mentorship | Your Path To Excellence',
+    default: 'Hockey Development System',
     template: '%s | Performix',
   },
   description:
