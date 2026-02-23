@@ -37,24 +37,24 @@ const valuePropItems = [
   },
   {
     icon: TrendingUp,
-    title: 'All-Around Development',
-    strong: "We don't just focus on one part of the game.",
+    title: 'Strategic Development',
+    strong: "Hockey performance isn’t built from one category alone.",
     description:
-      'High-level support and tools across every side of performance — training, nutrition, mindset, and hockey IQ — all built to work together in one complete system.',
+      'We have the tools and expertise across training, mindset, hockey IQ, and more — and apply the right pieces based on what your game actually needs most.',
   },
   {
     icon: User,
-    title: 'Personalized To You',
+    title: 'Personalized to You',
     strong: "This isn't a one-size-fits-all program.",
     description:
-      'Everything is built around your game and goals. We figure out what will get you the best results and build a personalized plan designed around you.',
+      'Everything is built around your game and goals. We identify what will create the biggest difference in your game and build a personalized plan around it.',
   },
   {
     icon: Trophy,
-    title: 'Network of Experts',
-    strong: 'A team of specialists behind every player.',
+    title: 'Built With Experts',
+    strong: 'Built with experts operating at the highest levels.',
     description:
-      'Our system blends insights from D1 strength coaches, NHL-level skill coaches, sports scientists, and performance experts — all working together to achieve your hockey goals.',
+      'Our development process and training systems are built alongside an Olympic sports performance doctor, NHL nutritionists, D1 strength coaches, and elite skill specialists.',
   },
 ]
 
@@ -138,29 +138,22 @@ export function NextStepsSection() {
     {
       step: 1,
       title: 'Free Strategy Call',
-      description: "Tell us where you're at, what you've tried, and what goals you're chasing.",
+      description: "We learn where you're at, what you've tried, and where you want to go.",
       icon: Users,
-      details: ['Goal-Based Matching', 'Personality Fit', 'Position-Specific Pairing'],
     },
     {
       step: 2,
-      title: 'Your Game Plan',
+      title: 'Get Matched',
       description:
-        "We'll build your player profile, set clear priorities, and pair you with the right D1 mentor for your path.",
+        "If it's a fit, we pair you with the right D1 mentor and the right path for your game.",
       icon: Target,
-      details: [
-        '1-on-1 Private Mentorship',
-        'Performance-Driven Resources',
-        'Consistent Progress Tracking',
-      ],
     },
     {
       step: 3,
       title: 'Start Producing Results',
       description:
-        "Unlock new opportunities, climb levels faster, and do it with guidance from people who've already made it there.",
+        'You begin making high-impact improvements that show up in games.',
       icon: Award,
-      details: ['Apply D1 Strategy', 'Use What Works', 'Turn Knowledge Into Results'],
     },
   ]
 
@@ -237,18 +230,6 @@ export function NextStepsSection() {
                     {item.description}
                   </p>
 
-                  {/* Feature list */}
-                  <div className="space-y-2 w-full max-w-[240px] relative z-10">
-                    {item.details.map((detail, detailIndex) => (
-                      <div
-                        key={detailIndex}
-                        className="flex items-center text-xs text-gray-600 font-medium"
-                      >
-                        <CheckCircle className="h-3.5 w-3.5 text-[#0891B2] mr-2 flex-shrink-0" />
-                        <span>{detail}</span>
-                      </div>
-                    ))}
-                  </div>
                 </div>
 
                 {/* Arrow for mobile */}
@@ -293,14 +274,14 @@ export function WhatYouGetEveryMonth() {
 
   const features = [
     {
-      title: 'Private Video Analysis Sessions',
+      title: 'Video Analysis Sessions',
       description:
-        'Private 1-on-1 game analysis with a D1+ mentor to improve hockey IQ and decision-making on the ice.',
+        '1-on-1 breakdowns with a D1 mentor to improve your hockey IQ and in-game impact.',
     },
     {
-      title: 'Mental & Strategy Sessions',
+      title: 'Mental Performance Sessions',
       description:
-        'Work 1-on-1 with your mentor on the mental side of the game to build confidence and guide overall development strategy.',
+        '1-on-1 sessions to strengthen confidence, build mental resilience, and guide your long-term development.',
     },
     {
       title: 'Personalized Development Plans',
@@ -310,7 +291,7 @@ export function WhatYouGetEveryMonth() {
     {
       title: 'The Complete Performix System',
       description:
-        'A decade of elite development tools compressed into one system — from hockey IQ, mindset, skill development, speed, strength, development strategy, and more.',
+        'Access to our full library of development tools and lessons across hockey IQ, mindset, training, skill, and recruitment — built to accelerate your progress in every phase of the game.',
     },
     {
       title: 'Smart Calendar System',
@@ -533,22 +514,22 @@ export function FAQSection() {
     {
       question: 'What is Performix?',
       answer:
-        'Performix is a high-performance development platform built by D1/pro athletes and top experts—performance coaches, specialists, and experienced team coaches. You get paired with your own personal D1 mentor and gain access to elite tools: custom training, nutrition, mindset strategies, video breakdowns, recruiting support, and a proven system designed to accelerate your development.',
+        'Performix is changing the way serious hockey players develop by helping them unlock more of their full ability in games. You work 1-on-1 with a Division I mentor who analyzes your game, identifies what\'s limiting you, and builds a plan around the adjustments that will make the biggest difference. We combine mentorship, hockey IQ development, and mental performance work into one clear system built to move your game forward.',
     },
     {
       question: 'Who is Performix for?',
       answer:
-        'Performix is for driven hockey players (typically ages 13-18) looking to develop faster, train smarter, and reach the next level—whether that is prep, juniors, or Division 1.',
+        "Performix is for serious hockey players (typically 13–18) who know they're capable of more but aren't consistently showing it in games. It's built for players who want structured guidance, high-level mentorship, and a clear development path toward prep, junior, NCAA, or higher levels.",
     },
     {
       question: 'What do I get with Performix?',
       answer:
-        'Depending on your package, you get matched with a personal mentor and unlock full access to the Performix system—including custom development plans, biweekly Zoom calls, goal-setting support, private video feedback, and unlimited mentor access. You will also get the full course, nutrition tools, mindset strategies, and recruiting guidance tailored to your game.',
+        'What you receive depends on your package, but every athlete gets direct support from a Division I mentor, 1-on-1 video analysis and mental sessions, a personalized development plan, and full access to the Performix system and tools. Higher tiers include more sessions and deeper customization, but the focus is always the same: real in-game improvement.',
     },
     {
       question: 'How do I get started?',
       answer:
-        'Book a free Zoom call so we can learn about your goals and pair you with the right mentor. From there, you\'ll unlock your tools, schedule your sessions, and start making real progress.',
+        "Book a free strategy call. We'll learn about your goals, situation, and development needs. If it's a fit, we'll match you with the right mentor and package to move your game forward.",
     },
     {
       question: "What's coming next on Performix?",
@@ -616,13 +597,13 @@ export function HowItWorksSection() {
       number: "02",
       title: "High-impact improvement sessions",
       description:
-        "Through 1-on-1 video analysis and focused mental and development sessions, D1 mentors show you what's holding your game back and what to do to create more impact on the ice",
+        "Through 1-on-1 video analysis and focused mental sessions, D1 mentors show you what's holding your game back and what to do to create more impact on the ice",
     },
     {
       number: "03",
       title: "Build a clear development plan",
       description:
-        "Based on what we find, we choose the few specific things that will make the biggest difference in your game and turn them into a clear, simple plan you know how to follow.",
+        "Based on what we find, we choose the specific things that will make the biggest difference in your game and turn them into a clear, simple plan you know how to follow.",
     },
     {
       number: "04",
