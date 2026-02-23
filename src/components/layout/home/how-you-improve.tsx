@@ -17,10 +17,27 @@ export function HowYouImprove() {
     },
   ]
 
+  // TODO(luke): Keep these accents in sync with the homepage brand palette as we iterate.
+  const sectionAccentClasses = {
+    haloPrimary: 'bg-[#0891B2]/10',
+    haloSecondary: 'bg-[#8B5CF6]/10',
+    circleBorder: 'border-[#0891B2]/30',
+    circleGlow: 'from-[#0891B2]/8 to-[#8B5CF6]/8',
+  }
+
   return (
-    <section className="relative bg-[#f8f9fa] py-24 md:py-32 lg:py-40">
-      <div className="mx-auto max-w-6xl px-6">
-        <h2 className="text-center text-4xl font-semibold tracking-tight text-[#1a1a2e] md:text-5xl lg:text-6xl">
+    <section className="relative overflow-hidden bg-gradient-to-b from-white via-gray-50 to-white py-24 md:py-32 lg:py-40">
+      <div className="pointer-events-none absolute inset-0">
+        <div
+          className={`absolute -top-24 -left-20 h-72 w-72 rounded-full blur-3xl ${sectionAccentClasses.haloPrimary}`}
+        />
+        <div
+          className={`absolute -bottom-24 -right-20 h-72 w-72 rounded-full blur-3xl ${sectionAccentClasses.haloSecondary}`}
+        />
+      </div>
+
+      <div className="container relative z-10 mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 className="text-center text-4xl font-semibold tracking-tight text-gray-900 md:text-5xl lg:text-6xl">
           How You Improve
         </h2>
 
@@ -28,15 +45,27 @@ export function HowYouImprove() {
           <div className="hidden md:block">
             <div className="relative mx-auto h-[520px] w-full max-w-3xl lg:h-[540px] lg:max-w-[860px]">
               <div className="absolute left-1/2 top-0 -translate-x-1/2">
-                <Circle title={outcomes[0].title} description={outcomes[0].description} />
+                <Circle
+                  title={outcomes[0].title}
+                  description={outcomes[0].description}
+                  accentClasses={sectionAccentClasses}
+                />
               </div>
 
               <div className="absolute bottom-0 left-0 lg:left-[50px]">
-                <Circle title={outcomes[1].title} description={outcomes[1].description} />
+                <Circle
+                  title={outcomes[1].title}
+                  description={outcomes[1].description}
+                  accentClasses={sectionAccentClasses}
+                />
               </div>
 
               <div className="absolute bottom-0 right-0 lg:right-[50px]">
-                <Circle title={outcomes[2].title} description={outcomes[2].description} />
+                <Circle
+                  title={outcomes[2].title}
+                  description={outcomes[2].description}
+                  accentClasses={sectionAccentClasses}
+                />
               </div>
             </div>
           </div>
@@ -48,6 +77,7 @@ export function HowYouImprove() {
                   title={outcomes[0].title}
                   description={outcomes[0].description}
                   size="small"
+                  accentClasses={sectionAccentClasses}
                 />
               </div>
 
@@ -56,6 +86,7 @@ export function HowYouImprove() {
                   title={outcomes[1].title}
                   description={outcomes[1].description}
                   size="small"
+                  accentClasses={sectionAccentClasses}
                 />
               </div>
 
@@ -64,6 +95,7 @@ export function HowYouImprove() {
                   title={outcomes[2].title}
                   description={outcomes[2].description}
                   size="small"
+                  accentClasses={sectionAccentClasses}
                 />
               </div>
             </div>
@@ -74,14 +106,23 @@ export function HowYouImprove() {
   )
 }
 
+type AccentClasses = {
+  haloPrimary: string
+  haloSecondary: string
+  circleBorder: string
+  circleGlow: string
+}
+
 function Circle({
   title,
   description,
   size = 'default',
+  accentClasses,
 }: {
   title: string
   description: string
   size?: 'default' | 'small'
+  accentClasses: AccentClasses
 }) {
   const sizeClasses =
     size === 'small'
@@ -89,13 +130,18 @@ function Circle({
       : 'h-[280px] w-[280px] lg:h-[320px] lg:w-[320px]'
 
   return (
-    <div
-      className={`${sizeClasses} flex flex-col items-center justify-center rounded-full border-2 border-[#5bb5b0]/60 bg-white/70 p-8 text-center shadow-sm backdrop-blur-sm lg:border-[2.5px] lg:border-[#4fa8a3]/65`}
-    >
-      <h3 className="text-lg font-semibold leading-tight tracking-tight text-[#1a1a2e] lg:text-xl">
-        {title}
-      </h3>
-      <p className="mt-3 text-sm leading-relaxed text-[#5a5a6e] lg:text-[17px]">{description}</p>
+    <div className="relative">
+      <div
+        className={`pointer-events-none absolute inset-0 rounded-full bg-gradient-to-br blur-xl ${accentClasses.circleGlow}`}
+      />
+      <div
+        className={`${sizeClasses} relative flex flex-col items-center justify-center rounded-full border bg-white p-8 text-center shadow-md backdrop-blur-sm lg:border-[2.5px] ${accentClasses.circleBorder}`}
+      >
+        <h3 className="text-lg font-semibold leading-tight tracking-tight text-gray-900 lg:text-xl">
+          {title}
+        </h3>
+        <p className="mt-3 text-sm leading-relaxed text-gray-600 lg:text-[17px]">{description}</p>
+      </div>
     </div>
   )
 }
