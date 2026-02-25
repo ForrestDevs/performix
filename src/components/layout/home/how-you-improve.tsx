@@ -15,7 +15,7 @@ export function HowYouImprove() {
       title: 'In-Game Results',
       description: 'Turn your growth into measurable results in games.',
     },
-  ]
+  ] as const
 
   // TODO(luke): Keep these accents in sync with the homepage brand palette as we iterate.
   const sectionAccentClasses = {
