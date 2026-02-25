@@ -5,6 +5,7 @@ import {
   ValuePropSection,
   WhatYouGetEveryMonth,
 } from '@/components/layout/home'
+import { HowYouImprove } from '@/components/layout/home/how-you-improve'
 import { FeaturedMentorsSection } from '@/components/layout/home/featured-mentors'
 import { TestimonialsSection } from '@/components/layout/home/testimonials'
 import { Badge } from '@/components/ui/badge'
@@ -65,22 +66,22 @@ const faqs = [
   {
     question: 'What is Performix?',
     answer:
-      'Performix is a high-performance development platform built by D1/pro athletes and top experts—performance coaches, specialists, and experienced team coaches. You get paired with your own personal D1 mentor and gain access to elite tools: custom training, nutrition, mindset strategies, video breakdowns, recruiting support, and a proven system designed to accelerate your development.',
+      'Performix is changing the way serious hockey players develop by helping them unlock more of their full ability in games. You work 1-on-1 with a Division I mentor who analyzes your game, identifies what\'s limiting you, and builds a plan around the adjustments that will make the biggest difference. We combine mentorship, hockey IQ development, and mental performance work into one clear system built to move your game forward.',
   },
   {
     question: 'Who is Performix for?',
     answer:
-      'Performix is for driven hockey players (typically ages 13-18) looking to develop faster, train smarter, and reach the next level—whether that is prep, juniors, or Division 1.',
+      "Performix is for serious hockey players (typically 13–18) who know they're capable of more but aren't consistently showing it in games. It's built for players who want structured guidance, high-level mentorship, and a clear development path toward prep, junior, NCAA, or higher levels.",
   },
   {
     question: 'What do I get with Performix?',
     answer:
-      'Depending on your package, you get matched with a personal mentor and unlock full access to the Performix system—including custom development plans, biweekly Zoom calls, goal-setting support, private video feedback, and unlimited mentor access. You will also get the full course, nutrition tools, mindset strategies, and recruiting guidance tailored to your game.',
+      'What you receive depends on your package, but every athlete gets direct support from a Division I mentor, 1-on-1 video analysis and mental sessions, a personalized development plan, and full access to the Performix system and tools. Higher tiers include more sessions and deeper customization, but the focus is always the same: real in-game improvement.',
   },
   {
     question: 'How do I get started?',
     answer:
-      'Book a free Zoom call so we can learn about your goals and pair you with the right mentor. From there, you\'ll unlock your tools, schedule your sessions, and start making real progress.',
+      "Book a free strategy call. We'll learn about your goals, situation, and development needs. If it's a fit, we'll match you with the right mentor and package to move your game forward.",
   },
   {
     question: "What's coming next on Performix?",
@@ -147,10 +148,10 @@ export default function HomePage() {
                   </span>
                 </h1>
                 <p className="text-xl text-gray-600 leading-relaxed max-w-2xl">
-                  <strong>Why not go further, faster? </strong>Work directly with D1 hockey mentors,
-                  use elite tools across every part of the game, and follow a personalized system
-                  built around you — so you can finally become the player you know you&apos;re
-                  capable of being.
+                  <strong>Why not go further, faster? </strong>Work directly with D1 hockey mentors
+                  who identify what&apos;s holding your game back and build a personalized plan
+                  around you — so your confidence, IQ, and real ability show up consistently in
+                  games.
                 </p>
               </div>
               <div className="flex flex-col sm:flex-row gap-4">
@@ -242,6 +243,7 @@ export default function HomePage() {
         </div>
       </section>
 
+      <HowYouImprove />
       <ValuePropSection />
       <TestimonialsSection />
       <HowItWorksSection />
