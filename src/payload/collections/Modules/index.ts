@@ -101,6 +101,7 @@ const Modules: CollectionConfig = {
               on: 'module',
               label: 'Volumes',
               collection: VOLUMES_SLUG,
+              defaultLimit: 0,
             },
             {
               name: 'lessons',
@@ -108,6 +109,7 @@ const Modules: CollectionConfig = {
               on: 'module',
               label: 'Lessons',
               collection: LESSONS_SLUG,
+              defaultLimit: 0,
             },
           ],
         },

@@ -101,6 +101,7 @@ const Volumes: CollectionConfig = {
               on: 'volume',
               label: 'Lessons',
               collection: LESSONS_SLUG,
+              defaultLimit: 0,
             },
           ],
         },
