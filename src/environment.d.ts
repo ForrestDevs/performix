@@ -18,6 +18,7 @@ declare global {
       EMAIL_PORT: string
       EMAIL_USER: string
       EMAIL_PASSWORD: string
+      ZAPIER_GAME_PLAN_WEBHOOK_URL?: string
       STRIPE_SECRET_KEY: string
       STRIPE_WEBHOOK_SECRET: string
       NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: string

@@ -1,6 +1,7 @@
 import type { CollectionConfig } from 'payload'
 import { FORM_RESPONSES_SLUG } from '../constants'
 import { admin } from '@/payload/access'
+import afterChangeFormResponse from './hooks/afterChange'
 
 const FormResponses: CollectionConfig = {
   slug: FORM_RESPONSES_SLUG,
@@ -15,6 +16,9 @@ const FormResponses: CollectionConfig = {
     create: admin,
     update: admin,
     delete: admin,
+  },
+  hooks: {
+    afterChange: [afterChangeFormResponse],
   },
   fields: [
     {

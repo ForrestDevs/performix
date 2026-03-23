@@ -1,5 +1,9 @@
 'use server'
 
+import {
+  GAME_PLAN_SMS_CONSENT_COPY,
+  GAME_PLAN_SMS_CONSENT_VERSION,
+} from '@/lib/constants/game-plan-sms-consent'
 import { sendEmail } from './email'
 import { createFormResponse } from './form-response'
 
@@ -16,16 +20,33 @@ type GamePlanData = {
   seriousness: string
   decisionInvolvement: string
   startWhen: string
+  smsConsent: boolean
+}
+
+type GamePlanSubmission = GamePlanData & {
+  fullName: string
+  submittedAt: string
+  smsConsentCapturedAt: string
+  smsConsentText: string
+  smsConsentVersion: string
 }
 
 export async function submitGamePlan(data: GamePlanData) {
-  await createFormResponse('game-plan', data.firstName + ' ' + data.lastName, data.email, data.phone, data)
-  await sendEmail({
-    to: 'mateo@performix.ca',
-    subject: 'Game Plan Submission',
-    html: `
-      <p>You have a new game plan submission:</p>
-      <pre>${JSON.stringify(data, null, 2)}</pre>
-    `,
-  })
+  const submittedAt = new Date().toISOString()
+  const submission: GamePlanSubmission = {
+    ...data,
+    fullName: `${data.firstName} ${data.lastName}`,
+    submittedAt,
+    smsConsentCapturedAt: submittedAt,
+    smsConsentText: GAME_PLAN_SMS_CONSENT_COPY,
+    smsConsentVersion: GAME_PLAN_SMS_CONSENT_VERSION,
+  }
+
+  await createFormResponse(
+    'game-plan',
+    submission.fullName,
+    submission.phone,
+    submission.email,
+    submission,
+  )
 }

@@ -39,6 +39,7 @@ import * as migration_20251028_185233_formResponses from './20251028_185233_form
 import * as migration_20251028_232436_testimonialsV2 from './20251028_232436_testimonialsV2';
 import * as migration_20251110_235109_teamMembersv2 from './20251110_235109_teamMembersv2';
 import * as migration_20251112_200556_credentails from './20251112_200556_credentails';
+import * as migration_20260323_203502_webhooks from './20260323_203502_webhooks';
 
 export const migrations = [
   {
@@ -244,6 +245,11 @@ export const migrations = [
   {
     up: migration_20251112_200556_credentails.up,
     down: migration_20251112_200556_credentails.down,
-    name: '20251112_200556_credentails'
+    name: '20251112_200556_credentails',
+  },
+  {
+    up: migration_20260323_203502_webhooks.up,
+    down: migration_20260323_203502_webhooks.down,
+    name: '20260323_203502_webhooks'
   },
 ];
