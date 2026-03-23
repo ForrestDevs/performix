@@ -94,6 +94,7 @@ export interface Config {
     'lab-sections': LabSection;
     'team-members': TeamMember;
     'form-responses': FormResponse;
+    webhooks: Webhook;
     'payload-jobs': PayloadJob;
     'payload-folders': FolderInterface;
     'payload-locked-documents': PayloadLockedDocument;
@@ -140,6 +141,7 @@ export interface Config {
     'lab-sections': LabSectionsSelect<false> | LabSectionsSelect<true>;
     'team-members': TeamMembersSelect<false> | TeamMembersSelect<true>;
     'form-responses': FormResponsesSelect<false> | FormResponsesSelect<true>;
+    webhooks: WebhooksSelect<false> | WebhooksSelect<true>;
     'payload-jobs': PayloadJobsSelect<false> | PayloadJobsSelect<true>;
     'payload-folders': PayloadFoldersSelect<false> | PayloadFoldersSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
@@ -1350,6 +1352,63 @@ export interface FormResponse {
   createdAt: string;
 }
 /**
+ * Configure webhook endpoints for external integrations
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "webhooks".
+ */
+export interface Webhook {
+  id: number;
+  /**
+   * Name for this webhook (e.g., 'Zoho CRM Sync', 'Slack Notifications')
+   */
+  name: string;
+  /**
+   * Webhook endpoint URL
+   */
+  url: string;
+  /**
+   * Events that will trigger this webhook
+   */
+  events: 'form-response.created'[];
+  /**
+   * Custom HTTP headers to include with webhook requests
+   */
+  headers?:
+    | {
+        key: string;
+        value: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Secret key for HMAC-SHA256 signature verification (sent as X-Webhook-Signature header)
+   */
+  secret?: string | null;
+  /**
+   * Enable or disable this webhook
+   */
+  isActive?: boolean | null;
+  /**
+   * Number of retry attempts on failure
+   */
+  retryCount?: number | null;
+  /**
+   * Last time this webhook was triggered
+   */
+  lastTriggered?: string | null;
+  /**
+   * HTTP status code of last delivery
+   */
+  lastStatus?: number | null;
+  /**
+   * Error message from last failed delivery
+   */
+  lastError?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-jobs".
  */
@@ -1555,6 +1614,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'form-responses';
         value: number | FormResponse;
+      } | null)
+    | ({
+        relationTo: 'webhooks';
+        value: number | Webhook;
       } | null)
     | ({
         relationTo: 'payload-jobs';
@@ -2204,6 +2267,30 @@ export interface FormResponsesSelect<T extends boolean = true> {
   userPhone?: T;
   userEmail?: T;
   response?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "webhooks_select".
+ */
+export interface WebhooksSelect<T extends boolean = true> {
+  name?: T;
+  url?: T;
+  events?: T;
+  headers?:
+    | T
+    | {
+        key?: T;
+        value?: T;
+        id?: T;
+      };
+  secret?: T;
+  isActive?: T;
+  retryCount?: T;
+  lastTriggered?: T;
+  lastStatus?: T;
+  lastError?: T;
   updatedAt?: T;
   createdAt?: T;
 }

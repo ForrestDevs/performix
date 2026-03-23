@@ -60,7 +60,7 @@ export function GamePlanForm() {
       seriousness: 'super',
       decisionInvolvement: 'justMe',
       startWhen: 'now',
-      smsConsent: false,
+      smsConsent: true,
     },
     validators: {
       onSubmit: formSchema,
@@ -529,17 +529,6 @@ export function GamePlanForm() {
                       <div className="space-y-2">
                         <FieldLabel htmlFor={field.name} className="text-sm leading-6">
                           {GAME_PLAN_SMS_CONSENT_COPY}{' '}
-                          <a href="/terms" className="text-[#0891B2] underline underline-offset-2">
-                            Terms
-                          </a>{' '}
-                          and{' '}
-                          <a
-                            href="/privacy"
-                            className="text-[#0891B2] underline underline-offset-2"
-                          >
-                            Privacy Policy
-                          </a>
-                          .
                         </FieldLabel>
                         {invalid && <FieldError errors={field.state.meta.errors} />}
                       </div>

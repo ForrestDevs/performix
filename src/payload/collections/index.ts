@@ -24,6 +24,8 @@ import LabSections from './LabSections'
 import TeamMembers from './TeamMembers'
 import FormResponses from './FormResponses'
 
+import Webhooks from './Webhooks'
+
 export const collections = [
   Lessons,
   Enrollments,
@@ -46,4 +48,5 @@ export const collections = [
   LabSections,
   TeamMembers,
   FormResponses,
+  Webhooks,
 ]
