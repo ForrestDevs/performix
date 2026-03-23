@@ -2,7 +2,6 @@
 
 import { useForm } from '@tanstack/react-form'
 import { z } from 'zod'
-import { toast } from 'sonner'
 import {
   Field,
   FieldContent,
@@ -10,19 +9,18 @@ import {
   FieldError,
   FieldGroup,
   FieldLabel,
-  FieldLegend,
   FieldSet,
   FieldTitle,
 } from '@/components/ui/field'
+import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '@/components/ui/input'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Textarea } from '@/components/ui/textarea'
 import { Button } from '@/components/ui/button'
 import { useState } from 'react'
-import { sendEmail } from '@/lib/data/email'
+import { GAME_PLAN_SMS_CONSENT_COPY } from '@/lib/constants/game-plan-sms-consent'
 import { submitGamePlan } from '@/lib/data/game-plan'
 import { useRouter } from 'next/navigation'
-import { usePathname } from 'next/navigation'
 
 const formSchema = z.object({
   firstName: z.string().min(1, 'First name is required'),
@@ -39,6 +37,9 @@ const formSchema = z.object({
   seriousness: z.string().min(1, 'Seriousness is required'),
   decisionInvolvement: z.string().min(1, 'Decision involvement is required'),
   startWhen: z.string().min(1, 'Start when is required'),
+  smsConsent: z
+    .boolean()
+    .refine((value) => value === true, 'SMS consent is required to receive your text follow-up'),
 })
 
 export function GamePlanForm() {
@@ -59,6 +60,7 @@ export function GamePlanForm() {
       seriousness: 'super',
       decisionInvolvement: 'justMe',
       startWhen: 'now',
+      smsConsent: false,
     },
     validators: {
       onSubmit: formSchema,
@@ -505,6 +507,44 @@ export function GamePlanForm() {
                     </RadioGroup>
                     {invalid && <FieldError errors={field.state.meta.errors} />}
                   </FieldSet>
+                )
+              }}
+            />
+
+            <form.Field
+              name="smsConsent"
+              children={(field) => {
+                const invalid = field.state.meta.isTouched && !field.state.meta.isValid
+
+                return (
+                  <Field data-invalid={invalid}>
+                    <div className="flex items-start gap-3 rounded-lg border border-slate-200 bg-slate-50 p-4">
+                      <Checkbox
+                        id={field.name}
+                        checked={field.state.value}
+                        onCheckedChange={(checked) => field.handleChange(Boolean(checked))}
+                        aria-invalid={invalid}
+                        className="mt-0.5 data-[state=checked]:bg-[#0891B2] data-[state=checked]:border-[#0891B2]"
+                      />
+                      <div className="space-y-2">
+                        <FieldLabel htmlFor={field.name} className="text-sm leading-6">
+                          {GAME_PLAN_SMS_CONSENT_COPY}{' '}
+                          <a href="/terms" className="text-[#0891B2] underline underline-offset-2">
+                            Terms
+                          </a>{' '}
+                          and{' '}
+                          <a
+                            href="/privacy"
+                            className="text-[#0891B2] underline underline-offset-2"
+                          >
+                            Privacy Policy
+                          </a>
+                          .
+                        </FieldLabel>
+                        {invalid && <FieldError errors={field.state.meta.errors} />}
+                      </div>
+                    </div>
+                  </Field>
                 )
               }}
             />
