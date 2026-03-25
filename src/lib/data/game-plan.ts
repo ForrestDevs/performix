@@ -15,8 +15,6 @@ type GamePlanData = {
   whoAreYou: string
   age: number
   level: string
-  strengths: string
-  success: string
   seriousness: string
   decisionInvolvement: string
   startWhen: string
