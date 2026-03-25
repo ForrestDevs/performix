@@ -6,7 +6,10 @@ import { MentorHero } from './mentor-hero'
 import { MentorAbout } from './mentor-about'
 import { Mentor } from '@/payload-types'
 import { Card, CardContent } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
+import { buttonVariants } from '@/components/ui/button'
+import { cn } from '@/lib/utilities/ui'
+import { ArrowRight } from 'lucide-react'
+import Link from 'next/link'
 
 interface MentorProfileClientProps {
   mentor: Mentor
@@ -33,17 +36,18 @@ export function MentorProfileClient({ mentor }: MentorProfileClientProps) {
                 <CardContent className="p-6">
                   <h3 className="text-xl font-bold text-gray-900 mb-4">Ready to Get Started?</h3>
                   <p className="text-gray-600 mb-6">
-                    Like what you see? Book a call with Mateo to see if this mentor is the right fit
-                    for you and start your path to excellence today!
+                    Start your game plan and we&apos;ll map the right next step for your goals.
                   </p>
-                  <Button
-                    className="w-full bg-[#0891B2] hover:bg-[#0E7490] text-white"
-                    onClick={() =>
-                      window.open('https://calendly.com/mateodixon/d1-mentorship-call', '_blank')
-                    }
+                  <Link
+                    href="/game-plan"
+                    className={cn(
+                      buttonVariants(),
+                      'w-full bg-[#0891B2] hover:bg-[#0E7490] text-white',
+                    )}
                   >
-                    Book a Call
-                  </Button>
+                    Start your game plan
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Link>
                 </CardContent>
               </Card>
             </div>

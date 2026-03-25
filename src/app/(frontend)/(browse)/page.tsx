@@ -12,7 +12,7 @@ import { Badge } from '@/components/ui/badge'
 import { buttonVariants } from '@/components/ui/button'
 import { JsonLdScript } from '@/lib/seo/jsonld'
 import { cn } from '@/lib/utilities/ui'
-import { ArrowRight, CheckCircle, TrendingUp, Users } from 'lucide-react'
+import { ArrowRight, CheckCircle, TrendingUp } from 'lucide-react'
 import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -66,7 +66,7 @@ const faqs = [
   {
     question: 'What is Performix?',
     answer:
-      'Performix is changing the way serious hockey players develop by helping them unlock more of their full ability in games. You work 1-on-1 with a Division I mentor who analyzes your game, identifies what\'s limiting you, and builds a plan around the adjustments that will make the biggest difference. We combine mentorship, hockey IQ development, and mental performance work into one clear system built to move your game forward.',
+      "Performix is changing the way serious hockey players develop by helping them unlock more of their full ability in games. You work 1-on-1 with a Division I mentor who analyzes your game, identifies what's limiting you, and builds a plan around the adjustments that will make the biggest difference. We combine mentorship, hockey IQ development, and mental performance work into one clear system built to move your game forward.",
   },
   {
     question: 'Who is Performix for?',
@@ -81,7 +81,7 @@ const faqs = [
   {
     question: 'How do I get started?',
     answer:
-      "Book a free strategy call. We'll learn about your goals, situation, and development needs. If it's a fit, we'll match you with the right mentor and package to move your game forward.",
+      "Start with your game plan form. We'll learn about your goals, situation, and development needs, then map the right mentor and next step to move your game forward.",
   },
   {
     question: "What's coming next on Performix?",
@@ -98,10 +98,7 @@ export default function HomePage() {
     name: 'Performix',
     url: 'https://www.performix.ca',
     logo: 'https://www.performix.ca/performix-logo.png',
-    sameAs: [
-      'https://www.instagram.com/performix',
-      'https://www.youtube.com/@performix',
-    ],
+    sameAs: ['https://www.instagram.com/performix', 'https://www.youtube.com/@performix'],
     description: 'Elite hockey mentorship platform connecting aspiring players with D1+ mentors.',
     contactPoint: {
       '@type': 'ContactPoint',
@@ -154,26 +151,16 @@ export default function HomePage() {
                   games.
                 </p>
               </div>
-              <div className="flex flex-col sm:flex-row gap-4">
+              <div className="flex">
                 <Link
-                  href="game-plan"
+                  href="/game-plan"
                   className={cn(
                     buttonVariants({ size: 'lg' }),
-                    'bg-[#0891B2] hover:bg-[#0E7490] text-white px-8 py-4 text-lg hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl',
+                    'w-full sm:w-auto bg-[#0891B2] hover:bg-[#0E7490] text-white px-10 py-5 text-xl hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl',
                   )}
                 >
                   Start your game plan
                   <ArrowRight className="ml-2 h-5 w-5" />
-                </Link>
-                <Link
-                  href="/mentors"
-                  className={cn(
-                    buttonVariants({ size: 'lg', variant: 'outline' }),
-                    'border-[#0891B2] text-[#0891B2] hover:bg-[#0891B2] hover:text-white px-8 py-4 text-lg hover:scale-105 transition-all duration-300',
-                  )}
-                >
-                  <Users className="mr-2 h-5 w-5" />
-                  Explore our team
                 </Link>
               </div>
               <div className="flex items-center space-x-6 text-sm text-gray-500">
@@ -228,15 +215,13 @@ export default function HomePage() {
           </div>
           <div className="flex justify-center mt-10">
             <Link
-              href="https://calendly.com/mateodixon/d1-mentorship-call"
+              href="/game-plan"
               className={cn(
                 buttonVariants({ size: 'lg' }),
-                'bg-[#0891B2] hover:bg-[#0E7490] text-white px-8 py-4 text-lg hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl'
+                'bg-[#0891B2] hover:bg-[#0E7490] text-white px-8 py-4 text-lg hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl',
               )}
-              target="_blank"
-              rel="noopener noreferrer"
             >
-              Book a Free Call
+              Start your game plan
               <ArrowRight className="ml-2 h-5 w-5" />
             </Link>
           </div>
@@ -261,13 +246,13 @@ export default function HomePage() {
             </p>
             <div className="max-w-md mx-auto">
               <Link
-                href="https://calendly.com/mateodixon/d1-mentorship-call"
+                href="/game-plan"
                 className={cn(
                   buttonVariants({ size: 'lg' }),
                   'bg-[#0891B2] hover:bg-[#0E7490] text-white px-8 py-4 text-lg hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl',
                 )}
               >
-                Book Your Free Call
+                Start your game plan
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
             </div>

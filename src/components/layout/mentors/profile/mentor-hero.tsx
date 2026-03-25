@@ -1,37 +1,20 @@
 'use client'
 
-import { useState } from 'react'
 import Link from 'next/link'
 import { motion } from 'motion/react'
-import { Button, buttonVariants } from '@/components/ui/button'
+import { buttonVariants } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { MapPin, Calendar, Users, Award, Share2, Check } from 'lucide-react'
+import { ArrowRight, MapPin, Users, Award } from 'lucide-react'
 import { useMentor } from './mentor-context'
 import { Media as MediaComponent } from '@/components/Media'
 import { Media } from '@/payload-types'
-import { EliteProspectsIcon, InstagramIcon } from '@/components/ui/icons'
+import { InstagramIcon } from '@/components/ui/icons'
 import { cn } from '@/lib/utilities/ui'
 import Image from 'next/image'
 import { getPosition } from '@/lib/utilities/postion'
 
 export function MentorHero() {
   const { mentor } = useMentor()
-  const [copied, setCopied] = useState(false)
-
-  const handleShare = async (e: React.MouseEvent) => {
-    e.stopPropagation()
-    const profileUrl = `${window.location.origin}/mentors/${mentor.slug}`
-
-    try {
-      await navigator.clipboard.writeText(profileUrl)
-      setCopied(true)
-      setTimeout(() => setCopied(false), 2000)
-      // You could add a toast notification here to show success
-    } catch (err) {
-      console.error('Failed to copy link:', err)
-      // You could add a toast notification here to show error
-    }
-  }
 
   return (
     <section className="relative h-[60vh] min-h-[500px] overflow-hidden">
@@ -80,26 +63,15 @@ export function MentorHero() {
 
           <div className="flex flex-wrap gap-4">
             <Link
-              href={`https://calendly.com/mateodixon/d1-mentorship-call`}
-              target="_blank"
-              rel="noopener noreferrer"
+              href="/game-plan"
               className={cn(
                 buttonVariants({ variant: 'default', size: 'lg' }),
                 'bg-[#0891B2] hover:bg-[#0E7490] text-white',
               )}
             >
-              Learn More
-              <Calendar className="ml-2 h-5 w-5" />
+              Start your game plan
+              <ArrowRight className="ml-2 h-5 w-5" />
             </Link>
-            <Button
-              size="lg"
-              variant="outline"
-              className="border-white text-[#0891B2] hover:bg-white hover:text-[#0891B2]"
-              onClick={handleShare}
-            >
-              {copied ? <Check className="mr-2 h-5 w-5" /> : <Share2 className="mr-2 h-5 w-5" />}
-              Share
-            </Button>
             {mentor.socials?.eliteProspects && (
               <Link
                 href={`${mentor.socials?.eliteProspects}`}
