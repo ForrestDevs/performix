@@ -7,7 +7,7 @@ export async function Testimonials() {
   const parentReviews = await getParentReviews()
 
   return (
-    <section className="w-full px-4">
+    <section className="w-full px-4 pb-10 md:pb-14">
       <div className="mx-auto text-center mb-10">
         <h2 className="text-3xl md:text-4xl font-extrabold mb-2 text-transparent bg-clip-text bg-gradient-to-r from-[#0891B2] to-[#8B5CF6]">
           What Parents and Players Are Saying

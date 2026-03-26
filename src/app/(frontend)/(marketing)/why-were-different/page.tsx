@@ -37,7 +37,7 @@ export default function DiscoverTheSystem() {
             <div className="space-y-6">
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight font-['Space_Grotesk']">
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0891B2] to-[#8B5CF6]">
-                  You&apos;re all set
+                  You&apos;re All Set
                 </span>
               </h1>
               <p className="text-xl text-gray-600 leading-relaxed max-w-4xl mx-auto">{subtitle}</p>
