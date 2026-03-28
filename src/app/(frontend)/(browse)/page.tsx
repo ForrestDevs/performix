@@ -145,10 +145,8 @@ export default function HomePage() {
                   </span>
                 </h1>
                 <p className="text-xl text-gray-600 leading-relaxed max-w-2xl">
-                  <strong>Why not go further, faster? </strong>Work directly with D1 hockey mentors
-                  who identify what&apos;s holding your game back and build a personalized plan
-                  around you — so your confidence, IQ, and real ability show up consistently in
-                  games.
+                  Work with a D1 hockey mentor to improve your confidence, hockey IQ, and
+                  consistency in games
                 </p>
               </div>
               <div className="flex">
