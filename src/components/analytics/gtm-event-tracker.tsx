@@ -83,7 +83,7 @@ export function GTMEventTracker() {
   useEffect(() => {
     if (!isGtmEnabled && typeof window === 'undefined') return
 
-    const handleClick = (event: MouseEvent) => {
+    const handleInteraction = (event: PointerEvent) => {
       if (window.location.pathname.startsWith('/student')) return
 
       const target = getClickTarget(event.target)
@@ -115,10 +115,10 @@ export function GTMEventTracker() {
       sendGoogleAnalyticsEvent('site_click', clickPayload)
     }
 
-    document.addEventListener('click', handleClick, true)
+    document.addEventListener('pointerdown', handleInteraction, true)
 
     return () => {
-      document.removeEventListener('click', handleClick, true)
+      document.removeEventListener('pointerdown', handleInteraction, true)
     }
   }, [])
 
