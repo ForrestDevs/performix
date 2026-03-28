@@ -231,8 +231,8 @@ export default function HomePage() {
       <HowYouImprove />
       <ValuePropSection />
       <TestimonialsSection />
-      <HowItWorksSection />
       <WhatYouGetEveryMonth />
+      <HowItWorksSection />
       <NextStepsSection />
       <FeaturedMentorsSection />
 

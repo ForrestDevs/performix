@@ -74,11 +74,8 @@ export function ValuePropSection() {
           }`}
         >
           <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-            THE PERFORMIX ADVANTAGE
+            What Makes Performix Different
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            The new standard for developing serious hockey players.
-          </p>
         </div>
 
         <div className="my-12 grid md:grid-cols-4 gap-8">
@@ -298,11 +295,6 @@ export function WhatYouGetEveryMonth() {
       title: 'The Complete Performix System',
       description:
         'Access to our full library of development tools and lessons across hockey IQ, mindset, training, skill, and recruitment — built to accelerate your progress in every phase of the game.',
-    },
-    {
-      title: 'Smart Calendar System',
-      description:
-        'Track progress, set goals, structure your week, and stay locked in with a personalized calendar and performance system.',
     },
   ]
 
