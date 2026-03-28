@@ -1,3 +1,6 @@
+import { GoogleAnalytics } from '@/components/analytics/google-analytics'
+import { GTMEventTracker } from '@/components/analytics/gtm-event-tracker'
+import { GoogleTagManagerHead, GoogleTagManagerNoScript } from '@/components/analytics/google-tag-manager'
 import Header from '@/components/layout/header'
 import { Metadata } from 'next'
 import { Inter, Space_Grotesk } from 'next/font/google'
@@ -130,8 +133,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <head>
         <JsonLdScript data={websiteGraph} />
+        <GoogleTagManagerHead />
       </head>
       <body className={`${inter.className} ${spaceGrotesk.variable} font-sans antialiased`}>
+        <GoogleAnalytics />
+        <GoogleTagManagerNoScript />
+        <GTMEventTracker />
         <Suspense fallback={<HeaderSkeleton />}>
           <Header />
         </Suspense>
