@@ -1,17 +1,5 @@
-const performixProductionUrls = new Set([
-  'https://performix.ca',
-  'https://www.performix.ca',
-])
-
 const configuredMeasurementId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID?.trim()
-const configuredServerUrl = process.env.NEXT_PUBLIC_SERVER_URL?.trim()
-const productionUrlFromVercel = process.env.VERCEL_PROJECT_PRODUCTION_URL
-  ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-  : ''
-
-const shouldUsePerformixDefaultMeasurementId =
-  performixProductionUrls.has(configuredServerUrl || '') ||
-  performixProductionUrls.has(productionUrlFromVercel)
+const shouldUsePerformixDefaultMeasurementId = process.env.NODE_ENV === 'production'
 
 export const gaMeasurementId =
   configuredMeasurementId || (shouldUsePerformixDefaultMeasurementId ? 'G-EKN358HVQ2' : '')

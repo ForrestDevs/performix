@@ -1,17 +1,5 @@
-const performixProductionUrls = new Set([
-  'https://performix.ca',
-  'https://www.performix.ca',
-])
-
 const configuredGtmId = process.env.NEXT_PUBLIC_GTM_ID?.trim()
-const configuredServerUrl = process.env.NEXT_PUBLIC_SERVER_URL?.trim()
-const productionUrlFromVercel = process.env.VERCEL_PROJECT_PRODUCTION_URL
-  ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-  : ''
-
-const shouldUsePerformixDefaultGtm =
-  performixProductionUrls.has(configuredServerUrl || '') ||
-  performixProductionUrls.has(productionUrlFromVercel)
+const shouldUsePerformixDefaultGtm = process.env.NODE_ENV === 'production'
 
 export const gtmId = configuredGtmId || (shouldUsePerformixDefaultGtm ? 'GTM-P5NJCTQB' : '')
 
