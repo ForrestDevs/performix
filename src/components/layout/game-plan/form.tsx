@@ -15,7 +15,6 @@ import {
 import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '@/components/ui/input'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
-import { Textarea } from '@/components/ui/textarea'
 import { Button } from '@/components/ui/button'
 import { useState } from 'react'
 import { GAME_PLAN_SMS_CONSENT_COPY } from '@/lib/constants/game-plan-sms-consent'
@@ -32,8 +31,6 @@ const formSchema = z.object({
     .refine((val) => val !== undefined, 'Who are you is required'),
   age: z.number().min(1, 'Age is required'),
   level: z.string().min(1, 'Level is required'),
-  strengths: z.string().min(1, 'Strengths are required'),
-  success: z.string().min(1, 'Success is required'),
   seriousness: z.string().min(1, 'Seriousness is required'),
   decisionInvolvement: z.string().min(1, 'Decision involvement is required'),
   startWhen: z.string().min(1, 'Start when is required'),
@@ -55,8 +52,6 @@ export function GamePlanForm() {
       whoAreYou: 'player',
       age: 16,
       level: '',
-      strengths: '',
-      success: '',
       seriousness: 'super',
       decisionInvolvement: 'justMe',
       startWhen: 'now',
@@ -293,54 +288,6 @@ export function GamePlanForm() {
                       autoComplete="on"
                       type="text"
                       required
-                    />
-                    {invalid && <FieldError errors={field.state.meta.errors} />}
-                  </Field>
-                )
-              }}
-            />
-
-            <form.Field
-              name="strengths"
-              children={(field) => {
-                const invalid = field.state.meta.isTouched && !field.state.meta.isValid
-                return (
-                  <Field data-invalid={invalid}>
-                    <FieldLabel htmlFor="strengths">
-                      What parts of your game do you want to strengthen right now?
-                    </FieldLabel>
-                    <Textarea
-                      id={field.name}
-                      name={field.name}
-                      value={field.state.value}
-                      onBlur={field.handleBlur}
-                      onChange={(e) => field.handleChange(e.target.value)}
-                      aria-invalid={invalid}
-                      placeholder="confidence, hockey IQ, mindset, skill, speed, recovery..."
-                    />
-                    {invalid && <FieldError errors={field.state.meta.errors} />}
-                  </Field>
-                )
-              }}
-            />
-
-            <form.Field
-              name="success"
-              children={(field) => {
-                const invalid = field.state.meta.isTouched && !field.state.meta.isValid
-                return (
-                  <Field data-invalid={invalid}>
-                    <FieldLabel htmlFor="success">
-                      If everything went right this season, what would success look like for you?
-                    </FieldLabel>
-                    <Textarea
-                      id="success"
-                      placeholder="Commit D1, dominate my league, become more confident..."
-                      name={field.name}
-                      value={field.state.value}
-                      onBlur={field.handleBlur}
-                      onChange={(e) => field.handleChange(e.target.value)}
-                      aria-invalid={invalid}
                     />
                     {invalid && <FieldError errors={field.state.meta.errors} />}
                   </Field>

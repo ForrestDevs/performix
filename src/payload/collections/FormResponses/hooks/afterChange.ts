@@ -1,9 +1,10 @@
-
-
-import { sendEmail } from "@/lib/data/email";
-import type { CollectionAfterChangeHook } from "payload";
-import type { FormResponse } from "@/payload-types";
-import { GAME_PLAN_SMS_CONSENT_COPY, GAME_PLAN_SMS_CONSENT_VERSION } from "@/lib/constants/game-plan-sms-consent";
+import { sendEmail } from '@/lib/data/email'
+import type { CollectionAfterChangeHook } from 'payload'
+import type { FormResponse } from '@/payload-types'
+import {
+  GAME_PLAN_SMS_CONSENT_COPY,
+  GAME_PLAN_SMS_CONSENT_VERSION,
+} from '@/lib/constants/game-plan-sms-consent'
 
 type GamePlanData = {
   firstName: string
@@ -13,8 +14,6 @@ type GamePlanData = {
   whoAreYou: string
   age: number
   level: string
-  strengths: string
-  success: string
   seriousness: string
   decisionInvolvement: string
   startWhen: string
@@ -32,7 +31,7 @@ type GamePlanSubmission = GamePlanData & {
 async function sendZapierGamePlanWebhook(data: FormResponse) {
   const webhookUrl = process.env.ZAPIER_GAME_PLAN_WEBHOOK_URL
 
-  const responseData = data.response as GamePlanData;
+  const responseData = data.response as GamePlanData
 
   const submission: GamePlanSubmission = {
     ...responseData,
@@ -64,28 +63,31 @@ async function sendZapierGamePlanWebhook(data: FormResponse) {
   }
 }
 
-const afterChangeFormResponse: CollectionAfterChangeHook<FormResponse> = async ({ doc, req, operation }) => {
-  if (operation !== 'create') return doc;
+const afterChangeFormResponse: CollectionAfterChangeHook<FormResponse> = async ({
+  doc,
+  req,
+  operation,
+}) => {
+  if (operation !== 'create') return doc
 
   if (doc.formName === 'game-plan') {
     await sendEmail({
-        to: 'mateo@performix.ca',
-        subject: 'Game Plan Submission',
-        html: `
+      to: 'mateo@performix.ca',
+      subject: 'Game Plan Submission',
+      html: `
           <p>You have a new game plan submission:</p>
           <pre>${JSON.stringify(doc.response, null, 2)}</pre>
         `,
-      })
+    })
 
-
-      try {
-        await sendZapierGamePlanWebhook(doc)
-      } catch (error) {
-        console.error('Failed to send Zapier game plan webhook:', error)
-      }
+    try {
+      await sendZapierGamePlanWebhook(doc)
+    } catch (error) {
+      console.error('Failed to send Zapier game plan webhook:', error)
+    }
   }
- 
-  return doc;
-};
 
-export default afterChangeFormResponse;
+  return doc
+}
+
+export default afterChangeFormResponse
