@@ -1,7 +1,7 @@
 const configuredGtmId = process.env.NEXT_PUBLIC_GTM_ID?.trim()
 const shouldUsePerformixDefaultGtm = process.env.NODE_ENV === 'production'
 
-export const gtmId = configuredGtmId || (shouldUsePerformixDefaultGtm ? 'GTM-P5NJCTQB' : '')
+export const gtmId = configuredGtmId || (shouldUsePerformixDefaultGtm ? 'GTM-NKPX2ZZX' : '')
 
 export const isGtmEnabled = Boolean(gtmId)
 

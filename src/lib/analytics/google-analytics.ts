@@ -2,7 +2,7 @@ const configuredMeasurementId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID?.trim(
 const shouldUsePerformixDefaultMeasurementId = process.env.NODE_ENV === 'production'
 
 export const gaMeasurementId =
-  configuredMeasurementId || (shouldUsePerformixDefaultMeasurementId ? 'G-EKN358HVQ2' : '')
+  configuredMeasurementId || (shouldUsePerformixDefaultMeasurementId ? 'G-R42W9T0B1N' : '')
 
 export const isGoogleAnalyticsEnabled = Boolean(gaMeasurementId)
 
