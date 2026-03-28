@@ -139,9 +139,9 @@ export default function HomePage() {
                   Elite Mentorship Platform
                 </Badge>
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight font-['Space_Grotesk']">
-                  The Future of{' '}
+                  Work 1-on-1 with a{' '}
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0891B2] to-[#8B5CF6]">
-                    Hockey Development
+                    D1 hockey mentor
                   </span>
                 </h1>
                 <p className="text-xl text-gray-600 leading-relaxed max-w-2xl">
