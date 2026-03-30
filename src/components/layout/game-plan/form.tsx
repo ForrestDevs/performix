@@ -20,6 +20,7 @@ import { useState } from 'react'
 import { GAME_PLAN_SMS_CONSENT_COPY } from '@/lib/constants/game-plan-sms-consent'
 import { submitGamePlan } from '@/lib/data/game-plan'
 import { useRouter } from 'next/navigation'
+import { gamePlanSubmissionStorageKey } from '@/lib/analytics/game-plan-conversion'
 
 const formSchema = z.object({
   firstName: z.string().min(1, 'First name is required'),
@@ -61,8 +62,9 @@ export function GamePlanForm() {
       onSubmit: formSchema,
     },
     onSubmit: async ({ value }) => {
-      setHasSubmitted(true)
       await submitGamePlan(value)
+      setHasSubmitted(true)
+      window.sessionStorage.setItem(gamePlanSubmissionStorageKey, Date.now().toString())
       router.push('/game-plan/complete')
     },
   })

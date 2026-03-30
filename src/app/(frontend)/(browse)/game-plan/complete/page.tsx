@@ -1,8 +1,11 @@
+import { GamePlanConversionTracker } from '@/components/analytics/game-plan-conversion-tracker'
+
 const loomUrl = 'https://www.loom.com/embed/26e601500ac14c6895ea0705fb85c486'
 
 export default function GamePlanCompletePage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#e0f4fc] via-[#f8faff] to-[#ede9fe] flex items-center justify-center py-16">
+      <GamePlanConversionTracker />
       <section className="w-full min-h-[80vh] flex flex-col justify-center items-center text-center px-4 py-12 sm:px-8">
         <h1 className="text-5xl sm:text-6xl font-extrabold tracking-tight text-[#0EA5E9] mb-6 drop-shadow-lg">
           Thank You!
