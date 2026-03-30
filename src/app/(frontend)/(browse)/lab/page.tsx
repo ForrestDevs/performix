@@ -3,10 +3,12 @@ import { ModulesLoadingSkeleton } from '@/components/lab/modules/modules-skeleto
 import { LabSection } from '@/components/lab/sections/lab-section'
 import { SubscriptionCTA, SubscriptionCTALoadingSkeleton } from '@/components/lab/subscription-cta'
 import { RefreshRouteOnSave } from '@/components/live-preview'
+import { PERFORMIX_DISPLAY_TITLE_CLASS } from '@/lib/constants/typography'
 import { getCurrentUser } from '@/lib/data/auth'
 import { getLabSections } from '@/lib/data/lab'
 import { isEnrolledInAnyPlan } from '@/lib/data/plans'
 import { JsonLdScript, getBreadcrumbSchema, getCourseSchema } from '@/lib/seo/jsonld'
+import { cn } from '@/lib/utilities/ui'
 import { CheckCircle } from 'lucide-react'
 import type { Metadata } from 'next'
 import { Suspense } from 'react'
@@ -84,7 +86,7 @@ export default function PerformixLabPage() {
             <CheckCircle className="h-4 w-4" />
             Ultimate Performance Course
           </div>
-          <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
+          <h1 className={cn(PERFORMIX_DISPLAY_TITLE_CLASS, 'text-gray-900 mb-6')}>
             The Performix <span className="text-blue-600">Lab</span>
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">

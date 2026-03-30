@@ -1,5 +1,8 @@
 'use client'
 
+import { PERFORMIX_DISPLAY_TITLE_CLASS } from '@/lib/constants/typography'
+import { cn } from '@/lib/utilities/ui'
+
 export function HowYouImprove() {
   const outcomes = [
     {
@@ -37,7 +40,7 @@ export function HowYouImprove() {
       </div>
 
       <div className="container relative z-10 mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-center text-4xl font-semibold tracking-tight text-gray-900 md:text-5xl lg:text-6xl">
+        <h2 className={cn(PERFORMIX_DISPLAY_TITLE_CLASS, 'text-center text-gray-900')}>
           How You Improve
         </h2>
 
@@ -125,9 +128,7 @@ function Circle({
   accentClasses: AccentClasses
 }) {
   const sizeClasses =
-    size === 'small'
-      ? 'h-[260px] w-[260px]'
-      : 'h-[280px] w-[280px] lg:h-[320px] lg:w-[320px]'
+    size === 'small' ? 'h-[260px] w-[260px]' : 'h-[280px] w-[280px] lg:h-[320px] lg:w-[320px]'
 
   return (
     <div className="relative">

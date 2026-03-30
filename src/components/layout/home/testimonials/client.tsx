@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useScrollAnimation } from '@/lib/hooks/useScrollAnimation'
+import { PERFORMIX_DISPLAY_TITLE_CLASS } from '@/lib/constants/typography'
 import { Card, CardContent } from '@/components/ui/card'
 import { Media as MediaComponent } from '@/components/Media'
 import { Star } from 'lucide-react'
@@ -9,6 +10,7 @@ import { Button } from '@/components/ui/button'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { Media, Testimonial } from '@/payload-types'
 import TestimonialSliderCard from '@/components/testimonials'
+import { cn } from '@/lib/utilities/ui'
 
 export function TestimonialsSectionClient({ testimonials }: { testimonials: Testimonial[] }) {
   //   const [currentSlide, setCurrentSlide] = useState(0)
@@ -109,7 +111,7 @@ export function TestimonialsSectionClient({ testimonials }: { testimonials: Test
               : 'opacity-0 translate-y-8'
           }`}
         >
-          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+          <h2 className={cn(PERFORMIX_DISPLAY_TITLE_CLASS, 'text-gray-900 mb-4')}>
             What Athletes & Parents Are Saying
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">

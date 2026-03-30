@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { buttonVariants } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
+import { PERFORMIX_DISPLAY_TITLE_CLASS } from '@/lib/constants/typography'
 import { ArrowDown, ArrowRight, Play, Quote } from 'lucide-react'
 import { MessageReviews } from '@/components/layout/reviews/messages'
 import Link from 'next/link'
@@ -105,7 +106,7 @@ export default async function ReviewsPage() {
         </div>
         <div className="relative z-10 container mx-auto px-4 text-center">
           <div className="max-w-5xl mx-auto space-y-6">
-            <h1 className="text-6xl md:text-8xl font-bold tracking-tight text-balance text-foreground">
+            <h1 className={cn(PERFORMIX_DISPLAY_TITLE_CLASS, 'text-balance text-foreground')}>
               The Performix <span className="text-primary">Effect</span>
             </h1>
 

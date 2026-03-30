@@ -4,6 +4,7 @@ import { buttonVariants } from '@/components/ui/button'
 import Link from 'next/link'
 import { cn } from '@/lib/utilities/ui'
 import { Badge } from '@/components/ui/badge'
+import { PERFORMIX_DISPLAY_TITLE_CLASS } from '@/lib/constants/typography'
 import { Users, Star, Award, TrendingUp, Search } from 'lucide-react'
 import { mentorsSearchParamsCache } from '@/lib/searchParamsCache'
 import { getMentorsWithFilters } from '@/lib/data/mentors'
@@ -110,7 +111,7 @@ export default async function BrowseMentorsPage({ searchParams }: BrowseMentorsP
               Elite Hockey Mentorship Hub
             </div>
 
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 font-['Space_Grotesk']">
+            <h1 className={cn(PERFORMIX_DISPLAY_TITLE_CLASS, 'text-gray-900 mb-6')}>
               Find Your{' '}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0891B2] to-[#8B5CF6]">
                 Perfect Mentor

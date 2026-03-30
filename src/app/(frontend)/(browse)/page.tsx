@@ -10,6 +10,7 @@ import { FeaturedMentorsSection } from '@/components/layout/home/featured-mentor
 import { TestimonialsSection } from '@/components/layout/home/testimonials'
 import { Badge } from '@/components/ui/badge'
 import { buttonVariants } from '@/components/ui/button'
+import { PERFORMIX_DISPLAY_TITLE_CLASS } from '@/lib/constants/typography'
 import { JsonLdScript } from '@/lib/seo/jsonld'
 import { cn } from '@/lib/utilities/ui'
 import { ArrowRight, CheckCircle, TrendingUp } from 'lucide-react'
@@ -138,7 +139,7 @@ export default function HomePage() {
                 <Badge className="bg-[#8B5CF6]/10 text-[#8B5CF6] hover:bg-[#8B5CF6]/20 animate-bounce-subtle">
                   Elite Mentorship Platform
                 </Badge>
-                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight font-['Space_Grotesk']">
+                <h1 className={cn(PERFORMIX_DISPLAY_TITLE_CLASS, 'text-gray-900')}>
                   Work 1-on-1 with a{' '}
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0891B2] to-[#8B5CF6]">
                     D1 hockey mentor

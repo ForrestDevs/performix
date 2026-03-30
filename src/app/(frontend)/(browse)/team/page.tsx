@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { buttonVariants } from '@/components/ui/button'
+import { PERFORMIX_DISPLAY_TITLE_CLASS } from '@/lib/constants/typography'
 import { getTeamMembers } from '@/lib/data/team-members'
 import { SpecialistCard } from '@/components/layout/team/specialist-card'
 import { FAQSection } from '@/components/layout/home'
@@ -94,12 +95,13 @@ export default async function TeamPage() {
 
       <section id="overview" className="py-20 bg-gradient-to-b from-muted to-background">
         <div className="max-w-4xl mx-auto px-6 sm:px-8 text-center flex flex-col items-center">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-foreground drop-shadow-sm mb-8 tracking-tight leading-tight font-['Space_Grotesk']">
+          <h1 className={cn(PERFORMIX_DISPLAY_TITLE_CLASS, 'text-foreground drop-shadow-sm mb-8')}>
             The Performix Team
           </h1>
           <div className="w-16 h-1 bg-[#0891B2] rounded-full mx-auto mb-8 opacity-70" />
           <p className="text-lg md:text-xl text-muted-foreground mb-6 max-w-2xl leading-relaxed mx-auto text-balance">
-            An integrated group of specialists across skill, HockeyIQ,<br className="hidden md:inline" />
+            An integrated group of specialists across skill, HockeyIQ,
+            <br className="hidden md:inline" />
             strength, sport science, nutrition, and mental performance.
           </p>
         </div>

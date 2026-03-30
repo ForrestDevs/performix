@@ -3,6 +3,7 @@
 import { Media as MediaComponent } from '@/components/Media'
 import { Button, buttonVariants } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
+import { PERFORMIX_DISPLAY_TITLE_CLASS } from '@/lib/constants/typography'
 import { useScrollAnimation } from '@/lib/hooks/useScrollAnimation'
 import { cn } from '@/lib/utilities/ui'
 import { Media, Mentor, Testimonial } from '@/payload-types'
@@ -73,7 +74,7 @@ export function ValuePropSection() {
             isVisible('value-prop-header') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           }`}
         >
-          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+          <h2 className={cn(PERFORMIX_DISPLAY_TITLE_CLASS, 'text-gray-900 mb-4')}>
             What Makes Performix Different
           </h2>
         </div>
@@ -168,7 +169,9 @@ export function NextStepsSection() {
               : 'opacity-0 translate-y-8'
           }`}
         >
-          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">Your Next 3 Moves</h2>
+          <h2 className={cn(PERFORMIX_DISPLAY_TITLE_CLASS, 'text-gray-900 mb-4')}>
+            Your Next 3 Moves
+          </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             A proven shortcut used by driven players to develop faster.
           </p>
@@ -310,7 +313,7 @@ export function WhatYouGetEveryMonth() {
               : 'opacity-0 translate-y-8'
           }`}
         >
-          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+          <h2 className={cn(PERFORMIX_DISPLAY_TITLE_CLASS, 'text-gray-900 mb-4')}>
             What you get every month...
           </h2>
         </div>
@@ -554,7 +557,7 @@ export function FAQSection() {
             isVisible('faq-header') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           }`}
         >
-          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+          <h2 className={cn(PERFORMIX_DISPLAY_TITLE_CLASS, 'text-gray-900 mb-4')}>
             Frequently Asked Questions
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
@@ -625,7 +628,9 @@ export function HowItWorksSection() {
     <section className="w-full bg-white py-16 md:py-24">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl text-center mb-12 md:mb-16">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-gray-900 mb-3 md:mb-4 text-balance">
+          <h2
+            className={cn(PERFORMIX_DISPLAY_TITLE_CLASS, 'text-gray-900 mb-3 md:mb-4 text-balance')}
+          >
             How It Works
           </h2>
           <p className="text-base md:text-lg leading-relaxed text-gray-600">

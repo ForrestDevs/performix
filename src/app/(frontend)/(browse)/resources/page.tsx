@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { Search, BookOpen, Star, Eye, Users, TrendingUp, Filter } from 'lucide-react'
 import { buttonVariants } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
+import { PERFORMIX_DISPLAY_TITLE_CLASS } from '@/lib/constants/typography'
 import { cn } from '@/lib/utilities/ui'
 import { resourcesSearchParamsCache } from '@/lib/searchParamsCache'
 import { getResources, getResourcesTags } from '@/lib/data/resources'
@@ -108,7 +109,7 @@ export default async function ResourcesPage({ searchParams }: ResourcesPageProps
               Ultimate Hockey Resource Hub
             </div>
 
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 font-['Space_Grotesk']">
+            <h1 className={cn(PERFORMIX_DISPLAY_TITLE_CLASS, 'text-gray-900 mb-6')}>
               Master Your{' '}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0891B2] to-[#8B5CF6]">
                 Hockey Journey
