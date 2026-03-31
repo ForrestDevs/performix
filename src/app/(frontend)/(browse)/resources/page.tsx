@@ -110,15 +110,12 @@ export default async function ResourcesPage({ searchParams }: ResourcesPageProps
             </div>
 
             <h1 className={cn(PERFORMIX_DISPLAY_TITLE_CLASS, 'text-gray-900 mb-6')}>
-              Master Your{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0891B2] to-[#8B5CF6]">
-                Hockey Journey
-              </span>
+              Free Hockey Development Resources
             </h1>
 
             <p className="text-xl lg:text-2xl text-gray-600 max-w-4xl mx-auto mb-8">
-              Access premium articles, training blueprints, and courses from D1+ mentors. Everything
-              you need to take your game to the next level.
+              Access the principles, tools, and development resources that help serious players
+              train smarter and perform better.
             </p>
 
             <Suspense

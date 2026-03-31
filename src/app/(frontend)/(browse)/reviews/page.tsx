@@ -107,13 +107,12 @@ export default async function ReviewsPage() {
         <div className="relative z-10 container mx-auto px-4 text-center">
           <div className="max-w-5xl mx-auto space-y-6">
             <h1 className={cn(PERFORMIX_DISPLAY_TITLE_CLASS, 'text-balance text-foreground')}>
-              The Performix <span className="text-primary">Effect</span>
+              Hear It From the Players
             </h1>
 
-            <blockquote className="text-xl md:text-2xl font-medium text-muted-foreground italic text-balance pt-2">
-              This is what happens when you solve the right problems, the right way, at the right
-              time.
-            </blockquote>
+            <p className="text-xl md:text-2xl font-medium text-muted-foreground text-balance pt-2">
+              Real stories from players and families who have used Performix
+            </p>
 
             <Link
               href="game-plan"

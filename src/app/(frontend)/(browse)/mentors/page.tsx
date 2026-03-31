@@ -112,15 +112,12 @@ export default async function BrowseMentorsPage({ searchParams }: BrowseMentorsP
             </div>
 
             <h1 className={cn(PERFORMIX_DISPLAY_TITLE_CLASS, 'text-gray-900 mb-6')}>
-              Find Your{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0891B2] to-[#8B5CF6]">
-                Perfect Mentor
-              </span>
+              Meet the D1 Mentors
             </h1>
 
             <p className="text-xl lg:text-2xl text-gray-600 max-w-4xl mx-auto mb-8">
-              Connect with elite D1+ players and coaches. Get personalized guidance to elevate your
-              game and achieve your hockey goals.
+              Every athlete is matched with the D1 mentor who best fits their position, goals, and
+              development needs.
             </p>
 
             <Suspense

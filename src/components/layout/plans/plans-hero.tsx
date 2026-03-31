@@ -10,10 +10,7 @@ export function PlansHero() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center text-white">
           <h1 className="text-4xl sm:text-5xl font-bold mb-4 font-['Space_Grotesk']">
-            Invest in Your{' '}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-200">
-              Hockey Future
-            </span>
+            Choose the Right Plan for Your Game
           </h1>
           <p className="text-xl mb-8 opacity-90 max-w-3xl mx-auto">
             Choose the mentorship package that fits your goals
