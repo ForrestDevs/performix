@@ -118,11 +118,11 @@ export function ValuePropSection() {
             href="/game-plan"
             className={cn(
               buttonVariants({ size: 'lg' }),
-              'bg-gradient-to-r from-[#0EA5E9] to-[#A78BFA] via-[#0891B2] hover:from-[#0E7490] hover:to-[#8B5CF6] text-white px-8 py-4 text-lg shadow-lg hover:shadow-xl transition-all duration-300',
+              'bg-gradient-to-r from-[#0EA5E9] to-[#A78BFA] via-[#0891B2] hover:from-[#0E7490] hover:to-[#8B5CF6] text-white px-8 py-4 text-lg shadow-lg hover:shadow-xl transition-all duration-300 lg:px-12 lg:py-5 lg:text-xl',
             )}
           >
             Start your game plan
-            <ArrowRight className="ml-2 h-5 w-5" />
+            <ArrowRight className="ml-2 h-5 w-5 lg:h-6 lg:w-6" />
           </Link>
         </div>
       </div>
@@ -261,11 +261,11 @@ export function NextStepsSection() {
               href="/game-plan"
               className={cn(
                 buttonVariants({ size: 'lg' }),
-                'bg-gradient-to-r from-[#0EA5E9] to-[#A78BFA] via-[#0891B2] hover:from-[#0E7490] hover:to-[#8B5CF6] text-white px-8 py-4 text-lg shadow-lg hover:shadow-xl transition-all duration-300',
+                'bg-gradient-to-r from-[#0EA5E9] to-[#A78BFA] via-[#0891B2] hover:from-[#0E7490] hover:to-[#8B5CF6] text-white px-8 py-4 text-lg shadow-lg hover:shadow-xl transition-all duration-300 lg:px-12 lg:py-5 lg:text-xl',
               )}
             >
               Start your game plan
-              <ArrowRight className="ml-2 h-5 w-5" />
+              <ArrowRight className="ml-2 h-5 w-5 lg:h-6 lg:w-6" />
             </Link>
           </div>
         </div>
@@ -390,11 +390,11 @@ export function WhatYouGetEveryMonth() {
             href="/game-plan"
             className={cn(
               buttonVariants({ size: 'lg' }),
-              'bg-gradient-to-r from-[#0EA5E9] to-[#A78BFA] via-[#0891B2] hover:from-[#0E7490] hover:to-[#8B5CF6] text-white px-8 py-4 text-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105',
+              'bg-gradient-to-r from-[#0EA5E9] to-[#A78BFA] via-[#0891B2] hover:from-[#0E7490] hover:to-[#8B5CF6] text-white px-8 py-4 text-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 lg:px-12 lg:py-5 lg:text-xl',
             )}
           >
             Start your game plan
-            <ArrowRight className="ml-2 h-5 w-5" />
+            <ArrowRight className="ml-2 h-5 w-5 lg:h-6 lg:w-6" />
           </Link>
         </div>
       </div>
