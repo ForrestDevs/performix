@@ -12,7 +12,7 @@ export default function GamePlanCompletePage() {
         <h1 className={cn(PERFORMIX_DISPLAY_TITLE_CLASS, 'text-[#0EA5E9] mb-6 drop-shadow-lg')}>
           Thank You!
         </h1>
-        <p className="max-w-2xl text-xl sm:text-2xl text-gray-800 mb-12 font-medium">
+        <p className="max-w-2xl text-xl sm:text-2xl text-gray-800 mb-16 font-medium">
           We&apos;ve received your Game Plan submission.
           <br />
           Our team will review your response and reach out soon to help you begin your journey.
@@ -21,7 +21,7 @@ export default function GamePlanCompletePage() {
         <div className="w-full max-w-4xl flex flex-col items-center gap-5">
           <div className="space-y-3">
             <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-gray-900 font-['Space_Grotesk']">
-              How Serious Players Improve
+              How Our Players Improve
             </h2>
             <p className="text-base sm:text-lg text-gray-600">
               Watch this short breakdown while we review your form.
@@ -30,7 +30,7 @@ export default function GamePlanCompletePage() {
           <div className="relative rounded-2xl overflow-hidden shadow-xl aspect-video w-full bg-black">
             <iframe
               src={loomUrl}
-              title="How Serious Players Improve"
+              title="How Our Players Improve"
               allowFullScreen
               className="absolute inset-0 w-full h-full rounded-2xl"
             />
