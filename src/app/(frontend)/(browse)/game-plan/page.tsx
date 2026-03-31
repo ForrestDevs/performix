@@ -1,11 +1,16 @@
 import { GamePlanForm } from '@/components/layout/game-plan/form'
+import { PERFORMIX_DISPLAY_TITLE_CLASS } from '@/lib/constants/typography'
 import { JsonLdScript, getBreadcrumbSchema } from '@/lib/seo/jsonld'
+import { cn } from '@/lib/utilities/ui'
 import type { Metadata } from 'next'
 
+const pageTitle = 'Get Your Free Development Game Plan'
+const pageDescription =
+  'Fill out the form below and we’ll help you find the best path forward based on your game, goals, and current situation.'
+
 export const metadata: Metadata = {
-  title: 'Start Your Game Plan - Free Hockey Development Assessment',
-  description:
-    'Get your personalized D1 game plan. Fill out our free assessment and discover the best path forward for your hockey development goals.',
+  title: pageTitle,
+  description: pageDescription,
   keywords: [
     'hockey game plan',
     'hockey assessment',
@@ -16,9 +21,8 @@ export const metadata: Metadata = {
     'hockey player assessment',
   ],
   openGraph: {
-    title: 'Start Your Game Plan | Performix',
-    description:
-      'Get your personalized D1 game plan. Free assessment to discover your best path forward.',
+    title: `${pageTitle} | Performix`,
+    description: pageDescription,
     type: 'website',
     url: 'https://www.performix.ca/game-plan',
     siteName: 'Performix',
@@ -33,16 +37,14 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Start Your Game Plan | Performix',
-    description: 'Get your personalized D1 game plan with a free assessment.',
+    title: `${pageTitle} | Performix`,
+    description: pageDescription,
     images: ['https://www.performix.ca/opengraph-image.png'],
   },
   alternates: {
     canonical: 'https://www.performix.ca/game-plan',
   },
 }
-
-const loomUrl = 'https://www.loom.com/embed/5def31e26be04dfc846515c40295550f'
 
 export default function GamePlanPage() {
   const breadcrumbJsonLd = {
@@ -57,9 +59,8 @@ export default function GamePlanPage() {
     '@context': 'https://schema.org',
     '@type': 'WebPage',
     '@id': 'https://www.performix.ca/game-plan#webpage',
-    name: 'Start Your Game Plan',
-    description:
-      'Get your personalized D1 game plan. Fill out our free assessment and discover the best path forward for your hockey development goals.',
+    name: pageTitle,
+    description: pageDescription,
     url: 'https://www.performix.ca/game-plan',
     isPartOf: { '@id': 'https://www.performix.ca/#website' },
   }
@@ -70,25 +71,15 @@ export default function GamePlanPage() {
       <JsonLdScript data={webPageJsonLd} />
 
       <div className="container w-full max-w-3xl mx-auto text-center">
-        <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-[#0EA5E9] mb-3 drop-shadow">
-          Unlock Your D1 Game Plan
+        <h1 className={cn(PERFORMIX_DISPLAY_TITLE_CLASS, 'text-[#0EA5E9] mb-3 drop-shadow')}>
+          {pageTitle}
         </h1>
-        <p className="text-gray-700 text-xl mb-4">
-          Fill out the form below and we&apos;ll help you figure out the best path forward based on
-          your game and your goals.
-        </p>
+        <p className="text-gray-700 text-xl mb-4">{pageDescription}</p>
       </div>
 
-      <iframe
-        src={loomUrl}
-        title="Performix Hockey - Game Plan Overview"
-        allowFullScreen
-        className="w-full h-full aspect-video container py-12"
-      />
-
       <div className="container max-w-2xl mx-auto bg-white bg-opacity-90 rounded-xl shadow-lg border border-[#0EA5E9]/10 backdrop-blur p-8">
-        <h2 className="text-2xl font-bold text-[#0891B2] mb-6 text-center tracking-tight">
-          Game plan submission form
+        <h2 className="text-2xl sm:text-3xl font-bold text-[#0891B2] mb-6 text-center tracking-tight font-['Space_Grotesk']">
+          Your game plan form
         </h2>
         <GamePlanForm />
       </div>

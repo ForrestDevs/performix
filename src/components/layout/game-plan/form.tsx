@@ -5,7 +5,6 @@ import { z } from 'zod'
 import {
   Field,
   FieldContent,
-  FieldDescription,
   FieldError,
   FieldGroup,
   FieldLabel,
@@ -21,6 +20,8 @@ import { GAME_PLAN_SMS_CONSENT_COPY } from '@/lib/constants/game-plan-sms-consen
 import { submitGamePlan } from '@/lib/data/game-plan'
 import { useRouter } from 'next/navigation'
 import { gamePlanSubmissionStorageKey } from '@/lib/analytics/game-plan-conversion'
+
+const questionLabelClass = 'text-lg md:text-xl font-bold tracking-tight text-slate-900'
 
 const formSchema = z.object({
   firstName: z.string().min(1, 'First name is required'),
@@ -103,7 +104,9 @@ export function GamePlanForm() {
                   const invalid = field.state.meta.isTouched && !field.state.meta.isValid
                   return (
                     <Field data-invalid={invalid}>
-                      <FieldLabel htmlFor="firstName">First Name</FieldLabel>
+                      <FieldLabel htmlFor="firstName" className={questionLabelClass}>
+                        First Name
+                      </FieldLabel>
                       <Input
                         id={field.name}
                         name={field.name}
@@ -128,7 +131,9 @@ export function GamePlanForm() {
                   const invalid = field.state.meta.isTouched && !field.state.meta.isValid
                   return (
                     <Field data-invalid={invalid}>
-                      <FieldLabel htmlFor="lastName">Last Name</FieldLabel>
+                      <FieldLabel htmlFor="lastName" className={questionLabelClass}>
+                        Last Name
+                      </FieldLabel>
                       <Input
                         id={field.name}
                         name={field.name}
@@ -154,7 +159,9 @@ export function GamePlanForm() {
                 const invalid = field.state.meta.isTouched && !field.state.meta.isValid
                 return (
                   <Field data-invalid={invalid}>
-                    <FieldLabel htmlFor="email">Email</FieldLabel>
+                    <FieldLabel htmlFor="email" className={questionLabelClass}>
+                      Email
+                    </FieldLabel>
                     <Input
                       id={field.name}
                       name={field.name}
@@ -179,7 +186,9 @@ export function GamePlanForm() {
                 const invalid = field.state.meta.isTouched && !field.state.meta.isValid
                 return (
                   <Field data-invalid={invalid}>
-                    <FieldLabel htmlFor="phone">Phone</FieldLabel>
+                    <FieldLabel htmlFor="phone" className={questionLabelClass}>
+                      Phone
+                    </FieldLabel>
                     <Input
                       id={field.name}
                       name={field.name}
@@ -204,7 +213,9 @@ export function GamePlanForm() {
                 const invalid = field.state.meta.isTouched && !field.state.meta.isValid
                 return (
                   <FieldSet data-invalid={invalid}>
-                    <FieldLabel htmlFor="whoAreYou">Who are you?</FieldLabel>
+                    <FieldLabel htmlFor="whoAreYou" className={questionLabelClass}>
+                      Who are you?
+                    </FieldLabel>
 
                     <RadioGroup
                       defaultValue="player"
@@ -249,7 +260,9 @@ export function GamePlanForm() {
                 const invalid = field.state.meta.isTouched && !field.state.meta.isValid
                 return (
                   <Field data-invalid={invalid}>
-                    <FieldLabel htmlFor="age">How old are you?</FieldLabel>
+                    <FieldLabel htmlFor="age" className={questionLabelClass}>
+                      How old are you?
+                    </FieldLabel>
                     <Input
                       id={field.name}
                       name={field.name}
@@ -276,7 +289,7 @@ export function GamePlanForm() {
                 const invalid = field.state.meta.isTouched && !field.state.meta.isValid
                 return (
                   <Field data-invalid={invalid}>
-                    <FieldLabel htmlFor="level">
+                    <FieldLabel htmlFor="level" className={questionLabelClass}>
                       What level are you playing at / played last year?
                     </FieldLabel>
                     <Input
@@ -303,8 +316,8 @@ export function GamePlanForm() {
                 const invalid = field.state.meta.isTouched && !field.state.meta.isValid
                 return (
                   <FieldSet data-invalid={invalid}>
-                    <FieldLabel htmlFor="seriousness">
-                      How serious are you about taking hockey as far as possible?
+                    <FieldLabel htmlFor="seriousness" className={questionLabelClass}>
+                      How serious are you about going as far as possible in hockey?
                     </FieldLabel>
 
                     <RadioGroup
@@ -316,11 +329,7 @@ export function GamePlanForm() {
                       <FieldLabel htmlFor="super">
                         <Field orientation="horizontal">
                           <FieldContent>
-                            <FieldTitle>Super serious</FieldTitle>
-                            <FieldDescription>
-                              I&apos;m ready to start now with a proven system that connects all
-                              areas of performance
-                            </FieldDescription>
+                            <FieldTitle>All in</FieldTitle>
                           </FieldContent>
                           <RadioGroupItem value="super" id="super" />
                         </Field>
@@ -328,11 +337,7 @@ export function GamePlanForm() {
                       <FieldLabel htmlFor="exploring">
                         <Field orientation="horizontal">
                           <FieldContent>
-                            <FieldTitle>Exploring options</FieldTitle>
-                            <FieldDescription>
-                              I&apos;m exploring options, but I know I need better structure and
-                              guidance
-                            </FieldDescription>
+                            <FieldTitle>Interested</FieldTitle>
                           </FieldContent>
                           <RadioGroupItem value="exploring" id="exploring" />
                         </Field>
@@ -340,10 +345,7 @@ export function GamePlanForm() {
                       <FieldLabel htmlFor="curious">
                         <Field orientation="horizontal">
                           <FieldContent>
-                            <FieldTitle>Curious</FieldTitle>
-                            <FieldDescription>
-                              I&apos;m curious — just learning what real development looks like
-                            </FieldDescription>
+                            <FieldTitle>Just exploring</FieldTitle>
                           </FieldContent>
                           <RadioGroupItem value="curious" id="curious" />
                         </Field>
@@ -361,8 +363,8 @@ export function GamePlanForm() {
                 const invalid = field.state.meta.isTouched && !field.state.meta.isValid
                 return (
                   <FieldSet data-invalid={invalid}>
-                    <FieldLabel htmlFor="decisionInvolvement">
-                      Who&apos;s currently involved in helping you make this decision?
+                    <FieldLabel htmlFor="decisionInvolvement" className={questionLabelClass}>
+                      Who are you going through this with right now?
                     </FieldLabel>
 
                     <RadioGroup
@@ -374,7 +376,7 @@ export function GamePlanForm() {
                       <FieldLabel htmlFor="justMe">
                         <Field orientation="horizontal">
                           <FieldContent>
-                            <FieldTitle>Just me (the player)</FieldTitle>
+                            <FieldTitle>Just the player</FieldTitle>
                           </FieldContent>
                           <RadioGroupItem value="justMe" id="justMe" />
                         </Field>
@@ -382,7 +384,7 @@ export function GamePlanForm() {
                       <FieldLabel htmlFor="meAndParents">
                         <Field orientation="horizontal">
                           <FieldContent>
-                            <FieldTitle>Me and my parent(s) — we&apos;re both on board</FieldTitle>
+                            <FieldTitle>Both player and parent(s)</FieldTitle>
                           </FieldContent>
                           <RadioGroupItem value="meAndParents" id="meAndParents" />
                         </Field>
@@ -390,9 +392,7 @@ export function GamePlanForm() {
                       <FieldLabel htmlFor="parentOnly">
                         <Field orientation="horizontal">
                           <FieldContent>
-                            <FieldTitle>
-                              Just my parent(s) — they&apos;re leading the process
-                            </FieldTitle>
+                            <FieldTitle>Just the parent(s)</FieldTitle>
                           </FieldContent>
                           <RadioGroupItem value="parentOnly" id="parentOnly" />
                         </Field>
@@ -410,8 +410,8 @@ export function GamePlanForm() {
                 const invalid = field.state.meta.isTouched && !field.state.meta.isValid
                 return (
                   <FieldSet data-invalid={invalid}>
-                    <FieldLabel htmlFor="startWhen">
-                      When do you hope to start improving your overall performance system?
+                    <FieldLabel htmlFor="startWhen" className={questionLabelClass}>
+                      When do you want to start improving?
                     </FieldLabel>
 
                     <RadioGroup
@@ -424,9 +424,6 @@ export function GamePlanForm() {
                         <Field orientation="horizontal">
                           <FieldContent>
                             <FieldTitle>Now</FieldTitle>
-                            <FieldDescription>
-                              Let&apos;s get started — I&apos;m ready to begin
-                            </FieldDescription>
                           </FieldContent>
                           <RadioGroupItem value="now" id="now" />
                         </Field>
@@ -435,9 +432,6 @@ export function GamePlanForm() {
                         <Field orientation="horizontal">
                           <FieldContent>
                             <FieldTitle>Soon</FieldTitle>
-                            <FieldDescription>
-                              I&apos;m ready to begin within the next 30 days
-                            </FieldDescription>
                           </FieldContent>
                           <RadioGroupItem value="30days" id="30days" />
                         </Field>
@@ -446,9 +440,6 @@ export function GamePlanForm() {
                         <Field orientation="horizontal">
                           <FieldContent>
                             <FieldTitle>In a bit</FieldTitle>
-                            <FieldDescription>
-                              I&apos;m ready to begin 30+ days from now
-                            </FieldDescription>
                           </FieldContent>
                           <RadioGroupItem value="30plusdays" id="30plusdays" />
                         </Field>
