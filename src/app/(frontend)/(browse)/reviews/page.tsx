@@ -131,9 +131,6 @@ export default async function ReviewsPage() {
       <section className="py-16 px-4 bg-background">
         <div className="container mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-4xl md:text-5xl font-bold mb-4 text-balance text-foreground">
-              Hear It From <span className="text-primary">The Players</span>
-            </h2>
             <p className="text-xl text-muted-foreground">Real transformations. Real voices.</p>
           </div>
 
