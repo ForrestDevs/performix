@@ -146,8 +146,8 @@ export default function HomePage() {
                   </span>
                 </h1>
                 <p className="text-xl text-gray-600 leading-relaxed max-w-2xl">
-                  Work with a D1 hockey mentor to improve your confidence, hockey IQ, and
-                  consistency in games
+                  Get personalized coaching from current D1 players to develop faster and reach
+                  higher levels of the game
                 </p>
               </div>
               <div className="flex">
