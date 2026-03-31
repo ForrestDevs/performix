@@ -93,20 +93,20 @@ export default async function TeamPage() {
       <JsonLdScript data={breadcrumbJsonLd} />
       <JsonLdScript data={aboutPageJsonLd} />
 
-      <section id="overview" className="py-20 bg-gradient-to-b from-muted to-background">
+      <section id="overview" className="pt-20 pb-8 bg-gradient-to-b from-muted to-background">
         <div className="max-w-4xl mx-auto px-6 sm:px-8 text-center flex flex-col items-center">
           <h1 className={cn(PERFORMIX_DISPLAY_TITLE_CLASS, 'text-foreground drop-shadow-sm mb-8')}>
             The Performix Team
           </h1>
           <div className="w-16 h-1 bg-[#0891B2] rounded-full mx-auto mb-8 opacity-70" />
-          <p className="text-lg md:text-xl text-muted-foreground mb-6 max-w-2xl leading-relaxed mx-auto text-balance">
+          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl leading-relaxed mx-auto text-balance">
             An integrated group of specialists across skill, HockeyIQ,
             <br className="hidden md:inline" />
             strength, sport science, nutrition, and mental performance.
           </p>
         </div>
       </section>
-      <section id="specialists" className="py-16 px-4">
+      <section id="specialists" className="pt-8 pb-16 px-4">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
             {teamMembers.map((teamMember) => (
@@ -118,10 +118,7 @@ export default async function TeamPage() {
       <section id="mentors" className="py-16 px-4 bg-muted">
         <div className="max-w-7xl mx-auto">
           <div className="mb-8">
-            <h2 className="text-3xl font-bold text-foreground mb-2">D1 Mentors</h2>
-            <p className="text-muted-foreground">
-              Connect with current college athletes for guidance and insights.
-            </p>
+            <h2 className="text-3xl font-bold text-foreground">D1 Mentors</h2>
           </div>
 
           <FeaturedMentors />
