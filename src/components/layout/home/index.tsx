@@ -608,7 +608,7 @@ export function HowItWorksSection() {
     },
     {
       number: '02',
-      title: 'One-on-one improvement sessions',
+      title: '1-on-1 improvement sessions',
       description:
         "Through 1-on-1 video analysis and focused mental sessions, D1 mentors show you what's holding your game back and what to do to create more impact on the ice",
     },
