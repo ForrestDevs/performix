@@ -69,7 +69,7 @@ export function MentorHero() {
                 'bg-[#0891B2] hover:bg-[#0E7490] text-white',
               )}
             >
-              Start your game plan
+              Get My Free Game Plan
               <ArrowRight className="ml-2 h-5 w-5" />
             </Link>
             {mentor.socials?.eliteProspects && (

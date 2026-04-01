@@ -28,6 +28,8 @@ import {
 import Image from 'next/image'
 import Link from 'next/link'
 
+const gamePlanCtaLabel = 'Get My Free Game Plan'
+
 const valuePropItems = [
   {
     icon: GraduationCap,
@@ -121,7 +123,7 @@ export function ValuePropSection() {
               'bg-gradient-to-r from-[#0EA5E9] to-[#A78BFA] via-[#0891B2] hover:from-[#0E7490] hover:to-[#8B5CF6] text-white px-8 py-4 text-lg shadow-lg hover:shadow-xl transition-all duration-300 lg:px-12 lg:py-5 lg:text-xl',
             )}
           >
-            Start your game plan
+            {gamePlanCtaLabel}
             <ArrowRight className="ml-2 h-5 w-5 lg:h-6 lg:w-6" />
           </Link>
         </div>
@@ -138,22 +140,22 @@ export function NextStepsSection() {
   const steps = [
     {
       step: 1,
+      title: 'Get Your Free Game Plan',
+      description: 'Fill out the game plan form below.',
+      icon: ClipboardList,
+    },
+    {
+      step: 2,
       title: 'Free Strategy Call',
       description: "We learn where you're at, what you've tried, and where you want to go.",
       icon: Users,
     },
     {
-      step: 2,
+      step: 3,
       title: 'Get Matched',
       description:
         "If it's a fit, we pair you with the right D1 mentor and the right path for your game.",
       icon: Target,
-    },
-    {
-      step: 3,
-      title: 'Start Producing Results',
-      description: 'You begin making high-impact improvements that show up in games.',
-      icon: Award,
     },
   ]
 
@@ -264,7 +266,7 @@ export function NextStepsSection() {
                 'bg-gradient-to-r from-[#0EA5E9] to-[#A78BFA] via-[#0891B2] hover:from-[#0E7490] hover:to-[#8B5CF6] text-white px-8 py-4 text-lg shadow-lg hover:shadow-xl transition-all duration-300 lg:px-12 lg:py-5 lg:text-xl',
               )}
             >
-              Start your game plan
+              {gamePlanCtaLabel}
               <ArrowRight className="ml-2 h-5 w-5 lg:h-6 lg:w-6" />
             </Link>
           </div>
@@ -393,7 +395,7 @@ export function WhatYouGetEveryMonth() {
               'bg-gradient-to-r from-[#0EA5E9] to-[#A78BFA] via-[#0891B2] hover:from-[#0E7490] hover:to-[#8B5CF6] text-white px-8 py-4 text-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 lg:px-12 lg:py-5 lg:text-xl',
             )}
           >
-            Start your game plan
+            {gamePlanCtaLabel}
             <ArrowRight className="ml-2 h-5 w-5 lg:h-6 lg:w-6" />
           </Link>
         </div>

@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { cn } from '@/lib/utilities/ui'
 import { Badge } from '@/components/ui/badge'
 import { PERFORMIX_DISPLAY_TITLE_CLASS } from '@/lib/constants/typography'
-import { Users, Star, Award, TrendingUp, Search } from 'lucide-react'
+import { ArrowRight, Users, Star, Award, TrendingUp, Search } from 'lucide-react'
 import { mentorsSearchParamsCache } from '@/lib/searchParamsCache'
 import { getMentorsWithFilters } from '@/lib/data/mentors'
 import { MentorsSearchBar } from '@/components/layout/mentors/browse/mentors-search-bar'
@@ -162,6 +162,19 @@ export default async function BrowseMentorsPage({ searchParams }: BrowseMentorsP
                 </Link>
               ))}
             </div>
+
+            <div className="mt-8">
+              <Link
+                href="/game-plan"
+                className={cn(
+                  buttonVariants({ size: 'lg' }),
+                  'bg-[#0891B2] hover:bg-[#0E7490] text-white px-8 py-4 text-lg hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl',
+                )}
+              >
+                Get My Free Game Plan
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Link>
+            </div>
           </div>
         </div>
 
@@ -279,37 +292,6 @@ export default async function BrowseMentorsPage({ searchParams }: BrowseMentorsP
                 </div>
               )}
             </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="py-20 bg-gradient-to-r from-[#0891B2] to-[#0E7490]">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
-          <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-            Can&apos;t Find the Perfect Match?
-          </h2>
-          <p className="text-xl mb-8 opacity-90 max-w-2xl mx-auto">
-            Let us help you find the ideal mentor based on your specific goals and preferences
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              href="https://calendly.com/mateodixon/d1-mentorship-call"
-              className={cn(
-                buttonVariants({ size: 'lg' }),
-                'bg-white text-[#0891B2] hover:bg-gray-100 px-8',
-              )}
-            >
-              Schedule a Consultation
-            </Link>
-            <Link
-              href="/get-started"
-              className={cn(
-                buttonVariants({ variant: 'outline', size: 'lg' }),
-                'border-white text-[#0891B2] hover:bg-white hover:text-[#0891B2] px-8',
-              )}
-            >
-              Get Started Free
-            </Link>
           </div>
         </div>
       </section>

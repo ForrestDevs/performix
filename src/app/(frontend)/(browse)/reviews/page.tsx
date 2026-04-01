@@ -115,13 +115,13 @@ export default async function ReviewsPage() {
             </p>
 
             <Link
-              href="game-plan"
+              href="/game-plan"
               className={cn(
                 buttonVariants({ size: 'lg' }),
                 'bg-[#0891B2] hover:bg-[#0E7490] text-white px-8 py-4 text-lg hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl',
               )}
             >
-              Start your game plan
+              Get My Free Game Plan
             </Link>
           </div>
           <ArrowDown className="w-6 h-6 text-primary animate-bounce mx-auto mt-8" />
@@ -227,13 +227,13 @@ export default async function ReviewsPage() {
           </div>
         </div>
         <Link
-          href="game-plan"
+          href="/game-plan"
           className={cn(
             buttonVariants({ size: 'lg' }),
             'bg-[#0891B2] hover:bg-[#0E7490] text-white px-8 py-4 text-lg hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl mx-auto',
           )}
         >
-          Start your game plan
+          Get My Free Game Plan
           <ArrowRight className="ml-2 h-5 w-5" />
         </Link>
       </section>

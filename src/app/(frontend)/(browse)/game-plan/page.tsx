@@ -4,9 +4,9 @@ import { JsonLdScript, getBreadcrumbSchema } from '@/lib/seo/jsonld'
 import { cn } from '@/lib/utilities/ui'
 import type { Metadata } from 'next'
 
-const pageTitle = 'Get Your Free Development Game Plan'
+const pageTitle = 'Get Your Free D1 Game Plan'
 const pageDescription =
-  'Fill out the form below and we’ll help you find the best path forward based on your game, goals, and current situation.'
+  "Fill out the form below and we'll show you exactly what to do now to make the biggest difference in your game."
 
 export const metadata: Metadata = {
   title: pageTitle,

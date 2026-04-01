@@ -1,13 +1,17 @@
 'use client'
 
+import Link from 'next/link'
+import { ArrowRight } from 'lucide-react'
+import { buttonVariants } from '@/components/ui/button'
 import { PERFORMIX_DISPLAY_TITLE_CLASS } from '@/lib/constants/typography'
 import { cn } from '@/lib/utilities/ui'
 
 export function HowYouImprove() {
   const outcomes = [
     {
-      title: 'Hockey IQ',
-      description: 'Play your position more effectively so your decisions create more impact',
+      title: 'Develop Faster',
+      description:
+        'Develop the right parts of your game so you can give yourself the best chance of reaching the highest levels.',
     },
     {
       title: 'Confidence and Freedom',
@@ -15,8 +19,8 @@ export function HowYouImprove() {
         'Play to your full ability under pressure and build the mental resilience to thrive.',
     },
     {
-      title: 'In-Game Results',
-      description: 'Turn your growth into measurable results in games.',
+      title: 'Hockey IQ',
+      description: 'Play your position more effectively so your decisions create more impact',
     },
   ] as const
 
@@ -103,6 +107,19 @@ export function HowYouImprove() {
               </div>
             </div>
           </div>
+        </div>
+
+        <div className="mt-14 text-center">
+          <Link
+            href="/game-plan"
+            className={cn(
+              buttonVariants({ size: 'lg' }),
+              'bg-[#0891B2] hover:bg-[#0E7490] text-white px-8 py-4 text-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 lg:px-12 lg:py-5 lg:text-xl',
+            )}
+          >
+            Get My Free Game Plan
+            <ArrowRight className="ml-2 h-5 w-5 lg:h-6 lg:w-6" />
+          </Link>
         </div>
       </div>
     </section>
