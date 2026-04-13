@@ -9,6 +9,7 @@ import { LabSection as LabSectionType } from '@/payload-types'
 import { VolumeLoadingCard } from '../volumes/loading-card'
 import { ModuleLoadingCard } from '../modules/loading-card'
 import { LessonLoadingCard } from '../lessons/lesson-card-skeleton'
+import { getModules } from '@/lib/data/lab'
 
 interface LabSectionProps {
   section: LabSectionType
@@ -29,6 +30,18 @@ export async function LabSection({ section, hasAccess, className }: LabSectionPr
   const lessonIds = section.content
     .filter((item) => item.relationTo === 'lessons')
     .map((item) => (typeof item.value === 'object' ? item.value.id : item.value))
+  const modules = moduleIds.length > 0 ? await getModules() : []
+  const moduleOrderById = new Map(modules.map((module) => [module.id, module.order]))
+  const sortedModuleIds = [...moduleIds].sort((leftId, rightId) => {
+    const leftOrder = moduleOrderById.get(leftId) ?? Number.MAX_SAFE_INTEGER
+    const rightOrder = moduleOrderById.get(rightId) ?? Number.MAX_SAFE_INTEGER
+
+    if (leftOrder !== rightOrder) {
+      return leftOrder - rightOrder
+    }
+
+    return leftId - rightId
+  })
 
   const getContentTypeLabel = () => {
     const hasModules = moduleIds && moduleIds.length > 0
@@ -90,7 +103,7 @@ export async function LabSection({ section, hasAccess, className }: LabSectionPr
               </h3>
             )}
             <div className={cn('grid gap-6', 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3')}>
-              {moduleIds.map((moduleId: number, index: number) => (
+              {sortedModuleIds.map((moduleId: number, index: number) => (
                 <Suspense key={index} fallback={<ModuleLoadingCard />}>
                   <ModuleCard moduleId={moduleId} hasPlan={hasAccess} />
                 </Suspense>
