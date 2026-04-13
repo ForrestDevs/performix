@@ -116,6 +116,11 @@ export default async function DirectModulePage(props: DirectModulePageProps) {
 
   const hasAccess = user ? await isEnrolledInAnyPlan(user.id) : false
   const completion = user ? await getModuleCompletion(labModule?.id) : null
+  const sortedVolumes =
+    labModule?.volumes?.docs
+      ?.filter((volume): volume is Volume => typeof volume === 'object' && volume !== null)
+      .slice()
+      .sort((a, b) => a.order - b.order) ?? []
 
   const thumbnailUrl =
     labModule.thumbnail && typeof labModule.thumbnail === 'object'
@@ -310,25 +315,23 @@ export default async function DirectModulePage(props: DirectModulePageProps) {
               </Card>
             )}
 
-            {labModule?.volumes?.docs && labModule?.volumes?.docs.length > 0 && (
+            {sortedVolumes.length > 0 && (
               <div id="volumes" className="space-y-6 px-2">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2">
                   <div>
                     <h2 className="text-2xl font-semibold text-neutral-900">Course Volumes</h2>
                     <p className="text-neutral-500 text-base">
-                      {labModule?.volumes?.docs?.length} volumes available
+                      {sortedVolumes.length} volumes available
                     </p>
                   </div>
                 </div>
 
                 <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-5">
-                  {labModule?.volumes?.docs
-                    .sort((a: Volume, b: Volume) => a.order - b.order)
-                    .map((volume: Volume, index: number) => (
-                      <Suspense key={index} fallback={<VolumeLoadingCard />}>
-                        <VolumeCard volumeId={volume.id} hasPlan={hasAccess} />
-                      </Suspense>
-                    ))}
+                  {sortedVolumes.map((volume, index: number) => (
+                    <Suspense key={index} fallback={<VolumeLoadingCard />}>
+                      <VolumeCard volumeId={volume.id} hasPlan={hasAccess} />
+                    </Suspense>
+                  ))}
                 </div>
               </div>
             )}
@@ -401,7 +404,7 @@ export default async function DirectModulePage(props: DirectModulePageProps) {
                   <ArrowLeft className="h-4 w-4 mr-2" />
                   Back to Lab
                 </Link>
-                {hasAccess && labModule?.volumes?.docs && labModule?.volumes?.docs.length > 0 && (
+                {hasAccess && sortedVolumes.length > 0 && (
                   <Link
                     href={`#volumes`}
                     className={cn(

@@ -2,7 +2,7 @@
 
 import { revalidateTag } from 'next/cache'
 import { getPayload } from '../utilities/getPayload'
-import { Video } from '@/payload-types'
+import { Lesson, Module, Video, Volume } from '@/payload-types'
 import { cache } from '../utilities/cache'
 import {
   LAB_SECTIONS_SLUG,
@@ -24,6 +24,73 @@ export interface LabStats {
   totalLessons: number
   totalVideos: number
   estimatedHours: number
+}
+
+function sortByOrder<T extends { id: number; order?: number | null }>(docs: T[]) {
+  return [...docs].sort((a, b) => {
+    const orderDifference = (a.order ?? Number.MAX_SAFE_INTEGER) - (b.order ?? Number.MAX_SAFE_INTEGER)
+
+    if (orderDifference !== 0) {
+      return orderDifference
+    }
+
+    return a.id - b.id
+  })
+}
+
+async function getVolumesByModuleId(moduleId: number) {
+  const payload = await getPayload()
+
+  const volumes = await payload.find({
+    collection: VOLUMES_SLUG,
+    where: { module: { equals: moduleId } },
+    limit: 100,
+    sort: 'order',
+    depth: 2,
+  })
+
+  return sortByOrder(volumes.docs as Volume[])
+}
+
+async function getLessonsByModuleId(moduleId: number) {
+  const payload = await getPayload()
+
+  const lessons = await payload.find({
+    collection: LESSONS_SLUG,
+    where: { module: { equals: moduleId } },
+    limit: 200,
+    sort: 'order',
+    depth: 2,
+  })
+
+  return sortByOrder(lessons.docs as Lesson[])
+}
+
+async function withSortedModuleChildren(labModule: Module | null) {
+  if (!labModule) {
+    return null
+  }
+
+  const [volumes, lessons] = await Promise.all([
+    getVolumesByModuleId(labModule.id),
+    getLessonsByModuleId(labModule.id),
+  ])
+
+  return {
+    ...labModule,
+    volumes: {
+      ...labModule.volumes,
+      docs: volumes,
+      totalDocs: volumes.length,
+      hasNextPage: false,
+    },
+    lessons: {
+      ...labModule.lessons,
+      docs: lessons,
+      totalDocs: lessons.length,
+      hasNextPage: false,
+    },
+  }
 }
 
 /**
@@ -208,7 +275,7 @@ export async function getModuleBySlug(slug: string) {
 
       if (modules.docs.length === 0) return null
 
-      return modules.docs[0]
+      return withSortedModuleChildren(modules.docs[0] ?? null)
     },
     {
       tags: (slug: string) => [CACHE_TAGS.GET_LAB_MODULE_BY_SLUG + slug],
@@ -241,7 +308,7 @@ export async function getModuleById(moduleId: number) {
         limit: 1,
       })
 
-      return modules.docs[0]
+      return withSortedModuleChildren((modules.docs[0] as Module | undefined) ?? null)
     },
     {
       tags: (moduleId: number) => [CACHE_TAGS.GET_LAB_MODULE_BY_ID + moduleId],
