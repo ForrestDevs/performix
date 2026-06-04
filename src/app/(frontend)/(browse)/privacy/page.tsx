@@ -54,7 +54,7 @@ const sections = [
     title: 'SMS and Marketing Communications',
     body: [
       'If you opt in, Performix Hockey may send informational and promotional SMS messages about free D1 sessions, scheduling, reminders, hockey development plans, and mentorship offers.',
-      'Message frequency may vary, up to 9 messages per month. Message and data rates may apply. Consent to receive SMS is not a condition of purchase.',
+      'Message frequency may vary, up to 9 messages per month. Message and data rates may apply. Consent is not a condition of purchase.',
       'Reply STOP to opt out of SMS messages. Reply HELP for help. You may also opt out by contacting us directly.',
     ],
   },
