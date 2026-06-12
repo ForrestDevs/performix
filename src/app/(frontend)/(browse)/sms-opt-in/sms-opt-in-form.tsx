@@ -54,23 +54,29 @@ export function SmsOptInForm() {
       </div>
 
       <div className="space-y-4">
-        <label className="flex items-start gap-3 text-sm leading-relaxed text-gray-700">
-          <input
-            type="checkbox"
-            name="nonMarketingConsent"
-            className="mt-1 h-4 w-4 shrink-0 rounded border-gray-300 text-[#0891B2] focus:ring-[#0891B2]"
-          />
-          <span>{checkboxOneLabel}</span>
-        </label>
+        <div className="space-y-2">
+          <p className="text-sm text-gray-600">Optional</p>
+          <label className="flex items-start gap-3 text-sm leading-relaxed text-gray-700">
+            <input
+              type="checkbox"
+              name="nonMarketingConsent"
+              className="mt-1 h-4 w-4 shrink-0 rounded border-gray-300 text-[#0891B2] focus:ring-[#0891B2]"
+            />
+            <span>{checkboxOneLabel}</span>
+          </label>
+        </div>
 
-        <label className="flex items-start gap-3 text-sm leading-relaxed text-gray-700">
-          <input
-            type="checkbox"
-            name="marketingConsent"
-            className="mt-1 h-4 w-4 shrink-0 rounded border-gray-300 text-[#0891B2] focus:ring-[#0891B2]"
-          />
-          <span>{checkboxTwoLabel}</span>
-        </label>
+        <div className="space-y-2">
+          <p className="text-sm text-gray-600">Optional</p>
+          <label className="flex items-start gap-3 text-sm leading-relaxed text-gray-700">
+            <input
+              type="checkbox"
+              name="marketingConsent"
+              className="mt-1 h-4 w-4 shrink-0 rounded border-gray-300 text-[#0891B2] focus:ring-[#0891B2]"
+            />
+            <span>{checkboxTwoLabel}</span>
+          </label>
+        </div>
       </div>
 
       <p className="text-sm text-gray-600">
