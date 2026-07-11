@@ -2,9 +2,9 @@ import { Metadata } from 'next'
 import { Testimonials } from './components/testimonials'
 
 const subtitle =
-  "We'll text you shortly to help set up the best time for your child's off-season development plan. Want to book now instead? You can do that below."
+  "We'll text you shortly to set up your child's free 1-on-1 session with a D1 player."
 const whyWereDifferentLoomUrl =
-  'https://www.loom.com/embed/b0745407715e4dd8b2abe06bb5e5dce5?hideEmbedTopBar=true'
+  'https://www.loom.com/embed/beafdd6bc34c4871bd658b0d03383a74?hideEmbedTopBar=true'
 
 export const metadata: Metadata = {
   title: "You're All Set | Performix",
@@ -42,16 +42,6 @@ export default function DiscoverTheSystem() {
               </h1>
               <p className="text-xl text-gray-600 leading-relaxed max-w-4xl mx-auto">{subtitle}</p>
             </div>
-            <div className="w-full rounded-2xl overflow-hidden border border-border bg-white shadow-xl">
-              <iframe
-                src="https://calendly.com/mateodixon/d1-mentorship-call"
-                width="100%"
-                height="760"
-                data-resize="true"
-                title="Book a time with Performix"
-                className="w-full min-w-[320px]"
-              />
-            </div>
           </div>
         </div>
       </section>
@@ -62,14 +52,14 @@ export default function DiscoverTheSystem() {
         <div className="max-w-5xl mx-auto space-y-8 pb-20">
           <h2 className="text-center text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight font-['Space_Grotesk']">
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0891B2] to-[#8B5CF6]">
-              Why Performix Is Different
+              How Performix Hockey Works
             </span>
           </h2>
           <div className="w-full bg-black/90 rounded-xl overflow-hidden aspect-video flex items-center justify-center shadow-lg border border-border">
             <iframe
               src={whyWereDifferentLoomUrl}
               allowFullScreen
-              title="Why Performix Is Different"
+              title="How Performix Hockey Works"
               className="w-full h-full min-h-[300px]"
             />
           </div>
