@@ -157,11 +157,11 @@ export default function HomePage() {
                   href="/game-plan"
                   className={cn(
                     buttonVariants({ size: 'lg' }),
-                    'w-full sm:w-auto bg-[#0891B2] hover:bg-[#0E7490] text-white whitespace-normal text-center leading-tight px-10 py-5 text-xl hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl lg:px-14 lg:py-6 lg:text-2xl',
+                    'h-auto min-h-16 w-full sm:w-auto bg-[#0891B2] hover:bg-[#0E7490] text-white whitespace-normal text-center leading-tight px-10 py-5 text-xl hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl xl:min-h-[4.5rem] xl:px-14 xl:py-6 xl:text-2xl',
                   )}
                 >
                   {gamePlanCtaLabel}
-                  <ArrowRight className="ml-2 h-5 w-5 lg:h-6 lg:w-6" />
+                  <ArrowRight className="ml-2 h-5 w-5 xl:h-6 xl:w-6" />
                 </Link>
               </div>
               <div className="flex items-center space-x-6 text-sm text-gray-500">
