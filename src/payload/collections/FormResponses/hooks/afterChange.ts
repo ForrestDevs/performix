@@ -30,7 +30,6 @@ type GamePlanSubmission = GamePlanData & {
 
 const GHL_WEBSITE_FREE_SESSION_WEBHOOK_URL =
   process.env.GHL_WEBSITE_FREE_SESSION_WEBHOOK_URL ||
-  process.env.ZAPIER_GAME_PLAN_WEBHOOK_URL ||
   'https://services.leadconnectorhq.com/hooks/xPy72Y2M04enF6wuXcEZ/webhook-trigger/a9278314-ca3a-423f-913e-ea5673c564f8'
 
 const whoAreYouLabels: Record<string, string> = {
