@@ -28,8 +28,37 @@ type GamePlanSubmission = GamePlanData & {
   smsConsentVersion: string
 }
 
-async function sendZapierGamePlanWebhook(data: FormResponse) {
-  const webhookUrl = process.env.ZAPIER_GAME_PLAN_WEBHOOK_URL
+const GHL_WEBSITE_FREE_SESSION_WEBHOOK_URL =
+  process.env.GHL_WEBSITE_FREE_SESSION_WEBHOOK_URL ||
+  process.env.ZAPIER_GAME_PLAN_WEBHOOK_URL ||
+  'https://services.leadconnectorhq.com/hooks/xPy72Y2M04enF6wuXcEZ/webhook-trigger/a9278314-ca3a-423f-913e-ea5673c564f8'
+
+const whoAreYouLabels: Record<string, string> = {
+  player: 'Player',
+  parent: 'Parent / guardian',
+  other: 'Other',
+}
+
+const seriousnessLabels: Record<string, string> = {
+  super: 'Super serious',
+  exploring: 'Exploring options',
+  curious: 'Just curious',
+}
+
+const decisionInvolvementLabels: Record<string, string> = {
+  justMe: 'Just me',
+  meAndParents: 'Me and my parents',
+  parentOnly: 'Parent / guardian',
+}
+
+const startWhenLabels: Record<string, string> = {
+  now: 'Now',
+  '30days': 'Within 30 days',
+  '30plusdays': '30+ days',
+}
+
+async function sendGhlGamePlanWebhook(data: FormResponse) {
+  const webhookUrl = GHL_WEBSITE_FREE_SESSION_WEBHOOK_URL
 
   const responseData = data.response as GamePlanData
 
@@ -52,14 +81,41 @@ async function sendZapierGamePlanWebhook(data: FormResponse) {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      event: 'game_plan_submitted',
+      event: 'website_free_session_application_submitted',
       source: 'performix-website',
-      ...data,
+      formName: data.formName,
+      formResponseId: data.id,
+      userName: data.userName,
+      userPhone: data.userPhone,
+      userEmail: data.userEmail,
+      firstName: responseData.firstName,
+      lastName: responseData.lastName,
+      fullName: submission.fullName,
+      email: responseData.email,
+      phone: responseData.phone,
+      whoAreYou: responseData.whoAreYou,
+      whoAreYouLabel: whoAreYouLabels[responseData.whoAreYou] || responseData.whoAreYou,
+      age: responseData.age,
+      level: responseData.level,
+      seriousness: responseData.seriousness,
+      seriousnessLabel: seriousnessLabels[responseData.seriousness] || responseData.seriousness,
+      decisionInvolvement: responseData.decisionInvolvement,
+      decisionInvolvementLabel:
+        decisionInvolvementLabels[responseData.decisionInvolvement] ||
+        responseData.decisionInvolvement,
+      startWhen: responseData.startWhen,
+      startWhenLabel: startWhenLabels[responseData.startWhen] || responseData.startWhen,
+      smsConsent: submission.smsConsent,
+      smsConsentCapturedAt: submission.smsConsentCapturedAt,
+      smsConsentText: submission.smsConsentText,
+      smsConsentVersion: submission.smsConsentVersion,
+      submittedAt: submission.submittedAt,
+      rawResponse: responseData,
     }),
   })
 
   if (!response.ok) {
-    throw new Error(`Zapier webhook failed with status ${response.status}`)
+    throw new Error(`GHL website free session webhook failed with status ${response.status}`)
   }
 }
 
@@ -81,9 +137,9 @@ const afterChangeFormResponse: CollectionAfterChangeHook<FormResponse> = async (
     })
 
     try {
-      await sendZapierGamePlanWebhook(doc)
+      await sendGhlGamePlanWebhook(doc)
     } catch (error) {
-      console.error('Failed to send Zapier game plan webhook:', error)
+      console.error('Failed to send GHL website free session webhook:', error)
     }
   }
 
