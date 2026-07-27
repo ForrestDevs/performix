@@ -83,10 +83,10 @@ export function GamePlanForm() {
           >
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
           </svg>
-          <h2 className="text-2xl font-semibold mb-2">Thank you for submitting your Game Plan!</h2>
+          <h2 className="text-2xl font-semibold mb-2">Thank you for applying!</h2>
           <p className="text-gray-600 text-center max-w-md mb-6">
-            We&apos;ve received your information. Our team will review your submission and get in
-            touch shortly with your personalized performance roadmap.
+            We&apos;ve received your application. Mateo will review your response and text you with
+            the next step.
           </p>
         </div>
       ) : (
@@ -480,7 +480,7 @@ export function GamePlanForm() {
           </FieldSet>
           <div className="flex justify-center pt-6">
             <Button type="submit" className="w-full">
-              Submit
+              Submit Application
             </Button>
           </div>
         </form>

@@ -4,15 +4,16 @@ import { JsonLdScript, getBreadcrumbSchema } from '@/lib/seo/jsonld'
 import { cn } from '@/lib/utilities/ui'
 import type { Metadata } from 'next'
 
-const pageTitle = 'Get Your Free D1 Game Plan'
+const pageTitle = 'Apply for a Free 1-on-1 Session'
 const pageDescription =
-  "Fill out the form below and we'll show you exactly what to do now to make the biggest difference in your game."
+  'Work with a current NCAA Division 1 player to find how to make the biggest difference in your game.'
 
 export const metadata: Metadata = {
   title: pageTitle,
   description: pageDescription,
   keywords: [
-    'hockey game plan',
+    'free hockey session',
+    'D1 hockey session',
     'hockey assessment',
     'hockey development plan',
     'D1 hockey path',
@@ -31,7 +32,7 @@ export const metadata: Metadata = {
         url: 'https://www.performix.ca/opengraph-image.png',
         width: 1200,
         height: 630,
-        alt: 'Performix Game Plan',
+        alt: 'Performix Free 1-on-1 Session',
       },
     ],
   },
@@ -51,7 +52,7 @@ export default function GamePlanPage() {
     '@context': 'https://schema.org',
     ...getBreadcrumbSchema([
       { name: 'Home', url: 'https://www.performix.ca' },
-      { name: 'Game Plan', url: 'https://www.performix.ca/game-plan' },
+      { name: 'Free 1-on-1 Session Application', url: 'https://www.performix.ca/game-plan' },
     ]),
   }
 
@@ -79,7 +80,7 @@ export default function GamePlanPage() {
 
       <div className="container max-w-2xl mx-auto bg-white bg-opacity-90 rounded-xl shadow-lg border border-[#0EA5E9]/10 backdrop-blur p-8">
         <h2 className="text-2xl sm:text-3xl font-bold text-[#0891B2] mb-6 text-center tracking-tight font-['Space_Grotesk']">
-          Your game plan form
+          Free 1-on-1 Session Application
         </h2>
         <GamePlanForm />
       </div>

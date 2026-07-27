@@ -119,10 +119,10 @@ export default async function TeamPage() {
               href="/game-plan"
               className={cn(
                 buttonVariants({ size: 'lg' }),
-                'bg-[#0891B2] hover:bg-[#0E7490] text-white px-8 py-4 text-lg hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl',
+                'bg-[#0891B2] hover:bg-[#0E7490] text-white whitespace-normal text-center leading-tight px-8 py-4 text-lg hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl',
               )}
             >
-              Get My Free Game Plan
+              Apply for Free 1-on-1 Session
               <ArrowRight className="ml-2 h-5 w-5" />
             </Link>
           </div>

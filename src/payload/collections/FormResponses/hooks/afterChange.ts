@@ -73,9 +73,9 @@ const afterChangeFormResponse: CollectionAfterChangeHook<FormResponse> = async (
   if (doc.formName === 'game-plan') {
     await sendEmail({
       to: 'mateo@performix.ca',
-      subject: 'Game Plan Submission',
+      subject: 'Free 1-on-1 Session Application',
       html: `
-          <p>You have a new game plan submission:</p>
+          <p>You have a new free 1-on-1 session application:</p>
           <pre>${JSON.stringify(doc.response, null, 2)}</pre>
         `,
     })

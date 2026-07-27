@@ -16,7 +16,7 @@ import { cn } from '@/lib/utilities/ui'
 import { ArrowRight, CheckCircle, TrendingUp } from 'lucide-react'
 import type { Metadata } from 'next'
 
-const gamePlanCtaLabel = 'Get My Free Game Plan'
+const gamePlanCtaLabel = 'Apply for Free 1-on-1 Session'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -84,7 +84,7 @@ const faqs = [
   {
     question: 'How do I get started?',
     answer:
-      "Start with your game plan form. We'll learn about your goals, situation, and development needs, then map the right mentor and next step to move your game forward.",
+      "Start with the free 1-on-1 session application. We'll learn about your goals, situation, and development needs, then map the right mentor and next step to move your game forward.",
   },
   {
     question: "What's coming next on Performix?",
@@ -157,7 +157,7 @@ export default function HomePage() {
                   href="/game-plan"
                   className={cn(
                     buttonVariants({ size: 'lg' }),
-                    'w-full sm:w-auto bg-[#0891B2] hover:bg-[#0E7490] text-white px-10 py-5 text-xl hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl lg:px-14 lg:py-6 lg:text-2xl',
+                    'w-full sm:w-auto bg-[#0891B2] hover:bg-[#0E7490] text-white whitespace-normal text-center leading-tight px-10 py-5 text-xl hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl lg:px-14 lg:py-6 lg:text-2xl',
                   )}
                 >
                   {gamePlanCtaLabel}
@@ -219,7 +219,7 @@ export default function HomePage() {
               href="/game-plan"
               className={cn(
                 buttonVariants({ size: 'lg' }),
-                'bg-[#0891B2] hover:bg-[#0E7490] text-white px-8 py-4 text-lg hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl lg:px-12 lg:py-5 lg:text-xl',
+                'bg-[#0891B2] hover:bg-[#0E7490] text-white whitespace-normal text-center leading-tight px-8 py-4 text-lg hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl lg:px-12 lg:py-5 lg:text-xl',
               )}
             >
               {gamePlanCtaLabel}
@@ -250,7 +250,7 @@ export default function HomePage() {
                 href="/game-plan"
                 className={cn(
                   buttonVariants({ size: 'lg' }),
-                  'bg-[#0891B2] hover:bg-[#0E7490] text-white px-8 py-4 text-lg hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl lg:px-12 lg:py-5 lg:text-xl',
+                  'bg-[#0891B2] hover:bg-[#0E7490] text-white whitespace-normal text-center leading-tight px-8 py-4 text-lg hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl lg:px-12 lg:py-5 lg:text-xl',
                 )}
               >
                 {gamePlanCtaLabel}

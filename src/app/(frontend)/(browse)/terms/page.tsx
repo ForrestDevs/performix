@@ -80,7 +80,7 @@ const sections = [
     title: 'SMS Program Terms',
     body: [
       'By submitting your phone number through our forms and opting in, you agree to receive informational and promotional text messages from Performix Hockey.',
-      'SMS messages may include messages about free D1 sessions, game plan submissions, scheduling, appointment confirmations, appointment reminders, Zoom or call details, hockey development plans, customer care, and mentorship offers.',
+      'SMS messages may include messages about free 1-on-1 session applications, free D1 sessions, scheduling, appointment confirmations, appointment reminders, Zoom or call details, hockey development plans, customer care, and mentorship offers.',
       'Message frequency may vary, up to 9 messages per month. Message and data rates may apply. Consent is not a condition of purchase.',
       'Reply STOP at any time to opt out. After you reply STOP, we may send one final message confirming that you have been unsubscribed.',
       'Reply HELP for help. You may also contact us at mateo@performix.ca or +1 647-625-6177 for support.',
@@ -154,9 +154,7 @@ export default function TermsPage() {
         <div className="mx-auto max-w-4xl space-y-8">
           <Card>
             <CardContent className="p-8">
-              <h2 className="mb-4 text-2xl font-bold text-gray-900">
-                Agreement to Terms
-              </h2>
+              <h2 className="mb-4 text-2xl font-bold text-gray-900">Agreement to Terms</h2>
               <p className="leading-relaxed text-gray-600">
                 These Terms of Service govern your use of services provided by Performix Hockey,
                 operated by Performix Collective Inc., including mentorship programs, free

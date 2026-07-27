@@ -114,10 +114,10 @@ export function HowYouImprove() {
             href="/game-plan"
             className={cn(
               buttonVariants({ size: 'lg' }),
-              'bg-[#0891B2] hover:bg-[#0E7490] text-white px-8 py-4 text-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 lg:px-12 lg:py-5 lg:text-xl',
+              'bg-[#0891B2] hover:bg-[#0E7490] text-white whitespace-normal text-center leading-tight px-8 py-4 text-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 lg:px-12 lg:py-5 lg:text-xl',
             )}
           >
-            Get My Free Game Plan
+            Apply for Free 1-on-1 Session
             <ArrowRight className="ml-2 h-5 w-5 lg:h-6 lg:w-6" />
           </Link>
         </div>

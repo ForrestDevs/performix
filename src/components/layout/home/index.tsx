@@ -28,7 +28,7 @@ import {
 import Image from 'next/image'
 import Link from 'next/link'
 
-const gamePlanCtaLabel = 'Get My Free Game Plan'
+const gamePlanCtaLabel = 'Apply for Free 1-on-1 Session'
 
 const valuePropItems = [
   {
@@ -120,7 +120,7 @@ export function ValuePropSection() {
             href="/game-plan"
             className={cn(
               buttonVariants({ size: 'lg' }),
-              'bg-gradient-to-r from-[#0EA5E9] to-[#A78BFA] via-[#0891B2] hover:from-[#0E7490] hover:to-[#8B5CF6] text-white px-8 py-4 text-lg shadow-lg hover:shadow-xl transition-all duration-300 lg:px-12 lg:py-5 lg:text-xl',
+              'bg-gradient-to-r from-[#0EA5E9] to-[#A78BFA] via-[#0891B2] hover:from-[#0E7490] hover:to-[#8B5CF6] text-white whitespace-normal text-center leading-tight px-8 py-4 text-lg shadow-lg hover:shadow-xl transition-all duration-300 lg:px-12 lg:py-5 lg:text-xl',
             )}
           >
             {gamePlanCtaLabel}
@@ -140,8 +140,8 @@ export function NextStepsSection() {
   const steps = [
     {
       step: 1,
-      title: 'Get Your Free Game Plan',
-      description: 'Fill out the game plan form below.',
+      title: 'Apply for Free 1-on-1 Session',
+      description: 'Tell us about the player and what you want to improve.',
       icon: ClipboardList,
     },
     {
@@ -263,7 +263,7 @@ export function NextStepsSection() {
               href="/game-plan"
               className={cn(
                 buttonVariants({ size: 'lg' }),
-                'bg-gradient-to-r from-[#0EA5E9] to-[#A78BFA] via-[#0891B2] hover:from-[#0E7490] hover:to-[#8B5CF6] text-white px-8 py-4 text-lg shadow-lg hover:shadow-xl transition-all duration-300 lg:px-12 lg:py-5 lg:text-xl',
+                'bg-gradient-to-r from-[#0EA5E9] to-[#A78BFA] via-[#0891B2] hover:from-[#0E7490] hover:to-[#8B5CF6] text-white whitespace-normal text-center leading-tight px-8 py-4 text-lg shadow-lg hover:shadow-xl transition-all duration-300 lg:px-12 lg:py-5 lg:text-xl',
               )}
             >
               {gamePlanCtaLabel}
@@ -294,7 +294,7 @@ export function WhatYouGetEveryMonth() {
     {
       title: 'Personalized Development Plans',
       description:
-        'Get a customized game plan focused on making your biggest improvements each month',
+        'Get a personalized development plan focused on making your biggest improvements each month',
     },
     {
       title: 'The Complete Performix System',
@@ -392,7 +392,7 @@ export function WhatYouGetEveryMonth() {
             href="/game-plan"
             className={cn(
               buttonVariants({ size: 'lg' }),
-              'bg-gradient-to-r from-[#0EA5E9] to-[#A78BFA] via-[#0891B2] hover:from-[#0E7490] hover:to-[#8B5CF6] text-white px-8 py-4 text-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 lg:px-12 lg:py-5 lg:text-xl',
+              'bg-gradient-to-r from-[#0EA5E9] to-[#A78BFA] via-[#0891B2] hover:from-[#0E7490] hover:to-[#8B5CF6] text-white whitespace-normal text-center leading-tight px-8 py-4 text-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 lg:px-12 lg:py-5 lg:text-xl',
             )}
           >
             {gamePlanCtaLabel}
@@ -540,7 +540,7 @@ export function FAQSection() {
     {
       question: 'How do I get started?',
       answer:
-        "Start with your game plan form. We'll learn about your goals, situation, and development needs, then map the right mentor and next step to move your game forward.",
+        "Start with the free 1-on-1 session application. We'll learn about your goals, situation, and development needs, then map the right mentor and next step to move your game forward.",
     },
     {
       question: "What's coming next on Performix?",

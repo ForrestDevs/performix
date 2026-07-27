@@ -10,12 +10,12 @@ export default function GamePlanCompletePage() {
       <GamePlanConversionTracker />
       <section className="w-full min-h-[80vh] flex flex-col justify-center items-center text-center px-4 py-12 sm:px-8">
         <h1 className={cn(PERFORMIX_DISPLAY_TITLE_CLASS, 'text-[#0EA5E9] mb-6 drop-shadow-lg')}>
-          Thank You!
+          Application Received
         </h1>
         <p className="max-w-2xl text-xl sm:text-2xl text-gray-800 mb-16 font-medium">
-          We&apos;ve received your Game Plan submission.
+          We&apos;ve received your free 1-on-1 session application.
           <br />
-          Our team will review your response and reach out soon to help you begin your journey.
+          Mateo will review your response and text you with the next step.
         </p>
 
         <div className="w-full max-w-4xl flex flex-col items-center gap-5">

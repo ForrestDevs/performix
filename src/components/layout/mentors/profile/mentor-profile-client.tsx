@@ -36,16 +36,17 @@ export function MentorProfileClient({ mentor }: MentorProfileClientProps) {
                 <CardContent className="p-6">
                   <h3 className="text-xl font-bold text-gray-900 mb-4">Ready to Get Started?</h3>
                   <p className="text-gray-600 mb-6">
-                    Get your free game plan and we&apos;ll map the right next step for your goals.
+                    Apply for a free 1-on-1 session and we&apos;ll map the right next step for your
+                    goals.
                   </p>
                   <Link
                     href="/game-plan"
                     className={cn(
                       buttonVariants(),
-                      'w-full bg-[#0891B2] hover:bg-[#0E7490] text-white',
+                      'w-full bg-[#0891B2] hover:bg-[#0E7490] text-white whitespace-normal text-center leading-tight',
                     )}
                   >
-                    Get My Free Game Plan
+                    Apply for Free 1-on-1 Session
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Link>
                 </CardContent>

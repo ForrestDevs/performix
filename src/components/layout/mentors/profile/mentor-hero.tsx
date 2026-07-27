@@ -66,10 +66,10 @@ export function MentorHero() {
               href="/game-plan"
               className={cn(
                 buttonVariants({ variant: 'default', size: 'lg' }),
-                'bg-[#0891B2] hover:bg-[#0E7490] text-white',
+                'bg-[#0891B2] hover:bg-[#0E7490] text-white whitespace-normal text-center leading-tight',
               )}
             >
-              Get My Free Game Plan
+              Apply for Free 1-on-1 Session
               <ArrowRight className="ml-2 h-5 w-5" />
             </Link>
             {mentor.socials?.eliteProspects && (
