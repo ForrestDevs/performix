@@ -2,7 +2,7 @@ import { GamePlanConversionTracker } from '@/components/analytics/game-plan-conv
 import { PERFORMIX_DISPLAY_TITLE_CLASS } from '@/lib/constants/typography'
 import { cn } from '@/lib/utilities/ui'
 
-const loomUrl = 'https://www.loom.com/embed/b0745407715e4dd8b2abe06bb5e5dce5?hideEmbedTopBar=true'
+const loomUrl = 'https://www.loom.com/embed/beafdd6bc34c4871bd658b0d03383a74?hideEmbedTopBar=true'
 
 export default function GamePlanCompletePage() {
   return (
@@ -21,16 +21,16 @@ export default function GamePlanCompletePage() {
         <div className="w-full max-w-4xl flex flex-col items-center gap-5">
           <div className="space-y-3">
             <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-gray-900 font-['Space_Grotesk']">
-              How Our Players Improve
+              How Performix Hockey Works
             </h2>
             <p className="text-base sm:text-lg text-gray-600">
-              Watch this short breakdown while we review your form.
+              Watch this while Mateo reviews your application.
             </p>
           </div>
           <div className="relative rounded-2xl overflow-hidden shadow-xl aspect-video w-full bg-black">
             <iframe
               src={loomUrl}
-              title="How Our Players Improve"
+              title="How Performix Hockey Works"
               allowFullScreen
               className="absolute inset-0 w-full h-full rounded-2xl"
             />
