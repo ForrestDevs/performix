@@ -8,6 +8,11 @@ export async function POST(request: NextRequest) {
   try {
     if (body.event.type === 'checkout.session.completed') {
       const session = body.event.data.object as Stripe.Checkout.Session
+
+      if (session.metadata?.checkoutFlow === 'manual_hst_canada') {
+        return new Response('OK')
+      }
+
       await handleSuccessfulPayment(session.id)
     }
   } catch (error) {

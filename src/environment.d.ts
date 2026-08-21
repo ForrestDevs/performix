@@ -24,6 +24,11 @@ declare global {
       STRIPE_SECRET_KEY: string
       STRIPE_WEBHOOK_SECRET: string
       NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: string
+      STRIPE_PRICE_ELITE_MENTOR_CAD?: string
+      STRIPE_PRICE_D1_BOUND_CAD?: string
+      STRIPE_PRICE_PERFORMER_PACKAGE_CAD?: string
+      STRIPE_PRICE_D1_ACCELERATOR_CAD?: string
+      STRIPE_TAX_RATE_HST_13?: string
       MUX_TOKEN_ID: string
       MUX_TOKEN_SECRET: string
       MUX_WEBHOOK_SECRET: string
