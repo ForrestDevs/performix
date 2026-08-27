@@ -27,6 +27,7 @@ declare global {
       STRIPE_PRICE_ELITE_MENTOR_CAD?: string
       STRIPE_PRICE_D1_BOUND_CAD?: string
       STRIPE_PRICE_PERFORMER_PACKAGE_CAD?: string
+      STRIPE_PRICE_CUSTOM_PACKAGE_CAD?: string
       STRIPE_PRICE_D1_ACCELERATOR_CAD?: string
       STRIPE_TAX_RATE_HST_13?: string
       MUX_TOKEN_ID: string

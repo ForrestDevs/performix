@@ -23,6 +23,10 @@ export const manualTaxCheckoutPlans = {
     name: 'Performer Package Canada',
     priceId: process.env.STRIPE_PRICE_PERFORMER_PACKAGE_CAD || 'price_1U6zq6BF6AGmnpvwryqFnbRX',
   },
+  'custom-package': {
+    name: 'Custom Package - Canada',
+    priceId: process.env.STRIPE_PRICE_CUSTOM_PACKAGE_CAD || 'price_1U9BgmBF6AGmnpvw3ImAw6zf',
+  },
   'd1-accelerator': {
     name: 'D1 Accelerator Canada',
     priceId: process.env.STRIPE_PRICE_D1_ACCELERATOR_CAD || 'price_1U6ztSBF6AGmnpvwbXTwnDxn',
