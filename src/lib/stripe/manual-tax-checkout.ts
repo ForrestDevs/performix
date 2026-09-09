@@ -15,6 +15,11 @@ export const manualTaxCheckoutPlans = {
     name: 'Elite Mentor Canada',
     priceId: process.env.STRIPE_PRICE_ELITE_MENTOR_CAD || 'price_1U6zotBF6AGmnpvwwARXsFVI',
   },
+  'elite-mentor-performix': {
+    name: 'Elite Mentor - Performix',
+    priceId:
+      process.env.STRIPE_PRICE_ELITE_MENTOR_PERFORMIX_CAD || 'price_1UDrO7BF6AGmnpvwSib5CDDv',
+  },
   'd1-bound': {
     name: 'D1 Bound Canada',
     priceId: process.env.STRIPE_PRICE_D1_BOUND_CAD || 'price_1U6zszBF6AGmnpvwHbfYz3F9',
