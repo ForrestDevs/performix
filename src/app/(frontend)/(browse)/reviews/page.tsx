@@ -15,6 +15,7 @@ import {
 import { Testimonial, Video } from '@/payload-types'
 import { VideoReview } from '@/components/layout/reviews/video-reviews'
 import { JsonLdScript, getBreadcrumbSchema } from '@/lib/seo/jsonld'
+import { TestimonialsSection } from '@/components/layout/home/testimonials'
 
 export const metadata: Metadata = {
   title: 'Reviews & Testimonials - The Performix Effect',
@@ -60,6 +61,9 @@ export default async function ReviewsPage() {
   const videoReviews = await getVideoReviews()
   const screenshotReviews = await getScreenshotReviews()
   const parentReviews = await getParentReviews()
+  const parentReviewsWithMessages = parentReviews.filter((testimonial) =>
+    testimonial.message?.trim(),
+  )
 
   const breadcrumbJsonLd = {
     '@context': 'https://schema.org',
@@ -90,7 +94,8 @@ export default async function ReviewsPage() {
       '@type': 'AggregateRating',
       ratingValue: 5,
       bestRating: 5,
-      ratingCount: videoReviews.length + parentReviews.length + screenshotReviews.length,
+      ratingCount:
+        videoReviews.length + parentReviewsWithMessages.length + screenshotReviews.length,
     },
   }
 
@@ -177,7 +182,7 @@ export default async function ReviewsPage() {
 
           <div className="flex justify-center">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl w-full justify-items-center">
-              {parentReviews.map((testimonial, index) => (
+              {parentReviewsWithMessages.map((testimonial, index) => (
                 <div
                   key={index}
                   className="bg-white border border-border rounded-2xl p-8 flex flex-col justify-center shadow-md hover:shadow-xl transition-shadow text-center min-h-[360px] w-full max-w-sm mx-auto"
@@ -200,6 +205,8 @@ export default async function ReviewsPage() {
           </div>
         </div>
       </section>
+
+      <TestimonialsSection />
 
       <section className="py-20 px-4 bg-muted/30">
         <div className="container mx-auto max-w-7xl">
