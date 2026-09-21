@@ -2,20 +2,22 @@ import type { Metadata } from 'next'
 import { buttonVariants } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { PERFORMIX_DISPLAY_TITLE_CLASS } from '@/lib/constants/typography'
-import { ArrowDown, ArrowRight, Play, Quote } from 'lucide-react'
+import { ArrowDown, ArrowRight, Quote } from 'lucide-react'
 import { MessageReviews } from '@/components/layout/reviews/messages'
 import Link from 'next/link'
 import { cn } from '@/lib/utilities/ui'
 import {
   getParentReviews,
+  getFeaturedTestimonials,
   getScreenshotReviews,
-  getStandardReviews,
   getVideoReviews,
 } from '@/lib/data/testimonials'
-import { Testimonial, Video } from '@/payload-types'
+import { Video } from '@/payload-types'
 import { VideoReview } from '@/components/layout/reviews/video-reviews'
 import { JsonLdScript, getBreadcrumbSchema } from '@/lib/seo/jsonld'
-import { TestimonialsSection } from '@/components/layout/home/testimonials'
+import TestimonialSliderCard from '@/components/testimonials'
+
+const PARENT_REVIEWER_LABEL = /\b(parent|mom|mother|dad|father)\b/i
 
 export const metadata: Metadata = {
   title: 'Reviews & Testimonials - The Performix Effect',
@@ -61,8 +63,13 @@ export default async function ReviewsPage() {
   const videoReviews = await getVideoReviews()
   const screenshotReviews = await getScreenshotReviews()
   const parentReviews = await getParentReviews()
+  const featuredTestimonials = await getFeaturedTestimonials()
   const parentReviewsWithMessages = parentReviews.filter((testimonial) =>
     testimonial.message?.trim(),
+  )
+  const athleteTestimonials = featuredTestimonials.filter(
+    (testimonial) =>
+      !PARENT_REVIEWER_LABEL.test(`${testimonial.position ?? ''} ${testimonial.team ?? ''}`),
   )
 
   const breadcrumbJsonLd = {
@@ -206,16 +213,15 @@ export default async function ReviewsPage() {
         </div>
       </section>
 
-      <TestimonialsSection />
-
       <section className="py-20 px-4 bg-muted/30">
         <div className="container mx-auto max-w-7xl">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl md:text-5xl font-bold mb-4 text-foreground">
-              What <span className="text-primary">Athletes Say</span>
-            </h2>
-          </div>
-          <div>
+          <h2 className="text-4xl md:text-5xl font-bold text-center mb-12 text-foreground">
+            What <span className="text-primary">Athletes</span> Are Saying
+          </h2>
+
+          <TestimonialSliderCard testimonials={athleteTestimonials} expandableQuotes />
+
+          <div className="mt-16">
             <MessageReviews messages={screenshotReviews} />
           </div>
         </div>

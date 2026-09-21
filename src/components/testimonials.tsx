@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from 'react'
 import { Card, CardContent } from '@/components/ui/card'
 import {
   Carousel,
@@ -13,12 +14,33 @@ import { Media, Testimonial } from '@/payload-types'
 import { Media as MediaComponent } from './Media'
 import { ChevronLeft, ChevronRight, Star } from 'lucide-react'
 import { Button } from './ui/button'
+import { cn } from '@/lib/utilities/ui'
 
 interface TestimonialSliderCardProps {
   testimonials: Testimonial[]
+  expandableQuotes?: boolean
 }
 
-export default function TestimonialSliderCard({ testimonials }: TestimonialSliderCardProps) {
+export default function TestimonialSliderCard({
+  testimonials,
+  expandableQuotes = false,
+}: TestimonialSliderCardProps) {
+  const [expandedTestimonials, setExpandedTestimonials] = useState<Set<number>>(new Set())
+
+  const toggleExpanded = (testimonialId: number) => {
+    setExpandedTestimonials((current) => {
+      const next = new Set(current)
+
+      if (next.has(testimonialId)) {
+        next.delete(testimonialId)
+      } else {
+        next.add(testimonialId)
+      }
+
+      return next
+    })
+  }
+
   return (
     <Carousel
       opts={{
@@ -45,9 +67,29 @@ export default function TestimonialSliderCard({ testimonials }: TestimonialSlide
                       <Star key={i} className="h-4 w-4 text-yellow-400 fill-current" />
                     ))}
                   </div>
-                  <p className="text-gray-800 text-base mb-4 italic leading-relaxed line-clamp-4">
+                  <p
+                    id={`testimonial-quote-${testimonial.id}`}
+                    className={cn(
+                      'text-gray-800 text-base mb-4 italic leading-relaxed',
+                      (!expandableQuotes ||
+                        ((testimonial.message?.length ?? 0) > 180 &&
+                          !expandedTestimonials.has(testimonial.id))) &&
+                        'line-clamp-4',
+                    )}
+                  >
                     &quot;{testimonial.message}&quot;
                   </p>
+                  {expandableQuotes && (testimonial.message?.length ?? 0) > 180 && (
+                    <button
+                      type="button"
+                      className="-mt-1 mb-4 text-sm font-semibold text-[#0891B2] hover:text-[#0E7490] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0891B2] focus-visible:ring-offset-2 rounded-sm"
+                      aria-expanded={expandedTestimonials.has(testimonial.id)}
+                      aria-controls={`testimonial-quote-${testimonial.id}`}
+                      onClick={() => toggleExpanded(testimonial.id)}
+                    >
+                      {expandedTestimonials.has(testimonial.id) ? 'Show less' : 'Read full quote'}
+                    </button>
+                  )}
                   <div className="space-y-1 mt-auto">
                     <p className="font-bold text-lg text-gray-900">{testimonial.name}</p>
                     <p className="text-[#0891B2] font-semibold text-sm">{testimonial.position}</p>
