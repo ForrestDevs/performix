@@ -206,9 +206,9 @@ export default function HomePage() {
           <div className="w-full max-w-5xl">
             <div className="relative aspect-video rounded-xl overflow-hidden bg-white">
               <iframe
-                src="https://www.youtube.com/embed/fJsgFnU3XRg"
-                title="Performix - Elite Hockey Mentorship"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                src="https://www.loom.com/embed/beafdd6bc34c4871bd658b0d03383a74?hideEmbedTopBar=true"
+                title="How Performix Works"
+                allow="autoplay; picture-in-picture"
                 allowFullScreen
                 className="absolute inset-0 w-full h-full"
               />
