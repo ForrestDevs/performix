@@ -206,7 +206,7 @@ export default function HomePage() {
           <div className="w-full max-w-5xl">
             <div className="relative aspect-video rounded-xl overflow-hidden bg-white">
               <iframe
-                src="https://www.loom.com/embed/beafdd6bc34c4871bd658b0d03383a74?hideEmbedTopBar=true"
+                src="https://www.loom.com/embed/70efba29cfeb474ab90ce52c94ef6003?hideEmbedTopBar=true"
                 title="How Performix Works"
                 allow="autoplay; picture-in-picture"
                 allowFullScreen
