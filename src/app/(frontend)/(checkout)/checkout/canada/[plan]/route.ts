@@ -1,4 +1,4 @@
-import { createManualTaxSubscriptionCheckout } from '@/lib/stripe/manual-tax-checkout'
+import { createManualTaxCheckout } from '@/lib/stripe/manual-tax-checkout'
 import { NextRequest, NextResponse } from 'next/server'
 
 type Params = Promise<{
@@ -21,7 +21,7 @@ export async function GET(req: NextRequest, { params }: { params: Params }) {
   const customerEmail = parseEmail(req.nextUrl.searchParams.get('email'))
 
   try {
-    const session = await createManualTaxSubscriptionCheckout({
+    const session = await createManualTaxCheckout({
       planSlug: plan,
       customerEmail,
     })

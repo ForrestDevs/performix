@@ -23,31 +23,39 @@ export default async function CanadaCheckoutSuccessPage({
   const { session_id } = await searchParams
   let amount: string | null = null
   let customerEmail: string | null | undefined = null
+  let checkoutMode: 'payment' | 'subscription' | null = null
 
   if (session_id) {
     try {
       const session = await stripeClient.checkout.sessions.retrieve(session_id)
       amount = formatAmount(session.amount_total, session.currency)
       customerEmail = session.customer_details?.email
+      checkoutMode = session.mode === 'payment' ? 'payment' : 'subscription'
     } catch (error) {
       console.error('Error loading manual-tax checkout session:', error)
     }
   }
 
+  const isOneTimePayment = checkoutMode === 'payment'
+
   return (
     <main className="min-h-screen bg-gray-50 px-4 py-16">
       <section className="mx-auto max-w-xl rounded-lg border border-gray-200 bg-white p-8 text-center shadow-sm">
         <CheckCircle className="mx-auto mb-5 h-14 w-14 text-green-600" />
-        <h1 className="mb-3 text-3xl font-semibold text-gray-950">Subscription Confirmed</h1>
+        <h1 className="mb-3 text-3xl font-semibold text-gray-950">
+          {isOneTimePayment ? 'Payment Confirmed' : 'Subscription Confirmed'}
+        </h1>
         <p className="mb-6 text-gray-600">
-          Your Performix subscription is active. A receipt has been sent by Stripe.
+          {isOneTimePayment
+            ? 'Your Performix payment is complete.'
+            : 'Your Performix subscription is active.'}
         </p>
 
         {(amount || customerEmail) && (
           <div className="mb-6 rounded-md bg-gray-50 p-4 text-left text-sm text-gray-700">
             {amount && (
               <div className="flex justify-between gap-4">
-                <span>First charge</span>
+                <span>{isOneTimePayment ? 'Amount paid' : 'First charge'}</span>
                 <span className="font-medium text-gray-950">{amount}</span>
               </div>
             )}

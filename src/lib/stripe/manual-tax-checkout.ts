@@ -8,6 +8,7 @@ const HST_13_TAX_RATE_ID = process.env.STRIPE_TAX_RATE_HST_13 || 'txr_1U492iBF6A
 export type ManualTaxCheckoutPlan = {
   name: string
   priceId: string | undefined
+  mode?: 'payment' | 'subscription'
 }
 
 export const manualTaxCheckoutPlans = {
@@ -24,6 +25,13 @@ export const manualTaxCheckoutPlans = {
     name: 'Group Mentor - Performix',
     priceId:
       process.env.STRIPE_PRICE_GROUP_MENTOR_PERFORMIX_CAD || 'price_1URCCkBF6AGmnpvwKp166cpW',
+  },
+  'performer-performix-hockey': {
+    name: 'PERFORMER - PERFORMIX HOCKEY',
+    priceId:
+      process.env.STRIPE_PRICE_PERFORMER_PERFORMIX_HOCKEY_CAD ||
+      'price_1URFAoBF6AGmnpvwG72PkSGh',
+    mode: 'payment',
   },
   'd1-bound': {
     name: 'D1 Bound Canada',
@@ -53,7 +61,7 @@ export function getManualTaxCheckoutPlanSlugs() {
   return Object.keys(manualTaxCheckoutPlans)
 }
 
-export async function createManualTaxSubscriptionCheckout({
+export async function createManualTaxCheckout({
   planSlug,
   customerEmail,
 }: {
@@ -76,33 +84,46 @@ export async function createManualTaxSubscriptionCheckout({
   }
 
   const baseUrl = getServerSideURL()
+  const mode = 'mode' in plan ? plan.mode : 'subscription'
+  const metadata = {
+    checkoutFlow: 'manual_hst_canada',
+    planSlug,
+    planName: plan.name,
+  }
 
   const session = await stripeClient.checkout.sessions.create({
-    mode: 'subscription',
+    mode,
     line_items: [
       {
         price: plan.priceId,
         quantity: 1,
+        ...(mode === 'payment' ? { tax_rates: [taxRateId] } : {}),
       },
     ],
-    subscription_data: {
-      default_tax_rates: [taxRateId],
-      metadata: {
-        checkoutFlow: 'manual_hst_canada',
-        planSlug,
-        planName: plan.name,
-      },
-    },
+    ...(mode === 'subscription'
+      ? {
+          subscription_data: {
+            default_tax_rates: [taxRateId],
+            metadata,
+          },
+        }
+      : {
+          payment_intent_data: {
+            metadata,
+          },
+          invoice_creation: {
+            enabled: true,
+            invoice_data: {
+              metadata,
+            },
+          },
+        }),
     automatic_tax: {
       enabled: false,
     },
     billing_address_collection: 'required',
     customer_email: customerEmail,
-    metadata: {
-      checkoutFlow: 'manual_hst_canada',
-      planSlug,
-      planName: plan.name,
-    },
+    metadata,
     success_url: `${baseUrl}/checkout/canada/success?session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${baseUrl}/checkout/canada/cancel?plan=${encodeURIComponent(planSlug)}`,
   })
